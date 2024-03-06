@@ -1,0 +1,44 @@
+
+1: Install mariadb
+2: Open maridb and create new schema 'usda'
+3: Clone the project from git
+4: create and activate virtual environment
+    Open terminal, run this command to create virtual environment 
+        py3 -m venv env
+
+    To acivate virtual environment run this command
+        source venv/bin/activate 
+
+5: Install all the dependencies /  python packages
+    Navigate to location where requirements.txt is kept and run the command
+        pip install -r requirements.txt
+
+6: Navigate to root directory of the project where manage.py is kept and run the command
+    py3 manage.py migrate
+
+    This command will create the default tables to the schema 'usda'.
+
+7: Run the development server
+    py3 manage.py runserver <ip><port>
+
+    By default the Django runs the server on localhost:8000 if ip and port not provided.
+    so you cna simply run 
+        py3 manage.py runserver
+
+
+8:  Access the url
+    localhost:8000
+
+9:  Access django Admin console 
+    To create id and password run this command and provide the params
+        py3 manage.py createsuperuser
+            -provide user id
+            -provide password
+            -repeate password
+            -provide email
+
+
+    now access the URL
+        localhost:8000/admin
+
+        provide the user id and password
