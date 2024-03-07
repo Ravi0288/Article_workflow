@@ -17,7 +17,10 @@ from django.core.files.base import ContentFile
 def download_file(connect, article, item):
     file_size = connect.size(article)
     # if record not downloaded in our record and the the file size is not zero than download and write to our database
-    if not (Archived_article_attribute.objects.filter(file_name_on_ftp=article).exists()):
+    x = Archived_article_attribute.objects.filter(file_name_on_ftp=article)
+
+    # if file not exists in database, create new record
+    if not(x.exists()):
         content = BytesIO()
         connect.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
@@ -33,6 +36,12 @@ def download_file(connect, article, item):
         x.file_content.save(article, content)
         return
 
+    # if file exists than check the file size. If file size is different update the existing record
+    if (x.exists() and not (x.file_size == file_size)):
+        x.status = 'waiting'
+        x.file_content.save(article, content)
+        return
+        
 
 # function to iterate folder. If another folder found in side the folder this function will call itself.
 def download_folder(connect, article, item):
@@ -119,13 +128,13 @@ def download_from_api(request):
         # Send a GET request to the URL
         response = requests.get(item.base_url)
         if response.status_code == 200:
-
             # Retrieve file name and file size from response headers
             content_disposition = response.headers.get('content-disposition')
             if content_disposition:
                 file_name = content_disposition.split('filename=')[1]
             else:
-                file_name = "xx"  # Use URL as filename if content-disposition is not provided
+                file_name = (response.url).split('/')[-1] # Use URL as filename if content-disposition is not provided
+            
             file_size = int(response.headers.get('content-length', 0))
             file_type = os.path.splitext(file_name)[1]
 
@@ -140,7 +149,7 @@ def download_from_api(request):
             )
 
             # save file
-            x.file_content.save('filename', ContentFile(response.content))
+            x.file_content.save(file_name, ContentFile(response.content))
 
             # update status
             item.last_pull_time = datetime.datetime.today()

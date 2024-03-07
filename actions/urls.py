@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .ftp import connect_with_ftp
 from .trigger_processes import trigger_steps
 from .archive_article import Archived_article_attribute_view
-from .providers import Provider_viewset, Provider_meta_data_FTP_viewset, Provider_meta_data_API_viewset, get_from_json
+from .providers import Provider_viewset, Provider_meta_data_FTP_viewset, Provider_meta_data_API_viewset
 from .step1 import download_from_ftp, download_from_api
 
 router = DefaultRouter()
@@ -18,5 +18,5 @@ urlpatterns = [
     path('dry-run', trigger_steps),
     path('download-from-ftp/', download_from_ftp),
     path('download-from-api/', download_from_api),
-    path('download-from-json/', get_from_json)
+    # path('download-from-json/', get_from_json)
 ]
