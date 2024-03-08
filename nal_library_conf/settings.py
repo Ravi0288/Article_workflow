@@ -1,9 +1,9 @@
 """
 Django settings for nal_library project
 """
-import ftplib
 from pathlib import Path
 import os
+from .conf import get_env_variable
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,8 +89,8 @@ DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'usda',
-    'USER':'root',
-    'PASSWORD':'admin',
+    'USER':get_env_variable('DBUSER'),
+    'PASSWORD':get_env_variable('DBPSWD'),
     'HOST':'localhost',
     'PORT':'3306',
     }
@@ -166,16 +166,8 @@ UPLOAD_ROOT = BASE_DIR / 'uploads'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# FTP Settings variables
-# .........#################
-HOSTNAME = "192.168.152.132"
-USERNAME = "admin"
-PASSWORD = "admin"
-# .........#################
 
-
-
-
+# logger to log errors in file
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
