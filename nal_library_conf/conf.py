@@ -6,8 +6,8 @@ from django.core.exceptions import ImproperlyConfigured
 # This is rquired to avoid storing the password in plain text.
 def get_env_variable(var_name):
     try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = KeyError % var_name
+        return os.environ.get(var_name)
+    except Exception as e:
+        error_msg = e.KeyError % var_name
         raise ImproperlyConfigured(error_msg)
  

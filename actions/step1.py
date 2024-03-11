@@ -11,13 +11,15 @@ import datetime
 from io import BytesIO
 import requests
 from django.core.files.base import ContentFile
-
+import zipfile
+from rest_framework.response import Response
+from rest_framework import status
 
 # function to download file
 def download_file(connect, article, item):
     file_size = connect.size(article)
     # if record not downloaded in our record and the the file size is not zero than download and write to our database
-    x = Archived_article_attribute.objects.filter(file_name_on_ftp=article)
+    x = Archived_article_attribute.objects.filter(file_name_on_source=article)
 
     # if file not exists in database, create new record
     if not(x.exists()):
@@ -26,7 +28,7 @@ def download_file(connect, article, item):
         content.seek(0)
         file_type = os.path.splitext(article)[1]
         x = Archived_article_attribute.objects.create(
-            file_name_on_ftp = article,
+            file_name_on_source = article,
             provider = item.provider.official_name,
             processed_on = datetime.datetime.today(),
             status = 'waiting',
@@ -139,17 +141,25 @@ def download_from_api(request):
             file_type = os.path.splitext(file_name)[1]
 
             # Open a local file with write-binary mode and write the content of the response to it
-            x = Archived_article_attribute.objects.create(
-                file_name_on_ftp = file_name,
-                provider = item.provider.official_name,
-                processed_on = datetime.datetime.today(),
-                status = 'waiting',
-                file_size = file_size,
-                file_type = file_type
-            )
+            qs = Archived_article_attribute.objects.filter(file_name_on_source=file_name) 
 
-            # save file
-            x.file_content.save(file_name, ContentFile(response.content))
+            # if file not available, create new record
+            if not(qs.exists()):
+                x = Archived_article_attribute.objects.create(
+                    file_name_on_source = file_name,
+                    provider = item.provider.official_name,
+                    processed_on = datetime.datetime.today(),
+                    status = 'waiting',
+                    file_size = file_size,
+                    file_type = file_type
+                )
+
+                # save file
+                x.file_content.save(file_name, ContentFile(response.content))
+
+            # if file already available, and size mismatch,update the record with updated file
+            if (qs.exists() and not(qs.file_size == file_size)):
+                qs[0].file_content.save(file_name, ContentFile(response.content))
 
             # update status
             item.last_pull_time = datetime.datetime.today()
@@ -162,4 +172,25 @@ def download_from_api(request):
             item.save()
 
     return HttpResponse("done")
+
+
+
+
+@api_view(['GET'])
+def unzip_files(request):
+    qs = Archived_article_attribute.objects.filter(status="waiting", file_type__in = ('.tar','.zip'))
+    print(qs.count())
+    for item in qs:
+        print(item.id)
+        try:
+            with zipfile.ZipFile(item.file_content, 'r') as zip_ref:
+                # Extract the contents of the zip file
+                filepath =(item.file_content.name).split('.')
+                zip_ref.extractall(filepath[0])
+        except Exception as e:
+            print(e)
+            pass
+    return Response("done")
+
+
 
