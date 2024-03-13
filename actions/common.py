@@ -1,6 +1,7 @@
 import os
 import time
 from rest_framework.response import Response
+import requests
 
 
 # Function to read the file
@@ -15,13 +16,11 @@ def read_file(file_path):
         raise e
     
 
-
 # Function to save the file
 # This function will take blob and file_name to save the blob with file_name
 def save_blob_as_file(blob, output_file_path):
     with open(output_file_path, 'w') as output_file:
         output_file.write(blob)
-
 
 
 # function to delete file by given path
@@ -36,24 +35,24 @@ def delete_file(file_path):
 
 
 
-# function to merge read, write and delete operations
-def action(inputfile, outputfile):
-    # Replace 'input.txt' with the path to your text file
-    input_file_path = inputfile 
-    output_file_path = outputfile
-    # Read the content of the file
-    print("Reading file content")
-    file_content = read_file(input_file_path)
-    time.sleep(1)
-    print(file_content)
-    time.sleep(1)
+# function to check downloaded content is file or folder on API
+def is_api_content_folder(url):
+    response = requests.head(url)  # Send a HEAD request to retrieve headers only
+    content_type = response.headers.get('Content-Type', '')
+    if 'text/html' in content_type:
+        return True
+    else:
+        return False
 
-    print("Saving file")
-    time.sleep(1)
-    # Save the content as a new file
-    save_blob_as_file(file_content, output_file_path)
-    print(f"\nBlob saved as '{output_file_path}'.")
 
-    return output_file_path
+# function to check the given path content is file or folder on FTP 
+def is_ftp_content_folder(connect, path):
+        try:
+            connect.cwd(path)
+            return True
+        except Exception as e:
+            return False
+
+
 
 

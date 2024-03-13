@@ -9,8 +9,6 @@ from django.conf import settings
 
 from cryptography.fernet import Fernet
 
-
-
 # key is generated 
 key = Fernet.generate_key() 
   
