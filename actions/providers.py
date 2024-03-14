@@ -44,14 +44,10 @@ DELIVERY_METHOD = (
 class Provider_model(models.Model):
     official_name = models.CharField(max_length=100)
     working_name = models.CharField(max_length=50)
-    delivery_method = models.CharField(max_length=10, choices=DELIVERY_METHOD)
-    source_schema = models.CharField(max_length=50)
-    minimum_delivery_fq = models.IntegerField()
     in_production = models.BooleanField(max_length=15)
     archive_switch = models.BooleanField(max_length=15)
     article_switch = models.BooleanField(max_length=15)
     requirement_override = models.BooleanField(max_length=15)
-    deposit_path = models.CharField(max_length=15)
 
     def __str__(self) -> str:
         return self.official_name
@@ -64,6 +60,7 @@ class Provider_meta_data_FTP(models.Model):
     site_path = models.CharField(max_length=50)
     account = models.CharField(max_length=50)
     password = models.TextField()
+    minimum_delivery_fq = models.IntegerField()
     last_pull_time = models.DateTimeField(auto_now=True)
     pull_switch = models.BooleanField()
     last_pull_status = models.CharField(max_length=10, default="pass")
@@ -71,7 +68,7 @@ class Provider_meta_data_FTP(models.Model):
 
     def save(self, *args, **kwargs):
         self.password = encrypt_data(self.password)
-        self.next_due_date = datetime.today() + timedelta(self.provider.minimum_delivery_fq)
+        self.next_due_date = datetime.today() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
     @property
@@ -87,13 +84,13 @@ class Provider_meta_data_API(models.Model):
     last_pull_time = models.DateTimeField(auto_now=True)
     api_switch = models.BooleanField()
     site_token = models.TextField()
-
+    minimum_delivery_fq = models.IntegerField()
     last_pull_status = models.CharField(max_length=10, default="pass")
     next_due_date = models.DateTimeField(null=True)
 
     def save(self, *args, **kwargs):
         self.site_token = encrypt_data(self.site_token)
-        self.next_due_date = datetime.today() + timedelta(self.provider.minimum_delivery_fq)
+        self.next_due_date = datetime.today() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_API, self).save(*args, **kwargs)        
 
     @property

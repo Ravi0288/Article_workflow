@@ -14,10 +14,7 @@ router.register('providers', Provider_viewset)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('connect-with-ftp', connect_with_ftp),
-    path('dry-run', trigger_steps),
     path('download-from-ftp/', download_from_ftp),
     path('download-from-api/', download_from_api),
     path('unzip-files/', unzip_files),
-    # path('download-from-json/', get_from_json)
 ]

@@ -233,7 +233,7 @@ def download_from_ftp(request):
         # update the last status
         item.last_pull_time = datetime.datetime.today()
         item.last_pull_status = 'waiting'
-        item.next_due_date = datetime.datetime.today() + datetime.timedelta(item.provider.minimum_delivery_fq)
+        item.next_due_date = datetime.datetime.today() + datetime.timedelta(item.minimum_delivery_fq)
         item.save()
 
         # quite the ftp_connectionion
@@ -291,7 +291,7 @@ def download_from_api(request):
             # update status
             item.last_pull_time = datetime.datetime.today()
             item.last_pull_status = 'waiting'
-            item.next_due_date = datetime.datetime.today() + datetime.timedelta(item.provider.minimum_delivery_fq)
+            item.next_due_date = datetime.datetime.today() + datetime.timedelta(item.minimum_delivery_fq)
             item.save()
         else:
             item.last_pull_time = datetime.datetime.today()
