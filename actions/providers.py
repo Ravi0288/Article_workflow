@@ -81,11 +81,13 @@ class Provider_meta_data_FTP(models.Model):
     last_error_message = models.TextField(null=True, blank=True)
     next_due_date = models.DateTimeField(null=True)
 
+    # call save method to encrypt password and assing next due date
     def save(self, *args, **kwargs):
         self.password = encrypt_data(self.password)
         self.next_due_date = datetime.today() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
+    # method to decrypt password
     @property
     def pswd(self):
         return decrypt_data(self.password)
@@ -117,20 +119,25 @@ class Provider_meta_data_API(models.Model):
     last_accessed_page = models.IntegerField(null=True)
 
     def clean(self):
+        # if pagination is rquired on end points make page_number required
         if self.is_paginated and self.page_number == None:
             raise ValidationError(
                 {'error': "If pagination is True, page_number  is required."}
                 )
+        
+        # if token is rquired on end points make site_token required
         if self.is_token_required and self.site_token in (None, ''):
             raise ValidationError(
                 {'error': "If token is required, please provide site token."}
                 )
 
+    # call default save method to encrypt token and assign next due date
     def save(self, *args, **kwargs):
         self.site_token = encrypt_data(self.site_token)
         self.next_due_date = datetime.today() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_API, self).save(*args, **kwargs)        
 
+    # method to decrypt the token
     @property
     def pswd(self):
         return decrypt_data(self.site_token)
