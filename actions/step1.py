@@ -9,26 +9,10 @@ import datetime
 from io import BytesIO
 import requests
 from django.core.files.base import ContentFile
-import zipfile
 from rest_framework.response import Response
 import shutil
 import os
 from .common import is_ftp_content_folder
-
-
-# function to unzip the file
-def unzip_files():
-    qs = Archived_article_attribute.objects.filter(status="success", file_type__in = ('.tar','.zip'))
-    print(qs.count())
-    for item in qs:
-        try:
-            with zipfile.ZipFile(item.file_content, 'r') as zip_ref:
-                # Extract the contents of the zip file
-                filepath =(item.file_content.name).split('.')
-                zip_ref.extractall(filepath[0])
-        except Exception as e:
-            pass
-    return Response("done")
 
 
 # function to download file
@@ -60,20 +44,6 @@ def download_file(ftp_connection, article, item):
         x.file_content.save(article, content)
         return
         
-
-# function to iterate folder. If another folder found in side the folder this function will call itself.
-def download_folder(ftp_connection, article, item):
-    ftp_connection.cwd(article)
-    filenames = ftp_connection.nlst()
-    for filename in filenames:
-        if '.' in filename:  # It's a file
-            download_file(ftp_connection, filename, item)
-        else:  # It's a subfolder
-            download_folder(ftp_connection, article, os.path.join(article, article))
-    ftp_connection.cwd('..')
-    return
-
-
 
 # Function to download folder and convert to zip.
 def download_and_save_zip_using_api(folder_url, article, item):
@@ -129,7 +99,7 @@ def download_and_save_zip_using_api(folder_url, article, item):
 
         # Cleanup temporary directory
         shutil.rmtree(temp_dir)
-    
+        
     return
 
 
@@ -309,9 +279,3 @@ def download_from_api(request):
             item.last_pull_status = 'failed'
             item.save()
     return HttpResponse("done")
-
-
-
-
-
-

@@ -1,7 +1,6 @@
 import os
-import time
-from rest_framework.response import Response
 import requests
+import zipfile
 
 
 # Function to read the file
@@ -55,4 +54,39 @@ def is_ftp_content_folder(connect, path):
 
 
 
+# function to unzip the file
+def unzip_files(file_content):
+    try:
+        with zipfile.ZipFile(file_content, 'r') as zip_ref:
+            # Extract the contents of the zip file
+            filepath =(file_content.name).split('.')
+            zip_ref.extractall(filepath[0])
+            return True
+    except Exception as e:
+        return False
+
+
+# download folder from FTP
+
+
+# function to save file content
+def download_file(filename, temp_dir, instance):
+    filename = os.path.join(temp_dir, instance.strip())
+    with open(filename, 'wb') as f:
+        f.write(requests.get(instance.url).content)
+    return
+
+
+# function to iterate folder. If another folder found in side the folder this function will call itself.
+# if file found this will download the file
+def download_folder(ftp_connection, article, instance):
+    ftp_connection.cwd(article)
+    filenames = ftp_connection.nlst()
+    for filename in filenames:
+        if '.' in filename:  # It's a file
+            download_file(ftp_connection, filename, instance)
+        else:  # It's a subfolder
+            download_folder(ftp_connection, article, os.path.join(article, article))
+    ftp_connection.cwd('..')
+    return
 
