@@ -21,7 +21,7 @@ class Email_notification(models.Model):
 # email history to maintain log of each email sent
 class Email_history(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    email_ref = models.ForeignKey(Email_notification, related_name='email-notification' , on_delete=models.DO_NOTHING)
+    email_ref = models.ForeignKey(Email_notification, related_name='email_notification' , on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10, default='success')
 
     def __str__(self) -> str:

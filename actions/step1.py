@@ -18,7 +18,7 @@ from .common import is_ftp_content_folder
 
 # function to unzip the file
 def unzip_files():
-    qs = Archived_article_attribute.objects.filter(status="waiting", file_type__in = ('.tar','.zip'))
+    qs = Archived_article_attribute.objects.filter(status="success", file_type__in = ('.tar','.zip'))
     print(qs.count())
     for item in qs:
         try:
@@ -45,9 +45,9 @@ def download_file(ftp_connection, article, item):
         file_type = os.path.splitext(article)[1]
         x = Archived_article_attribute.objects.create(
             file_name_on_source = article,
-            provider = item.provider.official_name,
+            provider = item.provider,
             processed_on = datetime.datetime.today(),
-            status = 'waiting',
+            status = 'success',
             file_size = file_size,
             file_type = file_type
         )
@@ -56,7 +56,7 @@ def download_file(ftp_connection, article, item):
 
     # if file exists than check the file size. If file size is different update the existing record
     if (x.exists() and not (x.file_size == file_size)):
-        x.status = 'waiting'
+        x.status = 'success'
         x.file_content.save(article, content)
         return
         
@@ -78,7 +78,7 @@ def download_folder(ftp_connection, article, item):
 # Function to download folder and convert to zip.
 def download_and_save_zip_using_api(folder_url, article, item):
     # Example usage
-    zip_name = article.provider.working_name
+    zip_name = article.provider
 
     # Create a temporary directory to store downloaded files
     temp_dir = 'temp_download'
@@ -112,9 +112,9 @@ def download_and_save_zip_using_api(folder_url, article, item):
 
                 x = Archived_article_attribute.objects.create(
                     file_name_on_source = article,
-                    provider = item.provider.official_name,
+                    provider = item.provider,
                     processed_on = datetime.datetime.today(),
-                    status = 'waiting',
+                    status = 'success',
                     file_size = os.path.getsize(zip_filename),
                     file_type = '.zip'
                 )
@@ -123,7 +123,7 @@ def download_and_save_zip_using_api(folder_url, article, item):
 
         # if file exists than check the file size. If file size is different update the existing record
         if (x.exists() and not (x.file_size == os.path.getsize(zip_filename))):
-            x.status = 'waiting'
+            x.status = 'success'
             x.file_content.save(article, zip_filename)
             return
 
@@ -135,7 +135,7 @@ def download_and_save_zip_using_api(folder_url, article, item):
 
 # function to download folder with its content and convert to zip, finally save to table
 def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
-    zip_name = article.provider.working_name
+    zip_name = article.provider.official_name
     # Create a temporary directory to store downloaded files
     temp_dir = 'temp_download'
     if not os.path.exists(temp_dir):
@@ -162,9 +162,9 @@ def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
 
             x = Archived_article_attribute.objects.create(
                 file_name_on_source = article,
-                provider = item.provider.official_name,
+                provider = item.provider,
                 processed_on = datetime.datetime.today(),
-                status = 'waiting',
+                status = 'success',
                 file_size = os.path.getsize(zip_filename),
                 file_type = '.zip'
             )
@@ -173,7 +173,7 @@ def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
 
     # if file exists than check the file size. If file size is different update the existing record
     if (x.exists() and not (x.file_size == os.path.getsize(zip_filename))):
-        x.status = 'waiting'
+        x.status = 'success'
         x.file_content.save(article, zip_filename)
         return
 
@@ -232,7 +232,7 @@ def download_from_ftp(request):
 
         # update the last status
         item.last_pull_time = datetime.datetime.today()
-        item.last_pull_status = 'waiting'
+        item.last_pull_status = 'success'
         item.next_due_date = datetime.datetime.today() + datetime.timedelta(item.minimum_delivery_fq)
         item.save()
 
@@ -254,8 +254,19 @@ def download_from_api(request):
 
     # if providers are due to be accessed
     for item in due_for_download:
-        # Send a GET request to the URL
-        response = requests.get(item.base_url)
+
+        # Send a GET request to the URL.
+        # if token required assign to header and send request with header
+        if item.is_token_required:
+            headers = {'Authorization': "Bearer {}".format(item.site_token)}
+            response = requests.get(
+                item.base_url,
+                headers=headers,
+                verify=False
+            )
+        else:
+            response = requests.get(item.base_url)
+
         if response.status_code == 200:
             # Retrieve file name and file size from response headers
             content_disposition = response.headers.get('content-disposition')
@@ -274,9 +285,9 @@ def download_from_api(request):
             if not(qs.exists()):
                 x = Archived_article_attribute.objects.create(
                     file_name_on_source = file_name,
-                    provider = item.provider.official_name,
+                    provider = item.provider,
                     processed_on = datetime.datetime.today(),
-                    status = 'waiting',
+                    status = 'success',
                     file_size = file_size,
                     file_type = file_type
                 )
@@ -290,7 +301,7 @@ def download_from_api(request):
 
             # update status
             item.last_pull_time = datetime.datetime.today()
-            item.last_pull_status = 'waiting'
+            item.last_pull_status = 'success'
             item.next_due_date = datetime.datetime.today() + datetime.timedelta(item.minimum_delivery_fq)
             item.save()
         else:

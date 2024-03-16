@@ -4,6 +4,7 @@ import os
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ModelSerializer
 from datetime import datetime
+from .providers import Provider_model
 
 from nal_library_conf.settings import UPLOAD_ROOT
 from rest_framework.decorators import api_view
@@ -11,6 +12,7 @@ from rest_framework.decorators import api_view
 
 # choices to be used for status of article attributs
 CHOICES= (
+    ('success', 'success'),
     ('waiting', 'waiting'),
     ('processed','processed'),
     ('failed', 'failed')
@@ -35,7 +37,8 @@ upload_storage = FileSystemStorage(location=UPLOAD_ROOT, base_url='/uploads')
 # http://localhost:8000/article_library/2024/2/8/resume.pdf
         
 def get_file_path(instance, filename):
-    return '{0}/{1}/{2}/{3}'.format(
+    return '{0}/{1}/{2}/{3}/{4}'.format(
+        instance.provider.official_name,
         datetime.today().year, 
         datetime.today().month,
         datetime.today().day, 
@@ -45,7 +48,7 @@ def get_file_path(instance, filename):
 
 # Model to record logs of downloaded files/folders from FTP/SFTP's
 class Archived_article_attribute(models.Model):
-    provider = models.URLField()
+    provider = models.ForeignKey(Provider_model, on_delete=models.CASCADE, related_name="archives")
     file_content = models.FileField(upload_to=get_file_path, blank=True, null=True, storage=OverWriteStorage())
     file_name_on_source = models.CharField(max_length=500)
     file_size = models.BigIntegerField(default=0)
@@ -57,7 +60,7 @@ class Archived_article_attribute(models.Model):
 
 
     def __str__(self) -> str:
-        return self.provider
+        return self.file_name_on_source
     
 
 # serializer for Archived_article_attribute model
