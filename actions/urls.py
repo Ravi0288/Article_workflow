@@ -3,14 +3,19 @@ from rest_framework.routers import DefaultRouter
 from .ftp import connect_with_ftp
 from .trigger_processes import trigger_steps
 from .archive_article import Archived_article_attribute_view
-from .providers import Provider_viewset, Provider_meta_data_FTP_viewset, Provider_meta_data_API_viewset
+from .providers import Provider_viewset, Provider_meta_data_FTP_viewset, Provider_meta_data_API_viewset, \
+    Fetch_history_viewset
+from .email_notification import Email_notification_viewset, Email_history_viewset
 from .step1 import download_from_ftp, download_from_api, unzip_files
 
 router = DefaultRouter()
-router.register('archive-article', Archived_article_attribute_view)
-router.register('providers-ftp', Provider_meta_data_FTP_viewset)
-router.register('providers-api', Provider_meta_data_API_viewset)
-router.register('providers', Provider_viewset)
+router.register('archive-article', Archived_article_attribute_view, basename='archive-articl')
+router.register('providers-ftp', Provider_meta_data_FTP_viewset, basename='provider-ftp')
+router.register('providers-api', Provider_meta_data_API_viewset, basename='provider-api')
+router.register('providers', Provider_viewset, basename='provider')
+router.register('email-address', Email_notification_viewset, basename='email-addresses')
+router.register('fetch-history', Fetch_history_viewset, basename='fetch-history')
+router.register('email-history', Email_history_viewset, basename='email-history')
 
 urlpatterns = [
     path('', include(router.urls)),

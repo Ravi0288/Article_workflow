@@ -210,3 +210,13 @@ LOGGING = {
         },
     },
 }
+
+
+############### email service #####################
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mailproxy1.usda.gov'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_PASSWORD = get_env_variable('EPWD')
+
