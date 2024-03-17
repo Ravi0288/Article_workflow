@@ -53,6 +53,24 @@ def is_ftp_content_folder(connect, path):
             return False
 
 
+# function to return the folder size on FTP.
+# Since in FTP we don't have build in function to read folder size hence we need to iterate
+# each file in the folder and sum the size that becomes the size of the folder
+def get_folder_size_on_ftp(connect, folder):
+    size = 0
+    try:
+        connect.cwd(folder)
+        files = connect.nlst()
+        for file in files:
+            try:
+                size += connect.size(file)
+            except:
+                size += get_folder_size_on_ftp(connect, file)
+        connect.cwd('..')
+        return size
+    except Exception as e:
+        return 0
+
 
 # function to unzip the file
 def unzip_files(file_content):

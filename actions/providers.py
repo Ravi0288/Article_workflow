@@ -26,8 +26,15 @@ def encrypt_data(data):
 
 # function to decrypt encrypted data
 def decrypt_data(encrypted_data):
-    decrypted_data = f.decrypt(encrypted_data).decode()
-    return decrypted_data
+    return f.decrypt(encrypted_data).decode()
+
+# update password
+def update_password(old_password, new_password):
+    password = decrypt_data(old_password)
+    new_password = decrypt_data(new_password)
+    if not((password == new_password) and (new_password in ('', None, ' '))):
+        password = new_password
+    return encrypt_data(password)
 
 # choices to be used for status of article attributs
 CHOICES= (
@@ -83,8 +90,8 @@ class Provider_meta_data_FTP(models.Model):
 
     # call save method to encrypt password and assing next due date
     def save(self, *args, **kwargs):
-        self.password = encrypt_data(self.password)
-        self.next_due_date = datetime.today() + timedelta(self.minimum_delivery_fq)
+        # self.password = encrypt_data(self.password)
+        self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
     # method to decrypt password
@@ -133,8 +140,8 @@ class Provider_meta_data_API(models.Model):
 
     # call default save method to encrypt token and assign next due date
     def save(self, *args, **kwargs):
-        self.site_token = encrypt_data(self.site_token)
-        self.next_due_date = datetime.today() + timedelta(self.minimum_delivery_fq)
+        # self.site_token = encrypt_data(self.site_token)
+        self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_API, self).save(*args, **kwargs)        
 
     # method to decrypt the token
@@ -156,16 +163,31 @@ class Fetch_history_serializer(serializers.ModelSerializer):
 
 
 class Provider_meta_data_FTP_serializer(serializers.ModelSerializer):
+    # pswd = serializers.ReadOnlyField()
     class Meta:
         model = Provider_meta_data_FTP
         fields = '__all__'
 
 
 class Provider_meta_data_API_serializer(serializers.ModelSerializer):
+    # pswd = serializers.ReadOnlyField()
     class Meta:
         model = Provider_meta_data_API
         fields = '__all__'
 
+    # def create(self, validated_data):
+    #     validated_data['password'] = encrypt_data(validated_data['password'])
+    #     return super().create(validated_data)
+
+    # def update(self, instance, validated_data):
+    #     password = decrypt_data(instance.password)
+    #     if(validated_data.get('password', None)):
+    #         new_password = decrypt_data(validated_data['password'])
+    #         if not(password == new_password):
+    #             password = new_password
+    #     validated_data['password'] = encrypt_data(password)
+    #     return super().update(instance, validated_data)
+    
     # validations method clean implementaion
     def validate(self, attrs):
         instance = Provider_meta_data_API(**attrs)
@@ -219,11 +241,3 @@ def update_history_for_API(sender, instance, created, **kwargs):
             error_message = instance.last_error_message
         )
         return True
-
-
-
-
-
-
-    
-

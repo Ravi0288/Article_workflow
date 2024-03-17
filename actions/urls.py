@@ -6,6 +6,7 @@ from .providers import Provider_viewset, Provider_meta_data_FTP_viewset, Provide
 from .email_notification import Email_notification_viewset, Email_history_viewset
 from .step1 import download_from_ftp, download_from_api
 
+
 router = DefaultRouter()
 router.register('archive-article', Archived_article_attribute_view, basename='archive-articl')
 router.register('providers-ftp', Provider_meta_data_FTP_viewset, basename='provider-ftp')
@@ -17,6 +18,6 @@ router.register('email-history', Email_history_viewset, basename='email-history'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('download-from-ftp/', download_from_ftp),
     path('download-from-api/', download_from_api),
+    path('download-from-ftp/', download_from_ftp)
 ]
