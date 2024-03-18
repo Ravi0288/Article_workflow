@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'nal_library_conf.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'usda',
+    'NAME': 'article_workflow_db',
     'USER':get_env_variable('DBUSER'),
     'PASSWORD':get_env_variable('DBPSWD'),
     'HOST':'localhost',
