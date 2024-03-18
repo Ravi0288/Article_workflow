@@ -13,6 +13,7 @@ from rest_framework.response import Response
 import shutil
 import os
 from .common import is_ftp_content_folder
+from django.conf import settings
 
 
 # function to download file
@@ -50,11 +51,10 @@ def download_file(ftp_connection, article, item):
 
 # Function to download folder and convert to zip.
 def download_and_save_zip_using_api(folder_url, article, item):
-    # Example usage
-    zip_name = article.provider
-
+    article = article + '.zip'
+    zip_name = item.provider.official_name
     # Create a temporary directory to store downloaded files
-    temp_dir = 'temp_download'
+    temp_dir = 'temp_download/' + item.provider.official_name
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
 
@@ -71,8 +71,8 @@ def download_and_save_zip_using_api(folder_url, article, item):
                     f.write(requests.get(item_url).content)
 
         # Create a zip file from the downloaded content
-        zip_filename = os.path.join(temp_dir, zip_name + '.zip')
-        shutil.make_archive(zip_filename.split('.')[0], 'zip', temp_dir)
+        zip_filename = os.path.join(temp_dir, zip_name)
+        zipped_file = shutil.make_archive(zip_filename.split('.')[0], 'zip', temp_dir)
 
         x = Archived_article_attribute.objects.filter(file_name_on_source=article)
 
@@ -80,24 +80,24 @@ def download_and_save_zip_using_api(folder_url, article, item):
         if not(x.exists()):
             # Save the zip file to the Django model
             with open(zip_filename, 'rb') as zip_file:
-                # zip_file_model = ZipFileModel(name=zip_name)
-                # zip_file_model.zip_file.save(zip_name + '.zip', ContentFile(zip_file.read()), save=True)
-
                 qs = Archived_article_attribute.objects.create(
                     file_name_on_source = article,
                     provider = item.provider,
                     processed_on = datetime.datetime.today(),
                     status = 'success',
-                    file_size = os.path.getsize(zip_filename),
+                    file_size = os.path.getsize(zipped_file),
                     file_type = '.zip'
                 )
-                qs.file_content.save(article, zip_file)
+                qs.file_content.save(article, zipped_file)
+                
+                # Cleanup temporary directory
+                shutil.rmtree(temp_dir)
                 return
 
         # if file exists than check the file size. If file size is different update the existing record
-        if (x.exists() and not (x[0].file_size == os.path.getsize(zip_filename))):
+        if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
             x[0].status = 'success'
-            x[0].file_content.save(article, zip_filename)
+            x[0].file_content.save(article, zipped_file)
             return
 
         # Cleanup temporary directory
@@ -107,7 +107,7 @@ def download_and_save_zip_using_api(folder_url, article, item):
 
 
 # function to download folder with its content and convert to zip, finally save to table
-def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
+def download_folder_from_ftp_and_save_zip(article, item):
     article = article + '.zip'
     zip_name = item.provider.official_name
     # Create a temporary directory to store downloaded files
@@ -174,10 +174,11 @@ def download_from_ftp(request):
         # try to ftp_connection to FTP, if error occures update the record
         try:
             ftp_connection = ftplib.FTP(item.server)
-            ftp_connection.login(item.account, item.password)
+            ftp_connection.login(item.account, item.pswd)
         except Exception as e:
             item.last_pull_time = datetime.datetime.today()
             item.last_pull_status = 'failed'
+            item.last_error_message = e
             item.save()
             continue
 
@@ -191,16 +192,11 @@ def download_from_ftp(request):
             for article in article_library:
                 try:
                     # check if the article is file or directory
-                    # if not (os.path.isdir(article)):
-                    # if '.' in article:
                     if is_ftp_content_folder(ftp_connection, article):
-                        # download the file
-                        download_folder_from_ftp_and_save_zip(ftp_connection, article, item)
+                        # download the folder
+                        download_folder_from_ftp_and_save_zip(article, item)
                     else:
-                        # # iterate through the folder and download the files inside it 
-                        # download_folder(ftp_connection, article, item)
-                        # or
-                        # download the folder, convert it to zip and store in database
+                        # download the file
                         download_file(ftp_connection, article, item)
                 except Exception as e:
                     pass
@@ -221,7 +217,7 @@ def download_from_ftp(request):
 @api_view(['GET'])
 def download_from_api(request):
     # get all providers that are due to be accessed today
-    due_for_download = Provider_meta_data_API.objects.all()
+    due_for_download = Provider_meta_data_API.objects.all().filter(last_pull_status="failed")
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
@@ -233,7 +229,7 @@ def download_from_api(request):
         # Send a GET request to the URL.
         # if token required assign to header and send request with header
         if item.is_token_required:
-            headers = {'Authorization': "Bearer {}".format(item.site_token)}
+            headers = {'Authorization': "Bearer {}".format(item.pswd)}
             response = requests.get(
                 item.base_url,
                 headers=headers,
@@ -271,7 +267,7 @@ def download_from_api(request):
                 x.file_content.save(file_name, ContentFile(response.content))
 
             # if file already available, and size mismatch,update the record with updated file
-            if (qs.exists() and not(qs.file_size == file_size)):
+            if (qs.exists() and not(qs[0].file_size == file_size)):
                 qs[0].file_content.save(file_name, ContentFile(response.content))
 
             # update status
@@ -282,5 +278,6 @@ def download_from_api(request):
         else:
             item.last_pull_time = datetime.datetime.today()
             item.last_pull_status = 'failed'
+            item.last_error_message = str(response.status_code) + response.content.decode('utf-8')
             item.save()
     return HttpResponse("done")

@@ -9,15 +9,18 @@ import logging
 from .email_notification import Email_notification
 from cryptography.fernet import Fernet
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from .common import EncryptedField
 
 # record log
 logger = logging.getLogger(__name__)
 
 # key is generated 
-key = Fernet.generate_key() 
+# key = Fernet.generate_key() 
   
 # value of key is assigned to a variable 
-f = Fernet(key) 
+# f = Fernet(key) 
+f = Fernet(settings.FERNET_KEY)
 
 # function to encrypt data
 def encrypt_data(data):
@@ -80,7 +83,7 @@ class Provider_meta_data_FTP(models.Model):
     protocol = models.CharField(max_length=10)
     site_path = models.CharField(max_length=50)
     account = models.CharField(max_length=50)
-    password = models.TextField()
+    password = EncryptedField(null=True, blank=True)
     minimum_delivery_fq = models.IntegerField()
     last_pull_time = models.DateTimeField(auto_now=True)
     pull_switch = models.BooleanField()
@@ -90,7 +93,12 @@ class Provider_meta_data_FTP(models.Model):
 
     # call save method to encrypt password and assing next due date
     def save(self, *args, **kwargs):
-        # self.password = encrypt_data(self.password)
+        # if self.id:
+        #     if type(self.password) == str :
+        #         self.password = decrypt_data(self.password)
+        #     else:
+        #         self.password = encrypt_data(self.password)
+        
         self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
@@ -110,7 +118,7 @@ class Provider_meta_data_API(models.Model):
     api_switch = models.BooleanField()
 
     is_token_required = models.BooleanField(default=False)
-    site_token = models.TextField(null=True, blank=True)
+    site_token = EncryptedField(null=True, blank=True)
 
     minimum_delivery_fq = models.IntegerField()
     last_pull_status = models.CharField(max_length=10, default="success")

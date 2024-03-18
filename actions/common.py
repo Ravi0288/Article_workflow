@@ -1,6 +1,9 @@
 import os
 import requests
 import zipfile
+from django.db import models
+from cryptography.fernet import Fernet
+from django.conf import settings
 
 
 # Function to read the file
@@ -11,7 +14,6 @@ def read_file(file_path):
             content = file.read()
         return content
     except Exception as e:
-        print("File not found")
         raise e
     
 
@@ -108,3 +110,28 @@ def download_folder(ftp_connection, article, instance):
     ftp_connection.cwd('..')
     return
 
+
+
+key = settings.FERNET_KEY
+
+# encryption key
+class EncryptedField(models.Field):
+    def __init__(self, *args, **kwargs):
+        self.cipher_suite = Fernet(key)
+        super().__init__(*args, **kwargs)
+
+    def get_internal_type(self):
+        return 'TextField'
+
+    def from_db_value(self, value, expression, connection):
+        if value is None:
+            return value
+        return self.cipher_suite.decrypt(value.encode()).decode()
+
+    def to_python(self, value):
+        return value
+
+    def get_db_prep_value(self, value, connection, prepared=False):
+        if value is None:
+            return value
+        return self.cipher_suite.encrypt(value.encode()).decode()
