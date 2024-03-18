@@ -66,7 +66,7 @@ class Provider_model(models.Model):
     def __str__(self) -> str:
         return self.official_name
 
-# Model to maintain history of access of API and FTP
+# Model to maintain history of access of API's and FTP's
 class Fetch_history(models.Model):
     provider = models.ForeignKey(Provider_model, related_name='fetch_history', on_delete=models.DO_NOTHING)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -76,7 +76,8 @@ class Fetch_history(models.Model):
     def __str__(self):
         return self.provider.official_name + '->' + self.status
 
-# model to list all the FTP with attributes
+
+# Model to list all the FTP with attributes
 class Provider_meta_data_FTP(models.Model):
     provider = models.ForeignKey(Provider_model, related_name="ftp_provider", on_delete=models.CASCADE)
     server = models.TextField()
@@ -91,24 +92,19 @@ class Provider_meta_data_FTP(models.Model):
     last_error_message = models.TextField(null=True, blank=True)
     next_due_date = models.DateTimeField(null=True)
 
-    # call save method to encrypt password and assing next due date
+    # call save method to assign next due date
     def save(self, *args, **kwargs):
-        # if self.id:
-        #     if type(self.password) == str :
-        #         self.password = decrypt_data(self.password)
-        #     else:
-        #         self.password = encrypt_data(self.password)
-        
         self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
-    # method to decrypt password
+    # method to return decrypted password
     @property
     def pswd(self):
-        return decrypt_data(self.password)
+        # return decrypt_data(self.password)
+        return self.password
 
 
-# model to list all the API with attributes
+# Model to list all the API's with attributes
 class Provider_meta_data_API(models.Model):
     provider = models.ForeignKey(Provider_model, related_name="api_provider", on_delete=models.CASCADE)    
     base_url = models.URLField()
@@ -133,6 +129,9 @@ class Provider_meta_data_API(models.Model):
     page_number = models.IntegerField(null=True)
     last_accessed_page = models.IntegerField(null=True)
 
+    # validations to the model fields.
+    # These validations are applied based on the nature of the api's
+    # some api's need paginated info, some required token, some are open etc.
     def clean(self):
         # if pagination is rquired on end points make page_number required
         if self.is_paginated and self.page_number == None:
@@ -148,14 +147,14 @@ class Provider_meta_data_API(models.Model):
 
     # call default save method to encrypt token and assign next due date
     def save(self, *args, **kwargs):
-        # self.site_token = encrypt_data(self.site_token)
         self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_API, self).save(*args, **kwargs)        
 
     # method to decrypt the token
     @property
     def pswd(self):
-        return decrypt_data(self.site_token)
+        # return decrypt_data(self.site_token)
+        return self.site_token
 
 
 # serializers to models
@@ -171,30 +170,17 @@ class Fetch_history_serializer(serializers.ModelSerializer):
 
 
 class Provider_meta_data_FTP_serializer(serializers.ModelSerializer):
-    # pswd = serializers.ReadOnlyField()
     class Meta:
         model = Provider_meta_data_FTP
         fields = '__all__'
+        # exclude = ('password',)
 
 
 class Provider_meta_data_API_serializer(serializers.ModelSerializer):
-    # pswd = serializers.ReadOnlyField()
     class Meta:
         model = Provider_meta_data_API
         fields = '__all__'
-
-    # def create(self, validated_data):
-    #     validated_data['password'] = encrypt_data(validated_data['password'])
-    #     return super().create(validated_data)
-
-    # def update(self, instance, validated_data):
-    #     password = decrypt_data(instance.password)
-    #     if(validated_data.get('password', None)):
-    #         new_password = decrypt_data(validated_data['password'])
-    #         if not(password == new_password):
-    #             password = new_password
-    #     validated_data['password'] = encrypt_data(password)
-    #     return super().update(instance, validated_data)
+        # exclude = ('site_token',)
     
     # validations method clean implementaion
     def validate(self, attrs):

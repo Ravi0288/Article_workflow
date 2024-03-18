@@ -112,9 +112,11 @@ def download_folder(ftp_connection, article, instance):
 
 
 
+# encryption key
 key = settings.FERNET_KEY
 
-# encryption key
+# this is custom field to created encrypted field
+# This class will ensure to store the data in encrypted form and will always return data in dycrypted form
 class EncryptedField(models.Field):
     def __init__(self, *args, **kwargs):
         self.cipher_suite = Fernet(key)
