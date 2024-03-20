@@ -54,6 +54,12 @@ DELIVERY_METHOD = (
     ('API','API')
 )
 
+API_TYPE = (
+    ('Chorus', 'Chorus'),
+    ('CrossRef', 'CrossRef'),
+    ('Submission','Submission')
+)
+
 # providers model
 class Provider_model(models.Model):
     official_name = models.CharField(max_length=100)
@@ -106,6 +112,7 @@ class Provider_meta_data_FTP(models.Model):
 
 # Model to list all the API's with attributes
 class Provider_meta_data_API(models.Model):
+    api_meta_type = models.CharField(null=True, blank=True, max_length=20, choices=API_TYPE)
     provider = models.ForeignKey(Provider_model, related_name="api_provider", on_delete=models.CASCADE)    
     base_url = models.URLField()
     identifier_code = models.CharField(max_length=50)
