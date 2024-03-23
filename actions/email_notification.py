@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail, EmailMessage
 from datetime import datetime
 
-# model to list all email api wise for email notification purpose
+# model to list all email api wise for email notification purpose. This is master table
 class Email_notification(models.Model):
     # applicable_to is the name of the group
     applicable_to = models.CharField(blank=True, null=True, max_length=50)
@@ -18,11 +18,15 @@ class Email_notification(models.Model):
     def __str__(self) -> str:
         return self.applicable_to
     
-# email history to maintain log of each email sent
+
+# Email history to maintain log of each email sent.
+# Each time email will be sent a new entry will be made to this table with failed of success status
 class Email_history(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     email_ref = models.ForeignKey(Email_notification, related_name='email_notification' , on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10, default='success')
+    email_subject = models.TextField(default='Error Occured')
+    email_body = models.TextField(default='Error Occured')
 
     def __str__(self) -> str:
         return self.email_ref.applicable_to + '->' + self.status
@@ -54,21 +58,33 @@ class Email_history_viewset(ModelViewSet):
 
 # Funtion to email.
 # This function will send the email and will update the Email_history table
-def send_comment_mail_notification(instance, error_msg):
+    # instance is the instance of APT/FTP providers model
+def send_comment_mail_notification(instance):
     # collect the data from the provided instances
-    message = instance.get('email_body', '')
-    subject = instance.get('email_subject', '')
-    email_from = instance.get('email_from', '')
-    email_to = instance.get('from_to', '')
-    subject += subject + '->' + error_msg
+    subject = instance.email_notification.email_subject
+    email_from = instance.email_notification.email_from
+    email_to = instance.email_notification.email_to
+    email_body = instance.last_error_message
 
     # prepate the email content
-    msg = EmailMessage(subject, message, email_from, email_to)
+    msg = EmailMessage(subject, email_body, email_from, email_to).send()
 
     # send the email and update the email_history table for log puprposes
-    try:
-        msg.send()
-        Email_history.objects.create(timestamp=datetime.utcnow(), email_ref=instance, status='success')
-    except:
-        Email_history.objects.create(timestamp=datetime.utcnow(), email_ref=instance, status='failed')
+    if msg:
+        Email_history.objects.create(
+            timestamp=datetime.utcnow(), 
+            email_ref=instance, 
+            status='success',
+            email_subject = subject,
+            email_body = email_body
+            )
+    else:
+        Email_history.objects.create(
+            timestamp=datetime.utcnow(), 
+            email_ref=instance, 
+            status='failed',
+            email_subject = subject,
+            email_body = email_body            
+            )
+        
     return True
