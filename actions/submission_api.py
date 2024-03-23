@@ -11,8 +11,7 @@ import os
 # function to handle submission api's
 def download_from_submission_api(api):
     # Send a GET request to the URL.
-    # if token required assign to header and send request with header
-    response = requests.get((api.base_url).format(5, api.last_accessed_page))
+    response = requests.get((api.base_url).format(api.page_number, api.last_pull_time))
 
     if response.status_code == 200:
         # Retrieve file name and file size from response headers
@@ -30,7 +29,7 @@ def download_from_submission_api(api):
     else:
         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
         api.last_pull_status = 'failed'
-        api.last_error_message = 'error-code =' + str(response.status_code) + 'error message = ' + html2text(response.text)
+        api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
         api.save()
 
     return HttpResponse("done")

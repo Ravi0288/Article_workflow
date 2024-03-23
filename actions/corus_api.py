@@ -28,7 +28,7 @@ def download_from_chorus_api(api):
     else:
         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
         api.last_pull_status = 'failed'
-        api.last_error_message = 'error-code =' + str(response.status_code) + 'error message = ' + html2text(response.text)
+        api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
         api.save()
 
-    return HttpResponse("done")
+    return True
