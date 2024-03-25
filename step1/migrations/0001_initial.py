@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import step1.archive_article
-import step1.common
+import configurations.common
 
 
 class Migration(migrations.Migration):
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('protocol', models.CharField(max_length=10)),
                 ('site_path', models.CharField(max_length=50)),
                 ('account', models.CharField(max_length=50)),
-                ('password', step1.common.EncryptedField(blank=True, null=True)),
+                ('password', configurations.common.EncryptedField(blank=True, null=True)),
                 ('minimum_delivery_fq', models.IntegerField()),
                 ('last_pull_time', models.DateTimeField(auto_now=True)),
                 ('pull_switch', models.BooleanField()),
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                 ('last_pull_time', models.DateTimeField(auto_now=True)),
                 ('api_switch', models.BooleanField()),
                 ('is_token_required', models.BooleanField(default=False)),
-                ('site_token', step1.common.EncryptedField(blank=True, null=True)),
+                ('site_token', configurations.common.EncryptedField(blank=True, null=True)),
                 ('minimum_delivery_fq', models.IntegerField()),
                 ('last_pull_status', models.CharField(default='success', max_length=10)),
                 ('last_error_message', models.TextField(blank=True, null=True)),

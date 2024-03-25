@@ -10,7 +10,7 @@ from io import BytesIO
 
 import shutil
 import os
-from .common import is_ftp_content_folder
+from configurations.common import is_ftp_content_folder
 import pytz
 
 

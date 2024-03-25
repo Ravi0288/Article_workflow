@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'step1'
+    'step1',
+    'step2'
 ]
 # ..................#######
 
@@ -52,7 +53,7 @@ MIDDLEWARE = [
 
 
 # Root URL file path
-ROOT_URLCONF = 'nal_library_conf.urls'
+ROOT_URLCONF = 'configurations.urls'
 
 
 
@@ -79,21 +80,29 @@ TEMPLATES = [
 
 
 # Project interface
-WSGI_APPLICATION = 'nal_library_conf.wsgi.application'
+WSGI_APPLICATION = 'configurations.wsgi.application'
 
 
 
 
 # Database settings
 # ..................#####################
+# DATABASES = {
+#     'default': {
+#     'ENGINE': 'django.db.backends.mysql',
+#     'NAME': 'article_workflow_db',
+#     'USER':get_env_variable('DBUSER'),
+#     'PASSWORD':get_env_variable('DBPSWD'),
+#     'HOST':'localhost',
+#     'PORT':'3306',
+#     }
+# }
+
+DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'article_workflow_db',
-    'USER':get_env_variable('DBUSER'),
-    'PASSWORD':get_env_variable('DBPSWD'),
-    'HOST':'localhost',
-    'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': DATABASE_DIR,
     }
 }
 

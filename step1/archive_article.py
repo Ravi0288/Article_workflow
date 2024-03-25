@@ -6,7 +6,7 @@ from rest_framework.serializers import ModelSerializer
 from datetime import datetime
 from .providers import Provider_model
 
-from nal_library_conf.settings import UPLOAD_ROOT
+from configurations.settings import UPLOAD_ROOT
 from rest_framework.decorators import api_view
 
 

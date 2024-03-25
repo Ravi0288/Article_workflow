@@ -10,7 +10,7 @@ from .email_notification import Email_notification, send_comment_mail_notificati
 from cryptography.fernet import Fernet
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from .common import EncryptedField
+from configurations.common import EncryptedField
 
 # record log
 logger = logging.getLogger(__name__)
