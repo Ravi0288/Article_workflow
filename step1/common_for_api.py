@@ -2,7 +2,7 @@
 import datetime
 
 import pytz
-from actions.archive_article import Archived_article_attribute
+from step1.archive_article import Archived_article_attribute
 from django.core.files.base import ContentFile
 
 def save_in_db(api, file_name, file_size, file_type, response):
