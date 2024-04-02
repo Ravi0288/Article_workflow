@@ -243,7 +243,7 @@ def update_history_for_API(sender, instance, created, **kwargs):
         )
 
         # if api is failed send the email.
-        if instance.status == 'failed':
+        if instance.last_pull_status == 'failed':
             # send_comment_mail_notification(instance)
             pass
             
