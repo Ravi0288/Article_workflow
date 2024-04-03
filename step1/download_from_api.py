@@ -88,10 +88,10 @@ def download_from_api(request):
         return HttpResponse("No pending action found")
 
     for api in due_for_download:
-        if api.api_meta_type == 'CrossRef':
-            download_from_crossref_api(api)
-        if api.api_meta_type == 'Chorus':
-            download_from_chorus_api(api)
+        # if api.api_meta_type == 'CrossRef':
+        #     download_from_crossref_api(api)
+        # if api.api_meta_type == 'Chorus':
+        #     download_from_chorus_api(api)
         if api.api_meta_type == 'Submission':
             download_from_submission_api(api)
     
