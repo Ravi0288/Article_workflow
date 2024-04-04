@@ -14,30 +14,35 @@ import json
 from django.conf import settings
 
 
+# class to download file from the api
 class SubmissionMetadataHarvester:
     def __init__(self, base_url):
         self.base_url = base_url
 
+    # this function will download the file till gets {} as response
     def fetch_submissions(self, last_date):
         page = 0
         all_submission = []
 
         while True:
-            url = self.base_url.format(my_page=page, last_date = '2024-02-23')
+            url = self.base_url.format(my_page=page, last_date = "2024-02-02")
             response = requests.get(url)
 
+            # if status code is not success exit
             if response.status_code != 200:
-                print(f"Failed to fetch submission. Status code : {response.status_code}")
                 break
+
+            # if nil data received exit the loop
             if len(response.json()) == 0:
-                print("exiting no data found")
                 break
+
+            # if data received append data to list
             submissions = response.json()
-            # if not submissions:
-            #     break
             all_submission.extend(submissions)
+
+            # increase the page number
             page += 1
-            print(page)
+
         return all_submission
     
 
@@ -45,6 +50,8 @@ class SubmissionMetadataHarvester:
 @api_view(['GET'])
 def download_from_submission_api(request):
     # Send a GET request to the URL.
+
+    # query and fetch available submission api's
     qs = Provider_meta_data_API.objects.filter(api_meta_type="Submission")
     for api in qs:
         harvester = SubmissionMetadataHarvester(api.base_url)
@@ -52,10 +59,15 @@ def download_from_submission_api(request):
         submissions = harvester.fetch_submissions(last_date)
         if submissions:
             file_type = '.json'
-            # file_name = os.path.join(settings.SUBMISSION_ROOT + str(datetime.datetime.now().strftime("%Y-%m-%d")) + '.json')
-            file_size = 0
             file_name = str(datetime.datetime.now().strftime("%Y-%m-%d")) + '.json'
 
+            # save the file to temporary location
+            with open(file_name, 'w') as f:
+                json.dump(submissions, f)
+            fs = open(file_name)
+            file_size = os.path.getsize(file_name)
+
+            # save the file in table
             try:
                 x = Archived_article_attribute.objects.create(
                     file_name_on_source = file_name,
@@ -65,11 +77,15 @@ def download_from_submission_api(request):
                     file_size = file_size,
                     file_type = file_type
                 )
+
                 # save file
-                with open(file_name, 'w') as f:
-                    json.dump(submissions, f)
-                fs = open(file_name)
                 x.file_content.save(file_name, fs)
+
+                # close the opened file
+                fs.close()
+
+                # remove the file from temp location
+                os.remove(file_name)
 
                 # update status
                 api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
@@ -78,6 +94,7 @@ def download_from_submission_api(request):
                 api.save()
 
             except Exception as e:
+                # if error occured update the failed status
                 api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
                 api.last_pull_status = 'failed'
                 api.last_error_message = e
@@ -87,7 +104,7 @@ def download_from_submission_api(request):
         else:
             api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
             api.last_pull_status = 'failed'
-            api.last_error_message = 'No submission found within the specified data range'
+            api.last_error_message = 'No record found'
             api.save()
 
         return HttpResponse("done")

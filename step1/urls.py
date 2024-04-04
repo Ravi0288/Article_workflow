@@ -7,6 +7,7 @@ from .email_notification import Email_notification_viewset, Email_history_viewse
 from .download_from_api import download_from_api
 from .download_from_ftp import download_from_ftp
 from .submission_api import download_from_submission_api
+from .crossref_api import download_from_crossref_api
 
 
 router = DefaultRouter()
@@ -20,7 +21,8 @@ router.register('email-history', Email_history_viewset, basename='email-history'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('download-from-api/', download_from_api),
+    # path('download-from-api/', download_from_api),
     path('download-from-ftp/', download_from_ftp),
-    path('download-from-submission-api/', download_from_submission_api)
+    path('download-from-submission-api/', download_from_submission_api),
+    path('download-from-crossref-api/', download_from_crossref_api)
 ]
