@@ -78,7 +78,6 @@ def save_files(urls, headers, api):
         zip_folder(folder_path, folder_path + '.zip')
     except Exception as e:
         print(e)
-        print(e)
     
     return True
 

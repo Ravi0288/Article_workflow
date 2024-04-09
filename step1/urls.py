@@ -8,6 +8,7 @@ from .download_from_api import download_from_api
 from .download_from_ftp import download_from_ftp
 from .submission_api import download_from_submission_api
 from .crossref_api import download_from_crossref_api
+from .corus_api import download_from_chorus_api
 
 
 router = DefaultRouter()
@@ -25,4 +26,5 @@ urlpatterns = [
     path('download-from-ftp/', download_from_ftp),
     path('download-from-submission-api/', download_from_submission_api),
     path('download-from-crossref-api/', download_from_crossref_api),
+    path('download-from-chorus-api/', download_from_chorus_api),
 ]
