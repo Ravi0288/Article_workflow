@@ -25,7 +25,10 @@ class SubmissionMetadataHarvester:
         all_submission = []
 
         while True:
-            url = self.base_url.format(my_page=page, last_date = "2024-02-02")
+            try:
+                url = self.base_url.format(page, "2024-02-02")
+            except Exception as e:
+                print(e)
             response = requests.get(url)
 
             # if status code is not success exit
@@ -76,6 +79,7 @@ def download_from_submission_api(request):
                     status = 'success',
                     file_size = file_size,
                     file_type = file_type
+                    # jsonified_content = json.load(file_name)
                 )
 
                 # save file
@@ -111,27 +115,3 @@ def download_from_submission_api(request):
 
 
 
-
-
-    # # function to handle submission api's
-    # def download_from_submission_api(api):
-    #     # Send a GET request to the URL.
-    #     response = requests.get((api.base_url).format(my_page=api.page_number, last_date = api.last_pull_time))
-    #     print(response.text)
-    #     if response.status_code == 200:
-    #         # Retrieve file name and file size from response headers
-
-    #         file_name = 'submission/' + str(datetime.datetime.now()) +  '.json' # Use URL as filename if content-disposition is not provided
-            
-    #         file_size = int(response.headers.get('content-length', 0))
-    #         file_type = os.path.splitext(file_name)[1]
-
-    #         save_in_db(api, file_name, file_size, file_type, response)
-
-    #     else:
-    #         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-    #         api.last_pull_status = 'failed'
-    #         api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
-    #         api.save()
-
-    #     return HttpResponse("done")
