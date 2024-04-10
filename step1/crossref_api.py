@@ -135,7 +135,7 @@ def download_from_crossref_api(request):
 
         # get from website
         response = requests.get(
-            "https://api.crossref.org/journals/0066-4804/works?rows=10",
+            "https://api.crossref.org/journals/0066-4804/works?rows=1000",
             verify=False
         )
 
