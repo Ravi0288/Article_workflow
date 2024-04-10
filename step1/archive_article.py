@@ -56,6 +56,8 @@ def get_file_path(instance, filename):
 class Archived_article_attribute(models.Model):
     provider = models.ForeignKey(Provider_model, on_delete=models.CASCADE, related_name="archives")
     file_content = models.FileField(upload_to=get_file_path, blank=True, null=True, storage=OverWriteStorage())
+    jsonified_content = models.JSONField(blank=True, null=True)
+    unique_key = models.CharField(max_length=500, blank=True, null=True)
     file_name_on_source = models.CharField(max_length=500)
     file_size = models.BigIntegerField(default=0)
     file_type = models.CharField(max_length=20)
@@ -79,7 +81,7 @@ class Archived_article_attribute_serializers(ModelSerializer):
 
 # views for Archived_article_attribute
 class Archived_article_attribute_view(ModelViewSet):
-    queryset = Archived_article_attribute.objects.all()
+    queryset = Archived_article_attribute.objects.all().order_by("-id")[:10]
     serializer_class = Archived_article_attribute_serializers
 
 

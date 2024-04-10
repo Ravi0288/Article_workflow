@@ -13,11 +13,12 @@ import os
 from rest_framework.decorators import api_view
 from django.core.files.base import ContentFile
 import zipfile
+from rest_framework.response import Response
 
 
 
 # Function to retrieve a list of DOIs for articles from a given journal by ISSN
-def get_article_dois_by_issn(issn, num_rows=10):
+def get_article_dois_by_issn(issn, api, num_rows=1000):
     dois = []
     # Make a GET request to the CrossRef journals endpoint
     response = requests.get(f"https://api.crossref.org/journals/{issn}/works", params={"rows": num_rows})
@@ -27,22 +28,59 @@ def get_article_dois_by_issn(issn, num_rows=10):
         items = data.get("message", {}).get("items", [])
         for item in items:
             doi = item.get("DOI")
-            if doi:
-                dois.append(doi)
-    return dois
+            try:
+                if doi:
+                    dois.append(doi)
+                    # print(item['message']['items']['link'][0]['URL'], "#################",doi)
+            except Exception as e:
+                print(e)
+        return dois
+    else:
+        api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
+        api.last_pull_status = 'success'
+        api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
+        api.save()
+        return Response("error occured")
 
 # Function to retrieve metadata for each article given a DOI
-def get_article_metadata(doi):
-    metadata = {}
+def get_article_metadata(api,doi):
+
     # Make a GET request to the CrossRef works endpoint
     response = requests.get(f"https://api.crossref.org/works/{doi}")
+
+    # if gets succes response 
     if response.status_code == 200:
         data = response.json()
-        # Extract metadata from the response JSON
-        metadata["title"] = data.get("message", {}).get("title", "")
-        metadata["authors"] = [author.get("given", "") + " " + author.get("family", "") for author in data.get("message", {}).get("author", [])]
-        # Add more metadata fields as needed
-    return metadata
+
+        # check if record against same doi exists
+        qs = Archived_article_attribute.objects.filter(unique_key=doi)
+        if qs.exists():
+            # if record exists, compare existing content with received content.
+            # if existing content == received content do nothing
+            if qs[0].jsonified_content == data:
+                print("no data change")
+                return True
+            else:
+                # if existing content differs with received content update the record
+                qs[0].jsonified_content = data
+                qs[0].save()
+                print("data change found")
+                return True
+
+        else:
+            # in case of new record perform create operation
+            print("creating fresh record")
+            Archived_article_attribute.objects.create(
+                file_name_on_source = "N/A",
+                provider = api.provider,
+                processed_on = datetime.datetime.now(tz=pytz.utc),
+                status = 'success',
+                file_size = 0,
+                file_type = "N/A",
+                jsonified_content = data,
+                unique_key = doi
+                )
+    return True
 
 
 
@@ -119,6 +157,12 @@ def save_files(urls, headers, api):
 # function to handle all the crossref api's
 @api_view(['GET'])
 def download_from_crossref_api(request):
+
+    issn_number = request.GET.get('issn_number')
+
+    # if issn_number not received, assign default
+    if not issn_number:
+        issn_number = "0066-4804"
     # maintain state to true, in case any error occures this should be changed to false
     # state = True
     # query and fetch available submission api's
@@ -132,24 +176,18 @@ def download_from_crossref_api(request):
     
     # iterate through each records found
     for api in qs:
+        # Replace with the ISSN of the desired journal
+        article_dois = get_article_dois_by_issn(issn=issn_number, api=api)
+        i = 1
+        for doi in article_dois:
+            print(i, "##")
+            get_article_metadata(api, doi)
+            i+=1
+            # state = save_files(filter_data(response.json()), headers, api)
+        api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
+        api.last_pull_status = 'success'
+        api.last_error_message = 'N/A'
+        api.save()
+        return HttpResponse("success")
 
-        # get from website
-        response = requests.get(
-            "https://api.crossref.org/journals/0066-4804/works?rows=1000",
-            verify=False
-        )
-
-        if(response.status_code == 200):
-            state = save_files(filter_data(response.json()), headers, api)
-            api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-            api.last_pull_status = 'success'
-            api.last_error_message = 'N/A'
-            api.save()
-            return HttpResponse("success")
-        else:
-            api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-            api.last_pull_status = 'success'
-            api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
-            api.save()
-            return HttpResponse("error")
 
