@@ -15,6 +15,37 @@ from django.core.files.base import ContentFile
 import zipfile
 
 
+
+# Function to retrieve a list of DOIs for articles from a given journal by ISSN
+def get_article_dois_by_issn(issn, num_rows=10):
+    dois = []
+    # Make a GET request to the CrossRef journals endpoint
+    response = requests.get(f"https://api.crossref.org/journals/{issn}/works", params={"rows": num_rows})
+    if response.status_code == 200:
+        data = response.json()
+        # Extract DOIs from the response JSON
+        items = data.get("message", {}).get("items", [])
+        for item in items:
+            doi = item.get("DOI")
+            if doi:
+                dois.append(doi)
+    return dois
+
+# Function to retrieve metadata for each article given a DOI
+def get_article_metadata(doi):
+    metadata = {}
+    # Make a GET request to the CrossRef works endpoint
+    response = requests.get(f"https://api.crossref.org/works/{doi}")
+    if response.status_code == 200:
+        data = response.json()
+        # Extract metadata from the response JSON
+        metadata["title"] = data.get("message", {}).get("title", "")
+        metadata["authors"] = [author.get("given", "") + " " + author.get("family", "") for author in data.get("message", {}).get("author", [])]
+        # Add more metadata fields as needed
+    return metadata
+
+
+
 # function to zip folder
 def zip_folder(folder_path, zip_path):
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -77,7 +108,6 @@ def save_files(urls, headers, api):
         folder_path = 'article_library/CROSSREF/' + current_date
         zip_folder(folder_path, folder_path + '.zip')
     except Exception as e:
-        print(e)
         print(e)
     
     return True
