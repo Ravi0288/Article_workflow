@@ -12,7 +12,7 @@ import shutil
 import os
 from django.db.models import Q
 import pytz
-from .corus_api import *
+from .chorus_api import *
 from .crossref_api import *
 from .submission_api import *
 

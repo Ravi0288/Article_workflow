@@ -25,4 +25,5 @@ urlpatterns = [
     path('download-from-ftp/', download_from_ftp),
     path('download-from-submission-api/', download_from_submission_api),
     path('download-from-crossref-api/', download_from_crossref_api),
+    path('download-from-chorus-api/', download_from_crossref_api)
 ]
