@@ -79,7 +79,6 @@ def download_from_submission_api(request):
                     status = 'success',
                     file_size = file_size,
                     file_type = file_type
-                    # jsonified_content = json.load(file_name)
                 )
 
                 # save file

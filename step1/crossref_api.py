@@ -14,6 +14,9 @@ from rest_framework.decorators import api_view
 from django.core.files.base import ContentFile
 import zipfile
 from rest_framework.response import Response
+import json
+import sys
+
 
 
 
@@ -58,18 +61,15 @@ def get_article_metadata(api,doi):
             # if record exists, compare existing content with received content.
             # if existing content == received content do nothing
             if qs[0].jsonified_content == data:
-                print("no data change")
                 return True
             else:
                 # if existing content differs with received content update the record
                 qs[0].jsonified_content = data
                 qs[0].save()
-                print("data change found")
                 return True
 
         else:
             # in case of new record perform create operation
-            print("creating fresh record")
             Archived_article_attribute.objects.create(
                 file_name_on_source = "N/A",
                 provider = api.provider,
@@ -108,45 +108,75 @@ def filter_data(data):
     return result
     
 
-def save_files(urls, headers, api):
+def save_files(dois, headers, api):
     state = True
     current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    for url in urls:
+    i=0
+    for doi in dois:
+        i=i+1
+        print(i)    
+        if i == 12:
+            break
+
+        # setting url parameters
         params = dict(version='1.2', operation='searchRetrieve', startRecord=0,
                         maximumRecords=1000,
                         query='alma.local_field_918=crossref and alma.local_notes="PubAg Journal"')
 
-        response = requests.get(url['url'],params=params, headers=headers)
+        # access the url
+        # response = requests.get(url['url'],params=params, headers=headers)
+        response = requests.get(f"https://api.crossref.org/works/{doi}")
         if response.status_code == 200:
-            # Retrieve file name and file size from response headers
-            content_disposition = response.headers.get('content-disposition')
-            if content_disposition:
-                file_name = current_date + '/' + content_disposition.split('filename=')[1]
-            else:
-                file_name = current_date + '/' + (response.url).split('/')[-1] # Use URL as filename if content-disposition is not provided
-            
-            file_size = int(response.headers.get('content-length', 0))
-            file_type = url['content-type']
+            try:
+                # prepare properties
+                file_name = doi + '.json'
+                file_type = '.json'
+                data = response.json()
 
+                # check if record against same doi exists
+                qs = Archived_article_attribute.objects.filter(unique_key=doi)
+                if qs.exists():
+                    # if record exists, compare existing content with received content.
+                    # if existing content == received content do nothing
+                    doi = doi.replace('/', '\\')
+                    fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
+                    
+                    # read the existing files
+                    f = open(fname, 'r')
+                    jsonified_content = json.load(f)
+                    f.close()
 
-            x = Archived_article_attribute.objects.create(
-                file_name_on_source = file_name,
-                provider = api.provider,
-                processed_on = datetime.datetime.now(tz=pytz.utc),
-                status = 'success',
-                file_size = file_size,
-                file_type = file_type
-            )
+                    # compare the contents
+                    if jsonified_content == data:
+                        print("content are equal")
+                    else:
+                        # if existing content differs with received content, remove the exisitng file an update the record
+                        os.remove(fname)
+                        file_size = sys.getsizeof(response.json())
+                        print("content are not equal")
+                        # save file
+                        qs[0].file_size = file_size
+                        qs[0].file_content.save(file_name, ContentFile(response.content))
 
-            # save file
-            x.file_content.save(file_name, ContentFile(response.content))
-        else:
-            print(response.status_code, "##############")
-    try:
-        folder_path = 'article_library/CROSSREF/' + current_date
-        zip_folder(folder_path, folder_path + '.zip')
-    except Exception as e:
-        print(e)
+                else:
+                    # Getting size using getsizeof() method
+                    file_size = sys.getsizeof(response.json())
+                    print("content are new")
+                    x = Archived_article_attribute.objects.create(
+                        file_name_on_source = file_name,
+                        provider = api.provider,
+                        processed_on = datetime.datetime.now(tz=pytz.utc),
+                        status = 'success',
+                        file_size = file_size,
+                        file_type = file_type,
+                        unique_key = doi
+                    )
+
+                    # save file
+                    x.file_content.save(file_name, ContentFile(response.content))
+
+            except Exception as e:
+                continue
     
     return True
 
@@ -158,13 +188,13 @@ def save_files(urls, headers, api):
 @api_view(['GET'])
 def download_from_crossref_api(request):
 
+    # receive the issn_number
     issn_number = request.GET.get('issn_number')
 
     # if issn_number not received, assign default
     if not issn_number:
         issn_number = "0066-4804"
-    # maintain state to true, in case any error occures this should be changed to false
-    # state = True
+
     # query and fetch available submission api's
     qs = Provider_meta_data_API.objects.filter(api_meta_type="CrossRef")
 
@@ -176,14 +206,14 @@ def download_from_crossref_api(request):
     
     # iterate through each records found
     for api in qs:
-        # Replace with the ISSN of the desired journal
+
+        # get list of doi
         article_dois = get_article_dois_by_issn(issn=issn_number, api=api)
-        i = 1
-        for doi in article_dois:
-            print(i, "##")
-            get_article_metadata(api, doi)
-            i+=1
-            # state = save_files(filter_data(response.json()), headers, api)
+
+        # as per received dois make urls and downloaded the file in json format
+        save_files(article_dois, headers, api)
+
+        # update the last run status
         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
         api.last_pull_status = 'success'
         api.last_error_message = 'N/A'

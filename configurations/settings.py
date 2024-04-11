@@ -170,7 +170,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static',]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'article_library' 
-SUBMISSION_ROOT = MEDIA_ROOT / 'submission' 
+SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
+CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
+CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
 UPLOAD_ROOT = BASE_DIR / 'uploads'
 
 # Default primary key field type
