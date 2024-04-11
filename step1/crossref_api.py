@@ -19,7 +19,6 @@ import sys
 
 
 
-
 # Function to retrieve a list of DOIs for articles from a given journal by ISSN
 def get_article_dois_by_issn(issn, api, num_rows=1000):
     dois = []
@@ -138,7 +137,7 @@ def save_files(dois, headers, api):
                 if qs.exists():
                     # if record exists, compare existing content with received content.
                     # if existing content == received content do nothing
-                    doi = doi.replace('/', '\\')
+                    doi = doi.replace('/', '_')
                     fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
                     
                     # read the existing files
@@ -177,7 +176,12 @@ def save_files(dois, headers, api):
 
             except Exception as e:
                 continue
-    
+
+    # zip the file
+    path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
+    zip_folder(settings.CROSSREF_ROOT, path)
+
+
     return True
 
 

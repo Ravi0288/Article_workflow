@@ -12,6 +12,18 @@ from rest_framework.decorators import api_view
 from django.core.files.base import ContentFile
 import json
 from django.conf import settings
+import zipfile
+
+
+# function to zip folder
+def zip_folder(folder_path, zip_path):
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, _, files in os.walk(folder_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, os.path.abspath(folder_path))
+                zipf.write(file_path, arcname)
+
 
 
 # class to download file from the api
@@ -26,7 +38,7 @@ class SubmissionMetadataHarvester:
 
         while True:
             try:
-                url = self.base_url.format(page, "2024-02-02")
+                url = self.base_url.format(page, "2023-02-02")
             except Exception as e:
                 print(e)
             response = requests.get(url)
@@ -110,7 +122,15 @@ def download_from_submission_api(request):
             api.last_error_message = 'No record found'
             api.save()
 
-        return HttpResponse("done")
+    try:
+        # zip the file
+        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        path = os.path.join(settings.SUBMISSION_ROOT , current_date + '.zip')
+        zip_folder(settings.SUBMISSION_ROOT, path)
+    except Exception as e:
+        print(e)
+
+    return HttpResponse("done")
 
 
 
