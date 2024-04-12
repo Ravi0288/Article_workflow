@@ -85,20 +85,46 @@ class Fetch_history(models.Model):
 
 # Model to list all the FTP with attributes
 class Provider_meta_data_FTP(models.Model):
-    provider = models.ForeignKey(Providers, related_name="ftp_provider", on_delete=models.CASCADE)
-    server = models.TextField()
-    protocol = models.CharField(max_length=10)
-    site_path = models.CharField(max_length=50)
+    provider = models.ForeignKey(Providers, 
+                                 related_name="ftp_provider", 
+                                 on_delete=models.CASCADE,
+                                 help_text="Select Provider name"
+                                 )
+    server = models.TextField(help_text="Enter FTP address")
+    protocol = models.CharField(max_length=10, help_text="Enter Protocol used by this FTP. i.e. FTP / SFTP")
+    site_path = models.TextField(default="/", help_text="Enter default location where file is stored on FTP server")
 
-    account = models.CharField(max_length=50)
-    password = EncryptedField(null=True, blank=True)
+    is_password_required = models.BooleanField(default=True, help_text="Is this FTP password protected?")
+    account = models.CharField(max_length=100, null=True, blank=True, 
+                               help_text="Username to login to FTP. if is_password_required is selected this field is required"
+                               )
+    password = EncryptedField(null=True, blank=True, 
+                              help_text="Password to login to FTP. if is_password_required is selected this field is required"
+                              )
 
-    minimum_delivery_fq = models.IntegerField()
-    next_due_date = models.DateTimeField(null=True)
+    minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with FTP")
+    next_due_date = models.DateTimeField(null=True, 
+                                         help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
+                                         )
 
-    last_pull_time = models.DateTimeField(auto_now=True)
-    last_pull_status = models.CharField(max_length=10, default="success")
-    last_error_message = models.TextField(null=True, blank=True)
+    last_pull_time = models.DateTimeField(auto_now=True, help_text="This will be auto field as and when the FTP will be accessed")
+    last_pull_status = models.CharField(max_length=10, default="success", 
+                                        help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
+                                        )
+    last_error_message = models.TextField(null=True, 
+                                          blank=True,
+                                          help_text="In case of error last error message will be stored here. Don't enter anything here"
+         
+                                          )
+    # validations to the model fields.
+    # These validations are applied based on the nature of the api's
+    # some api's need paginated info, some required token, some are open etc.
+    def clean(self):
+        # if token is rquired on end points make site_token required
+        if self.is_password_required and (self.account in (None, '') or self.password in (None, '')):
+            raise ValidationError(
+                {'error': "If password is required, please provide password"}
+                )
 
 
     # call save method to assign next due date
@@ -115,31 +141,70 @@ class Provider_meta_data_FTP(models.Model):
 
 # Model to list all the API's with attributes
 class Provider_meta_data_API(models.Model):
-    api_meta_type = models.CharField(null=True, blank=True, max_length=20, choices=API_TYPE)
-    provider = models.ForeignKey(Providers, related_name="api_provider", on_delete=models.CASCADE)    
-    base_url = models.URLField()
+    provider = models.ForeignKey(Providers, 
+                                 related_name="api_provider", 
+                                 on_delete=models.CASCADE,
+                                 help_text="Select Provider name"
+                                 )   
+    api_meta_type = models.CharField(null=True, 
+                                     blank=True, 
+                                     max_length=20, 
+                                     choices=API_TYPE,
+                                     help_text="Select Type of API"
+                                     ) 
+    base_url = models.URLField(help_text="Enter Base URL of the API")
 
-    identifier_code = models.CharField(max_length=50)
-    identifier_type = models.CharField(max_length=50)
+    identifier_type = models.CharField(max_length=50, 
+                                       help_text="Enter Identifier type / name. For example 'usda funder id' "
+                                       )
+    identifier_code = models.CharField(max_length=50, 
+                                       help_text="Enter Identifier code for example 100000199"
+                                       )
 
-    is_token_required = models.BooleanField(default=False)
-    site_token = EncryptedField(null=True, blank=True)
+    is_token_required = models.BooleanField(default=False, 
+                                            help_text="If this API endpoint is password protected select the check box"
+                                            )
+    site_token = EncryptedField(null=True, 
+                                blank=True, 
+                                help_text="If 'is_token_required' is selected provide password / token for API"
+                                )
 
-    minimum_delivery_fq = models.IntegerField()
-    next_due_date = models.DateTimeField(null=True)
+    minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with API")
+    next_due_date = models.DateTimeField(null=True,
+                                         help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
+                                         )
 
-    last_pull_time = models.DateTimeField(auto_now=True)
-    last_pull_status = models.CharField(max_length=10, default="success")
-    last_error_message = models.TextField(null=True, blank=True)
+    last_pull_time = models.DateTimeField(auto_now=True, help_text="This will be auto field as and when the api will be accessed")
+    last_pull_status = models.CharField(max_length=10, 
+                                        default="success",
+                                          help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
+                                        )
+    last_error_message = models.TextField(null=True, 
+                                          blank=True,
+                                          help_text="In case of error last error message will be stored here. Don't enter anything here"
+                                          )
 
-    email_notification = models.ForeignKey(Email_notification, on_delete=models.DO_NOTHING, blank=True, null=True)
+    email_notification = models.ForeignKey(Email_notification, 
+                                           on_delete=models.DO_NOTHING, 
+                                           blank=True, 
+                                           null=True,
+                                           help_text="In case email notifications are required to be sent to inform status select the email group. This is optional"
+                                           )
     
-    proxy_host_url = models.TextField(null=True)
-    external_library_url = models.TextField(null=True)
+    proxy_host_url = models.TextField(null=True, blank=True,
+                                      help_text="Provide proxy hosts if any. This is optional"
+                                      )
+    external_library_url = models.TextField(null=True, blank=True,                                      
+                                            help_text="Provide external library address if any. This is optional"
+                                            )
 
     # this info is required in case of pagination is required on API's
-    is_paginated = models.BooleanField(default=False)
-    page_number = models.IntegerField(null=True)
+    is_paginated = models.BooleanField(default=False,
+                                        help_text="Is this api paginated? Select if yes. This is optional"
+                                       )
+    page_number = models.IntegerField(null=True, default=1,
+                                    help_text="If paginated, enter the first page number. Default is 1"
+                                      )
 
     # validations to the model fields.
     # These validations are applied based on the nature of the api's
@@ -186,6 +251,12 @@ class Provider_meta_data_FTP_serializer(serializers.ModelSerializer):
         model = Provider_meta_data_FTP
         fields = '__all__'
         # exclude = ('password',)
+
+    # validations method clean implementaion
+    def validate(self, attrs):
+        instance = Provider_meta_data_FTP(**attrs)
+        instance.clean()
+        return attrs
 
 
 class Provider_meta_data_API_serializer(serializers.ModelSerializer):

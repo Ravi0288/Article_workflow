@@ -37,7 +37,7 @@ class EmailHistoryAdmin(admin.ModelAdmin):
 
 class EmailNotificationEmailNotification(admin.ModelAdmin):
     empty_value_display = "-empty-"
-    list_display = ["applicable_to", "email_from", "email_to", "email_subject", "email_body"]
+    list_display = ["email_from", "email_to", "email_subject", "email_body"]
 
 
 
