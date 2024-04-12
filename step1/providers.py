@@ -5,6 +5,7 @@ from django.core.signals import request_finished
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import serializers
 from datetime import datetime, timedelta
+from django.utils import timezone
 import logging
 from .email_notification import Email_notification, send_comment_mail_notification
 from cryptography.fernet import Fernet
@@ -102,7 +103,7 @@ class Provider_meta_data_FTP(models.Model):
 
     # call save method to assign next due date
     def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
+        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
     # method to return decrypted password
@@ -158,7 +159,7 @@ class Provider_meta_data_API(models.Model):
 
     # call default save method to encrypt token and assign next due date
     def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now() + timedelta(self.minimum_delivery_fq)
+        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
         super(Provider_meta_data_API, self).save(*args, **kwargs)        
 
     # method to decrypt the token
