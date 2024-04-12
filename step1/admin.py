@@ -7,8 +7,8 @@ class ArchivedArticleAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = ["provider", "file_content", "unique_key",
                     "file_name_on_source", "file_size", "file_type",
-                    "unzipped_folder_size", "received_on", "processed_on",
-                    "status", "notes"
+                    "received_on", "processed_on",
+                    "status"
                     ]
 
 

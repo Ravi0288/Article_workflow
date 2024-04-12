@@ -4,7 +4,7 @@ import os
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ModelSerializer
 from datetime import datetime
-from .providers import Provider_model
+from .providers import Providers
 
 from configurations.settings import UPLOAD_ROOT
 from rest_framework.decorators import api_view
@@ -33,17 +33,6 @@ upload_storage = FileSystemStorage(location=UPLOAD_ROOT, base_url='/uploads')
 
 # Function to return the storage file path.
 # This function will return file path as article_library/Current_year/Current_month/day/file_name_with_extension
-# Any downloaded file will be stored like this.
-# http://localhost:8000/article_library/2024/2/8/resume.pdf
-        
-# def get_file_path(instance, filename):
-#     return '{0}/{1}/{2}/{3}/{4}'.format(
-#         instance.provider.official_name,
-#         datetime.today().year, 
-#         datetime.today().month,
-#         datetime.today().day, 
-#         filename
-#         )
 
 def get_file_path(instance, filename):
     return '{0}/{1}'.format(
@@ -54,18 +43,19 @@ def get_file_path(instance, filename):
 
 # Model to record logs of downloaded files/folders from FTP/SFTP's
 class Archived_article(models.Model):
-    provider = models.ForeignKey(Provider_model, on_delete=models.CASCADE, related_name="archives")
+    provider = models.ForeignKey(Providers, on_delete=models.CASCADE, related_name="archives")
+
     file_content = models.FileField(upload_to=get_file_path, blank=True, null=True, storage=OverWriteStorage())
-    jsonified_content = models.JSONField(blank=True, null=True)
-    unique_key = models.CharField(max_length=500, blank=True, null=True)
     file_name_on_source = models.CharField(max_length=500)
-    file_size = models.BigIntegerField(default=0)
+    file_size = models.IntegerField(default=0)
     file_type = models.CharField(max_length=20)
-    unzipped_folder_size = models.BigIntegerField(default=0)
+
+    unique_key = models.CharField(max_length=500, blank=True, null=True)
+
     received_on = models.DateTimeField(auto_now_add=True)
     processed_on = models.DateTimeField(null=True)
+
     status = models.CharField(max_length=12, choices=CHOICES)
-    notes = models.TextField(default="N/A")
 
 
     def __str__(self) -> str:

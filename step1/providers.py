@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from configurations.common import EncryptedField
 
+
 # record log
 logger = logging.getLogger(__name__)
 
@@ -61,23 +62,21 @@ API_TYPE = (
 )
 
 # providers model
-class Provider_model(models.Model):
-    official_name = models.CharField(max_length=100)
-    working_name = models.CharField(max_length=50)
-    in_production = models.BooleanField(max_length=15)
-    archive_switch = models.BooleanField(max_length=15)
-    article_switch = models.BooleanField(max_length=15)
-    requirement_override = models.BooleanField(max_length=15)
+class Providers(models.Model):
+    official_name = models.CharField(max_length=64)
+    working_name = models.CharField(max_length=64)
+    in_production = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         return self.official_name
 
+
 # Model to maintain history of access of API's and FTP's
 class Fetch_history(models.Model):
-    provider = models.ForeignKey(Provider_model, related_name='fetch_history', on_delete=models.DO_NOTHING)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    provider = models.ForeignKey(Providers, related_name='fetch_history', on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10, default='success')
     error_message = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.provider.official_name + '->' + self.status
@@ -85,18 +84,21 @@ class Fetch_history(models.Model):
 
 # Model to list all the FTP with attributes
 class Provider_meta_data_FTP(models.Model):
-    provider = models.ForeignKey(Provider_model, related_name="ftp_provider", on_delete=models.CASCADE)
+    provider = models.ForeignKey(Providers, related_name="ftp_provider", on_delete=models.CASCADE)
     server = models.TextField()
     protocol = models.CharField(max_length=10)
     site_path = models.CharField(max_length=50)
+
     account = models.CharField(max_length=50)
     password = EncryptedField(null=True, blank=True)
+
     minimum_delivery_fq = models.IntegerField()
+    next_due_date = models.DateTimeField(null=True)
+
     last_pull_time = models.DateTimeField(auto_now=True)
-    pull_switch = models.BooleanField()
     last_pull_status = models.CharField(max_length=10, default="success")
     last_error_message = models.TextField(null=True, blank=True)
-    next_due_date = models.DateTimeField(null=True)
+
 
     # call save method to assign next due date
     def save(self, *args, **kwargs):
@@ -113,28 +115,30 @@ class Provider_meta_data_FTP(models.Model):
 # Model to list all the API's with attributes
 class Provider_meta_data_API(models.Model):
     api_meta_type = models.CharField(null=True, blank=True, max_length=20, choices=API_TYPE)
-    provider = models.ForeignKey(Provider_model, related_name="api_provider", on_delete=models.CASCADE)    
+    provider = models.ForeignKey(Providers, related_name="api_provider", on_delete=models.CASCADE)    
     base_url = models.URLField()
+
     identifier_code = models.CharField(max_length=50)
     identifier_type = models.CharField(max_length=50)
-    last_pull_time = models.DateTimeField(auto_now=True)
-    api_switch = models.BooleanField()
 
     is_token_required = models.BooleanField(default=False)
     site_token = EncryptedField(null=True, blank=True)
 
     minimum_delivery_fq = models.IntegerField()
+    next_due_date = models.DateTimeField(null=True)
+
+    last_pull_time = models.DateTimeField(auto_now=True)
     last_pull_status = models.CharField(max_length=10, default="success")
     last_error_message = models.TextField(null=True, blank=True)
-    next_due_date = models.DateTimeField(null=True)
+
     email_notification = models.ForeignKey(Email_notification, on_delete=models.DO_NOTHING, blank=True, null=True)
+    
     proxy_host_url = models.TextField(null=True)
     external_library_url = models.TextField(null=True)
 
     # this info is required in case of pagination is required on API's
     is_paginated = models.BooleanField(default=False)
     page_number = models.IntegerField(null=True)
-    last_accessed_page = models.IntegerField(null=True)
 
     # validations to the model fields.
     # These validations are applied based on the nature of the api's
@@ -165,9 +169,9 @@ class Provider_meta_data_API(models.Model):
 
 
 # serializers to models
-class Provider_model_serializer(serializers.ModelSerializer):
+class Providers_serializer(serializers.ModelSerializer):
     class Meta:
-        model = Provider_model
+        model = Providers
         fields = '__all__'
 
 class Fetch_history_serializer(serializers.ModelSerializer):
@@ -198,8 +202,8 @@ class Provider_meta_data_API_serializer(serializers.ModelSerializer):
 
 # viewsets to models
 class Provider_viewset(ModelViewSet):
-    queryset = Provider_model.objects.all()
-    serializer_class = Provider_model_serializer
+    queryset = Providers.objects.all()
+    serializer_class = Providers_serializer
 
 
 class Fetch_history_viewset(ModelViewSet):

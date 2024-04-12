@@ -1,7 +1,6 @@
 from django.conf import settings
 from html2text import html2text
 import requests
-import urllib3
 from step1.archive_article import Archived_article
 
 from step1.providers import Provider_meta_data_API
@@ -15,6 +14,7 @@ import zipfile
 from rest_framework.response import Response
 import json
 import sys
+from django.core.files import File
 
 
 
@@ -42,44 +42,6 @@ def get_article_dois_by_issn(issn, api, num_rows=1000):
         api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
         api.save()
         return Response("error occured")
-
-# Function to retrieve metadata for each article given a DOI
-def get_article_metadata(api,doi):
-
-    # Make a GET request to the CrossRef works endpoint
-    response = requests.get(f"https://api.crossref.org/works/{doi}")
-
-    # if gets succes response 
-    if response.status_code == 200:
-        data = response.json()
-
-        # check if record against same doi exists
-        qs = Archived_article.objects.filter(unique_key=doi)
-        if qs.exists():
-            # if record exists, compare existing content with received content.
-            # if existing content == received content do nothing
-            if qs[0].jsonified_content == data:
-                return True
-            else:
-                # if existing content differs with received content update the record
-                qs[0].jsonified_content = data
-                qs[0].save()
-                return True
-
-        else:
-            # in case of new record perform create operation
-            Archived_article.objects.create(
-                file_name_on_source = "N/A",
-                provider = api.provider,
-                processed_on = datetime.datetime.now(tz=pytz.utc),
-                status = 'success',
-                file_size = 0,
-                file_type = "N/A",
-                jsonified_content = data,
-                unique_key = doi
-                )
-    return True
-
 
 
 # function to zip folder
@@ -179,7 +141,6 @@ def save_files(dois, headers, api):
     # zip the file
     path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
     zip_folder(settings.CROSSREF_ROOT, path)
-
 
     return True
 

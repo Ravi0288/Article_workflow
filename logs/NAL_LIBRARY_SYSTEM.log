@@ -1,0 +1,30 @@
+ERROR 2024-04-12 18:11:05,205 log 6748 1948 Internal Server Error: /download-from-crossref-api/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\crossref_api.py", line 178, in download_from_crossref_api
+    save_files(article_dois, headers, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\crossref_api.py", line 143, in save_files
+    zip_folder(settings.CROSSREF_ROOT, path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\crossref_api.py", line 49, in zip_folder
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\zipfile.py", line 1251, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\article_library\\CROSSREF\\2024-04-12.zip'
+ERROR 2024-04-12 18:11:05,221 basehttp 6748 1948 "GET /download-from-crossref-api/ HTTP/1.1" 500 133259
