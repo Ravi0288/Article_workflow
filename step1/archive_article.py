@@ -53,7 +53,7 @@ def get_file_path(instance, filename):
 
 
 # Model to record logs of downloaded files/folders from FTP/SFTP's
-class Archived_article_attribute(models.Model):
+class Archived_article(models.Model):
     provider = models.ForeignKey(Provider_model, on_delete=models.CASCADE, related_name="archives")
     file_content = models.FileField(upload_to=get_file_path, blank=True, null=True, storage=OverWriteStorage())
     jsonified_content = models.JSONField(blank=True, null=True)
@@ -72,17 +72,17 @@ class Archived_article_attribute(models.Model):
         return self.file_name_on_source
     
 
-# serializer for Archived_article_attribute model
-class Archived_article_attribute_serializers(ModelSerializer):
+# serializer for Archived_article model
+class Archived_article_serializers(ModelSerializer):
     class Meta:
-        model = Archived_article_attribute
+        model = Archived_article
         fields = '__all__'
 
 
-# views for Archived_article_attribute
-class Archived_article_attribute_view(ModelViewSet):
-    queryset = Archived_article_attribute.objects.all().order_by("-id")[:10]
-    serializer_class = Archived_article_attribute_serializers
+# views for Archived_article
+class Archived_article_view(ModelViewSet):
+    queryset = Archived_article.objects.all().order_by("-id")[:10]
+    serializer_class = Archived_article_serializers
 
 
 

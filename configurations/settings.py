@@ -198,7 +198,7 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': "NAL_LIBRARY_SYSTEM.log",
+            'filename': "logs/NAL_LIBRARY_SYSTEM.log",
             'maxBytes': 100000,
             'backupCount': 2,
             'formatter': 'verbose',

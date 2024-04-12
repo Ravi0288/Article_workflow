@@ -1,8 +1,7 @@
 import requests
 
-from step1.archive_article import Archived_article_attribute
+from step1.archive_article import Archived_article
 from step1.providers import Provider_meta_data_API
-from .common_for_api import save_in_db
 import pytz
 import datetime
 import os
@@ -93,7 +92,7 @@ def save_files(publishers,api):
                     _file = File(json_bytes)
 
                     # check if record against same doi exists
-                    qs = Archived_article_attribute.objects.filter(unique_key=doi)
+                    qs = Archived_article.objects.filter(unique_key=doi)
                     if qs.exists():
                         # if record exists, compare existing content with received content.
                         # if existing content == received content do nothing
@@ -116,7 +115,7 @@ def save_files(publishers,api):
 
                     else:
                         # Getting size using getsizeof() method
-                        x = Archived_article_attribute.objects.create(
+                        x = Archived_article.objects.create(
                             file_name_on_source = file_name,
                             provider = api.provider,
                             processed_on = datetime.datetime.now(tz=pytz.utc),

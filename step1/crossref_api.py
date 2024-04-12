@@ -2,10 +2,9 @@ from django.conf import settings
 from html2text import html2text
 import requests
 import urllib3
-from step1.archive_article import Archived_article_attribute
+from step1.archive_article import Archived_article
 
 from step1.providers import Provider_meta_data_API
-from .common_for_api import save_in_db
 from django.http import HttpResponse
 import pytz
 import datetime
@@ -55,7 +54,7 @@ def get_article_metadata(api,doi):
         data = response.json()
 
         # check if record against same doi exists
-        qs = Archived_article_attribute.objects.filter(unique_key=doi)
+        qs = Archived_article.objects.filter(unique_key=doi)
         if qs.exists():
             # if record exists, compare existing content with received content.
             # if existing content == received content do nothing
@@ -69,7 +68,7 @@ def get_article_metadata(api,doi):
 
         else:
             # in case of new record perform create operation
-            Archived_article_attribute.objects.create(
+            Archived_article.objects.create(
                 file_name_on_source = "N/A",
                 provider = api.provider,
                 processed_on = datetime.datetime.now(tz=pytz.utc),
@@ -128,12 +127,12 @@ def save_files(dois, headers, api):
         if response.status_code == 200:
             try:
                 # prepare properties
-                file_name = doi + '.json'
+                file_name = doi.replace('/', '_') + '.json'
                 file_type = '.json'
                 data = response.json()
 
                 # check if record against same doi exists
-                qs = Archived_article_attribute.objects.filter(unique_key=doi)
+                qs = Archived_article.objects.filter(unique_key=doi)
                 if qs.exists():
                     # if record exists, compare existing content with received content.
                     # if existing content == received content do nothing
@@ -161,7 +160,7 @@ def save_files(dois, headers, api):
                     # Getting size using getsizeof() method
                     file_size = sys.getsizeof(response.json())
                     print("content are new")
-                    x = Archived_article_attribute.objects.create(
+                    x = Archived_article.objects.create(
                         file_name_on_source = file_name,
                         provider = api.provider,
                         processed_on = datetime.datetime.now(tz=pytz.utc),
