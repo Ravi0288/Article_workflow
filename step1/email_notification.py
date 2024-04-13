@@ -62,7 +62,7 @@ class Email_history_viewset(ModelViewSet):
 # Funtion to email.
 # This function will send the email and will update the Email_history table
     # instance is the instance of APT/FTP providers model
-def send_comment_mail_notification(instance):
+def send_notification(instance):
     # collect the data from the provided instances
     subject = instance.email_notification.email_subject
     email_from = instance.email_notification.email_from

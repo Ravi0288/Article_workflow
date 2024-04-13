@@ -7,7 +7,7 @@ from rest_framework import serializers
 from datetime import datetime, timedelta
 from django.utils import timezone
 import logging
-from .email_notification import Email_notification, send_comment_mail_notification
+from .email_notification import Email_notification, send_notification
 from cryptography.fernet import Fernet
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -327,7 +327,7 @@ def update_history_for_API(sender, instance, created, **kwargs):
 
         # if api is failed send the email.
         if instance.last_pull_status == 'failed':
-            # send_comment_mail_notification(instance)
+            # send_notification(instance)
             pass
             
         return True
