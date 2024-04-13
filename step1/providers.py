@@ -114,8 +114,15 @@ class Provider_meta_data_FTP(models.Model):
     last_error_message = models.TextField(null=True, 
                                           blank=True,
                                           help_text="In case of error last error message will be stored here. Don't enter anything here"
-         
                                           )
+
+    email_notification = models.ForeignKey(Email_notification, 
+                                           on_delete=models.DO_NOTHING, 
+                                           blank=True, 
+                                           null=True,
+                                           help_text="In case email notifications are required to be sent to inform status, select the email group. This is optional"
+                                           )
+
     # validations to the model fields.
     # These validations are applied based on the nature of the api's
     # some api's need paginated info, some required token, some are open etc.
@@ -188,7 +195,7 @@ class Provider_meta_data_API(models.Model):
                                            on_delete=models.DO_NOTHING, 
                                            blank=True, 
                                            null=True,
-                                           help_text="In case email notifications are required to be sent to inform status select the email group. This is optional"
+                                           help_text="In case email notifications are required to be sent to inform status, select the email group. This is optional"
                                            )
     
     proxy_host_url = models.TextField(null=True, blank=True,

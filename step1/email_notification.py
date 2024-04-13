@@ -8,8 +8,9 @@ from datetime import datetime
 
 # model to list all email api wise for email notification purpose. This is master table
 class Email_notification(models.Model):
+    applicable_to = models.TextField(help_text="Enter any name to indentify where this record will be used as foreign key for sending email")
     email_from = models.TextField(help_text="Enter email address of the sender")
-    email_to = models.TextField(help_text="Enter list of email addresses of the receivers in this format ['email-1','email-2]")
+    email_to = models.TextField(help_text="Enter list of email addresses of the receivers in this format email-1;email-2;email3;and so on;")
     email_subject = models.TextField(default='Error Occured',
                                      help_text="Email default subject"
                                      )
