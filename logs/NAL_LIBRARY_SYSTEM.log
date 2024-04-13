@@ -87,3 +87,180 @@ Traceback (most recent call last):
     return super().execute(query, params)
 django.db.utils.OperationalError: no such column: step1_provider_meta_data_ftp.is_password_required
 ERROR 2024-04-12 20:11:27,102 basehttp 26388 1288 "GET /providers-ftp/ HTTP/1.1" 500 176539
+ERROR 2024-04-13 08:15:09,944 log 28716 17368 Internal Server Error: /providers-ftp/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: no such column: step1_provider_meta_data_ftp.email_notification_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: no such column: step1_provider_meta_data_ftp.email_notification_id
+ERROR 2024-04-13 08:15:09,965 basehttp 28716 17368 "GET /providers-ftp/ HTTP/1.1" 500 177369
+ERROR 2024-04-13 08:17:01,142 log 28716 17368 Internal Server Error: /providers-ftp/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: no such column: step1_provider_meta_data_ftp.email_notification_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: no such column: step1_provider_meta_data_ftp.email_notification_id
+ERROR 2024-04-13 08:17:01,158 basehttp 28716 17368 "GET /providers-ftp/ HTTP/1.1" 500 177218
+ERROR 2024-04-13 08:17:06,161 log 28716 17368 Internal Server Error: /providers-ftp/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: no such column: step1_provider_meta_data_ftp.email_notification_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1560, in execute_sql
+    cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: no such column: step1_provider_meta_data_ftp.email_notification_id
+ERROR 2024-04-13 08:17:06,161 basehttp 28716 17368 "GET /providers-ftp/ HTTP/1.1" 500 177218
