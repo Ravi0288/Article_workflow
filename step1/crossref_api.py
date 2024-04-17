@@ -142,8 +142,6 @@ def save_files(dois, headers, api):
     path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
     zip_folder(settings.CROSSREF_ROOT, path)
 
-    return True
-
 
 
 
@@ -182,6 +180,6 @@ def download_from_crossref_api(request):
         api.last_pull_status = 'success'
         api.last_error_message = 'N/A'
         api.save()
-        return HttpResponse("success")
+    return HttpResponse("success")
 
 

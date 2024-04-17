@@ -62,6 +62,12 @@ API_TYPE = (
     ('Submission','Submission')
 )
 
+
+FTP_CHOICES = (
+    ('FTP', 'FTP,'),
+    ('SFTP', 'SFTP,')
+)
+
 # providers model
 class Providers(models.Model):
     official_name = models.CharField(max_length=64)
@@ -91,7 +97,7 @@ class Provider_meta_data_FTP(models.Model):
                                  help_text="Select Provider name"
                                  )
     server = models.TextField(help_text="Enter FTP address")
-    protocol = models.CharField(max_length=10, help_text="Enter Protocol used by this FTP. i.e. FTP / SFTP")
+    protocol = models.CharField(max_length=10, choices=FTP_CHOICES, help_text="Enter Protocol used by this FTP. i.e. FTP / SFTP")
     site_path = models.TextField(default="/", help_text="Enter default location where file is stored on FTP server")
 
     is_password_required = models.BooleanField(default=True, help_text="Is this FTP password protected?")
