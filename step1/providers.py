@@ -68,11 +68,17 @@ FTP_CHOICES = (
     ('SFTP', 'SFTP,')
 )
 
+PROVIDER_TYPE = (
+    ('FTP', 'FTP'),
+    ('API', 'API')
+)
+
 # providers model
 class Providers(models.Model):
     official_name = models.CharField(max_length=64)
     working_name = models.CharField(max_length=64)
     in_production = models.BooleanField(default=True)
+    provider_type = models.CharField(max_length=4, default='FTP', choices=PROVIDER_TYPE)
 
     def __str__(self) -> str:
         return self.official_name
