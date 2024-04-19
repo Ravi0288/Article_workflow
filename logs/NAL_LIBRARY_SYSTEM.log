@@ -1253,3 +1253,6 @@ ERROR 2024-04-17 22:49:59,934 basehttp 29864 29424 "GET /step2/download-from-ftp
 ERROR 2024-04-17 22:51:30,041 basehttp 23408 28728 "GET /step2/download-from-ftp/ HTTP/1.1" 500 111747
 ERROR 2024-04-17 22:53:09,533 basehttp 33320 33376 "GET /step2/download-from-ftp/ HTTP/1.1" 500 112353
 ERROR 2024-04-17 22:54:05,102 basehttp 25096 22036 "GET /step2/download-from-ftp/ HTTP/1.1" 500 112310
+ERROR 2024-04-18 21:04:36,794 basehttp 34076 32524 "GET /step2/make-single-object/ HTTP/1.1" 500 104106
+ERROR 2024-04-18 21:04:39,599 basehttp 34076 32524 "GET /step2/make-single-object/ HTTP/1.1" 500 104106
+ERROR 2024-04-18 21:06:43,509 basehttp 32964 33472 "GET /step2/make-single-object/ HTTP/1.1" 500 130361
