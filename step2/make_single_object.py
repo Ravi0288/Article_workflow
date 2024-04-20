@@ -63,12 +63,12 @@ def is_mulitple_record(json_file_path):
 
 @api_view(['GET'])
 def segragate_records_with_multiple_articles(request):
-    # for root, dirs, files in os.walk(settings.MEDIA_ROOT):
-    #     for file_name in files:
-    #         if file_name.endswith('.zip'):
-    #             continue
-    #         else:
-    #             file_path = os.path.join(root, file_name)
-    is_mulitple_record("mdpi_agriculture-13-08.json")
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+        for file_name in files:
+            if file_name.endswith('.zip'):
+                continue
+            else:
+                file_path = os.path.join(root, file_name)
+                is_mulitple_record(file_path)
 
     return Response("execution completed")
