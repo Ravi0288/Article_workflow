@@ -73,7 +73,6 @@ def jsonify_ftp_zipped_xml_files(request):
                 else:
                     unzip_folders(source, destination)
 
-    print("############## jsonifiying content")
     for root, dirs, files in os.walk(settings.MEDIA_ROOT):
         for file_name in files:
             destination =  os.path.join(root, file_name[:-4])
