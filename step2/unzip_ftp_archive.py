@@ -46,8 +46,9 @@ def jsonify_file_content(source):
     try:
         # open file
         with open(file=source, mode='rb') as xml_txt:                 
+            # replace special character
+            xml_txt = xml_txt.read().replace(b'&', b'&amp;')
             json_data = xmltodict.parse(xml_txt, encoding='utf-8')
-        xml_txt.close()
 
         # read the xml file and save as json to the same path
         with open(source[:-4] + '.json', "w") as f:
