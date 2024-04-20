@@ -186,7 +186,7 @@ def download_from_chorus_api(request):
         api.save()
 
         # zip contents
-        zip_folders(settings.CHORUS_ROOT)
+        # zip_folders(settings.CHORUS_ROOT)
 
     return Response("processs executed successfully")
 

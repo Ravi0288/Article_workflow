@@ -140,7 +140,7 @@ def save_files(dois, headers, api):
 
     # zip the file
     path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
-    zip_folder(settings.CROSSREF_ROOT, path)
+    # zip_folder(settings.CROSSREF_ROOT, path)
 
 
 

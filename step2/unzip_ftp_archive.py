@@ -8,77 +8,82 @@ import zipfile
 import xmltodict
 from lxml import etree
 
-
-# Function to remove all the files of provided extension
-def remove_files(extension, path):
-    files = os.listdir(path+extension)
-    for item in files:
-        os.remove(item)
+# function to check if there is any zipped folder inside any directory or subdirectory
+def is_any_file_zipped(source):
+    # Traverse the directory tree
+    for root, dirs, files in os.walk(source):
+        # Check if any file in the current directory or its subdirectories is zipped
+        for file_name in files:
+            if file_name.endswith('.zip'):
+                return True
+    # If no zip file is found in any subfolder
+    return False
 
 
 # Function to unzip
-def unzip_folders(zip_file, extract_to):
+def unzip_folders(source, destination):
 
     # unzip the file
-    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-        zip_ref.extractall(extract_to)
-    zip_ref.close()
-    # remove the zipped file
-    os.remove(zip_file)
+    try:
+        with zipfile.ZipFile(source, 'r') as zip_ref:
+            zip_ref.extractall(destination)
+        zip_ref.close()
+        # remove the zipped file
+        os.remove(source)
+
+    except zipfile.BadZipFile:
+        # Handle the case where the file is not a valid ZIP file
+        os.remove(source)
+    except Exception as e:
+        # Handle any other unexpected exceptions
+        print("An error occurred:", str(e))
+        pass
 
 
-# view to be called from api
+def jsonify_file_content(source):
+    # some file got the wrong xml format, 
+    # hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
+    try:
+        # open file
+        with open(file=source, mode='rb') as xml_txt:                 
+            json_data = xmltodict.parse(xml_txt, encoding='utf-8')
+        xml_txt.close()
+
+        # read the xml file and save as json to the same path
+        with open(source[:-4] + '.json', "w") as f:
+            json.dump(json_data, f)
+        f.close()
+
+        # remove the xml file
+        os.remove(source)
+    except Exception as e:
+        pass
+
+
+# # view to be called from api
 @api_view(['GET'])
 def jsonify_ftp_zipped_xml_files(request):
-    # get root all ftp filders from article_library
-    folders = os.listdir(settings.MEDIA_ROOT)
-    ftp_folders = [x for x in folders if x not in ['SUBMISSION','CROSSREF','CHORUS']]
+    while is_any_file_zipped(settings.MEDIA_ROOT):
+        for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+            for file_name in files:
+                destination =  os.path.join(root, file_name[:-4])
+                source = os.path.join(root, file_name)
+                if not (file_name.endswith('.zip') or file_name.endswith('.ZIP')):
+                    continue
+                else:
+                    unzip_folders(source, destination)
 
-    # iterting through all the folders 
-    for item in ftp_folders:
-
-        # get all the zipped files and iterate through it
-        zip_file_path = os.path.join(settings.MEDIA_ROOT, item)
-        zipped_files = os.listdir(zip_file_path)
-        for zipped_file in zipped_files:
-            # if file is not a zip_file do nothing 
-            if not zipped_file.endswith('.zip'):
-                continue
-
-            file_path = os.path.join(zip_file_path, zipped_file)
-            # unzipe the file
-            unzip_folders(os.path.join(file_path),file_path[:-4])
-
-
-            # preparing the path for xml
-            xml_files = os.listdir(file_path[:-4])
-
-            # iterate through all the xml file in the selected directory
-            for xml_file in xml_files:
-                # make the file path
-                xml_file_path = os.path.join(file_path[:-4],xml_file)
-
+    print("############## jsonifiying content")
+    for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+        for file_name in files:
+            destination =  os.path.join(root, file_name[:-4])
+            source = os.path.join(root, file_name)
+            if not file_name.endswith('.xml'):
                 # some folders have got files other than xml format.
-                if not xml_file.endswith('.xml'):
-                    os.remove(xml_file_path)
+                if not file_name.endswith('.json'):
+                    os.remove(source)
+                    continue
+            else:
+                jsonify_file_content(source)
 
-                # some file got the wrong xml format, 
-                # hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
-                try:
-
-                    # open file
-                    with open(file=xml_file_path, mode='rb') as xml_txt:                 
-                        json_data = xmltodict.parse(xml_txt, encoding='utf-8')
-                    xml_txt.close()
-
-                    # read the xml file and save as json to the same path
-                    with open(xml_file_path[:-4] + '.json', "w") as f:
-                        json.dump(json_data, f)
-                    f.close()
-
-                    # remove the xml file
-                    os.remove(xml_file_path)
-                except Exception as e:
-                    pass
-
-    return Response("successfull")
+    return Response("executed process successfully")

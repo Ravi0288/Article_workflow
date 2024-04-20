@@ -29,9 +29,11 @@ def write_json_file(json_content, json_file_path):
 
 # function to check if the file has more than one record
 def is_mulitple_record(json_file_path):
-    with open(json_file_path, 'r') as file:
-        data = json.load(file)
-    time.sleep(1)
+    try:
+        with open(json_file_path, 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(e)
     print(data)
     # if len(data) > 1:
     #     write_json_file(data, json_file_path)

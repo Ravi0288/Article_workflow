@@ -125,7 +125,7 @@ def download_from_submission_api(request):
         # zip the file
         current_date = datetime.datetime.now().strftime('%Y-%m-%d')
         path = os.path.join(settings.SUBMISSION_ROOT , current_date + '.zip')
-        zip_folder(settings.SUBMISSION_ROOT, path)
+        # zip_folder(settings.SUBMISSION_ROOT, path)
     except Exception as e:
         print(e)
 
