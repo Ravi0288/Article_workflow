@@ -88,22 +88,22 @@ WSGI_APPLICATION = 'configurations.wsgi.application'
 # Database settings
 # ..................#####################
 DATABASES = {
-    'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'article_workflow_db',
-    'USER':get_env_variable('DBUSER'),
-    'PASSWORD':get_env_variable('DBPSWD'),
-    'HOST':'localhost',
-    'PORT':'3306',
-    }
+   'default': {
+   'ENGINE': 'django.db.backends.mysql',
+   'NAME': 'article_workflow_db',
+   'USER':get_env_variable('DBUSER'),
+   'PASSWORD':get_env_variable('DBPSWD'),
+   'HOST':'localhost',
+   'PORT':'3306',
+   }
 }
 
 # DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': DATABASE_DIR,
-#     }
+#      'default': {
+#          'ENGINE': 'django.db.backends.sqlite3',
+#          'NAME': DATABASE_DIR,
+#      }
 # }
 
 # ..................#####################
