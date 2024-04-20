@@ -5,6 +5,13 @@ from django.conf import settings
 import os
 import time
 import xmltodict
+import re
+
+
+# Function to preprocess XML text
+def preprocess_xml(xml_text):
+    # Escape < and > characters within text content
+    return re.sub(r'(?<=>)([^<>]+)(?=<)', lambda m: m.group(0).replace('<', '&lt;').replace('>', '&gt;'), xml_text)
 
 
 # funciton to write json object to json files and remove old json file

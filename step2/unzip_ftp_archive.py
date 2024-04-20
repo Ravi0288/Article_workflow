@@ -7,6 +7,14 @@ from rest_framework.response import Response
 import zipfile
 import xmltodict
 from lxml import etree
+import re
+
+
+# Function to replace some special characters in XML text
+def preprocess_xml(xml_text):
+    # Escape < and > characters within text content
+    return re.sub(r'(?<=>)([^<>]+)(?=<)', lambda m: m.group(0).replace(b'<', b'&lt;').replace(b'>', b'&gt;'), xml_text)
+
 
 # function to check if there is any zipped folder inside any directory or subdirectory
 def is_any_file_zipped(source):
@@ -55,6 +63,7 @@ def jsonify_file_content(source):
                                 b'&', b'&amp;').replace(
                                     b'<i>',b''
                                 )
+            # xml_txt = preprocess_xml(xml_txt)
             json_data = xmltodict.parse(xml_txt, encoding='utf-8')
 
         # read the xml file and save as json to the same path
