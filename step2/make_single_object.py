@@ -34,14 +34,14 @@ def write_json_file(json_file_path):
 
 # segregate the file if multiple record found
 def segregate_article(article_set, json_file_path):
-    for index, item  in enumerate(article_set):
-        try:
-            file_name = str(json_file_path[:-5]) + '_' + str(index+1) + '.json'
-            with open(file_name, 'w') as w:
-                json.dump(item,w)
-
-        except Exception as e:
-            print(e)
+    if article_set:
+        for index, item  in enumerate(article_set):
+            try:
+                file_name = str(json_file_path[:-5]) + '_' + str(index+1) + '.json'
+                with open(file_name, 'w') as w:
+                    json.dump(item,w)
+            except Exception as e:
+                print(e)
 
     # delete the old file
     os.remove(json_file_path)
@@ -51,9 +51,9 @@ def is_mulitple_record(json_file_path):
     try:
         with open(json_file_path, 'r') as file:
             data = json.load(file)
-            obj = data.get('ArticleSet', None).get('Article', None)
+            obj = data.get('ArticleSet', None)
             if obj and (len(obj) > 1):
-                segregate_article(obj, json_file_path)
+                segregate_article(obj.get('Article', None), json_file_path)
                 return True
             else:
                 return False
