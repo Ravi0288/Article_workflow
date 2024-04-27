@@ -11,7 +11,7 @@ router.register('articles', Article_attributes_viewset, basename='articles')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('unzip-and-jasonify/', jsonify_ftp_zipped_xml_files),
-    path('make-single-object/', segragate_records_with_multiple_articles),
+    # path('unzip-and-jasonify/', jsonify_ftp_zipped_xml_files),
+    # path('make-single-object/', segragate_records_with_multiple_articles),
     path('migrate-to-step2/', migrate_to_step2),
 ]
