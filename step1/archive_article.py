@@ -6,7 +6,6 @@ from rest_framework.serializers import ModelSerializer
 from datetime import datetime
 from .providers import Providers
 
-from configurations.settings import UPLOAD_ROOT
 from rest_framework.decorators import api_view
 
 
@@ -18,6 +17,11 @@ CHOICES= (
     ('failed', 'failed')
 )
 
+RECORD_CHOICES = (
+    ('article', 'article'),
+    ('retraction', 'retraction'),
+    ('letter to the editor','letter to the editor')
+)
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -63,10 +67,20 @@ class Archived_article(models.Model):
                                   )
 
     received_on = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=12, 
+                              choices=CHOICES, 
+                              help_text="Last access status"
+                            )
+
+    is_processed = models.BooleanField(default=False, 
+                                       help_text="Flag to maintain if the record is processed for step 2"
+                                    )
     processed_on = models.DateTimeField(null=True)
 
-    status = models.CharField(max_length=12, choices=CHOICES, help_text="Last access status")
-
+    is_content_changed = models.BooleanField(
+                    default=False, 
+                    help_text="Flag to maintain if the existing content is changed and file_content is update"
+                    )
 
     def __str__(self) -> str:
         return self.file_name_on_source

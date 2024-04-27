@@ -108,20 +108,20 @@ def save_files(dois, headers, api):
 
                     # compare the contents
                     if jsonified_content == data:
-                        print("content are equal")
+                        pass
                     else:
                         # if existing content differs with received content, remove the exisitng file an update the record
                         os.remove(fname)
                         file_size = sys.getsizeof(response.json())
-                        print("content are not equal")
                         # save file
                         qs[0].file_size = file_size
+                        qs[0].is_processed = False
+                        qs[0].is_content_changed = True
                         qs[0].file_content.save(file_name, ContentFile(response.content))
 
                 else:
                     # Getting size using getsizeof() method
                     file_size = sys.getsizeof(response.json())
-                    print("content are new")
                     x = Archived_article.objects.create(
                         file_name_on_source = file_name,
                         provider = api.provider,

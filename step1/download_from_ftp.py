@@ -43,6 +43,8 @@ def download_file(ftp_connection, article, item):
         ftp_connection.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
         x[0].status = 'success'
+        x[0].is_processed = False
+        x[0].is_content_changed = True
         x[0].file_content.save(article, content)
         return
     

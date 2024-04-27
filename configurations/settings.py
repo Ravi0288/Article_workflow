@@ -169,11 +169,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static',]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'article_library' 
+
+# data downloaded in step one will be stored here
+MEDIA_ROOT = BASE_DIR / 'ARCHIVE_ARTICLE'
 SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
 CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
 CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
-UPLOAD_ROOT = BASE_DIR / 'uploads'
+
+# data once processed from step one will stored at this location
+ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

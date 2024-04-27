@@ -1,4 +1,3 @@
-import xml.etree.ElementTree as ET
 import json
 from django.conf import settings
 import os
@@ -6,7 +5,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import zipfile
 import xmltodict
-from lxml import etree
 import re
 
 
@@ -37,14 +35,13 @@ def unzip_folders(source, destination):
             zip_ref.extractall(destination)
         zip_ref.close()
         # remove the zipped file
-        os.remove(source)
+        # os.remove(source)
 
     except zipfile.BadZipFile:
         # Handle the case where the file is not a valid ZIP file
         os.remove(source)
     except Exception as e:
         # Handle any other unexpected exceptions
-        print("An error occurred:", str(e))
         pass
 
 
@@ -57,8 +54,8 @@ def jsonify_file_content(source):
             # replace special character
             xml_txt = xml_txt.read().replace(
                 b'&#x2018;', b'"').replace(
-                    b'&#8216;','"').replace(
-                        b'&lsquo;','"').replace(
+                    b'&#8216;',b'"').replace(
+                        b'&lsquo;',b'"').replace(
                             b'i', b'&iacute;').replace(
                                 b'&', b'&amp;').replace(
                                     b'<i>',b''

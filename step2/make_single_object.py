@@ -6,13 +6,17 @@ import os
 import time
 import xmltodict
 import re
+from django.core.files.base import ContentFile
+import sys
+from step1.archive_article import Archived_article
+import datetime
+import pytz
 
 
 # Function to preprocess XML text
 def preprocess_xml(xml_text):
     # Escape < and > characters within text content
     return re.sub(r'(?<=>)([^<>]+)(?=<)', lambda m: m.group(0).replace('<', '&lt;').replace('>', '&gt;'), xml_text)
-
 
 # funciton to write json object to json files and remove old json file
 def write_json_file(json_file_path):
@@ -48,17 +52,14 @@ def segregate_article(article_set, json_file_path):
 
 # function to check if the file has more than one record
 def is_mulitple_record(json_file_path):
-    try:
-        with open(json_file_path, 'r') as file:
-            data = json.load(file)
-            obj = data.get('ArticleSet', None)
-            if obj and (len(obj) > 1):
-                segregate_article(obj.get('Article', None), json_file_path)
-                return True
-            else:
-                return False
-    except Exception as e:
-        print(e)
+    with open(json_file_path, 'r') as file:
+        data = json.load(file)
+        obj = data.get('ArticleSet', None)
+        if obj and (len(obj) > 1):
+            segregate_article(obj.get('Article', None), json_file_path)
+            return True
+        else:
+            return False
 
 
 @api_view(['GET'])

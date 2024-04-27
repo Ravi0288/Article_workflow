@@ -111,6 +111,8 @@ def save_files(publishers,api):
                             os.remove(fname)
                             # save file
                             qs[0].file_size = file_size
+                            qs[0].is_processed = False
+                            qs[0].is_content_changed = True
                             qs[0].file_content.save(file_name, _file)
 
                     else:

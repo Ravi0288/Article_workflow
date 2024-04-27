@@ -8,3 +8,5 @@ __pycache__/
 downloads
 env
 article_library/
+ARCHIVE_ARTICLE/
+TEMP/
