@@ -1,23 +1,41 @@
 # find title of the json content
 def main():
     import json
-    json_path = "E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE_ARTICLE\\CHORUS\\12\\10.1175_jtech-d-16-0130.1.json"
-
+    json_path = "E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARTICLES\\CSIRO\\AM_39_1\\AM16013abs_lBG9pXl.json"
     def find_key(json_obj, target_key='title'):
-        if isinstance(json_obj, dict):  # Check if the object is a dictionary
-            if target_key in json_obj:  # Check if the target key is present in the dictionary
-                if isinstance(json_obj[target_key], dict):
-                    try:
-                        print(json_obj[target_key]['#text'])
-                        return json_obj[target_key]['#text']
-                    except Exception as e:
-                        print(str(json_obj[target_key]))
-                        return str(json_obj[target_key])
-            for value in json_obj.values():
-                find_key(value, target_key)  # Recursively search through the dictionary values
-        elif isinstance(json_obj, list):  # Check if the object is a list
-            for item in json_obj:
-                find_key(item, target_key)  # Recursively search through the list items
+        try:
+            for key, value in json_obj.items():
+                # Check if the key is a potential title candidate
+                if key.lower() == 'title':
+                    # Assume the title is a string value
+                    if isinstance(value, str):
+                        return print(value)
+
+                    elif isinstance(value, dict):
+                        nested_title = find_key(value)
+                        if nested_title:
+                            return nested_title
+
+            # Check if the title is not found at root
+            if isinstance(json_obj, dict):
+                # Check if the target key is present in the dictionary
+                if 'title' in json_obj:
+                    if isinstance(json_obj['title'], dict):
+                        # this is added as per observation files received from FTP. these files have object for its title and actual 
+                        # text is stored under #text key.
+                        print(json_obj['title']['#text'])
+                for value in json_obj.values():
+                    # Recursively search through the dictionary values
+                    find_key(value)
+
+            # Check if the object is a list 
+            elif isinstance(json_obj, list):
+                for item in json_obj:
+                    # Recursively search through the list items
+                    find_key(item)
+            return None
+        except Exception as e:
+            return None
 
     with open(json_path, 'rb') as f:
         json_obj = json.load(f)

@@ -17,6 +17,7 @@ import json
 import pytz
 import datetime
 import shutil
+from xml.sax.saxutils import escape, unescape
 
 
 # record type options for article table
@@ -78,9 +79,8 @@ class Article_attributes_serializer(ModelSerializer):
 
 # article attribute viewset
 class Article_attributes_viewset(ModelViewSet):
-    queryset = Article_attributes.objects.all()
+    queryset = Article_attributes.objects.all()[:10]
     serializer_class = Article_attributes_serializer
-
 
 
 # update archive artile flags if processed
@@ -106,50 +106,89 @@ def is_any_zipped_remains(source):
 # Function to remove speccial characters that are causing exception while storing to db
 def remove_incorrect_values(input_string):
     # Define a regular expression pattern to match non-alphanumeric characters
-    pattern = re.compile(r'[^a-zA-Z0-9\s]')  # Keep letters, numbers, and spaces
-    
-    # Use the pattern to substitute non-alphanumeric characters with an empty string
-    cleaned_string = re.sub(pattern, '', input_string)
-    
-    return cleaned_string
+    if isinstance(input_string, str):
+        input_string.replace('\u2010;', '-').replace('&#x2019;', '-')
+        pattern = re.compile(r'[^a-zA-Z0-9\s]')  # Keep letters, numbers, and spaces
 
+        # Use the pattern to substitute non-alphanumeric characters with an empty string
+        cleaned_string = re.sub(pattern, '', input_string)
+        return str(cleaned_string)
+    return input_string
+
+
+# XML files received from multiple sources may have different strucutre.
+# Nested looping / traversing of JSON failes with unknown reson. Hence listing the known types
+
+# This function need through testing. After multiple try due to incorrect formate in json this function fails sometime
+# That is why know format of the jsons are listed
+def travers_json_for_title(json_obj):
+    try:
+        if isinstance(json_obj, dict):
+            if 'title' in json_obj:
+                # return escape(json_obj['title'])
+                if isinstance(json_obj['title'], str):
+                    print(json_obj['title'])
+                    return remove_incorrect_values(json_obj['title'].strip())
+                
+                if isinstance(json_obj['title'], dict):
+                    print(json_obj['title'])
+                    # XML files received from FTP are having title as dictionary
+                    return remove_incorrect_values(json_obj['title']['#text'].strip())
+                elif isinstance(json_obj['title'], list):
+                    print(json_obj['title'])
+                    # XML files received from cross ref are of type list
+                    return remove_incorrect_values(json_obj['title'][0].strip())                 
+                else:
+                    print(json_obj['title'])
+                    return remove_incorrect_values(json_obj['title'].strip())
+            for value in json_obj.values():
+                find_title(value)
+        elif isinstance(json_obj, list):
+            for item in json_obj:
+                find_title(item)
+    except Exception as e:
+        print(e)
+        return None
 
 # find title of the json content
 def find_title(json_obj):
     try:
-        for key, value in json_obj.items():
-            # Check if the key is a potential title candidate
-            if key.lower() == 'title':
-                # Assume the title is a string value
-                if isinstance(value, str):
-                    return remove_incorrect_values(value)
-
-                elif isinstance(value, dict):
-                    nested_title = find_title(value)
-                    if nested_title:
-                        return nested_title
-
-        # Check if the title is not found at root
-        if isinstance(json_obj, dict):
-            # Check if the target key is present in the dictionary
-            if 'title' in json_obj:
-                if isinstance(json_obj['title'], dict):
-                    # this is added as per observation files received from FTP. these files have object for its title and actual 
-                    # text is stored under #text key.
-                    return remove_incorrect_values(json_obj['title']['#text'])
-            for value in json_obj.values():
-                # Recursively search through the dictionary values
-                find_title(value)
-
-        # Check if the object is a list 
-        elif isinstance(json_obj, list):
-            for item in json_obj:
-                # Recursively search through the list items
-                find_title(item)
-        return None
+        # in some files this is the structure of title
+        return remove_incorrect_values(json_obj['front']['titlegrp']['title'].strip())
     except Exception as e:
-        return None
+        pass
 
+    try:
+        # in some files this is the structure of title
+        return remove_incorrect_values(json_obj['front']['titlegrp']['title']['#text'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        # in some files this is the structure of title
+        return remove_incorrect_values(json_obj['message']['title'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        # in some files this is the structure of title
+        return remove_incorrect_values(json_obj['message']['title'][0].strip())
+    except Exception as e:
+        pass
+
+    try:
+        # in some files this is the structure of title
+        return remove_incorrect_values(json_obj['title'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        # in some files this is the structure of title
+        return remove_incorrect_values(json_obj['article']['front']['article-meta']['title-group']['article-title']['#text'].strip())
+    except Exception as e:
+        pass
+
+    return None
 
 # if archived articles are updated than we need to update articles file
 def update_exisiting_object(source, row):
@@ -395,3 +434,36 @@ def migrate_to_step2(request):
 
 
     return Response("executed succcessfully")
+
+
+
+@api_view(['GET'])
+def update_title(request):
+    qs = Article_attributes.objects.all()
+    i = 0
+    for q in qs:
+        if q.title in (None, ''):
+            path = 'ARTICLES/' + q.article_file.name
+            with open(path, 'rb') as e:
+                f = json.load(e)
+                x = find_title(f)
+                if x == None:
+                    print("#########################333", path, "not update")
+                else:
+                    i = i + 1
+
+            try:
+                q.save()
+            except Exception as e:
+                print("#########################333", path, "not update", e ,"#########################333")
+    return Response(str(i))
+        
+
+@api_view(['GET'])
+def check_title(request):
+    # find title of the json content
+    with open('ARTICLES/CROSSREF/10.1128_aac.29.4.720-a_s1lLnLj.json','rb') as f:
+        json_obj =  json.load(f)
+
+    x = find_title(json_obj)
+    return Response(x)
