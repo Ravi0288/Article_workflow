@@ -102,22 +102,53 @@ def is_any_zipped_remains(source):
     return False
 
 
+# at many places xml file title having incorrect or special symbols.
+# Function to remove speccial characters that are causing exception while storing to db
+def remove_incorrect_values(input_string):
+    # Define a regular expression pattern to match non-alphanumeric characters
+    pattern = re.compile(r'[^a-zA-Z0-9\s]')  # Keep letters, numbers, and spaces
+    
+    # Use the pattern to substitute non-alphanumeric characters with an empty string
+    cleaned_string = re.sub(pattern, '', input_string)
+    
+    return cleaned_string
+
+
 # find title of the json content
 def find_title(json_obj):
-    for key, value in json_obj.items():
-        # Check if the key is a potential title candidate
-        if key.lower() == 'title':
-            # Assume the title is a string value
-            if isinstance(value, str):
-                return value
-            # If the value is another dictionary, recursively search for the title
-            elif isinstance(value, dict):
-                nested_title = find_title(value)
-                if nested_title:
-                    return nested_title
+    try:
+        for key, value in json_obj.items():
+            # Check if the key is a potential title candidate
+            if key.lower() == 'title':
+                # Assume the title is a string value
+                if isinstance(value, str):
+                    return remove_incorrect_values(value)
 
-    # If no title is found
-    return None
+                elif isinstance(value, dict):
+                    nested_title = find_title(value)
+                    if nested_title:
+                        return nested_title
+
+        # Check if the title is not found at root
+        if isinstance(json_obj, dict):
+            # Check if the target key is present in the dictionary
+            if 'title' in json_obj:
+                if isinstance(json_obj['title'], dict):
+                    # this is added as per observation files received from FTP. these files have object for its title and actual 
+                    # text is stored under #text key.
+                    return remove_incorrect_values(json_obj['title']['#text'])
+            for value in json_obj.values():
+                # Recursively search through the dictionary values
+                find_title(value)
+
+        # Check if the object is a list 
+        elif isinstance(json_obj, list):
+            for item in json_obj:
+                # Recursively search through the list items
+                find_title(item)
+        return None
+    except Exception as e:
+        return None
 
 
 # if archived articles are updated than we need to update articles file
@@ -165,7 +196,7 @@ def create_new_object(source, row):
     except Exception as e:
         # if exception occures create new record with status as failed
         Article_attributes.objects.create(
-            title = "Error occured for Archive Article id number" + str(row.id) + 'and file path :' + row.file_content.name,
+            title = "Error occured for Archive Article id number  " + str(row.id) + " and file path : " + row.file_content.name,
             type_of_record = 'N/A',
             provider = row.provider,
             archive = row,
