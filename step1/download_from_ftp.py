@@ -105,7 +105,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
 @api_view(['GET'])
 def download_from_ftp(request):
     # get all providers that are due to be accessed today
-    due_for_download = Provider_meta_data_FTP.objects.all()
+    due_for_download = Provider_meta_data_FTP.objects.all().exclude(provider__working_name__in=('CSIRO', 'Hindawi'))
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
@@ -114,7 +114,7 @@ def download_from_ftp(request):
     # if providers are due to be accessed
     for item in due_for_download:
 
-        # try to ftp_connection to FTP, if error occures update the record
+        # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
             ftp_connection = ftplib.FTP(item.server)
             ftp_connection.login(item.account, item.pswd)
@@ -144,13 +144,13 @@ def download_from_ftp(request):
                 except Exception as e:
                     pass
 
-        # update the last status
+        # update the succes status to Provider_meta_data_FTP
         item.last_pull_time = datetime.datetime.now(tz=pytz.utc)
         item.last_pull_status = 'success'
         item.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.minimum_delivery_fq)
         item.save()
 
-        # quite the ftp_connectionion
+        # quite the current ftp connection 
         ftp_connection.quit()
 
     return HttpResponse("done")

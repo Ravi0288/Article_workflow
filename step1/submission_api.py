@@ -12,6 +12,7 @@ from django.core.files.base import ContentFile
 import json
 from django.conf import settings
 import zipfile
+from rest_framework.response import Response
 
 
 # function to zip folder
@@ -129,7 +130,7 @@ def download_from_submission_api(request):
     except Exception as e:
         print(e)
 
-    return HttpResponse("done")
+    return Response("done")
 
 
 

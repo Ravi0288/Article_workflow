@@ -98,7 +98,7 @@ def save_files(publishers,api):
                         # if existing content == received content do nothing
                         fname = os.path.join(settings.CHORUS_ROOT, file_name)
                         
-                        # read the existing files
+                        # read the existing file
                         f = open(fname, 'r')
                         jsonified_content = json.load(f)
                         f.close()

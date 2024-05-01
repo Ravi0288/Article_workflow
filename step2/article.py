@@ -150,8 +150,74 @@ def travers_json_for_title(json_obj):
         print(e)
         return None
 
+
+# find doi function to find doi
+def find_doi(json_obj):
+    try:
+        for item in json_obj['article']['front']['article-meta']['article-id']:
+            if item['@pub-id-type'] == 'doi':
+                return item['#text']
+    except Exception as e:
+        pass
+
+    try:
+        for item in json_obj['front']['article-meta']['article-id']:
+            if item['@pub-id-type'] == 'doi':
+                return item['#text']
+    except Exception as e:
+        pass
+
+    try:
+        return json_obj['front']['pubfront']['doi']
+    except:
+        pass
+
+    try:
+        return json_obj['DOI']
+    except:
+        pass 
+
+    try:
+        return json_obj['message']['DOI']
+    except:
+        pass
+
+    return None
+
+
 # find title of the json content
 def find_title(json_obj):
+
+    try:
+        return remove_incorrect_values(json_obj['back']['ref-list']['ref'][0]['element-citation']['article-title'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        return remove_incorrect_values(json_obj['back']['ref-list']['ref'][0]['element-citation']['article-title']['#text'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        return remove_incorrect_values(json_obj['front']['journal-meta']['journal-title-group']['journal-title'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        return remove_incorrect_values(json_obj['back']['ref-list']['ref'][0]['element-citation']['article-title'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        return remove_incorrect_values(json_obj['article']['front']['article-meta']['title-group']['article-title'].strip())
+    except Exception as e:
+        pass
+
+    try:
+        return remove_incorrect_values(json_obj['front']['article-meta']['title-group']['#text'].strip())
+    except Exception as e:
+        pass
+
     try:
         # in some files this is the structure of title
         return remove_incorrect_values(json_obj['front']['titlegrp']['title'].strip())
@@ -217,7 +283,6 @@ def create_new_object(source, row):
         qs.last_stage = 2
         qs.last_status = 'completed'
         qs.note = "success"
-        qs.DOI = row.unique_key
         qs.PID = "A locally assign identifie"
         qs.MMSID = "The article's Alma identifer"
         qs.provider_rec = "indentf"
@@ -227,6 +292,7 @@ def create_new_object(source, row):
         with open(source, 'rb') as f:
             file_content = json.load(f)
             qs.title = find_title(file_content)
+            qs.DOI = find_doi(file_content)
             f.seek(0)
             qs.article_file.save(x, ContentFile(f.read()))
 
@@ -276,6 +342,7 @@ def segregate_article(article_set, json_file_path, row):
     # delete the old file
     os.remove(json_file_path)
 
+
 # function to check if the file has more than one record
 def is_mulitple_record(json_file_path, row):
     with open(json_file_path, 'r') as file:
@@ -286,7 +353,6 @@ def is_mulitple_record(json_file_path, row):
             return True
         else:
             return False
-
 
 
 
@@ -435,12 +501,26 @@ def migrate_to_step2(request):
 
     return Response("executed succcessfully")
 
-
+@api_view(['GET'])
+def update_doi(request):
+    qs = Article_attributes.objects.all()
+    i = 0
+    x = []
+    for q in qs:
+        i = i + 1
+        path = 'ARTICLES/' + q.article_file.name
+        with open(path, 'rb') as e:
+            f = json.load(e)
+            q.DOI = find_doi(f)
+            if find_doi(f) == None:
+                x.extend(path)
+    return Response(x)
 
 @api_view(['GET'])
 def update_title(request):
     qs = Article_attributes.objects.all()
     i = 0
+    j = 0
     for q in qs:
         if q.title in (None, ''):
             path = 'ARTICLES/' + q.article_file.name
@@ -448,21 +528,22 @@ def update_title(request):
                 f = json.load(e)
                 x = find_title(f)
                 if x == None:
-                    print("#########################333", path, "not update")
+                    j=j+1
+                    print("######################", path, "not update")
                 else:
                     i = i + 1
 
             try:
                 q.save()
             except Exception as e:
-                print("#########################333", path, "not update", e ,"#########################333")
-    return Response(str(i))
+                print("#########################333", path ,"#########################333")
+    return Response(str(j))
         
 
 @api_view(['GET'])
 def check_title(request):
     # find title of the json content
-    with open('ARTICLES/CROSSREF/10.1128_aac.29.4.720-a_s1lLnLj.json','rb') as f:
+    with open('ARTICLES/Hindawi/hindawi_2019_12_2/volume-2019/journals/JAMC/8970624.ref.json','rb') as f:
         json_obj =  json.load(f)
 
     x = find_title(json_obj)
