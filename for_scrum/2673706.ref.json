@@ -1,0 +1,2691 @@
+{
+    "back": {
+        "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "@xsi:noNamespaceSchemaLocation": "http://jats.nlm.nih.gov/publishing/1.1/xsd/JATS-journalpublishing1-mathml3.xsd",
+        "@xmlns:mml": "http://www.w3.org/1998/Math/MathML",
+        "@xmlns:xlink": "http://www.w3.org/1999/xlink",
+        "ref-list": {
+            "ref": [
+                {
+                    "@id": "B1",
+                    "@content-type": "article",
+                    "label": "1",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Klarquist",
+                                    "given-names": "E."
+                                },
+                                {
+                                    "surname": "Chen",
+                                    "given-names": "X."
+                                },
+                                {
+                                    "surname": "Carter",
+                                    "given-names": "A."
+                                }
+                            ]
+                        },
+                        "article-title": "Novel QTL for stripe rust resistance on chromosomes 4A and 6B in soft white winter wheat cultivars",
+                        "source": {
+                            "italic": "Agronomy"
+                        },
+                        "year": "2016",
+                        "volume": "6",
+                        "issue": "1",
+                        "fpage": "4",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.3390/agronomy6010004"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84959017966"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B2",
+                    "@content-type": "book",
+                    "label": "2",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "FAOSTAT"
+                            }
+                        },
+                        "source": {
+                            "italic": "Food and Agriculture Organization of The United Nations Statistics Division"
+                        },
+                        "year": "2016",
+                        "publisher-loc": "Rome, Italy",
+                        "publisher-name": "FAO"
+                    }
+                },
+                {
+                    "@id": "B3",
+                    "@content-type": "article",
+                    "label": "3",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Voss-Fels",
+                                    "given-names": "K."
+                                },
+                                {
+                                    "surname": "Frisch",
+                                    "given-names": "M."
+                                },
+                                {
+                                    "surname": "Qian",
+                                    "given-names": "L."
+                                },
+                                {
+                                    "surname": "Kontowski",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "Friedt",
+                                    "given-names": "W."
+                                },
+                                {
+                                    "surname": "Gottwald",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "Snowdon",
+                                    "given-names": "R. J."
+                                }
+                            ]
+                        },
+                        "article-title": "Subgenomic diversity patterns caused by directional selection in bread wheat gene pools",
+                        "source": {
+                            "italic": "The Plant Genome"
+                        },
+                        "year": "2015",
+                        "volume": "8",
+                        "issue": "2",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.3835/plantgenome2015.03.0013"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84937010523"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B4",
+                    "@content-type": "article",
+                    "label": "4",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Sharma",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Joshi",
+                                    "given-names": "A. K."
+                                },
+                                {
+                                    "surname": "Trethowan",
+                                    "given-names": "R."
+                                }
+                            ]
+                        },
+                        "article-title": "High yielding spring bread wheat germplasm for global irrigated and rainfed production systems",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2007",
+                        "volume": "157",
+                        "issue": "3",
+                        "fpage": "351",
+                        "lpage": "363",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-006-9346-6"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-34548591216"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B5",
+                    "@content-type": "incollection",
+                    "label": "5",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": [
+                            {
+                                "@person-group-type": "author",
+                                "name": {
+                                    "surname": "Pena",
+                                    "given-names": "R. J."
+                                }
+                            },
+                            {
+                                "@person-group-type": "editor",
+                                "name": [
+                                    {
+                                        "surname": "Curtis",
+                                        "given-names": "B. C."
+                                    },
+                                    {
+                                        "surname": "Rjaram",
+                                        "given-names": "S."
+                                    },
+                                    {
+                                        "surname": "Macpherson",
+                                        "given-names": "H. G."
+                                    }
+                                ]
+                            }
+                        ],
+                        "article-title": "Wheat for Bread and Other Foods",
+                        "source": {
+                            "italic": "Bread Wheat: Improvement and Production"
+                        },
+                        "year": "2002",
+                        "publisher-loc": "Rome",
+                        "publisher-name": "FAO"
+                    }
+                },
+                {
+                    "@id": "B6",
+                    "@content-type": "book",
+                    "label": "6",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Macindoe",
+                                    "given-names": "S. L."
+                                },
+                                {
+                                    "surname": "Brown",
+                                    "given-names": "C. W."
+                                }
+                            ]
+                        },
+                        "source": {
+                            "italic": "Wheat Breeding and Varieties in Australia"
+                        },
+                        "year": "1968",
+                        "edition": "3rd",
+                        "publisher-loc": "Sydney",
+                        "publisher-name": "Division of Plant Industry, New South Wales Dept. of Agriculture"
+                    }
+                },
+                {
+                    "@id": "B7",
+                    "@content-type": "article",
+                    "label": "7",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Tadesse",
+                                    "given-names": "W."
+                                },
+                                {
+                                    "surname": "Manes",
+                                    "given-names": "Y."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Payne",
+                                    "given-names": "T."
+                                },
+                                {
+                                    "surname": "Braun",
+                                    "given-names": "H. J."
+                                }
+                            ]
+                        },
+                        "article-title": "Adaptation and performance of CIMMYT spring wheat genotypes targeted to high rainfall areas of the world",
+                        "source": {
+                            "italic": "Crop Science"
+                        },
+                        "year": "2010",
+                        "volume": "50",
+                        "issue": "6",
+                        "fpage": "2240",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.2135/cropsci2010.02.0102"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-78650146665"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B8",
+                    "@content-type": "article",
+                    "label": "8",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "McIntosh",
+                                "given-names": "R. A."
+                            }
+                        },
+                        "article-title": "From farrer to the Australian cereal rust control program",
+                        "source": {
+                            "italic": "Australian Journal of Agricultural Research"
+                        },
+                        "year": "2007",
+                        "volume": "58",
+                        "issue": "6",
+                        "fpage": "550",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1071/ar07148"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-34347351343"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B9",
+                    "@content-type": "misc",
+                    "label": "9",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Australian bureau of statistics"
+                            }
+                        },
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.abs.gov.au/",
+                                "#text": "http://www.abs.gov.au/"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B10",
+                    "@content-type": "article",
+                    "label": "10",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R. A."
+                                },
+                                {
+                                    "surname": "Brown",
+                                    "given-names": "G. N."
+                                }
+                            ]
+                        },
+                        "article-title": "Anticipatory breeding for resistance to rust diseases in wheat",
+                        "source": {
+                            "italic": "Annual Review of Phytopathology"
+                        },
+                        "year": "1997",
+                        "volume": "35",
+                        "issue": "1",
+                        "fpage": "311",
+                        "lpage": "326",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1146/annurev.phyto.35.1.311"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-0030614139"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B11",
+                    "@content-type": "phdthesis",
+                    "label": "11",
+                    "element-citation": {
+                        "@publication-type": "thesis",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Thomson",
+                                "given-names": "B. R."
+                            }
+                        },
+                        "source": {
+                            "italic": "Genetic diversity in wheat: analysis using diversity arrays technology (DArT) in bread and durum wheats [Ph.D. dissertation]"
+                        },
+                        "year": "2011",
+                        "publisher-loc": "Australia",
+                        "publisher-name": "The University of Sydney"
+                    }
+                },
+                {
+                    "@id": "B12",
+                    "@content-type": "book",
+                    "label": "12",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Hare",
+                                "given-names": "R."
+                            }
+                        },
+                        "source": {
+                            "italic": "Agronomy of the Durum Wheats Kamilarui, Yallaroi, Wollaroi and EGA Bellaroi"
+                        },
+                        "year": "2006",
+                        "publisher-loc": "New South Wales",
+                        "publisher-name": "&#x201C;Primefacts 140&#x201D; New South Wales Department of Primary Industries",
+                        "fpage": "1",
+                        "lpage": "8"
+                    }
+                },
+                {
+                    "@id": "B13",
+                    "@content-type": "book",
+                    "label": "13",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Bonjean",
+                                    "given-names": "A. P."
+                                },
+                                {
+                                    "surname": "Angus",
+                                    "given-names": "W. J."
+                                }
+                            ]
+                        },
+                        "source": {
+                            "italic": "The World Wheat Book: a History of Wheat Breeding"
+                        },
+                        "year": "2001",
+                        "publisher-loc": "London",
+                        "publisher-name": "Intercept"
+                    }
+                },
+                {
+                    "@id": "B14",
+                    "@content-type": "article",
+                    "label": "14",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Kislev",
+                                "given-names": "M."
+                            }
+                        },
+                        "article-title": "Stem rust of wheat 3300 years old found in Israel",
+                        "source": {
+                            "italic": "Science"
+                        },
+                        "year": "1982",
+                        "volume": "216",
+                        "issue": "4549",
+                        "fpage": "993",
+                        "lpage": "994",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1126/science.216.4549.993"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-0005160014"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B15",
+                    "@content-type": "book",
+                    "label": "15",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Wellings",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                }
+                            ]
+                        },
+                        "source": {
+                            "italic": "Wheat Rusts: An Atlas of Resistance Genes"
+                        },
+                        "year": "1995",
+                        "publisher-loc": "Australia",
+                        "publisher-name": "CSIRO Publishing"
+                    }
+                },
+                {
+                    "@id": "B16",
+                    "@content-type": "book",
+                    "label": "16",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Roelfs",
+                                    "given-names": "A. P."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Saari",
+                                    "given-names": "E. E."
+                                }
+                            ]
+                        },
+                        "source": {
+                            "italic": "Rust Diseases of Wheat: Concepts and Methods of Disease Management"
+                        },
+                        "year": "1992",
+                        "publisher-loc": "Mexico",
+                        "publisher-name": "CIMMYT"
+                    }
+                },
+                {
+                    "@id": "B17",
+                    "@content-type": "book",
+                    "label": "17",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Carver",
+                                "given-names": "B. F."
+                            }
+                        },
+                        "source": {
+                            "italic": "Wheat Science and Trade"
+                        },
+                        "year": "2009",
+                        "publisher-loc": "Hoboken, NJ, USA",
+                        "publisher-name": "Wiley-Blackwell"
+                    }
+                },
+                {
+                    "@id": "B18",
+                    "@content-type": "article",
+                    "label": "18",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Bolton",
+                                    "given-names": "M. D."
+                                },
+                                {
+                                    "surname": "Kolmer",
+                                    "given-names": "J. A."
+                                },
+                                {
+                                    "surname": "Garvin",
+                                    "given-names": "D. F."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Puccinia triticina",
+                            "#text": "Wheat leaf rust caused by"
+                        },
+                        "source": {
+                            "italic": "Molecular Plant Pathology"
+                        },
+                        "year": "2008",
+                        "volume": "9",
+                        "issue": "5",
+                        "fpage": "563",
+                        "lpage": "575",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1111/j.1364-3703.2008.00487.x"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-49749099566"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B19",
+                    "@content-type": "book",
+                    "label": "19",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Agrios",
+                                "given-names": "G. N."
+                            }
+                        },
+                        "source": {
+                            "italic": "Plant Pathology"
+                        },
+                        "year": "2005",
+                        "publisher-loc": "Amsterdam",
+                        "publisher-name": "Elsevier Academic Press"
+                    }
+                },
+                {
+                    "@id": "B20",
+                    "@content-type": "book",
+                    "label": "20",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Carena",
+                                "given-names": "J. M."
+                            }
+                        },
+                        "source": {
+                            "italic": "Hand book of Plant Breeding-Cereals"
+                        },
+                        "year": "2009",
+                        "publisher-loc": "Berlin",
+                        "publisher-name": "Springer"
+                    }
+                },
+                {
+                    "@id": "B21",
+                    "@content-type": "article",
+                    "label": "21",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Reynolds",
+                                    "given-names": "M. P."
+                                },
+                                {
+                                    "surname": "Borlaug",
+                                    "given-names": "N. E."
+                                }
+                            ]
+                        },
+                        "article-title": "Applying innovations and new technologies for international collaborative wheat improvement",
+                        "source": {
+                            "italic": "The Journal of Agricultural Science"
+                        },
+                        "year": "2006",
+                        "volume": "144",
+                        "issue": "2",
+                        "fpage": "95",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1017/s0021859606005879"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-33646502833"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B22",
+                    "@content-type": "article",
+                    "label": "22",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Hodson",
+                                    "given-names": "D. P."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Jin",
+                                    "given-names": "Y."
+                                },
+                                {
+                                    "surname": "Bhavani",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "Njau",
+                                    "given-names": "P."
+                                },
+                                {
+                                    "surname": "Herrera-Foessel",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "P. K."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "Govindan",
+                                    "given-names": "V."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Ug99",
+                            "#text": "The emergence of  races of the stem rust fungus is a threat to world wheat production"
+                        },
+                        "source": {
+                            "italic": "Annual Review of Phytopathology"
+                        },
+                        "year": "2011",
+                        "volume": "49",
+                        "issue": "1",
+                        "fpage": "465",
+                        "lpage": "481",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1146/annurev-phyto-072910-095423"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-80051740988"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B23",
+                    "@content-type": "article",
+                    "label": "23",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Bariana",
+                                    "given-names": "H. S."
+                                },
+                                {
+                                    "surname": "Brown",
+                                    "given-names": "G. N."
+                                },
+                                {
+                                    "surname": "Bansal",
+                                    "given-names": "U. K."
+                                },
+                                {
+                                    "surname": "Miah",
+                                    "given-names": "H."
+                                },
+                                {
+                                    "surname": "Standen",
+                                    "given-names": "G. E."
+                                },
+                                {
+                                    "surname": "Lu",
+                                    "given-names": "M."
+                                }
+                            ]
+                        },
+                        "article-title": "Breeding triple rust resistant wheat cultivars for Australia using conventional and marker-assisted selection technologies",
+                        "source": {
+                            "italic": "Australian Journal of Agricultural Research"
+                        },
+                        "year": "2007a",
+                        "volume": "58",
+                        "issue": "6",
+                        "fpage": "576",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1071/ar07124"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-34347350253"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B24",
+                    "@content-type": "article",
+                    "label": "24",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Germ&#x00E1;n",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "McCallum",
+                                    "given-names": "B. D."
+                                },
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                },
+                                {
+                                    "surname": "Chen",
+                                    "given-names": "W. Q."
+                                },
+                                {
+                                    "surname": "Bhardwaj",
+                                    "given-names": "S. C."
+                                },
+                                {
+                                    "surname": "Goyeau",
+                                    "given-names": "H."
+                                }
+                            ]
+                        },
+                        "article-title": "Global status of wheat leaf rust caused by Puccinia triticina",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2011",
+                        "volume": "179",
+                        "issue": "1",
+                        "fpage": "143",
+                        "lpage": "160",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-011-0361-x"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-79953739598"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B25",
+                    "@content-type": "book",
+                    "label": "25",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "CABI"
+                            }
+                        },
+                        "source": {
+                            "italic": "Disease Resistance in Wheat"
+                        },
+                        "year": "2012",
+                        "edition": "1st",
+                        "publisher-loc": "Cambridge, MA, USA",
+                        "publisher-name": "CABI Wallingford, Oxfordshire"
+                    }
+                },
+                {
+                    "@id": "B26",
+                    "@content-type": "book",
+                    "label": "26",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Chester",
+                                "given-names": "K. S."
+                            }
+                        },
+                        "source": {
+                            "italic": "The Nature and Prevention of the Cereal Rusts as Exemplified in the Leaf Rust of Wheat"
+                        },
+                        "year": "1946",
+                        "publisher-loc": "Walthan, MA, USA",
+                        "publisher-name": "Chronica Botanica Company"
+                    }
+                },
+                {
+                    "@id": "B27",
+                    "@content-type": "book",
+                    "label": "27",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Simmonds",
+                                    "given-names": "N. W."
+                                },
+                                {
+                                    "surname": "Rajaram",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "International Maize and Wheat Improvement Center"
+                                }
+                            ]
+                        },
+                        "source": {
+                            "italic": "Breeding Strategies for Resistance to the Rusts of Wheat"
+                        },
+                        "year": "1988",
+                        "publisher-loc": "M&#x00E9;xico",
+                        "publisher-name": "CIMMYT"
+                    }
+                },
+                {
+                    "@id": "B28",
+                    "@content-type": "article",
+                    "label": "28",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Murray",
+                                    "given-names": "G. M."
+                                },
+                                {
+                                    "surname": "Brennan",
+                                    "given-names": "J. P."
+                                }
+                            ]
+                        },
+                        "article-title": "Estimating disease losses to the Australian wheat industry",
+                        "source": {
+                            "italic": "Australasian Plant Pathology"
+                        },
+                        "year": "2009",
+                        "volume": "38",
+                        "issue": "6",
+                        "fpage": "558",
+                        "lpage": "570",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1071/ap09053"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-70350303116"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B29",
+                    "@content-type": "article",
+                    "label": "29",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Kolmer",
+                                "given-names": "J."
+                            }
+                        },
+                        "article-title": "Leaf rust of wheat: pathogen biology, variation and host resistance",
+                        "source": {
+                            "italic": "Forests"
+                        },
+                        "year": "2013",
+                        "volume": "4",
+                        "issue": "1",
+                        "fpage": "70",
+                        "lpage": "84",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.3390/f4010070"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84883279803"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B30",
+                    "@content-type": "misc",
+                    "label": "30",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "FAO"
+                            }
+                        },
+                        "article-title": "Bread wheat",
+                        "year": "2002",
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.fao.org",
+                                "#text": "http://www.fao.org"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B31",
+                    "@content-type": "article",
+                    "label": "31",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Pretorius",
+                                    "given-names": "Z. A."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Wagoire",
+                                    "given-names": "W. W."
+                                },
+                                {
+                                    "surname": "Payne",
+                                    "given-names": "T. S."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Sr31",
+                                "Puccinia graminis",
+                                "triticiin"
+                            ],
+                            "#text": "Detection of virulence to wheat stem rust resistance gene  in  f. sp.  Uganda"
+                        },
+                        "source": {
+                            "italic": "Plant Disease"
+                        },
+                        "year": "2000",
+                        "volume": "84",
+                        "issue": "2",
+                        "fpage": "203",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1094/pdis.2000.84.2.203b"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-77955177744"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B32",
+                    "@content-type": "article",
+                    "label": "32",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Park",
+                                "given-names": "R. F."
+                            }
+                        },
+                        "article-title": "Stem rust of wheat in Australia",
+                        "source": {
+                            "italic": "Australian Journal of Agricultural Research"
+                        },
+                        "year": "2007",
+                        "volume": "58",
+                        "issue": "6",
+                        "fpage": "558",
+                        "lpage": "566",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1071/AR07117"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-34347340671"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B33",
+                    "@content-type": "article",
+                    "label": "33",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Pardey",
+                                    "given-names": "P. G."
+                                },
+                                {
+                                    "surname": "Beddow",
+                                    "given-names": "J. M."
+                                },
+                                {
+                                    "surname": "Kriticos",
+                                    "given-names": "D. J."
+                                },
+                                {
+                                    "surname": "Hurley",
+                                    "given-names": "T. M."
+                                },
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                },
+                                {
+                                    "surname": "Duveiller",
+                                    "given-names": "E."
+                                },
+                                {
+                                    "surname": "Sutherst",
+                                    "given-names": "R. W."
+                                },
+                                {
+                                    "surname": "Burdon",
+                                    "given-names": "J. J."
+                                },
+                                {
+                                    "surname": "Hodson",
+                                    "given-names": "D."
+                                }
+                            ]
+                        },
+                        "article-title": "Right-sizing stem-rust research",
+                        "source": {
+                            "italic": "Science"
+                        },
+                        "year": "2013",
+                        "volume": "340",
+                        "issue": "6129",
+                        "fpage": "147",
+                        "lpage": "148",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1126/science.122970"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84944454713"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B34",
+                    "@content-type": "article",
+                    "label": "34",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Bux",
+                                    "given-names": "H."
+                                },
+                                {
+                                    "surname": "Rasheed",
+                                    "given-names": "A."
+                                },
+                                {
+                                    "surname": "Siyal",
+                                    "given-names": "M. A."
+                                },
+                                {
+                                    "surname": "Kazi",
+                                    "given-names": "A. G."
+                                },
+                                {
+                                    "surname": "Napar",
+                                    "given-names": "A. A."
+                                },
+                                {
+                                    "surname": "Mujeeb-Kazi",
+                                    "given-names": "A."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Puccinia striiformis",
+                                "tritici"
+                            ],
+                            "#text": "An overview of stripe rust of wheat ( f. sp. ) in Pakistan"
+                        },
+                        "source": {
+                            "italic": "Archives of Phytopathology and Plant Protection"
+                        },
+                        "year": "2012",
+                        "volume": "45",
+                        "issue": "19",
+                        "fpage": "2278",
+                        "lpage": "2289",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1080/03235408.2012.726399"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84868225757"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B35",
+                    "@content-type": "article",
+                    "label": "35",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Wellings",
+                                "given-names": "C. R."
+                            }
+                        },
+                        "article-title": "Global status of stripe rust: a review of historical and current threats",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2011",
+                        "volume": "179",
+                        "issue": "1",
+                        "fpage": "129",
+                        "lpage": "141",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-011-0360-y"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-79953743516"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B36",
+                    "@content-type": "article",
+                    "label": "36",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Chen",
+                                "given-names": "X. M."
+                            }
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Puccinia striiformis",
+                                "tritici"
+                            ],
+                            "#text": "Epidemiology and control of stripe rust [ f. sp. ] on wheat"
+                        },
+                        "source": {
+                            "italic": "Canadian Journal of Plant Pathology"
+                        },
+                        "year": "2005",
+                        "volume": "27",
+                        "issue": "3",
+                        "fpage": "314",
+                        "lpage": "337",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1080/07060660509507230"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-29644446925"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B37",
+                    "@content-type": "article",
+                    "label": "37",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Wellings",
+                                "given-names": "C. R."
+                            }
+                        },
+                        "article-title": {
+                            "italic": "Puccinia striiformis",
+                            "#text": "in Australia: a review of the incursion, evolution, and adaptation of stripe rust in the period 1979&#x2013;2006"
+                        },
+                        "source": {
+                            "italic": "Australian Journal of Agricultural Research"
+                        },
+                        "year": "2007",
+                        "volume": "58",
+                        "issue": "6",
+                        "fpage": "567",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1071/ar07130"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-34347333557"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B38",
+                    "@content-type": "article",
+                    "label": "38",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Jin",
+                                    "given-names": "Y."
+                                },
+                                {
+                                    "surname": "Szabo",
+                                    "given-names": "L. J."
+                                },
+                                {
+                                    "surname": "Carson",
+                                    "given-names": "M."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Puccinia striiformis",
+                            "#text": "Century-old mystery of  life history solved with the identification of berberis as an alternate host"
+                        },
+                        "source": {
+                            "italic": "Phytopathology"
+                        },
+                        "year": "2010",
+                        "volume": "100",
+                        "issue": "5",
+                        "fpage": "432",
+                        "lpage": "435",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1094/PHYTO-100-5-0432"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-77951973678"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B39",
+                    "@content-type": "article",
+                    "label": "39",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Fetch",
+                                    "given-names": "T."
+                                },
+                                {
+                                    "surname": "Hodson",
+                                    "given-names": "D."
+                                },
+                                {
+                                    "surname": "Jin",
+                                    "given-names": "Y."
+                                },
+                                {
+                                    "surname": "Nazari",
+                                    "given-names": "K."
+                                },
+                                {
+                                    "surname": "Prashar",
+                                    "given-names": "M."
+                                },
+                                {
+                                    "surname": "Pretorius",
+                                    "given-names": "Z."
+                                }
+                            ]
+                        },
+                        "article-title": "International surveillance of wheat rust pathogens: progress and challenges",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2011",
+                        "volume": "179",
+                        "issue": "1",
+                        "fpage": "109",
+                        "lpage": "117",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-011-0375-4"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-79953765633"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B40",
+                    "@content-type": "article",
+                    "label": "40",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Bansal",
+                                    "given-names": "U. K."
+                                },
+                                {
+                                    "surname": "Bossolini",
+                                    "given-names": "E."
+                                },
+                                {
+                                    "surname": "Miah",
+                                    "given-names": "H."
+                                },
+                                {
+                                    "surname": "Keller",
+                                    "given-names": "B."
+                                },
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                },
+                                {
+                                    "surname": "Bariana",
+                                    "given-names": "H. S."
+                                }
+                            ]
+                        },
+                        "article-title": "Genetic mapping of seedling and adult plant stem rust resistance in two European winter wheat cultivars",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2008",
+                        "volume": "164",
+                        "issue": "3",
+                        "fpage": "821",
+                        "lpage": "828",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-008-9736-z"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-55349105107"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B41",
+                    "@content-type": "article",
+                    "label": "41",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Herrera-Foessel",
+                                    "given-names": "S. A."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Calvo-Salazar",
+                                    "given-names": "V."
+                                },
+                                {
+                                    "surname": "Lan",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Lr72",
+                            "#text": "confers resistance to leaf rust in durum wheat cultivar &#x201C;Atil C2000&#x201D;"
+                        },
+                        "source": {
+                            "italic": "Plant disease"
+                        },
+                        "year": "2013",
+                        "volume": "98",
+                        "issue": "5",
+                        "fpage": "631",
+                        "lpage": "635",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1094/PDIS-07-13-0741-RE"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84898618390"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B42",
+                    "@content-type": "article",
+                    "label": "42",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Lagudah",
+                                "given-names": "E. S."
+                            }
+                        },
+                        "article-title": "Molecular genetics of race nonspecific rust resistance in wheat",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2011",
+                        "volume": "179",
+                        "issue": "1",
+                        "fpage": "81",
+                        "lpage": "91",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-010-0336-3"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-79953761236"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B43",
+                    "@content-type": "article",
+                    "label": "43",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                },
+                                {
+                                    "surname": "Mohler",
+                                    "given-names": "V."
+                                },
+                                {
+                                    "surname": "Nazari",
+                                    "given-names": "K."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "D."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Lr73",
+                                "Puccinia triticina"
+                            ],
+                            "#text": "Characterisation and mapping of gene  conferring seedling resistance to  in common wheat"
+                        },
+                        "source": {
+                            "italic": "Theoretical and Applied Genetics"
+                        },
+                        "year": "2014",
+                        "volume": "127",
+                        "issue": "9",
+                        "fpage": "2041",
+                        "lpage": "2049",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s00122-014-2359-y"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84925480257"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B44",
+                    "@content-type": "article",
+                    "label": "44",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Pretorius",
+                                    "given-names": "Z. A."
+                                },
+                                {
+                                    "surname": "Wilkinson",
+                                    "given-names": "R. D."
+                                },
+                                {
+                                    "surname": "Long",
+                                    "given-names": "D. L."
+                                },
+                                {
+                                    "surname": "Schafer",
+                                    "given-names": "J. F."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Lr13",
+                            "#text": "Detecting wheat leaf rust resistance gene  in seedlings"
+                        },
+                        "source": {
+                            "italic": "Plant Disease"
+                        },
+                        "year": "1984",
+                        "volume": "68",
+                        "issue": "1",
+                        "fpage": "585",
+                        "lpage": "586",
+                        "pub-id": {
+                            "@pub-id-type": "doi",
+                            "#text": "10.1094/pd-68-585"
+                        }
+                    }
+                },
+                {
+                    "@id": "B45",
+                    "@content-type": "article",
+                    "label": "45",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "D."
+                                },
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                },
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R. A."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Lr12",
+                                "Lr31"
+                            ],
+                            "#text": "Genetic relationship between the adult plant resistance gene  and the complementary gene  for seedling resistance to leaf rust in common wheat"
+                        },
+                        "source": {
+                            "italic": "Plant Pathology"
+                        },
+                        "year": "1999",
+                        "volume": "48",
+                        "issue": "5",
+                        "fpage": "567",
+                        "lpage": "573",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1046/j.1365-3059.1999.00391.x"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-0032848698"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B46",
+                    "@content-type": "article",
+                    "label": "46",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                },
+                                {
+                                    "surname": "Bariana",
+                                    "given-names": "H. S."
+                                },
+                                {
+                                    "surname": "Wellings",
+                                    "given-names": "C. R."
+                                },
+                                {
+                                    "surname": "Wallwork",
+                                    "given-names": "H."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Puccinia triticina",
+                                "Lr24"
+                            ],
+                            "#text": "Detection and occurrence of a new pathotype of  with virulence for  in Australia"
+                        },
+                        "source": {
+                            "italic": "Australian Journal of Agricultural Research"
+                        },
+                        "year": "2002",
+                        "volume": "53",
+                        "issue": "9",
+                        "fpage": "1069",
+                        "lpage": "1076",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1071/AR02018"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-0036378913"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B47",
+                    "@content-type": "book",
+                    "label": "47",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Wellings",
+                                    "given-names": "C. R."
+                                },
+                                {
+                                    "surname": "Bariana",
+                                    "given-names": "H. S."
+                                },
+                                {
+                                    "surname": "Bansal",
+                                    "given-names": "U. K."
+                                },
+                                {
+                                    "surname": "Park",
+                                    "given-names": "R. F."
+                                }
+                            ]
+                        },
+                        "source": {
+                            "italic": "Expected Responses of Australian Wheat and Triticale Varieties to the Cereal Rust Diseases in 2012"
+                        },
+                        "year": "2012",
+                        "publisher-loc": "Sydney",
+                        "publisher-name": "Cereal Rust Report, Plant Breeding Institute"
+                    }
+                },
+                {
+                    "@id": "B48",
+                    "@content-type": "book",
+                    "label": "48",
+                    "element-citation": {
+                        "@publication-type": "book",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Park",
+                                "given-names": "R. F."
+                            }
+                        },
+                        "source": {
+                            "italic": "Wheat Leaf Rust and Virulence for Lr23"
+                        },
+                        "year": "2012",
+                        "publisher-loc": "Sydney",
+                        "publisher-name": "Cereal Rust Report, Plant Breeding Institute"
+                    }
+                },
+                {
+                    "@id": "B49",
+                    "@content-type": "article",
+                    "label": "49",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Ellis",
+                                    "given-names": "J. G."
+                                },
+                                {
+                                    "surname": "Lagudah",
+                                    "given-names": "E. S."
+                                },
+                                {
+                                    "surname": "Spielmeyer",
+                                    "given-names": "W."
+                                },
+                                {
+                                    "surname": "Dodds",
+                                    "given-names": "P. N."
+                                }
+                            ]
+                        },
+                        "article-title": "The past, present and future of breeding rust resistant wheat",
+                        "source": {
+                            "italic": "Frontiers in Plant Science"
+                        },
+                        "year": "2014",
+                        "volume": "5",
+                        "fpage": "641",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.3389/fpls.2014.00641"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84912569711"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B50",
+                    "@content-type": "misc",
+                    "label": "50",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Herrera-Foessel",
+                                    "given-names": "S. A."
+                                },
+                                {
+                                    "surname": "Lan",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Basnet",
+                                    "given-names": "B. R."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "S."
+                                }
+                            ]
+                        },
+                        "article-title": "CIMMYT-rust-research-update",
+                        "year": "2013",
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.nvtonline.com.au/wp-content/uploads/2013/10/6-CIMMYT-Rust-Research-Update.pdf",
+                                "#text": "http://www.nvtonline.com.au/wp-content/uploads/2013/10/6-CIMMYT-Rust-Research-Update.pdf"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B51",
+                    "@content-type": "phdthesis",
+                    "label": "51",
+                    "element-citation": {
+                        "@publication-type": "thesis",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": {
+                                "surname": "Sharma",
+                                "given-names": "P. D."
+                            }
+                        },
+                        "source": {
+                            "italic": "Prediction of Disease Damage, Determination of Pathogen Survival Regions, and Characterization of International Collections of Wheat Stripe Rust [Ph. D. Dissertation]"
+                        },
+                        "year": "2012",
+                        "publisher-loc": "Washington, DC, USA",
+                        "publisher-name": "Washington State University"
+                    }
+                },
+                {
+                    "@id": "B52",
+                    "@content-type": "article",
+                    "label": "52",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Wellings",
+                                    "given-names": "C. R."
+                                },
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R. A."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Puccinia striiformis",
+                            "#text": "f. sp. tritici in Australasia: pathogenic changes during the first 10 years"
+                        },
+                        "source": {
+                            "italic": "Plant Pathology"
+                        },
+                        "year": "1990",
+                        "volume": "39",
+                        "issue": "2",
+                        "fpage": "316",
+                        "lpage": "325",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1111/j.1365-3059.1990.tb02509.x"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84987032565"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B53",
+                    "@content-type": "article",
+                    "label": "53",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Gessese",
+                                    "given-names": "M."
+                                },
+                                {
+                                    "surname": "Bariana",
+                                    "given-names": "H."
+                                },
+                                {
+                                    "surname": "Wong",
+                                    "given-names": "D."
+                                },
+                                {
+                                    "surname": "Hayden",
+                                    "given-names": "M."
+                                },
+                                {
+                                    "surname": "Bansal",
+                                    "given-names": "U."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Yr81",
+                            "#text": "Molecular mapping of stripe rust resistance gene  in a common wheat landrace Aus27430"
+                        },
+                        "source": {
+                            "italic": "Plant Disease"
+                        },
+                        "year": "2019",
+                        "volume": "103",
+                        "issue": "6",
+                        "fpage": "1166",
+                        "lpage": "1171",
+                        "pub-id": {
+                            "@pub-id-type": "doi",
+                            "#text": "10.1094/pdis-06-18-1055-re"
+                        }
+                    }
+                },
+                {
+                    "@id": "B54",
+                    "@content-type": "article",
+                    "label": "54",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Basnet",
+                                    "given-names": "B. R."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Ibrahim",
+                                    "given-names": "A. M. H."
+                                },
+                                {
+                                    "surname": "Herrera-Foessel",
+                                    "given-names": "S. A."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Lan",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Rudd",
+                                    "given-names": "J. C."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Yr54",
+                            "#text": "Characterization of  and other genes associated with adult plant resistance to yellow rust and leaf rust in common wheat Quaiu 3"
+                        },
+                        "source": {
+                            "italic": "Molecular Breeding"
+                        },
+                        "year": "2013",
+                        "volume": "33",
+                        "issue": "2",
+                        "fpage": "385",
+                        "lpage": "399",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s11032-013-9957-2"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84893054434"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B55",
+                    "@content-type": "inproceedings",
+                    "label": "55",
+                    "element-citation": {
+                        "@publication-type": "confproc",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Calvo-Salazar",
+                                    "given-names": "V."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Lagudah",
+                                    "given-names": "E. S."
+                                },
+                                {
+                                    "surname": "Herrera-Foessel",
+                                    "given-names": "S. A."
+                                }
+                            ]
+                        },
+                        "article-title": "Investigating the presence and interaction of durable rust resistance genes through molecular markers in three bread wheat populations",
+                        "conf-name": "Proceedings, BGRI 2012 Technical Workshop",
+                        "conf-date": "September 2012",
+                        "conf-loc": "Beijing"
+                    }
+                },
+                {
+                    "@id": "B56",
+                    "@content-type": "article",
+                    "label": "56",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Kaur",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Bariana",
+                                    "given-names": "H. S."
+                                }
+                            ]
+                        },
+                        "article-title": "Inheritance of adult plant stripe rust resistance in wheat cultivars kukri and sunco",
+                        "source": {
+                            "italic": "Journal of Plant Pathology"
+                        },
+                        "year": "2010",
+                        "volume": "92",
+                        "issue": "2",
+                        "fpage": "391",
+                        "lpage": "394",
+                        "pub-id": {
+                            "@pub-id-type": "doi",
+                            "#text": "10.4454/jpp.v92i2.182"
+                        }
+                    }
+                },
+                {
+                    "@id": "B57",
+                    "@content-type": "misc",
+                    "label": "57",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Dubcovsky",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Rogers",
+                                    "given-names": "W."
+                                },
+                                {
+                                    "surname": "Morris",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Appels",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Xia",
+                                    "given-names": "C."
+                                }
+                            ]
+                        },
+                        "article-title": "Catalogue of gene symbols for wheat: 2009 supplement",
+                        "year": "2009",
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2009.pdf",
+                                "#text": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2009.pdf"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B58",
+                    "@content-type": "misc",
+                    "label": "58",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R. A."
+                                },
+                                {
+                                    "surname": "Dubcovsky",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Rogers",
+                                    "given-names": "W. J."
+                                },
+                                {
+                                    "surname": "Morris",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Appels",
+                                    "given-names": "R."
+                                }
+                            ]
+                        },
+                        "article-title": "Catalogue of gene symbols for wheat: 2013-2014 supplement",
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2013.pdf",
+                                "#text": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2013.pdf"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B59",
+                    "@content-type": "misc",
+                    "label": "59",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R. A."
+                                },
+                                {
+                                    "surname": "Dubcovsky",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Rogers",
+                                    "given-names": "W. J."
+                                },
+                                {
+                                    "surname": "Morris",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Appels",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Xia",
+                                    "given-names": "X. C."
+                                }
+                            ]
+                        },
+                        "article-title": "Catalogue of gene symbols for wheat: 2011 supplement",
+                        "year": "2011",
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2011.pdf",
+                                "#text": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2011.pdf"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B60",
+                    "@content-type": "misc",
+                    "label": "60",
+                    "element-citation": {
+                        "@publication-type": "other",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "McIntosh",
+                                    "given-names": "R. A."
+                                },
+                                {
+                                    "surname": "Dubcovsky",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Rogers",
+                                    "given-names": "W. J."
+                                },
+                                {
+                                    "surname": "Morris",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Appels",
+                                    "given-names": "R."
+                                },
+                                {
+                                    "surname": "Xia",
+                                    "given-names": "X. C."
+                                }
+                            ]
+                        },
+                        "article-title": "Catalogue of gene symbols for wheat: 2012 supplement",
+                        "year": "2012",
+                        "comment": {
+                            "ext-link": {
+                                "@ext-link-type": "url",
+                                "@xlink:href": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2012.pdf",
+                                "#text": "http://www.shigen.nig.ac.jp/wheat/komugi/genes/macgene/supplement2012.pdf"
+                            }
+                        }
+                    }
+                },
+                {
+                    "@id": "B61",
+                    "@content-type": "article",
+                    "label": "61",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "R. P."
+                                },
+                                {
+                                    "surname": "Huerta-Espino",
+                                    "given-names": "J."
+                                },
+                                {
+                                    "surname": "Bhavani",
+                                    "given-names": "S."
+                                },
+                                {
+                                    "surname": "Herrera-Foessel",
+                                    "given-names": "S. A."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "D."
+                                },
+                                {
+                                    "surname": "Singh",
+                                    "given-names": "P. K."
+                                },
+                                {
+                                    "surname": "Velu",
+                                    "given-names": "G."
+                                },
+                                {
+                                    "surname": "Mason",
+                                    "given-names": "R. E."
+                                },
+                                {
+                                    "surname": "Jin",
+                                    "given-names": "Y."
+                                },
+                                {
+                                    "surname": "Njau",
+                                    "given-names": "P."
+                                },
+                                {
+                                    "surname": "Crossa",
+                                    "given-names": "J."
+                                }
+                            ]
+                        },
+                        "article-title": "Race nonspecific resistance to rust diseases in CIMMYT spring wheats",
+                        "source": {
+                            "italic": "Euphytica"
+                        },
+                        "year": "2010",
+                        "volume": "179",
+                        "issue": "1",
+                        "fpage": "175",
+                        "lpage": "186",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s10681-010-0322-9"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-79953752552"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B62",
+                    "@content-type": "article",
+                    "label": "62",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Uauy",
+                                    "given-names": "C."
+                                },
+                                {
+                                    "surname": "Brevis",
+                                    "given-names": "J. C."
+                                },
+                                {
+                                    "surname": "Chen",
+                                    "given-names": "X."
+                                },
+                                {
+                                    "surname": "Khan",
+                                    "given-names": "I."
+                                },
+                                {
+                                    "surname": "Jackson",
+                                    "given-names": "L."
+                                },
+                                {
+                                    "surname": "Chicaiza",
+                                    "given-names": "O."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": [
+                                "Yr36",
+                                "Triticum turgidum"
+                            ],
+                            "#text": "High-temperature adult-plant (HTAP) stripe rust resistance gene  from  ssp. dicoccoides is closely linked to the grain protein content locus Gpc-B1"
+                        },
+                        "source": {
+                            "italic": "Theoretical and Applied Genetics"
+                        },
+                        "year": "2005",
+                        "volume": "112",
+                        "issue": "1",
+                        "fpage": "97",
+                        "lpage": "105",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s00122-005-0109-x"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-28444487467"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B63",
+                    "@content-type": "article",
+                    "label": "63",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Xu",
+                                    "given-names": "L. S."
+                                },
+                                {
+                                    "surname": "Wang",
+                                    "given-names": "M. N."
+                                },
+                                {
+                                    "surname": "Cheng",
+                                    "given-names": "P."
+                                },
+                                {
+                                    "surname": "Kang",
+                                    "given-names": "Z. S."
+                                },
+                                {
+                                    "surname": "Hulbert",
+                                    "given-names": "S. H."
+                                },
+                                {
+                                    "surname": "Chen",
+                                    "given-names": "X. M."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Yr53",
+                            "#text": "Molecular mapping of , a new gene for stripe rust resistance in durum wheat accession PI 480148 and its transfer to common wheat"
+                        },
+                        "source": {
+                            "italic": "Theoretical and Applied Genetics"
+                        },
+                        "year": "2013",
+                        "volume": "126",
+                        "issue": "2",
+                        "fpage": "523",
+                        "lpage": "533",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s00122-012-1998-0"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84873084507"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "@id": "B64",
+                    "@content-type": "article",
+                    "label": "64",
+                    "element-citation": {
+                        "@publication-type": "journal",
+                        "person-group": {
+                            "@person-group-type": "author",
+                            "name": [
+                                {
+                                    "surname": "Zhou",
+                                    "given-names": "X. L."
+                                },
+                                {
+                                    "surname": "Wang",
+                                    "given-names": "M. N."
+                                },
+                                {
+                                    "surname": "Chen",
+                                    "given-names": "X. M."
+                                },
+                                {
+                                    "surname": "Lu",
+                                    "given-names": "Y."
+                                },
+                                {
+                                    "surname": "Kang",
+                                    "given-names": "Z. S."
+                                },
+                                {
+                                    "surname": "Jing",
+                                    "given-names": "J. X."
+                                }
+                            ]
+                        },
+                        "article-title": {
+                            "italic": "Yr59",
+                            "#text": "Identification of  conferring high-temperature adult-plant resistance to stripe rust in wheat germplasm PI 178759"
+                        },
+                        "source": {
+                            "italic": "Theoretical and Applied Genetics"
+                        },
+                        "year": "2014",
+                        "volume": "127",
+                        "issue": "4",
+                        "fpage": "935",
+                        "lpage": "945",
+                        "pub-id": [
+                            {
+                                "@pub-id-type": "doi",
+                                "#text": "10.1007/s00122-014-2269-z"
+                            },
+                            {
+                                "@pub-id-type": "other",
+                                "#text": "2-s2.0-84897091398"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

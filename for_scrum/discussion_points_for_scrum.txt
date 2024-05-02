@@ -1,0 +1,8 @@
+1: see file Hindawi/hindawi_2019_12_18/volume-2019/journals/AAG/2673706.ref.json
+ file is at root 2673706
+
+2: The file has got multiple doi, multiple journals/articles.
+
+3: What action to be performed for this type of documents?
+
+4: We can't assign DOI , title in any step without seggregating these files to multiple file.

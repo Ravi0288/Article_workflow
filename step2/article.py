@@ -8,7 +8,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import zipfile
 import xmltodict
-import re
 import os
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -17,7 +16,8 @@ import json
 import pytz
 import datetime
 import shutil
-from xml.sax.saxutils import escape, unescape
+from .common.find_doi import find_doi
+from .common.find_title import find_title
 
 
 # record type options for article table
@@ -89,172 +89,6 @@ def update_archive_article(row):
     row.processed_on = datetime.datetime.now(tz=pytz.utc)
     row.save()
 
-
-# function to check if there is any zipped folder inside any directory or subdirectory
-def is_any_zipped_remains(source):
-    # Traverse the directory tree
-    for root, dirs, files in os.walk(source):
-        # Check if any file in the current directory or its subdirectories is zipped
-        for file_name in files:
-            if file_name.endswith('.zip'):
-                return True
-    # If no zip file is found in any subfolder
-    return False
-
-
-# at many places xml file title having incorrect or special symbols.
-# Function to remove speccial characters that are causing exception while storing to db
-def remove_incorrect_values(input_string):
-    # Define a regular expression pattern to match non-alphanumeric characters
-    if isinstance(input_string, str):
-        input_string.replace('\u2010;', '-').replace('&#x2019;', '-')
-        pattern = re.compile(r'[^a-zA-Z0-9\s]')  # Keep letters, numbers, and spaces
-
-        # Use the pattern to substitute non-alphanumeric characters with an empty string
-        cleaned_string = re.sub(pattern, '', input_string)
-        return str(cleaned_string)
-    return input_string
-
-
-# XML files received from multiple sources may have different strucutre.
-# Nested looping / traversing of JSON failes with unknown reson. Hence listing the known types
-
-# This function need through testing. After multiple try due to incorrect formate in json this function fails sometime
-# That is why know format of the jsons are listed
-def travers_json_for_title(json_obj):
-    try:
-        if isinstance(json_obj, dict):
-            if 'title' in json_obj:
-                # return escape(json_obj['title'])
-                if isinstance(json_obj['title'], str):
-                    print(json_obj['title'])
-                    return remove_incorrect_values(json_obj['title'].strip())
-                
-                if isinstance(json_obj['title'], dict):
-                    print(json_obj['title'])
-                    # XML files received from FTP are having title as dictionary
-                    return remove_incorrect_values(json_obj['title']['#text'].strip())
-                elif isinstance(json_obj['title'], list):
-                    print(json_obj['title'])
-                    # XML files received from cross ref are of type list
-                    return remove_incorrect_values(json_obj['title'][0].strip())                 
-                else:
-                    print(json_obj['title'])
-                    return remove_incorrect_values(json_obj['title'].strip())
-            for value in json_obj.values():
-                find_title(value)
-        elif isinstance(json_obj, list):
-            for item in json_obj:
-                find_title(item)
-    except Exception as e:
-        print(e)
-        return None
-
-
-# find doi function to find doi
-def find_doi(json_obj):
-    try:
-        for item in json_obj['article']['front']['article-meta']['article-id']:
-            if item['@pub-id-type'] == 'doi':
-                return item['#text']
-    except Exception as e:
-        pass
-
-    try:
-        for item in json_obj['front']['article-meta']['article-id']:
-            if item['@pub-id-type'] == 'doi':
-                return item['#text']
-    except Exception as e:
-        pass
-
-    try:
-        return json_obj['front']['pubfront']['doi']
-    except:
-        pass
-
-    try:
-        return json_obj['DOI']
-    except:
-        pass 
-
-    try:
-        return json_obj['message']['DOI']
-    except:
-        pass
-
-    return None
-
-
-# find title of the json content
-def find_title(json_obj):
-
-    try:
-        return remove_incorrect_values(json_obj['back']['ref-list']['ref'][0]['element-citation']['article-title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        return remove_incorrect_values(json_obj['back']['ref-list']['ref'][0]['element-citation']['article-title']['#text'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        return remove_incorrect_values(json_obj['front']['journal-meta']['journal-title-group']['journal-title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        return remove_incorrect_values(json_obj['back']['ref-list']['ref'][0]['element-citation']['article-title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        return remove_incorrect_values(json_obj['article']['front']['article-meta']['title-group']['article-title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        return remove_incorrect_values(json_obj['front']['article-meta']['title-group']['#text'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        # in some files this is the structure of title
-        return remove_incorrect_values(json_obj['front']['titlegrp']['title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        # in some files this is the structure of title
-        return remove_incorrect_values(json_obj['front']['titlegrp']['title']['#text'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        # in some files this is the structure of title
-        return remove_incorrect_values(json_obj['message']['title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        # in some files this is the structure of title
-        return remove_incorrect_values(json_obj['message']['title'][0].strip())
-    except Exception as e:
-        pass
-
-    try:
-        # in some files this is the structure of title
-        return remove_incorrect_values(json_obj['title'].strip())
-    except Exception as e:
-        pass
-
-    try:
-        # in some files this is the structure of title
-        return remove_incorrect_values(json_obj['article']['front']['article-meta']['title-group']['article-title']['#text'].strip())
-    except Exception as e:
-        pass
-
-    return None
 
 # if archived articles are updated than we need to update articles file
 def update_exisiting_object(source, row):
@@ -355,20 +189,9 @@ def is_mulitple_record(json_file_path, row):
             return False
 
 
-
-# function to check if there is any zipped folder inside any directory or subdirectory
-def is_any_zipped_remains(source):
-    # Traverse the directory tree
-    for root, dirs, files in os.walk(source):
-        # Check if any file in the current directory or its subdirectories is zipped
-        for file_name in files:
-            if file_name.endswith('.zip'):
-                return True
-    # If no zip file is found in any subfolder
-    return False
-
-
 # Function to unzip
+# This function will iterate through each directory / subdirectory of archive_article and will find the .zip / .ZIP file.
+# if file found the function will unzip the content to the same path under articles directory
 def unzip_file(source, destination, row):
     try:
         # unzip the source file to destination path
@@ -456,6 +279,7 @@ def jsonify_file_content(source, row):
         print("exception occured while jsonifying the xml content", e)
         return False
 
+
 # main function to create article objects from archive articles
 @api_view(['GET'])
 def migrate_to_step2(request):
@@ -501,19 +325,39 @@ def migrate_to_step2(request):
 
     return Response("executed succcessfully")
 
+
+
+
+#################################################################################################################
+# functions for testing purpose only
 @api_view(['GET'])
 def update_doi(request):
-    qs = Article_attributes.objects.all()
-    i = 0
-    x = []
-    for q in qs:
-        i = i + 1
-        path = 'ARTICLES/' + q.article_file.name
-        with open(path, 'rb') as e:
-            f = json.load(e)
-            q.DOI = find_doi(f)
-            if find_doi(f) == None:
-                x.extend(path)
+    # qs = Article_attributes.objects.all()
+    # i = 0
+    # j = 0
+    # x = []
+    # for q in qs:
+    #     i = i + 1
+    #     path = 'ARTICLES/' + q.article_file.name
+    #     if q.DOI is None:
+    #         with open(path, 'rb') as e:
+    #             f = json.load(e)
+    #             x = find_doi(f)
+    #             # q.DOI = x
+    #             # q.save()
+    #             if x == None:
+    #                 i = i+1
+    #             else:
+    #                 j = j+1
+
+    # return Response({"done": j, "not-done":i})
+
+    q = Article_attributes.objects.get(pk=23770)
+    path = 'ARTICLES/' + q.article_file.name
+    print(path)
+    with open(path, 'rb') as e:
+        f = json.load(e)
+        x = find_doi(f)
     return Response(x)
 
 @api_view(['GET'])
@@ -548,3 +392,53 @@ def check_title(request):
 
     x = find_title(json_obj)
     return Response(x)
+
+@api_view(['GET'])
+def check_doi(request):
+    # find title of the json content
+    with open('ARTICLES/Hindawi/hindawi_2018_10_1/volume-2018/journals/IJG/7329576.json','rb') as f:
+        json_obj =  json.load(f)
+
+    x = find_doi(json_obj)
+    return Response(x)
+
+
+@api_view(['GET'])
+def find_key_main(request):
+    target_key='doi'
+    f2='DOI'
+    settings.MEDIA_ROOT = settings.BASE_DIR / 'ARTICLES'
+
+    qs = Article_attributes.objects.all()[:5]
+    
+    i = 0
+    j = 0
+    count = qs.count()
+    l = 0
+    arr = []    
+    for x in qs:
+        with open(x.article_file.path, 'r') as f:
+            data = json.load(f)
+
+    def extract(obj, arr, key, i):
+        x = str(obj)
+        print(('doi' in x), "smallllllll")
+        print(('DOI' in x), "uppper")
+        """Recursively search for values of key in JSON tree."""
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, (dict, list)):
+                    extract(v, arr, key, i)
+                elif k.upper() == key:
+                    i = i + 1
+                    arr.append(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                extract(item, arr, key, i)
+
+        return {'arr':arr, 'i':i}
+
+    results = extract(data, arr, 'DOI', i)
+
+        
+    return Response({"msg" :arr, 'i':i, 'c':count})

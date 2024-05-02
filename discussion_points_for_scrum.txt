@@ -1,5 +1,0 @@
-1: see 6073905.ref.json
-
-2: the file has got multiple doi, multiple journals/articles.
-
-3: What action to be performed for this type of documents?
