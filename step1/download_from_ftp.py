@@ -12,6 +12,7 @@ import shutil
 import os
 from configurations.common import is_ftp_content_folder
 import pytz
+from rest_framework.response import Response
 
 
 # function to download file
@@ -105,15 +106,15 @@ def download_folder_from_ftp_and_save_zip(article, item):
 @api_view(['GET'])
 def download_from_ftp(request):
     # get all providers that are due to be accessed today
-    due_for_download = Provider_meta_data_FTP.objects.all().exclude(provider__working_name__in=('CSIRO', 'Hindawi'))
+    due_for_download = Provider_meta_data_FTP.objects.all()
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
-        return HttpResponse("No pending action found")
+        return Response("No pending action found")
 
     # if providers are due to be accessed
     for item in due_for_download:
-
+        print(item.provider.working_name)
         # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
             ftp_connection = ftplib.FTP(item.server)
@@ -153,7 +154,7 @@ def download_from_ftp(request):
         # quite the current ftp connection 
         ftp_connection.quit()
 
-    return HttpResponse("done")
+    return Response("done")
 
 
 

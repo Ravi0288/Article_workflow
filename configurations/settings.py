@@ -178,6 +178,7 @@ CHORUS_ROOT = MEDIA_ROOT / 'CHORUS'
 
 # data once processed from step one will stored at this location
 ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
+INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -180,6 +180,6 @@ def download_from_crossref_api(request):
         api.last_pull_status = 'success'
         api.last_error_message = 'N/A'
         api.save()
-    return HttpResponse("success")
+    return Response("success")
 
 
