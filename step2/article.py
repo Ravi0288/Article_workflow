@@ -84,6 +84,39 @@ class Article_attributes_viewset(ModelViewSet):
 
 
 
+# import xml.etree.ElementTree as ET
+# import json
+
+# def convert_xml_to_json(xml_string):
+#     # Replace '&' with '&amp;' in the XML string
+#     xml_string = xml_string.replace(b'&', b'&amp;')
+    
+#     # Parse the XML string
+#     root = ET.fromstring(xml_string)
+    
+#     # Convert XML to JSON
+#     xml_dict = {root.tag: xml_to_dict(root)}
+#     xmltodict.parse(xml_txt, encoding='utf-8')
+#     json_data = json.dumps(xml_dict)
+    
+#     return json_data
+
+# def xml_to_dict(element):
+#     # Convert XML element to dictionary
+#     result = {}
+#     for child in element:
+#         if child:
+#             if len(child) == 1 and child[0].tag == "text":
+#                 # Handle text content
+#                 result[child.tag] = child[0].text
+#             else:
+#                 # Recursively convert child elements
+#                 result[child.tag] = xml_to_dict(child)
+#         else:
+#             result[child.tag] = child.text if child.text else ''
+#     return result
+
+
 # read json file and return dictionary
 def read_json_file(xml_file_path):
     try:
@@ -91,13 +124,16 @@ def read_json_file(xml_file_path):
         with open(file=xml_file_path, mode='rb') as xml_txt:                 
             # replace special character
             xml_txt = xml_txt.read().replace(
-                b'&#x2018;', b'"').replace(
-                    b'&#8216;',b'"').replace(
-                        b'&lsquo;',b'"').replace(
-                            b'&', b'&amp;').replace(
-                                b'"epub"', b'epub'
-                            )
-            # xml_txt = preprocess_xml(xml_txt)
+                b'&', b'&amp;').replace(
+                    b'""epub""', b'"epub"').replace(
+                        b'<i>',b'').replace(
+                            b'</i>', b''
+                        ).replace(
+                            b' < ', b' less than '
+                        ).replace(
+                            b' > ', b' greater than '
+                        )
+
             return xmltodict.parse(xml_txt, encoding='utf-8')
     except Exception as e:
         # if any invalid xml file found backup the file to INVALID_XML_FILES file for checking purposes
@@ -109,19 +145,33 @@ def read_json_file(xml_file_path):
 # function to check if the xml file has <article> or <ArticleSet> tag
 # Any file that have no <article> / <ArticleSet> tag at root shall be discarded
 # If condition meets this functio will return the file content as dictionary otherwise will return boolean False
+'''
+NAL receives data from different sources and the data structures of any xml files should  be in this formate
+<article>, <Article>, <mods>, {}, [{}]. If any file not following this structres that file may be ommited
+'''
 def is_article_tag_available(xml_file_path):
 
     doc = read_json_file(xml_file_path)
     if not doc:
         return False
     
-    article = doc.get("article", None)
-    if article:
+    ele = doc.get("article", None)
+    if ele:
+        print("article tag found. File will be saved for stage 2")
+        return doc
+    
+    ele = doc.get("Article", None)
+    if ele:
+        print("article tag found. File will be saved for stage 2")
+        return doc
+    
+    ele = doc.get("mods", None)
+    if ele:
         print("article tag found. File will be saved for stage 2")
         return doc
 
-    articleset = doc.get("ArticleSet", None)
-    if articleset:
+    ele = doc.get("ArticleSet", None)
+    if ele:
         print("article set found. File will be saved for stage 2")
         print(xml_file_path)
         return doc
@@ -211,6 +261,9 @@ def prepocess_records_of_segregated_xml_files(json_file_path, title, row):
 
 # segregate the file if multiple record found, and save the file with same name prefixing underscore_index
 def segregate_article(article_set, json_file_path, row):
+    # Create the output folder if it doesn't exist
+    if not os.path.exists(json_file_path):
+        os.makedirs(json_file_path)
     if article_set:
         for index, item  in enumerate(article_set):
             try:
@@ -223,8 +276,11 @@ def segregate_article(article_set, json_file_path, row):
             except Exception as e:
                 print(e, "article_set in", json_file_path)
 
-    # delete the old file
-    os.remove(json_file_path)
+    try:
+        # delete the old file
+        os.remove(json_file_path)
+    except:
+        pass
 
 
 # function to check if the file has more than one record
@@ -272,8 +328,11 @@ def unzip_file(source, destination, row):
                     else:
                         create_new_object(new_source, row)
 
-                    # once action dine remove xml file 
-                    os.remove(new_source)
+                    try:
+                        # once action done remove xml file 
+                        os.remove(new_source)
+                    except:
+                        pass
 
                 elif not file_name.endswith('.json'):
                     # almost every folder/subfolders have text file for info purpose to the list of files / filders inside the path
@@ -339,6 +398,10 @@ def migrate_to_step2(request):
     for row in qs:
         source = 'ARCHIVE_ARTICLE/' + row.file_content.name
         destination = 'TEMP/' + source[:-4]
+        # Create the output folder if it doesn't exist
+        if not os.path.exists(destination):
+            os.makedirs(destination)
+
         # if record is of type zip than sequence of action will be 
         # 1: unzip the content
         # 2: read each file and ensure all are jsonified from xml
@@ -346,7 +409,10 @@ def migrate_to_step2(request):
         if row.file_type in ('.zip', '.ZIP'):
             if unzip_file(source, destination, row):
                 update_archive_article(row)
-            shutil.rmtree(destination)
+                try:
+                    shutil.rmtree(destination)
+                except Exception as e:
+                    pass
 
         # if file is json than create / update record in article 
         elif row.file_type == '.json':
@@ -496,6 +562,6 @@ def find_key_main(request):
 @api_view(['GET'])
 def test_xml(request):
     # for root, dit, files in os.walk('ARTICLE'):
-    # path = 'E:/NAL-USDA/NAL_LIBRARY_SYSTEM/ARCHIVE_ARTICLE/CSIRO/AM_35_1/AM11033abs.xml'
-    # is_article_tag_available(path)
+    path = 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN17809_COabs.xml'
+    is_article_tag_available(path)
     return Response("done")
