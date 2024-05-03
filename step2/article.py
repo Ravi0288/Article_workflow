@@ -173,7 +173,7 @@ def is_article_tag_available(xml_file_path):
     ele = doc.get("ArticleSet", None)
     if ele:
         # print("article set found. File will be saved for stage 2")
-        print(xml_file_path)
+        # print(xml_file_path)
         return doc
 
     # print("article / ArticleSet tag not found. File skipped")
