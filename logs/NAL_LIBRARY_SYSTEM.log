@@ -199,3 +199,126 @@ Traceback (most recent call last):
     raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
 shutil.SameFileError: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN17809_COabs.xml' and 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN17809_COabs.xml' are the same file
 ERROR 2024-05-03 21:35:25,213 basehttp 7808 28096 "GET /step2/test-xml/ HTTP/1.1" 500 142888
+ERROR 2024-05-03 21:38:05,775 log 31980 7832 Internal Server Error: /step2/test-xml/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 137, in read_json_file
+    return xmltodict.parse(xml_txt, encoding='utf-8')
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\xmltodict.py", line 378, in parse
+    parser.Parse(xml_input, True)
+xml.parsers.expat.ExpatError: no element found: line 18, column 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 566, in test_xml
+    is_article_tag_available(path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 154, in is_article_tag_available
+    doc = read_json_file(xml_file_path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 141, in read_json_file
+    shutil.copy(xml_file_path, destination)
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 417, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 234, in copyfile
+    raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+shutil.SameFileError: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\CH08198abs.xml' and 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\CH08198abs.xml' are the same file
+ERROR 2024-05-03 21:38:05,775 basehttp 31980 7832 "GET /step2/test-xml/ HTTP/1.1" 500 128211
+ERROR 2024-05-03 21:39:24,247 log 31980 7832 Internal Server Error: /step2/test-xml/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 137, in read_json_file
+    return xmltodict.parse(xml_txt, encoding='utf-8')
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\xmltodict.py", line 378, in parse
+    parser.Parse(xml_input, True)
+xml.parsers.expat.ExpatError: no element found: line 18, column 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 566, in test_xml
+    is_article_tag_available(path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 154, in is_article_tag_available
+    doc = read_json_file(xml_file_path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 141, in read_json_file
+    shutil.copy(xml_file_path, destination)
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 417, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 234, in copyfile
+    raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+shutil.SameFileError: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\CH08198abs.xml' and 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\CH08198abs.xml' are the same file
+ERROR 2024-05-03 21:39:24,263 basehttp 31980 7832 "GET /step2/test-xml/ HTTP/1.1" 500 128599
+ERROR 2024-05-03 22:03:16,786 log 19880 25776 Internal Server Error: /step2/test-xml/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 137, in read_json_file
+    return xmltodict.parse(xml_txt, encoding='utf-8')
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\xmltodict.py", line 378, in parse
+    parser.Parse(xml_input, True)
+xml.parsers.expat.ExpatError: not well-formed (invalid token): line 35, column 664
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 566, in test_xml
+    is_article_tag_available(path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 154, in is_article_tag_available
+    doc = read_json_file(xml_file_path)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step2\article.py", line 141, in read_json_file
+    shutil.copy(xml_file_path, destination)
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 417, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "C:\Users\prasenjit\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 234, in copyfile
+    raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+shutil.SameFileError: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN18724_COabs.xml' and 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN18724_COabs.xml' are the same file
+ERROR 2024-05-03 22:03:16,806 basehttp 19880 25776 "GET /step2/test-xml/ HTTP/1.1" 500 143138

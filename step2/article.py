@@ -157,26 +157,26 @@ def is_article_tag_available(xml_file_path):
     
     ele = doc.get("article", None)
     if ele:
-        print("article tag found. File will be saved for stage 2")
+        # print("article tag found. File will be saved for stage 2")
         return doc
     
     ele = doc.get("Article", None)
     if ele:
-        print("article tag found. File will be saved for stage 2")
+        # print("article tag found. File will be saved for stage 2")
         return doc
     
     ele = doc.get("mods", None)
     if ele:
-        print("article tag found. File will be saved for stage 2")
+        # print("article tag found. File will be saved for stage 2")
         return doc
 
     ele = doc.get("ArticleSet", None)
     if ele:
-        print("article set found. File will be saved for stage 2")
+        # print("article set found. File will be saved for stage 2")
         print(xml_file_path)
         return doc
 
-    print("article / ArticleSet tag not found. File skipped")
+    # print("article / ArticleSet tag not found. File skipped")
     return False
 
 
@@ -562,6 +562,6 @@ def find_key_main(request):
 @api_view(['GET'])
 def test_xml(request):
     # for root, dit, files in os.walk('ARTICLE'):
-    path = 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN17809_COabs.xml'
+    path = 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN18724_COabs.xml'
     is_article_tag_available(path)
     return Response("done")
