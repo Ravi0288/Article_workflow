@@ -11,13 +11,15 @@ router.register('articles', Article_attributes_viewset, basename='articles')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('migrate-to-step2/', migrate_to_step2),
+
+    # Some endpoints for testing purposes only.
     # path('unzip-and-jasonify/', jsonify_ftp_zipped_xml_files),
     # path('make-single-object/', segragate_records_with_multiple_articles),
-    path('migrate-to-step2/', migrate_to_step2),
     # path('update-title/', update_title),
     # path('check/', check_title),
-    path('update-doi/', update_doi),
-    path('find-key/', find_key_main),
-    path('check-doi/', check_doi),
-    path('test-xml/', test_xml),
+    # path('update-doi/', update_doi),
+    # path('find-key/', find_key_main),
+    # path('check-doi/', check_doi),
+    # path('test-xml/', test_xml),
 ]

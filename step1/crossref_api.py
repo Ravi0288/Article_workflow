@@ -71,12 +71,12 @@ def filter_data(data):
 def save_files(dois, headers, api):
     state = True
     current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    i=0
+    # i=0
     for doi in dois:
-        i=i+1
-        print(i)    
-        if i == 12:
-            break
+        # i=i+1
+        # print(i)    
+        # if i == 12:
+        #     break
 
         # setting url parameters
         params = dict(version='1.2', operation='searchRetrieve', startRecord=0,
@@ -85,7 +85,7 @@ def save_files(dois, headers, api):
 
         # access the url
         # response = requests.get(url['url'],params=params, headers=headers)
-        response = requests.get(f"https://api.crossref.org/works/{doi}")
+        response = requests.get(f"https://api.crossref.org/works/{doi}", params=params, headers=headers)
         if response.status_code == 200:
             try:
                 # prepare properties
@@ -159,15 +159,15 @@ def download_from_crossref_api(request):
 
     # query and fetch available submission api's
     qs = Provider_meta_data_API.objects.filter(api_meta_type="CrossRef")
-
-    # set request header
-    #  'Crossref-Plus-API-Token': 'Bearer {}'.format(api.pswd),
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'
-        }
     
     # iterate through each records found
     for api in qs:
+
+        # set request header
+        headers = {
+            'Crossref-Plus-API-Token': 'Bearer {}'.format(api.pswd),
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/999.0.9999.999 Safari/537.36'
+            }
 
         # get list of doi
         article_dois = get_article_dois_by_issn(issn=issn_number, api=api)
