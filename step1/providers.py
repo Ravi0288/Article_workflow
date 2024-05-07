@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
   
 # value of key is assigned to a variable 
 # f = Fernet(key) 
-f = Fernet(settings.FERNET_KEY)
+# f = Fernet(settings.FERNET_KEY)
+key = Fernet.generate_key()
 
 # function to encrypt data
 def encrypt_data(data):
