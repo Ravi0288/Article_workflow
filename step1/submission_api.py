@@ -41,7 +41,11 @@ class SubmissionMetadataHarvester:
                 url = self.base_url.format(page, "2023-02-02")
             except Exception as e:
                 print(e)
-            response = requests.get(url)
+
+            try:
+                response = requests.get(url)
+            except Exception as e:
+                print(e)
 
             # if status code is not success exit
             if response.status_code != 200:
