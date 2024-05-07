@@ -18,12 +18,12 @@ from configurations.common import EncryptedField
 logger = logging.getLogger(__name__)
 
 # key is generated 
-key = Fernet.generate_key() 
+# key = Fernet.generate_key() 
   
 # value of key is assigned to a variable 
-f = Fernet(key) 
-# f = Fernet(settings.FERNET_KEY)
-f = Fernet.generate_key()
+# f = Fernet(key) 
+f = Fernet(settings.FERNET_KEY)
+# f = Fernet.generate_key()
 
 # function to encrypt data
 def encrypt_data(data):

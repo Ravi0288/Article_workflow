@@ -346,3 +346,105 @@ Traceback (most recent call last):
     'Crossref-Plus-API-Token': 'Bearer {}'.format(api.pswd),
 UnboundLocalError: local variable 'api' referenced before assignment
 ERROR 2024-05-07 11:06:40,205 basehttp 36988 11168 "GET /step1/download-from-crossref-api/ HTTP/1.1" 500 100467
+ERROR 2024-05-07 22:28:30,545 log 32968 36912 Internal Server Error: /providers-api/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 130, in _verify_signature
+    h.verify(data[-32:])
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 121, in __iter__
+    for row in compiler.results_iter(results):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\configurations\common.py", line 132, in from_db_value
+    return self.cipher_suite.decrypt(value.encode()).decode()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 89, in decrypt
+    return self._decrypt_data(data, timestamp, time_info)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 148, in _decrypt_data
+    self._verify_signature(data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 132, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+ERROR 2024-05-07 22:28:30,545 basehttp 32968 36912 "GET /providers-api/ HTTP/1.1" 500 161127
+ERROR 2024-05-07 22:28:40,034 log 32968 36912 Internal Server Error: /providers-api/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 130, in _verify_signature
+    h.verify(data[-32:])
+cryptography.exceptions.InvalidSignature: Signature did not match digest.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 121, in __iter__
+    for row in compiler.results_iter(results):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\configurations\common.py", line 132, in from_db_value
+    return self.cipher_suite.decrypt(value.encode()).decode()
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 89, in decrypt
+    return self._decrypt_data(data, timestamp, time_info)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 148, in _decrypt_data
+    self._verify_signature(data)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 132, in _verify_signature
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+ERROR 2024-05-07 22:28:40,034 basehttp 32968 36912 "GET /providers-api/ HTTP/1.1" 500 160976
