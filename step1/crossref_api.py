@@ -136,7 +136,10 @@ def save_files(dois, headers, api):
                     x.file_content.save(file_name, ContentFile(response.content))
 
             except Exception as e:
+                print(e)
                 continue
+        else:
+            print(response.status_code, " : response code")
 
     # zip the file
     path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
