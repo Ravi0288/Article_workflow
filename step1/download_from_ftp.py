@@ -120,6 +120,7 @@ def download_from_ftp(request):
             ftp_connection = ftplib.FTP(item.server)
             ftp_connection.login(item.account, item.pswd)
         except Exception as e:
+            print("error occured", e)
             item.last_pull_time = datetime.datetime.now(tz=pytz.utc)
             item.last_pull_status = 'failed'
             item.last_error_message = e

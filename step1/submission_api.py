@@ -45,6 +45,7 @@ class SubmissionMetadataHarvester:
 
             # if status code is not success exit
             if response.status_code != 200:
+                print("response code", response.status_code)
                 break
 
             # if nil data received exit the loop
