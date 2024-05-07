@@ -113,7 +113,8 @@ def download_folder(ftp_connection, article, instance):
 
 
 # encryption key
-key = settings.FERNET_KEY
+# key = settings.FERNET_KEY
+key = Fernet.generate_key()
 
 # this is custom field to created encrypted field
 # This class will ensure to store the data in encrypted form and will always return data in dycrypted form
