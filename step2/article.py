@@ -337,7 +337,7 @@ def unzip_file(source, destination, row):
                 elif not file_name.endswith('.json'):
                     # almost every folder/subfolders have text file for info purpose to the list of files / filders inside the path
                     # We dont need to keep this file hence deleting. In case any other purpose requires the same can be implement here
-                    print(file_name, "is not of xml type. If know file new action may be implemented here")
+                    print(file_name, "is not of xml type. If known file, new action may be implemented here")
                     # removing the file that is not xml or json
                     os.remove(new_source)
             else:

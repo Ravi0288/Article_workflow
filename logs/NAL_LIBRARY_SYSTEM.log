@@ -448,3 +448,29 @@ Traceback (most recent call last):
     raise InvalidToken
 cryptography.fernet.InvalidToken
 ERROR 2024-05-07 22:28:40,034 basehttp 32968 36912 "GET /providers-api/ HTTP/1.1" 500 160976
+ERROR 2024-05-08 14:38:55,324 log 11508 16244 Internal Server Error: /step1/download-from-chorus-api/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 182, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 102, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE_ARTICLE\\CHORUS\\12\\10.1175_jtech-d-16-0130.1.json'
+ERROR 2024-05-08 14:38:55,328 basehttp 11508 16244 "GET /step1/download-from-chorus-api/ HTTP/1.1" 500 132438
