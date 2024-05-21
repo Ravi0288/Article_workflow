@@ -49,7 +49,21 @@ class OverWriteStorage(FileSystemStorage):
 def get_file_path(instance, filename):
     return filename
 
+# model class to archive the error message that occures during processing / reading the xml file
+class Unreadable_xml_files(models.Model):
+    file_name = models.CharField(max_length=100)
+    error_msg = models.TextField()
 
+# unreadable xml file serializer
+class Unreadable_xml_files_serializers(ModelSerializer):
+    class Meta:
+        model = Unreadable_xml_files
+        fields = '__all__'
+
+# unreadable xml file view sets
+class Unreadable_xml_files_viewset(ModelViewSet):
+    serializer_class = Unreadable_xml_files_serializers
+    queryset = Unreadable_xml_files.objects.all()
 
 # article attribute model
 class Article_attributes(models.Model):
@@ -139,7 +153,11 @@ def read_xml_file(xml_file_path):
     except Exception as e:
         # if any invalid xml file found backup the file to INVALID_XML_FILES file for checking purposes
         destination = os.path.join(settings.BASE_DIR, 'INVALID_XML_FILES')
-        shutil.copy(xml_file_path, destination)
+        dest = shutil.copy(xml_file_path, destination)
+        Unreadable_xml_files.objects.create(
+            file_name = dest,
+            error_msg = e
+        )
         return None
 
 
