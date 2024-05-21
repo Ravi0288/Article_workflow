@@ -72,11 +72,11 @@ def save_files(publishers,api):
             data = response.json()
             if data.get('items', None):
                 # iterate to each json object
-                i=0
+                # i=0
                 for content in data['items']:
-                    i=+1
-                    if(i>2):
-                        break
+                    # i=+1
+                    # if(i>2):
+                    #     break
                     doi = content['DOI']
                     # prepare properties
                     file_name = os.path.join(str(item), doi.replace('/','_') + '.json')

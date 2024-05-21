@@ -100,7 +100,7 @@ class Fetch_history(models.Model):
 class Provider_meta_data_FTP(models.Model):
     provider = models.ForeignKey(Providers, 
                                  related_name="ftp_provider", 
-                                 on_delete=models.CASCADE,
+                                 on_delete=models.DO_NOTHING,
                                  help_text="Select Provider name"
                                  )
     server = models.TextField(help_text="Enter FTP address")
@@ -163,7 +163,7 @@ class Provider_meta_data_FTP(models.Model):
 class Provider_meta_data_API(models.Model):
     provider = models.ForeignKey(Providers, 
                                  related_name="api_provider", 
-                                 on_delete=models.CASCADE,
+                                 on_delete=models.DO_NOTHING,
                                  help_text="Select Provider name"
                                  )   
     api_meta_type = models.CharField(null=True, 

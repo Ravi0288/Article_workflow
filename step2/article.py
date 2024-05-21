@@ -50,14 +50,15 @@ def get_file_path(instance, filename):
     return filename
 
 
+
 # article attribute model
 class Article_attributes(models.Model):
     article_file = models.FileField(upload_to=get_file_path, storage=OverWriteStorage(), help_text="Browse the file")
     title = models.TextField(blank=True, null=True, help_text="Article title")
     type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
-    # journal = models.ForeignKey(Providers, related_name="journals", on_delete=models.CASCADE)
-    provider = models.ForeignKey(Providers, related_name="provsider", on_delete=models.CASCADE)
-    archive = models.ForeignKey(Archived_article, related_name="archives", on_delete=models.CASCADE)
+    # journal = models.ForeignKey(Providers, related_name="journals", on_delete=models.DO_NOTHING)
+    provider = models.ForeignKey(Providers, related_name="provsider", on_delete=models.DO_NOTHING)
+    archive = models.ForeignKey(Archived_article, related_name="archives", on_delete=models.DO_NOTHING)
     last_stage = models.IntegerField(default=2, help_text="Last stage article passed through 1-11")
     last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
     note = models.TextField(default="ok", help_text="Note, warning or error note")
@@ -205,7 +206,7 @@ def update_exisiting_object(source, row):
 
 
 # create new objects in article table
-def create_new_object(source, row):
+def create_new_object(source, row, note):
     # changing the default settings base directory root
     settings.MEDIA_ROOT = settings.BASE_DIR / 'ARTICLES'
     try:
@@ -216,7 +217,7 @@ def create_new_object(source, row):
         qs.archive = row
         qs.last_stage = 2
         qs.last_status = 'completed'
-        qs.note = "success"
+        qs.note = note
         qs.PID = "A locally assign identifie"
         qs.MMSID = "The article's Alma identifer"
         qs.provider_rec = "indentf"
@@ -256,7 +257,7 @@ def prepocess_records_of_segregated_xml_files(json_file_path, title, row):
     if qs.exists():
         update_exisiting_object(json_file_path, row)
     else:
-        create_new_object(json_file_path, row)
+        create_new_object(json_file_path, row, "success")
 
 
 # segregate the file if multiple record found, and save the file with same name prefixing underscore_index
@@ -326,7 +327,7 @@ def unzip_file(source, destination, row):
                     if row.is_content_changed:
                         update_exisiting_object(new_source, row)
                     else:
-                        create_new_object(new_source, row)
+                        create_new_object(new_source, row, "success")
 
                     try:
                         # once action done remove xml file 
@@ -376,7 +377,7 @@ def jsonify_file_content(source, row):
                 if row.is_content_changed:
                     update_exisiting_object(json_file_name, row)
                 else:
-                    create_new_object(json_file_name, row)
+                    create_new_object(json_file_name, row, "success")
 
             # remove the xml file
             os.remove(source)
@@ -384,6 +385,7 @@ def jsonify_file_content(source, row):
         
         except Exception as e:
             print("exception occured while jsonifying the xml content", e, source)
+            create_new_object(json_file_name, row, e)
             return False
 
 
@@ -420,7 +422,7 @@ def migrate_to_step2(request):
             if row.is_content_changed:
                 result = update_exisiting_object(source, row)
             else:
-                result = create_new_object(source, row)
+                result = create_new_object(source, row, "success")
 
             # update archived article 
             if result:

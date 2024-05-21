@@ -46,7 +46,7 @@ def get_file_path(instance, filename):
 # Model to record logs of downloaded files/folders from FTP/SFTP's
 class Archived_article(models.Model):
     provider = models.ForeignKey(Providers, 
-        on_delete=models.CASCADE, 
+        on_delete=models.DO_NOTHING, 
         related_name="archives",
         help_text="Select provider"
         )
