@@ -118,8 +118,8 @@ class Article_attributes_viewset(ModelViewSet):
 #     return result
 
 
-# read json file and return dictionary
-def read_json_file(xml_file_path):
+# read xml file and return dictionary
+def read_xml_file(xml_file_path):
     try:
         # open file
         with open(file=xml_file_path, mode='rb') as xml_txt:                 
@@ -152,7 +152,7 @@ NAL receives data from different sources and the data structures of any xml file
 '''
 def is_article_tag_available(xml_file_path):
 
-    doc = read_json_file(xml_file_path)
+    doc = read_xml_file(xml_file_path)
     if not doc:
         return False
     
