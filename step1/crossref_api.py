@@ -1,9 +1,9 @@
 from django.conf import settings
 from html2text import html2text
 import requests
-from step1.archive_article import Archived_article
+from step1.archive import Archive
 
-from step1.providers import Provider_meta_data_API
+from step1.provider import Provider_meta_data_API
 from django.http import HttpResponse
 import pytz
 import datetime
@@ -94,7 +94,7 @@ def save_files(dois, headers, api):
                 data = response.json()
 
                 # check if record against same doi exists
-                qs = Archived_article.objects.filter(unique_key=doi)
+                qs = Archive.objects.filter(unique_key=doi)
                 if qs.exists():
                     # if record exists, compare existing content with received content.
                     # if existing content == received content do nothing
@@ -122,7 +122,7 @@ def save_files(dois, headers, api):
                 else:
                     # Getting size using getsizeof() method
                     file_size = sys.getsizeof(response.json())
-                    x = Archived_article.objects.create(
+                    x = Archive.objects.create(
                         file_name_on_source = file_name,
                         provider = api.provider,
                         processed_on = datetime.datetime.now(tz=pytz.utc),

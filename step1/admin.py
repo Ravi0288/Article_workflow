@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .archive_article import Archived_article
-from .providers import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
-from .email_notification import Email_history, Email_notification
+from .archive import Archive
+from .provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
+from mail_service.models import Email_history, Email_notification
 
 class ArchivedArticleAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
@@ -41,7 +41,7 @@ class EmailNotificationEmailNotification(admin.ModelAdmin):
 
 
 
-admin.site.register(Archived_article, ArchivedArticleAdmin)
+admin.site.register(Archive, ArchivedArticleAdmin)
 
 admin.site.register(Provider_meta_data_API, ProviderMetaDataAPIAdmin)
 admin.site.register(Provider_meta_data_FTP, ProviderMetaDataFTPAdmin)

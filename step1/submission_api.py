@@ -1,8 +1,8 @@
 from html2text import html2text
 import requests
 
-from step1.archive_article import Archived_article
-from step1.providers import Provider_meta_data_API
+from step1.archive import Archive
+from step1.provider import Provider_meta_data_API
 from django.http import HttpResponse
 import pytz
 import datetime
@@ -89,7 +89,7 @@ def download_from_submission_api(request):
 
             # save the file in table
             try:
-                x = Archived_article.objects.create(
+                x = Archive.objects.create(
                     file_name_on_source = file_name,
                     provider = api.provider,
                     processed_on = datetime.datetime.now(tz=pytz.utc),

@@ -2,9 +2,9 @@ import ftplib
 from django.http import HttpResponse
 import os
 from rest_framework.decorators import api_view
-from .archive_article import Archived_article
-from .archive_article import Archived_article
-from .providers import Provider_meta_data_FTP
+from .archive import Archive
+from .archive import Archive
+from .provider import Provider_meta_data_FTP
 import datetime
 from io import BytesIO
 
@@ -19,7 +19,7 @@ from rest_framework.response import Response
 def download_file(ftp_connection, article, item):
     file_size = ftp_connection.size(article)
     # if record not downloaded in our record and the the file size is not zero than download and write to our database
-    x = Archived_article.objects.filter(file_name_on_source=article)
+    x = Archive.objects.filter(file_name_on_source=article)
 
     # if file not exists in database, create new record
     if not(x.exists()):
@@ -27,7 +27,7 @@ def download_file(ftp_connection, article, item):
         ftp_connection.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
         file_type = os.path.splitext(article)[1]
-        x = Archived_article.objects.create(
+        x = Archive.objects.create(
             file_name_on_source = article,
             provider = item.provider,
             processed_on = datetime.datetime.now(tz=pytz.utc),
@@ -63,7 +63,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
     zip_filename = os.path.join(temp_dir, zip_name)
     zipped_file = shutil.make_archive(zip_filename.split('.')[0], 'zip', temp_dir)
 
-    x = Archived_article.objects.filter(file_name_on_source=article)
+    x = Archive.objects.filter(file_name_on_source=article)
 
     # if file not exists in database, create new record
     if not(x.exists()):
@@ -73,7 +73,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
             # zip_file_model = ZipFileModel(name=zip_name)
             # zip_file_model.zip_file.save(zip_name + '.zip', ContentFile(zip_file.read()), save=True)
 
-            x = Archived_article.objects.create(
+            x = Archive.objects.create(
                 file_name_on_source = article,
                 provider = item.provider,
                 processed_on = datetime.datetime.now(tz=pytz.utc),

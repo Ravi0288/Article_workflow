@@ -1,13 +1,6 @@
 from django.db import models
 from django.core.files.storage import FileSystemStorage
-import os
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.serializers import ModelSerializer
-from datetime import datetime
-from .providers import Providers
-
-from rest_framework.decorators import api_view
-
+from .provider import Providers
 
 # choices to be used for status of article attributs
 CHOICES= (
@@ -44,7 +37,7 @@ def get_file_path(instance, filename):
 
 
 # Model to record logs of downloaded files/folders from FTP/SFTP's
-class Archived_article(models.Model):
+class Archive(models.Model):
     provider = models.ForeignKey(Providers, 
         on_delete=models.DO_NOTHING, 
         related_name="archives",
@@ -84,19 +77,3 @@ class Archived_article(models.Model):
 
     def __str__(self) -> str:
         return self.file_name_on_source
-    
-
-# serializer for Archived_article model
-class Archived_article_serializers(ModelSerializer):
-    class Meta:
-        model = Archived_article
-        fields = '__all__'
-
-
-# views for Archived_article
-class Archived_article_view(ModelViewSet):
-    queryset = Archived_article.objects.all().order_by("-id")[:10]
-    serializer_class = Archived_article_serializers
-
-
-

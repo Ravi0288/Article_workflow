@@ -8,7 +8,7 @@ import xmltodict
 import re
 from django.core.files.base import ContentFile
 import sys
-from step1.archive_article import Archived_article
+from step1.archive import Archive
 import datetime
 import pytz
 

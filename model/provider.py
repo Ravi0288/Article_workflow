@@ -7,12 +7,11 @@ from rest_framework import serializers
 from datetime import datetime, timedelta
 from django.utils import timezone
 import logging
-from .email_notification import Email_notification, send_notification
+# from .email_notification import Email_notification, send_notification
 from cryptography.fernet import Fernet
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from configurations.common import EncryptedField
-
 
 # record log
 logger = logging.getLogger(__name__)
@@ -129,12 +128,12 @@ class Provider_meta_data_FTP(models.Model):
                                           help_text="In case of error last error message will be stored here. Don't enter anything here"
                                           )
 
-    email_notification = models.ForeignKey(Email_notification, 
-                                           on_delete=models.DO_NOTHING, 
-                                           blank=True, 
-                                           null=True,
-                                           help_text="In case email notifications are required to be sent to inform status, select the email group. This is optional"
-                                           )
+    # email_notification = models.ForeignKey(Email_notification, 
+    #                                        on_delete=models.DO_NOTHING, 
+    #                                        blank=True, 
+    #                                        null=True,
+    #                                        help_text="In case email notifications are required to be sent to inform status, select the email group. This is optional"
+    #                                        )
 
     # validations to the model fields.
     # These validations are applied based on the nature of the api's
@@ -204,12 +203,12 @@ class Provider_meta_data_API(models.Model):
                                           help_text="In case of error last error message will be stored here. Don't enter anything here"
                                           )
 
-    email_notification = models.ForeignKey(Email_notification, 
-                                           on_delete=models.DO_NOTHING, 
-                                           blank=True, 
-                                           null=True,
-                                           help_text="In case email notifications are required to be sent to inform status, select the email group. This is optional"
-                                           )
+    # email_notification = models.ForeignKey(Email_notification, 
+    #                                        on_delete=models.DO_NOTHING, 
+    #                                        blank=True, 
+    #                                        null=True,
+    #                                        help_text="In case email notifications are required to be sent to inform status, select the email group. This is optional"
+    #                                        )
     
     proxy_host_url = models.TextField(null=True, blank=True,
                                       help_text="Provide proxy hosts if any. This is optional"
@@ -252,95 +251,3 @@ class Provider_meta_data_API(models.Model):
     def pswd(self):
         # return decrypt_data(self.site_token)
         return self.site_token
-
-
-# serializers to models
-class Providers_serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Providers
-        fields = '__all__'
-
-class Fetch_history_serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Fetch_history
-        fields = '__all__'
-
-
-class Provider_meta_data_FTP_serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Provider_meta_data_FTP
-        fields = '__all__'
-        # exclude = ('password',)
-
-    # validations method clean implementaion
-    def validate(self, attrs):
-        instance = Provider_meta_data_FTP(**attrs)
-        instance.clean()
-        return attrs
-
-
-class Provider_meta_data_API_serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Provider_meta_data_API
-        fields = '__all__'
-        # exclude = ('site_token',)
-    
-    # validations method clean implementaion
-    def validate(self, attrs):
-        instance = Provider_meta_data_API(**attrs)
-        instance.clean()
-        return attrs
-
-
-# viewsets to models
-class Provider_viewset(ModelViewSet):
-    queryset = Providers.objects.all()
-    serializer_class = Providers_serializer
-
-
-class Fetch_history_viewset(ModelViewSet):
-    queryset = Fetch_history.objects.all()
-    serializer_class = Fetch_history_serializer
-
-class Provider_meta_data_FTP_viewset(ModelViewSet):
-    queryset = Provider_meta_data_FTP.objects.all()
-    serializer_class = Provider_meta_data_FTP_serializer
-
-class Provider_meta_data_API_viewset(ModelViewSet):
-    queryset = Provider_meta_data_API.objects.all()
-    serializer_class = Provider_meta_data_API_serializer
-
-
-
-# triggers to update fetch history. This function to be called automatically to update history of each accesss to FTP's
-@receiver(post_save, sender=Provider_meta_data_FTP)
-def update_history_for_FTP(sender, instance, created, **kwargs):
-    # if record is updated
-    if not created:
-        # create fetch_history for log purposes
-        Fetch_history.objects.create(
-            provider = instance.provider,
-            status = instance.last_pull_status,
-            error_message = instance.last_error_message
-        )
-        return True
-
-
-# triggers to update fetch history. This function to be called automatically to update history of each accesss to API's
-@receiver(post_save, sender=Provider_meta_data_API)
-def update_history_for_API(sender, instance, created, **kwargs):
-    # if record is updated
-    if not created:
-        # create fetch_history for log purposes
-        Fetch_history.objects.create(
-            provider = instance.provider,
-            status = instance.last_pull_status,
-            error_message = instance.last_error_message
-        )
-
-        # if api is failed send the email.
-        if instance.last_pull_status == 'failed':
-            # send_notification(instance)
-            pass
-            
-        return True

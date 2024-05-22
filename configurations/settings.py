@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'step1',
-    'step2'
+    'step2',
+    'model',
+    'mail_service'
 ]
 # ..................#######
 
@@ -83,18 +85,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'configurations.wsgi.application'
 
 
-
+DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
+DB_NAME = os.environ['ARTICLE_DB_NAME']
+DB_USER = os. environ['ARTICLE_DB_USER']
+DB_PASSWORD = os. environ['ARTICLE_DB_PASSWORD']
+DB_HOST = os.environ['ARTICLE_DB_HOST']
+DB_PORT = os. environ['ARTICLE_DB_PORT']
 
 # Database settings
 # ..................#####################
 DATABASES = {
    'default': {
-   'ENGINE': 'django.db.backends.mysql',
-   'NAME': 'article_workflow_db',
-   'USER':get_env_variable('DBUSER'),
-   'PASSWORD':get_env_variable('DBPSWD'),
-   'HOST':'localhost',
-   'PORT':'3306',
+   'ENGINE': DB_ENGINE,
+   'NAME': DB_NAME,
+   'USER': DB_USER,
+   'PASSWORD': DB_PASSWORD,
+   'HOST': DB_HOST,
+   'PORT': DB_PORT,
    }
 }
 
