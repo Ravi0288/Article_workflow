@@ -31,7 +31,12 @@ class Unreadable_xml_files_serializers(ModelSerializer):
 class Unreadable_xml_files_viewset(ModelViewSet):
     serializer_class = Unreadable_xml_files_serializers
     queryset = Unreadable_xml_files.objects.all()
-
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 
 # article attribute serializer
 class Article_attributes_serializer(ModelSerializer):
@@ -42,8 +47,14 @@ class Article_attributes_serializer(ModelSerializer):
 
 # article attribute viewset
 class Article_attributes_viewset(ModelViewSet):
-    queryset = Article_attributes.objects.all()[:10]
+    queryset = Article_attributes.objects.all()
     serializer_class = Article_attributes_serializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 
 
 
@@ -189,9 +200,9 @@ def create_new_object(source, row, note):
         x = source.replace('ARCHIVE_ARTICLE/','')
         x = x.replace('TEMP/','')
         with open(source, 'rb') as f:
-            file_content = json.load(f)
-            qs.title = find_title(file_content)
-            qs.DOI = find_doi(file_content)
+            # file_content = json.load(f)
+            # qs.title = find_title(file_content)
+            # qs.DOI = find_doi(file_content)
             f.seek(0)
             qs.article_file.save(x, ContentFile(f.read()))
 
@@ -207,7 +218,7 @@ def create_new_object(source, row, note):
             last_stage = 2,
             last_status = 'failed',
             note = e,
-            DOI = row.unique_key,
+            # DOI = row.unique_key,
             PID = "A locally assign identifie",
             MMSID = "The article's Alma identifer",
             provider_rec = "identifier"   
@@ -236,8 +247,9 @@ def segregate_article(article_set, json_file_path, row):
                 with open(file_name, 'w') as f:
                     json.dump(item,f)
                     f.close()
-                title = find_title(item)
-                prepocess_records_of_segregated_xml_files(json_file_path, title, row)
+                # title disabled in stage 2
+                # title = find_title(item)
+                prepocess_records_of_segregated_xml_files(json_file_path, "None", row)
             except Exception as e:
                 print(e, "article_set in", json_file_path)
 
@@ -307,7 +319,12 @@ def unzip_file(source, destination, row):
                     os.remove(new_source)
             else:
                 # if xml file found jsonify it and perform update / create based on row.is_content_changed flag
-                jsonify_file_content(new_source, row)
+
+                # jsonify_file_content(new_source, row)
+                pass
+
+                # ################### ALL XML RELATED LOGICS SHOULD BE WRITTEN HERE.
+
 
         return True
 
@@ -408,8 +425,14 @@ def migrate_to_step2(request):
 
 
 
-#################################################################################################################
-# functions for testing purpose only
+
+####################################################################################################################################
+
+
+# ## these functions are for testing purpose only and should be removed later on. 
+
+###################################################################################################################################
+
 @api_view(['GET'])
 def update_doi(request):
     # qs = Article_attributes.objects.all()
@@ -531,3 +554,8 @@ def test_xml(request):
     path = 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\INVALID_XML_FILES\\AN18724_COabs.xml'
     is_article_tag_available(path)
     return Response("done")
+
+
+# #################################################################################################################################
+# #### Testing functions ends here
+# #################################################################################################################################

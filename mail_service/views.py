@@ -12,11 +12,22 @@ class Email_notification_viewset(ModelViewSet):
     queryset = Email_notification.objects.all()
     serializer_class = Email_notification_serializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 
 class Email_history_viewset(ModelViewSet):
     queryset = Email_history.objects.all()
     serializer_class = Email_history_serializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
+    
 
 # Funtion to email.
 # This function will send the email and will update the Email_history table

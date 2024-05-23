@@ -21,5 +21,9 @@ class Archive_view(ModelViewSet):
     queryset = Archive.objects.all().order_by("-id")[:10]
     serializer_class = Archive_serializers
 
-
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 

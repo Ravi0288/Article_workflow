@@ -59,20 +59,41 @@ class Provider_viewset(ModelViewSet):
     queryset = Providers.objects.all()
     serializer_class = Providers_serializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 
 class Fetch_history_viewset(ModelViewSet):
     queryset = Fetch_history.objects.all()
     serializer_class = Fetch_history_serializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
+
 class Provider_meta_data_FTP_viewset(ModelViewSet):
     queryset = Provider_meta_data_FTP.objects.all()
     serializer_class = Provider_meta_data_FTP_serializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 
 class Provider_meta_data_API_viewset(ModelViewSet):
     queryset = Provider_meta_data_API.objects.all()
     serializer_class = Provider_meta_data_API_serializer
 
-
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
 
 # triggers to update fetch history. This function to be called automatically to update history of each accesss to FTP's
 @receiver(post_save, sender=Provider_meta_data_FTP)
