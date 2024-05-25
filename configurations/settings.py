@@ -87,10 +87,10 @@ WSGI_APPLICATION = 'configurations.wsgi.application'
 
 DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
 DB_NAME = os.environ['ARTICLE_DB_NAME']
-DB_USER = os. environ['ARTICLE_DB_USER']
-DB_PASSWORD = os. environ['ARTICLE_DB_PASSWORD']
+DB_USER = os.environ['ARTICLE_DB_USER']
+DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
 DB_HOST = os.environ['ARTICLE_DB_HOST']
-DB_PORT = os. environ['ARTICLE_DB_PORT']
+DB_PORT = os.environ['ARTICLE_DB_PORT']
 
 # Database settings
 # ..................#####################
@@ -178,7 +178,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static',]
 MEDIA_URL = '/media/'
 
 # data downloaded in step one will be stored here
-MEDIA_ROOT = BASE_DIR / 'ARCHIVE_ARTICLE'
+MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
 SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
 CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
 CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 

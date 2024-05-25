@@ -99,6 +99,7 @@ def download_from_submission_api(request):
                 )
 
                 # save file
+                file_name = str(x.id) + '.' + file_name.split('.')[-1]
                 x.file_content.save(file_name, fs)
 
                 # close the opened file

@@ -99,7 +99,8 @@ def save_files(dois, headers, api):
                     # if record exists, compare existing content with received content.
                     # if existing content == received content do nothing
                     doi = doi.replace('/', '_')
-                    fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
+                    # fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
+                    fname = os.path.join(settings.MEDIA_ROOT, qs[0].file_content.name)
                     
                     # read the existing files
                     f = open(fname, 'r')
@@ -117,6 +118,7 @@ def save_files(dois, headers, api):
                         qs[0].file_size = file_size
                         qs[0].is_processed = False
                         qs[0].is_content_changed = True
+                        file_name = str(x.id) + '.' + qs[0].split('.')[-1]
                         qs[0].file_content.save(file_name, ContentFile(response.content))
 
                 else:
@@ -133,6 +135,7 @@ def save_files(dois, headers, api):
                     )
 
                     # save file
+                    file_name = str(x.id) + '.' + file_name.split('.')[-1]
                     x.file_content.save(file_name, ContentFile(response.content))
 
             except Exception as e:

@@ -160,7 +160,7 @@ def is_article_tag_available(xml_file_path):
 
 
 # update archive artile flags if processed
-def update_archive_article(row):
+def update_archive(row):
     row.is_processed = True
     row.processed_on = datetime.datetime.now(tz=pytz.utc)
     row.save()
@@ -170,7 +170,7 @@ def update_archive_article(row):
 def update_exisiting_object(source, row):
     # changing the default settings base directory root
     settings.MEDIA_ROOT = settings.BASE_DIR / 'ARTICLES'
-    source = source.replace('ARCHIVE_ARTICLE/','').replace('TEMP/','')
+    source = source.replace('ARCHIVE/','').replace('TEMP/','')
     qs = Article_attributes.objects.filter(article_file = source)[0]
     with open(source, 'rb') as f:
         file_content = json.load(f)
@@ -197,7 +197,7 @@ def create_new_object(source, row, note):
         qs.MMSID = "The article's Alma identifer"
         qs.provider_rec = "indentf"
 
-        x = source.replace('ARCHIVE_ARTICLE/','')
+        x = source.replace('ARCHIVE/','')
         x = x.replace('TEMP/','')
         with open(source, 'rb') as f:
             # file_content = json.load(f)
@@ -273,7 +273,7 @@ def is_mulitple_record(json_file_path, row):
 
 
 # Function to unzip
-# This function will iterate through each directory / subdirectory of archive_article and will find the .zip / .ZIP file.
+# This function will iterate through each directory / subdirectory of archive and will find the .zip / .ZIP file.
 # if file found the function will unzip the content to the same path under articles directory
 def unzip_file(source, destination, row):
     try:
@@ -316,7 +316,10 @@ def unzip_file(source, destination, row):
                     # We dont need to keep this file hence deleting. In case any other purpose requires the same can be implement here
                     print(file_name, "is not of xml type. If known file, new action may be implemented here")
                     # removing the file that is not xml or json
-                    os.remove(new_source)
+                    try:
+                        os.remove(new_source)
+                    except:
+                        pass
             else:
                 # if xml file found jsonify it and perform update / create based on row.is_content_changed flag
 
@@ -379,7 +382,7 @@ def migrate_to_step2(request):
 
     # looping through each object in the query set
     for row in qs:
-        source = 'ARCHIVE_ARTICLE/' + row.file_content.name
+        source = 'ARCHIVE/' + row.file_content.name
         destination = 'TEMP/' + source[:-4]
         # Create the output folder if it doesn't exist
         if not os.path.exists(destination):
@@ -391,7 +394,7 @@ def migrate_to_step2(request):
         # 3: create / update records in article for each json files
         if row.file_type in ('.zip', '.ZIP'):
             if unzip_file(source, destination, row):
-                update_archive_article(row)
+                update_archive(row)
                 try:
                     shutil.rmtree(destination)
                 except Exception as e:
@@ -407,7 +410,7 @@ def migrate_to_step2(request):
 
             # update archived article 
             if result:
-                update_archive_article(row)
+                update_archive(row)
             # os.remove(destination[:-1] + '.json')
 
         # if record is of type xml than sequence of action will be 
@@ -415,7 +418,7 @@ def migrate_to_step2(request):
         # 2: create / update records in article for each json files
         elif row.file_type == '.xml':
             if jsonify_file_content(source, row):
-                update_archive_article(row)
+                update_archive(row)
         else:
             print("unsupported file type found", source)
 

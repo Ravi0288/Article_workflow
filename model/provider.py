@@ -64,8 +64,8 @@ API_TYPE = (
 
 
 FTP_CHOICES = (
-    ('FTP', 'FTP,'),
-    ('SFTP', 'SFTP,')
+    ('FTP', 'FTP'),
+    ('SFTP', 'SFTP')
 )
 
 PROVIDER_TYPE = (

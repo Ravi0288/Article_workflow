@@ -96,7 +96,8 @@ def save_files(publishers,api):
                     if qs.exists():
                         # if record exists, compare existing content with received content.
                         # if existing content == received content do nothing
-                        fname = os.path.join(settings.CHORUS_ROOT, file_name)
+                        # fname = os.path.join(settings.CHORUS_ROOT, file_name)
+                        fname = os.path.join(settings.MEDIA_ROOT, qs[0].file_content.name)
                         
                         # read the existing file
                         f = open(fname, 'r')
@@ -107,12 +108,14 @@ def save_files(publishers,api):
                         if jsonified_content == content:
                             continue
                         else:
-                            # if existing content differs with received content, remove the exisitng file an update the record
+                            # if existing content differs with received content, than
+                            # remove the exisitng file and update the record
                             os.remove(fname)
                             # save file
                             qs[0].file_size = file_size
                             qs[0].is_processed = False
                             qs[0].is_content_changed = True
+                            file_name = str(x.id) + '.' + qs[0].split('.')[-1]
                             qs[0].file_content.save(file_name, _file)
 
                     else:
@@ -128,6 +131,7 @@ def save_files(publishers,api):
                         )
 
                         # save file
+                        file_name = str(x.id) + '.' + file_name.split('.')[-1]
                         x.file_content.save(file_name, _file)
 
     

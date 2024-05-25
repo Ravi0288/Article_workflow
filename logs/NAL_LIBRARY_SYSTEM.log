@@ -472,7 +472,7 @@ Traceback (most recent call last):
     save_files(publisher, api)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 102, in save_files
     f = open(fname, 'r')
-FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE_ARTICLE\\CHORUS\\12\\10.1175_jtech-d-16-0130.1.json'
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE\\CHORUS\\12\\10.1175_jtech-d-16-0130.1.json'
 ERROR 2024-05-08 14:38:55,328 basehttp 11508 16244 "GET /step1/download-from-chorus-api/ HTTP/1.1" 500 132438
 ERROR 2024-05-21 21:57:02,991 log 41912 28152 Internal Server Error: /step2/migrate-to-step2/
 Traceback (most recent call last):
@@ -498,3 +498,233 @@ Traceback (most recent call last):
     result = create_new_object(source, row)
 TypeError: create_new_object() missing 1 required positional argument: 'note'
 ERROR 2024-05-21 21:57:02,995 basehttp 41912 28152 "GET /step2/migrate-to-step2/ HTTP/1.1" 500 102173
+ERROR 2024-05-25 11:28:47,581 log 29960 28524 Internal Server Error: /providers-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 121, in __iter__
+    for row in compiler.results_iter(results):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\configurations\common.py", line 132, in from_db_value
+    return self.cipher_suite.decrypt(value.encode()).decode()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 84, in decrypt
+    timestamp, data = Fernet._get_unverified_token_data(token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 118, in _get_unverified_token_data
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+ERROR 2024-05-25 11:28:47,581 basehttp 29960 28524 "GET /providers-api/ HTTP/1.1" 500 146443
+ERROR 2024-05-25 11:29:29,599 log 29960 28524 Internal Server Error: /providers-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 121, in __iter__
+    for row in compiler.results_iter(results):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\configurations\common.py", line 132, in from_db_value
+    return self.cipher_suite.decrypt(value.encode()).decode()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 84, in decrypt
+    timestamp, data = Fernet._get_unverified_token_data(token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 118, in _get_unverified_token_data
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+ERROR 2024-05-25 11:29:29,601 basehttp 29960 28524 "GET /providers-api/ HTTP/1.1" 500 146238
+ERROR 2024-05-25 11:30:36,840 log 29960 28524 Internal Server Error: /providers-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\query.py", line 121, in __iter__
+    for row in compiler.results_iter(results):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\configurations\common.py", line 132, in from_db_value
+    return self.cipher_suite.decrypt(value.encode()).decode()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 84, in decrypt
+    timestamp, data = Fernet._get_unverified_token_data(token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\cryptography\fernet.py", line 118, in _get_unverified_token_data
+    raise InvalidToken
+cryptography.fernet.InvalidToken
+ERROR 2024-05-25 11:30:36,842 basehttp 29960 28524 "GET /providers-api/ HTTP/1.1" 500 145798
+ERROR 2024-05-25 12:49:23,121 log 45144 43300 Internal Server Error: /download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 186, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 103, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'CHORUS/11json'
+ERROR 2024-05-25 12:49:23,124 basehttp 45144 43300 "GET /download-from-chorus-api/ HTTP/1.1" 500 132887
+ERROR 2024-05-25 12:58:03,445 log 30396 49188 Internal Server Error: /download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 186, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 103, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'CHORUS/201.json'
+ERROR 2024-05-25 12:58:03,447 basehttp 30396 49188 "GET /download-from-chorus-api/ HTTP/1.1" 500 132895
+ERROR 2024-05-25 12:59:07,271 log 30396 49188 Internal Server Error: /download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 186, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 103, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'CHORUS/201.json'
+ERROR 2024-05-25 12:59:07,271 basehttp 30396 49188 "GET /download-from-chorus-api/ HTTP/1.1" 500 132895
+ERROR 2024-05-25 13:03:59,248 log 48892 39224 Internal Server Error: /download-from-chorus-api/
+Traceback (most recent call last):
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "e:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 186, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 103, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE\\CHORUS\\CHORUS/201.json'
+ERROR 2024-05-25 13:03:59,254 basehttp 48892 39224 "GET /download-from-chorus-api/ HTTP/1.1" 500 139288

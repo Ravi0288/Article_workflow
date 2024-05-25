@@ -18,7 +18,7 @@ from rest_framework.response import Response
 # function to download file
 def download_file(ftp_connection, article, item):
     file_size = ftp_connection.size(article)
-    # if record not downloaded in our record and the the file size is not zero than download and write to our database
+    # if record downloaded in our record and the the file size is not zero than download and write to our database
     x = Archive.objects.filter(file_name_on_source=article)
 
     # if file not exists in database, create new record
@@ -35,6 +35,7 @@ def download_file(ftp_connection, article, item):
             file_size = file_size,
             file_type = file_type
         )
+        article = str(x.id) + '.' + article.split('.')[-1]
         x.file_content.save(article, content)
         return
     
@@ -46,6 +47,7 @@ def download_file(ftp_connection, article, item):
         x[0].status = 'success'
         x[0].is_processed = False
         x[0].is_content_changed = True
+        article = str(x[0].id) + '.' + article.split('.')[-1]
         x[0].file_content.save(article, content)
         return
     
@@ -82,6 +84,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
                 file_type = '.zip'
             )
 
+            article = str(x.id) + '.' + article.split('.')[-1]
             x.file_content.save(article, zip_file)
 
         # Cleanup temporary directory and return
@@ -145,7 +148,7 @@ def download_from_ftp(request):
                         download_file(ftp_connection, article, item)
                 except Exception as e:
                     pass
-
+ 
         # update the succes status to Provider_meta_data_FTP
         item.last_pull_time = datetime.datetime.now(tz=pytz.utc)
         item.last_pull_status = 'success'

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 from .provider import Providers
+import os
 
 # choices to be used for status of article attributs
 CHOICES= (
@@ -30,6 +31,8 @@ class OverWriteStorage(FileSystemStorage):
 # This function will return file path as article_library/Current_year/Current_month/day/file_name_with_extension
 
 def get_file_path(instance, filename):
+    extenstion = filename.split('.')[-1]
+    filename = str(instance.id) + '.' + extenstion
     return '{0}/{1}'.format(
         instance.provider.official_name,
         filename
@@ -50,9 +53,21 @@ class Archive(models.Model):
                                     help_text="Browse the file"
                                 )
     
-    file_name_on_source = models.CharField(max_length=500, help_text="File name will be stored automatically")
-    file_size = models.IntegerField(default=0, help_text="File size will be stored automatically")
-    file_type = models.CharField(max_length=20, help_text="File type will be stored automatically")
+    file_name_on_source = models.CharField(max_length=500, 
+                                           null=True, blank=True, 
+                                           help_text="File name for FTP will be assigned automatically as received. For API \
+                                            No file name is received hence file name will be saved as DOI.json"
+                                           )
+    file_name_on_local_storage = models.CharField(max_length=500, 
+                                                  null=True, blank=True, 
+                                                  help_text="File name will be assigned automatically as id.extesion"
+                                                  )
+    file_size = models.IntegerField(default=0, 
+                                    help_text="File size will be assigned automatically"
+                                    )
+    file_type = models.CharField(max_length=20, 
+                                 help_text="File type will be assigned automatically"
+                                 )
 
     unique_key = models.CharField(max_length=500, 
                                   blank=True, null=True,
@@ -76,4 +91,11 @@ class Archive(models.Model):
                     )
 
     def __str__(self) -> str:
-        return self.file_name_on_source
+        return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage
+    
+
+    def save(self, *args, **kwargs):
+        if self.file_name_on_local_storage in ('', None):
+            # assign default file name as the id.extesnsion_of_the_received_file
+            self.file_name_on_local_storage = str(self.id) + self.file_name_on_source.split('.')[-1]
+        super(Archive, self).save(*args, **kwargs)
