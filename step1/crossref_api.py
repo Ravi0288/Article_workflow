@@ -73,11 +73,6 @@ def save_files(dois, headers, api):
     current_date = datetime.datetime.now().strftime('%Y-%m-%d')
     # i=0
     for doi in dois:
-        # i=i+1
-        # print(i)    
-        # if i == 12:
-        #     break
-
         # setting url parameters
         params = dict(version='1.2', operation='searchRetrieve', startRecord=0,
                         maximumRecords=1000,
@@ -151,7 +146,6 @@ def save_files(dois, headers, api):
 
 
 
-
 # function to handle all the crossref api's
 @api_view(['GET'])
 def download_from_crossref_api(request):
@@ -187,5 +181,3 @@ def download_from_crossref_api(request):
         api.last_error_message = 'N/A'
         api.save()
     return Response("success")
-
-

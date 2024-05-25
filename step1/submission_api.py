@@ -38,7 +38,7 @@ class SubmissionMetadataHarvester:
 
         while True:
             try:
-                url = self.base_url.format(page, "2023-02-02")
+                url = self.base_url.format(page, last_date)
             except Exception as e:
                 print(e)
 
