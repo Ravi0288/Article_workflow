@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from jsonify_contents import jsonify_xml_file
 
 
 
@@ -7,5 +8,5 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('migrate-to-step2/', migrate_to_step2),
+    path('jsonify-xml-files/', jsonify_xml_file),
 ]
