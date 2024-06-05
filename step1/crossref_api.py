@@ -38,7 +38,7 @@ def get_article_dois_by_issn(issn, api, num_rows=1000):
         return dois
     else:
         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        api.last_pull_status = 'success'
+        api.last_pull_status = 'completed'
         api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
         api.save()
         return Response("error occured")
@@ -123,7 +123,7 @@ def save_files(dois, headers, api):
                         file_name_on_source = file_name,
                         provider = api.provider,
                         processed_on = datetime.datetime.now(tz=pytz.utc),
-                        status = 'success',
+                        status = 'completed',
                         file_size = file_size,
                         file_type = file_type,
                         unique_key = doi
@@ -177,7 +177,7 @@ def download_from_crossref_api(request):
 
         # update the last run status
         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        api.last_pull_status = 'success'
+        api.last_pull_status = 'completed'
         api.last_error_message = 'N/A'
         api.save()
     return Response("success")

@@ -22,7 +22,7 @@ class Email_notification(models.Model):
 class Email_history(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     email_ref = models.ForeignKey(Email_notification, related_name='email_notification' , on_delete=models.DO_NOTHING)
-    status = models.CharField(max_length=10, default='success')
+    status = models.CharField(max_length=10, default='completed')
     email_subject = models.TextField(default='Error Occured')
     email_body = models.TextField(default='Error Occured')
 

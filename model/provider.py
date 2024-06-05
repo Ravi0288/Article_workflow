@@ -87,7 +87,7 @@ class Providers(models.Model):
 # Model to maintain history of access of API's and FTP's
 class Fetch_history(models.Model):
     provider = models.ForeignKey(Providers, related_name='fetch_history', on_delete=models.DO_NOTHING)
-    status = models.CharField(max_length=10, default='success')
+    status = models.CharField(max_length=10, default='completed')
     error_message = models.TextField(null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 

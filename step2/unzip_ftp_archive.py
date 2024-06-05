@@ -44,7 +44,7 @@ def unzip_folders(source, destination):
         # Handle any other unexpected exceptions
         pass
 
-
+# This function will convert xml file to json
 def jsonify_file_content(source):
     # some file got the wrong xml format, 
     # hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files

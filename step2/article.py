@@ -15,8 +15,8 @@ import json
 import pytz
 import datetime
 import shutil
-from .common.find_doi import find_doi
-from .common.find_title import find_title
+# from .common.find_doi import find_doi
+# from .common.find_title import find_title
 from xml.dom import minidom
 from model.article import Unreadable_xml_files, Article_attributes
 
@@ -174,7 +174,7 @@ def update_exisiting_object(source, row):
     qs = Article_attributes.objects.filter(article_file = source)[0]
     with open(source, 'rb') as f:
         file_content = json.load(f)
-        qs.title = find_title(file_content)
+        # qs.title = find_title(file_content)
         f.seek(0)
         qs.article_file.save(source, ContentFile(f.read()))
         return True
@@ -463,7 +463,7 @@ def update_doi(request):
     print(path)
     with open(path, 'rb') as e:
         f = json.load(e)
-        x = find_doi(f)
+        # x = find_doi(f)
     return Response(x)
 
 @api_view(['GET'])
@@ -476,12 +476,12 @@ def update_title(request):
             path = 'ARTICLES/' + q.article_file.name
             with open(path, 'rb') as e:
                 f = json.load(e)
-                x = find_title(f)
-                if x == None:
-                    j=j+1
-                    print("######################", path, "not update")
-                else:
-                    i = i + 1
+                # x = find_title(f)
+                # if x == None:
+                #     j=j+1
+                #     print("######################", path, "not update")
+                # else:
+                #     i = i + 1
 
             try:
                 q.save()
@@ -496,8 +496,8 @@ def check_title(request):
     with open('ARTICLES/Hindawi/hindawi_2019_12_2/volume-2019/journals/JAMC/8970624.ref.json','rb') as f:
         json_obj =  json.load(f)
 
-    x = find_title(json_obj)
-    return Response(x)
+    # x = find_title(json_obj)
+    return Response('x')
 
 @api_view(['GET'])
 def check_doi(request):
@@ -505,8 +505,8 @@ def check_doi(request):
     with open('ARTICLES/Hindawi/hindawi_2018_10_1/volume-2018/journals/IJG/7329576.json','rb') as f:
         json_obj =  json.load(f)
 
-    x = find_doi(json_obj)
-    return Response(x)
+    # x = find_doi(json_obj)
+    return Response('x')
 
 
 @api_view(['GET'])

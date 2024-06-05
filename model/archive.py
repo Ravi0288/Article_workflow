@@ -5,7 +5,7 @@ import os
 
 # choices to be used for status of article attributs
 CHOICES= (
-    ('success', 'success'),
+    ('completed', 'completed'),
     ('waiting', 'waiting'),
     ('processed','processed'),
     ('failed', 'failed')

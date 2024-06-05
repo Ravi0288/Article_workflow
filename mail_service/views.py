@@ -47,7 +47,7 @@ def send_notification(instance):
         Email_history.objects.create(
             timestamp=datetime.utcnow(), 
             email_ref=instance, 
-            status='success',
+            status='completed',
             email_subject = subject,
             email_body = email_body
             )

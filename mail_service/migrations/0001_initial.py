@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('status', models.CharField(default='success', max_length=10)),
+                ('status', models.CharField(default='completed', max_length=10)),
                 ('email_subject', models.TextField(default='Error Occured')),
                 ('email_body', models.TextField(default='Error Occured')),
                 ('email_ref', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='email_notification', to='mail_service.email_notification')),

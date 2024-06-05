@@ -93,7 +93,7 @@ def download_from_submission_api(request):
                     file_name_on_source = file_name,
                     provider = api.provider,
                     processed_on = datetime.datetime.now(tz=pytz.utc),
-                    status = 'success',
+                    status = 'completed',
                     file_size = file_size,
                     file_type = file_type
                 )
@@ -110,7 +110,7 @@ def download_from_submission_api(request):
 
                 # update status
                 api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-                api.last_pull_status = 'success'
+                api.last_pull_status = 'completed'
                 api.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(api.minimum_delivery_fq)
                 api.save()
 

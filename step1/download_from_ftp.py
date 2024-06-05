@@ -31,7 +31,7 @@ def download_file(ftp_connection, article, item):
             file_name_on_source = article,
             provider = item.provider,
             processed_on = datetime.datetime.now(tz=pytz.utc),
-            status = 'success',
+            status = 'completed',
             file_size = file_size,
             file_type = file_type
         )
@@ -44,7 +44,7 @@ def download_file(ftp_connection, article, item):
         content = BytesIO()
         ftp_connection.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
-        x[0].status = 'success'
+        x[0].status = 'completed'
         x[0].is_processed = False
         x[0].is_content_changed = True
         article = str(x[0].id) + '.' + article.split('.')[-1]
@@ -79,7 +79,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
                 file_name_on_source = article,
                 provider = item.provider,
                 processed_on = datetime.datetime.now(tz=pytz.utc),
-                status = 'success',
+                status = 'completed',
                 file_size = os.path.getsize(zipped_file),
                 file_type = '.zip'
             )
@@ -93,7 +93,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
 
     # if file exists than check the file size. If file size is different update the existing record
     if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
-        x[0].status = 'success'
+        x[0].status = 'completed'
         with open(zipped_file, 'rb') as zip_file:
             zip_file.seek(0)
             x[0].file_content.save(article, zip_file)
@@ -151,7 +151,7 @@ def download_from_ftp(request):
  
         # update the succes status to Provider_meta_data_FTP
         item.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        item.last_pull_status = 'success'
+        item.last_pull_status = 'completed'
         item.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.minimum_delivery_fq)
         item.save()
 

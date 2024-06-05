@@ -124,7 +124,7 @@ def save_files(publishers,api):
                             file_name_on_source = file_name,
                             provider = api.provider,
                             processed_on = datetime.datetime.now(tz=pytz.utc),
-                            status = 'success',
+                            status = 'completed',
                             file_size = file_size,
                             file_type = file_type,
                             unique_key = doi
@@ -187,7 +187,7 @@ def download_from_chorus_api(request):
 
 
         api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        api.last_pull_status = 'success'
+        api.last_pull_status = 'completed'
         api.last_error_message = 'N/A'
         api.save()
 
