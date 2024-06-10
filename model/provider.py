@@ -79,6 +79,14 @@ class Providers(models.Model):
     working_name = models.CharField(max_length=64)
     in_production = models.BooleanField(default=True)
     provider_type = models.CharField(max_length=4, default='FTP', choices=PROVIDER_TYPE)
+    source_schema = models.CharField(max_length=50, blank=True, null=True)
+    delivery_method = models.CharField(max_length=50, blank=True, null=True, choices=DELIVERY_METHOD)
+    article_switch = models.BooleanField(default=False)
+    requirement_override = models.BooleanField(default=False)
+    usda_source = models.BooleanField(default=False)
+    archive_switch = models.BooleanField(default=False)
+    # deposite_path = models.TextChoices(null=True, blank=True)
+
 
     def __str__(self) -> str:
         return self.official_name
@@ -127,6 +135,7 @@ class Provider_meta_data_FTP(models.Model):
                                           blank=True,
                                           help_text="In case of error last error message will be stored here. Don't enter anything here"
                                           )
+    pull_switch = models.CharField(max_length=50, null=True, blank=True)
 
     # email_notification = models.ForeignKey(Email_notification, 
     #                                        on_delete=models.DO_NOTHING, 
@@ -202,6 +211,7 @@ class Provider_meta_data_API(models.Model):
                                           blank=True,
                                           help_text="In case of error last error message will be stored here. Don't enter anything here"
                                           )
+    pull_switch = models.CharField(max_length=50, null=True, blank=True)
 
     # email_notification = models.ForeignKey(Email_notification, 
     #                                        on_delete=models.DO_NOTHING, 

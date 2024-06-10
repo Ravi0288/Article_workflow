@@ -47,7 +47,7 @@ class Article_attributes(models.Model):
     # journal = models.ForeignKey(Providers, related_name="journals", on_delete=models.DO_NOTHING)
     provider = models.ForeignKey(Providers, related_name="provsider", on_delete=models.DO_NOTHING)
     archive = models.ForeignKey(Archive, related_name="archives", on_delete=models.DO_NOTHING)
-    last_stage = models.IntegerField(default=2, help_text="Last stage article passed through 1-11")
+    last_step = models.IntegerField(default=2, help_text="Last stage article passed through 1-11")
     last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
     note = models.TextField(default="ok", help_text="Note, warning or error note")
     DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")

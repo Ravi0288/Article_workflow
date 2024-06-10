@@ -190,7 +190,7 @@ def create_new_object(source, row, note):
         qs.type_of_record = 'article'
         qs.provider = row.provider
         qs.archive = row
-        qs.last_stage = 2
+        qs.last_step = 2
         qs.last_status = 'completed'
         qs.note = note
         qs.PID = "A locally assign identifie"
@@ -215,7 +215,7 @@ def create_new_object(source, row, note):
             type_of_record = 'N/A',
             provider = row.provider,
             archive = row,
-            last_stage = 2,
+            last_step = 2,
             last_status = 'failed',
             note = e,
             # DOI = row.unique_key,

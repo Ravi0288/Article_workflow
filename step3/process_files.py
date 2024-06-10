@@ -10,7 +10,7 @@ from model.article import Article_attributes
 
 @api_view(['GET'])
 def jsonify_xml_file(request):
-    articles = Article_attributes.objects.filter(last_stage=2)
+    articles = Article_attributes.objects.filter(last_step=2)
     for root, dirs, files in os.walk(settings.ARTICLE_ROOT):
         for file in files:
             # some file got the wrong xml format, 
@@ -49,7 +49,7 @@ def jsonify_xml_file(request):
 @api_view(['GET'])
 def update_fields(request):
     data_source = settings.ARTICLE_ROOT
-    articles = Article_attributes.objects.filter(last_stage=2, status='completed')
+    articles = Article_attributes.objects.filter(last_step=2, status='completed')
     for root, dirs, files in os.walk(data_source):
         for file in files:
             qs = articles.filter(article_file=file)[0]
@@ -58,7 +58,7 @@ def update_fields(request):
             try:
                 qs.title = find_title(data)
                 qs.DOI = find_doi(data)
-                qs.last_stage = 3
+                qs.last_step = 3
                 qs.note = 'ok'
                 qs.provider_rec = 'node_450'
                 qs.type_of_record = 'article' 
