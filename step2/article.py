@@ -423,7 +423,7 @@ def migrate_to_step2(request):
             print("unsupported file type found", source)
 
 
-    return Response("executed succcessfully")
+    return Response("Successfully migrated all files")
 
 
 
