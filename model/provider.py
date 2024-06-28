@@ -86,6 +86,7 @@ class Providers(models.Model):
     requirement_override = models.BooleanField(default=False)
     usda_source = models.BooleanField(default=False)
     archive_switch = models.BooleanField(default=False)
+    minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with API", default=30)
 
 
     def __str__(self) -> str:
@@ -122,7 +123,6 @@ class Provider_meta_data_FTP(models.Model):
                               help_text="Password to login to FTP. if is_password_required is selected this field is required"
                               )
 
-    minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with FTP")
     next_due_date = models.DateTimeField(null=True, 
                                          help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
                                          )
@@ -157,7 +157,7 @@ class Provider_meta_data_FTP(models.Model):
 
     # call save method to assign next due date
     def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
+        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.provider.minimum_delivery_fq)
         super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
     # method to return decrypted password
@@ -197,7 +197,6 @@ class Provider_meta_data_API(models.Model):
                                 help_text="If 'is_token_required' is selected provide password / token for API"
                                 )
 
-    minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with API")
     next_due_date = models.DateTimeField(null=True,
                                          help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
                                          )
@@ -253,7 +252,7 @@ class Provider_meta_data_API(models.Model):
 
     # call default save method to encrypt token and assign next due date
     def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
+        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.provider.minimum_delivery_fq)
         super(Provider_meta_data_API, self).save(*args, **kwargs)        
 
     # method to decrypt the token

@@ -44,6 +44,7 @@ def get_file_path(instance, filename):
 
 # Model to store downloaded files/folders from FTP/SFTP's
 class Archive(models.Model):
+    
     provider = models.ForeignKey(Providers, 
         on_delete=models.DO_NOTHING, 
         related_name="archives",
