@@ -2,6 +2,7 @@ from django.db import models
 from django.core.files.storage import FileSystemStorage
 from .provider import Providers
 import os
+from django.conf import settings
 
 # choices to be used for status of article attributs
 CHOICES= (
@@ -16,6 +17,8 @@ RECORD_CHOICES = (
     ('retraction', 'retraction'),
     ('letter to the editor','letter to the editor')
 )
+
+ARCHIVE_PATH = settings.MEDIA_ROOT
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -89,7 +92,7 @@ class Archive(models.Model):
                     default=False, 
                     help_text="Flag to maintain if the existing content is changed and file_content is update"
                     )
-
+    deposite_path = models.TextChoices(null=True, blank=True, default=ARCHIVE_PATH)
     def __str__(self) -> str:
         return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage
     

@@ -72,8 +72,7 @@ PROVIDER_TYPE = (
     ('FTP', 'FTP'),
     ('API', 'API')
 )
-
-ARCHIVE_PATH = settings.MEDIA_ROOT 
+ 
 
 # providers model
 class Providers(models.Model):
@@ -87,7 +86,6 @@ class Providers(models.Model):
     requirement_override = models.BooleanField(default=False)
     usda_source = models.BooleanField(default=False)
     archive_switch = models.BooleanField(default=False)
-    deposite_path = models.TextChoices(null=True, blank=True, default=ARCHIVE_PATH)
 
 
     def __str__(self) -> str:
