@@ -103,8 +103,8 @@ def update_history_for_FTP(sender, instance, created, **kwargs):
         # create fetch_history for log purposes
         Fetch_history.objects.create(
             provider = instance.provider,
-            status = instance.last_pull_status,
-            error_message = instance.last_error_message
+            status = instance.provider.status,
+            error_message = instance.provider.last_error_message
         )
         return True
 
@@ -117,12 +117,12 @@ def update_history_for_API(sender, instance, created, **kwargs):
         # create fetch_history for log purposes
         Fetch_history.objects.create(
             provider = instance.provider,
-            status = instance.last_pull_status,
-            error_message = instance.last_error_message
+            status = instance.provider.status,
+            error_message = instance.provider.last_error_message
         )
 
         # if api is failed send the email.
-        if instance.last_pull_status == 'failed':
+        if instance.provider.status == 'failed':
             # send_notification(instance)
             pass
             

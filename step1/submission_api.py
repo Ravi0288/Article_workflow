@@ -75,7 +75,7 @@ def download_from_submission_api(request):
     qs = Provider_meta_data_API.objects.filter(api_meta_type="Submission")
     for api in qs:
         harvester = SubmissionMetadataHarvester(api.base_url)
-        last_date = api.last_pull_time.strftime("%Y-%m-%d")
+        last_date = api.provider.last_time_received.strftime("%Y-%m-%d")
         submissions = harvester.fetch_submissions(last_date)
         if submissions:
             file_type = '.json'
@@ -93,7 +93,7 @@ def download_from_submission_api(request):
                     file_name_on_source = file_name,
                     provider = api.provider,
                     processed_on = datetime.datetime.now(tz=pytz.utc),
-                    status = 'completed',
+                    status = 'processed',
                     file_size = file_size,
                     file_type = file_type
                 )
@@ -109,23 +109,23 @@ def download_from_submission_api(request):
                 os.remove(file_name)
 
                 # update status
-                api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-                api.last_pull_status = 'completed'
-                api.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(api.minimum_delivery_fq)
+                api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                api.provider.status = 'completed'
+                api.provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(api.provider.minimum_delivery_fq)
                 api.save()
 
             except Exception as e:
                 # if error occured update the failed status
-                api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-                api.last_pull_status = 'failed'
-                api.last_error_message = e
+                api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                api.provider.status = 'failed'
+                api.provider.last_error_message = e
                 api.save()
 
 
         else:
-            api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-            api.last_pull_status = 'failed'
-            api.last_error_message = 'No record found'
+            api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+            api.provider.status = 'failed'
+            api.provider.last_error_message = 'No record found'
             api.save()
 
     try:

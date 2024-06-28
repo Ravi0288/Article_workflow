@@ -60,4 +60,4 @@ class Article_attributes(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    deposite_path = models.TextChoices(null=True, blank=True, default=ARCHIVE_PATH)
+    deposite_path = models.TextField(default=ARCHIVE_PATH)

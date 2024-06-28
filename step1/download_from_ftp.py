@@ -31,7 +31,7 @@ def download_file(ftp_connection, article, item):
             file_name_on_source = article,
             provider = item.provider,
             processed_on = datetime.datetime.now(tz=pytz.utc),
-            status = 'completed',
+            status = 'processed',
             file_size = file_size,
             file_type = file_type
         )
@@ -44,8 +44,7 @@ def download_file(ftp_connection, article, item):
         content = BytesIO()
         ftp_connection.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
-        x[0].status = 'completed'
-        x[0].is_processed = False
+        x[0].status = 'processed'
         x[0].is_content_changed = True
         article = str(x[0].id) + '.' + article.split('.')[-1]
         x[0].file_content.save(article, content)
@@ -79,7 +78,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
                 file_name_on_source = article,
                 provider = item.provider,
                 processed_on = datetime.datetime.now(tz=pytz.utc),
-                status = 'completed',
+                status = 'processed',
                 file_size = os.path.getsize(zipped_file),
                 file_type = '.zip'
             )
@@ -93,7 +92,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
 
     # if file exists than check the file size. If file size is different update the existing record
     if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
-        x[0].status = 'completed'
+        x[0].status = 'processed'
         with open(zipped_file, 'rb') as zip_file:
             zip_file.seek(0)
             x[0].file_content.save(article, zip_file)
@@ -124,9 +123,9 @@ def download_from_ftp(request):
             ftp_connection.login(item.account, item.pswd)
         except Exception as e:
             print("error occured", e)
-            item.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-            item.last_pull_status = 'failed'
-            item.last_error_message = e
+            item.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+            item.provider.status = 'failed'
+            item.provider.last_error_message = e
             item.save()
             continue
 
@@ -150,9 +149,9 @@ def download_from_ftp(request):
                     pass
  
         # update the succes status to Provider_meta_data_FTP
-        item.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        item.last_pull_status = 'completed'
-        item.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.minimum_delivery_fq)
+        item.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        item.provider.status = 'completed'
+        item.provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
         item.save()
 
         # quite the current ftp connection 

@@ -87,10 +87,25 @@ class Providers(models.Model):
     usda_source = models.BooleanField(default=False)
     archive_switch = models.BooleanField(default=False)
     minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with API", default=30)
+    last_time_received = models.DateTimeField(auto_now=True, help_text="This will be auto field as and when the FTP will be accessed")
+    status = models.CharField(max_length=10, default="success", 
+                                        help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
+                                        )
+    last_error_message = models.TextField(null=True, 
+                                          blank=True,
+                                          help_text="In case of error last error message will be stored here. Don't enter anything here"
+                                          )
 
-
+    next_due_date = models.DateTimeField(null=True, 
+                                         help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
+                                         )
     def __str__(self) -> str:
         return self.official_name
+    
+    # call save method to assign next due date
+    def save(self, *args, **kwargs):
+        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
+        super(Providers, self).save(*args, **kwargs)
 
 
 # Model to maintain history of access of API's and FTP's
@@ -123,18 +138,6 @@ class Provider_meta_data_FTP(models.Model):
                               help_text="Password to login to FTP. if is_password_required is selected this field is required"
                               )
 
-    next_due_date = models.DateTimeField(null=True, 
-                                         help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
-                                         )
-
-    last_pull_time = models.DateTimeField(auto_now=True, help_text="This will be auto field as and when the FTP will be accessed")
-    last_pull_status = models.CharField(max_length=10, default="success", 
-                                        help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
-                                        )
-    last_error_message = models.TextField(null=True, 
-                                          blank=True,
-                                          help_text="In case of error last error message will be stored here. Don't enter anything here"
-                                          )
     pull_switch = models.CharField(max_length=50, null=True, blank=True)
 
     # email_notification = models.ForeignKey(Email_notification, 
@@ -155,10 +158,6 @@ class Provider_meta_data_FTP(models.Model):
                 )
 
 
-    # call save method to assign next due date
-    def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.provider.minimum_delivery_fq)
-        super(Provider_meta_data_FTP, self).save(*args, **kwargs)
 
     # method to return decrypted password
     @property
@@ -197,19 +196,6 @@ class Provider_meta_data_API(models.Model):
                                 help_text="If 'is_token_required' is selected provide password / token for API"
                                 )
 
-    next_due_date = models.DateTimeField(null=True,
-                                         help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
-                                         )
-
-    last_pull_time = models.DateTimeField(auto_now=True, help_text="This will be auto field as and when the api will be accessed")
-    last_pull_status = models.CharField(max_length=10, 
-                                        default="success",
-                                          help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
-                                        )
-    last_error_message = models.TextField(null=True, 
-                                          blank=True,
-                                          help_text="In case of error last error message will be stored here. Don't enter anything here"
-                                          )
     pull_switch = models.CharField(max_length=50, null=True, blank=True)
 
     # email_notification = models.ForeignKey(Email_notification, 
@@ -249,11 +235,7 @@ class Provider_meta_data_API(models.Model):
             raise ValidationError(
                 {'error': "If token is required, please provide site token."}
                 )
-
-    # call default save method to encrypt token and assign next due date
-    def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.provider.minimum_delivery_fq)
-        super(Provider_meta_data_API, self).save(*args, **kwargs)        
+      
 
     # method to decrypt the token
     @property

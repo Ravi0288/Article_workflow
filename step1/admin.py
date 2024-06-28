@@ -15,16 +15,14 @@ class ArchivedArticleAdmin(admin.ModelAdmin):
 class ProviderMetaDataAPIAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = ["api_meta_type", "provider", "base_url",
-                    "identifier_code", "identifier_type", "last_pull_time",
-                    "is_token_required", "minimum_delivery_fq", "last_pull_status",
-                    "last_error_message"
+                    "identifier_code", "identifier_type",
+                    "is_token_required",
                     ]
 
 class ProviderMetaDataFTPAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = ["provider", "server", "protocol",
-                    "site_path", "account", "minimum_delivery_fq",
-                    "last_pull_status", "last_error_message", "next_due_date"
+                    "site_path", "account"
                     ]
 
 class FetchHistoryAdmin(admin.ModelAdmin):

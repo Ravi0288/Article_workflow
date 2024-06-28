@@ -161,7 +161,7 @@ def is_article_tag_available(xml_file_path):
 
 # update archive artile flags if processed
 def update_archive(row):
-    row.is_processed = True
+    row.status = "processed"
     row.processed_on = datetime.datetime.now(tz=pytz.utc)
     row.save()
 
@@ -378,7 +378,7 @@ def jsonify_file_content(source, row):
 def migrate_to_step2(request):
     # get the records from arhived article that are not processed
     # This includes new records as well as records that are modified
-    qs = Archive.objects.filter(is_processed=False)
+    qs = Archive.objects.all().exclude(status="processed")
 
     # looping through each object in the query set
     for row in qs:

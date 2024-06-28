@@ -728,3 +728,107 @@ Traceback (most recent call last):
     f = open(fname, 'r')
 FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE\\CHORUS\\CHORUS/201.json'
 ERROR 2024-05-25 13:03:59,254 basehttp 48892 39224 "GET /download-from-chorus-api/ HTTP/1.1" 500 139288
+ERROR 2024-06-28 21:36:21,552 log 15024 13132 Internal Server Error: /step1/download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 186, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 118, in save_files
+    file_name = str(x.id) + '.' + qs[0].split('.')[-1]
+UnboundLocalError: local variable 'x' referenced before assignment
+ERROR 2024-06-28 21:36:21,552 basehttp 15024 13132 "GET /step1/download-from-chorus-api/ HTTP/1.1" 500 139715
+ERROR 2024-06-28 21:44:34,431 log 21980 17212 Internal Server Error: /step1/download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 175, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 92, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE\\CHORUS/201.json'
+ERROR 2024-06-28 21:44:34,431 basehttp 21980 17212 "GET /step1/download-from-chorus-api/ HTTP/1.1" 500 133980
+ERROR 2024-06-28 21:44:47,034 log 21980 17212 Internal Server Error: /step1/download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 175, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 92, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE\\CHORUS/201.json'
+ERROR 2024-06-28 21:44:47,034 basehttp 21980 17212 "GET /step1/download-from-chorus-api/ HTTP/1.1" 500 133980
+ERROR 2024-06-28 21:47:10,506 log 16604 3444 Internal Server Error: /step1/download-from-chorus-api/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 175, in download_from_chorus_api
+    save_files(publisher, api)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\step1\chorus_api.py", line 92, in save_files
+    f = open(fname, 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\ARCHIVE\\CHORUS/201.json'
+ERROR 2024-06-28 21:47:10,508 basehttp 16604 3444 "GET /step1/download-from-chorus-api/ HTTP/1.1" 500 133980

@@ -37,7 +37,7 @@ def send_notification(instance):
     subject = instance.email_notification.email_subject
     email_from = instance.email_notification.email_from
     email_to = instance.email_notification.email_to
-    email_body = instance.last_error_message
+    email_body = instance.provider.last_error_message
 
     # prepate the email content
     msg = EmailMessage(subject, email_body, email_from, email_to).send()

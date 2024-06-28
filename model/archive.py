@@ -84,16 +84,14 @@ class Archive(models.Model):
                               help_text="Last access status"
                             )
 
-    is_processed = models.BooleanField(default=False, 
-                                       help_text="Flag to maintain if the record is processed for step 2"
-                                    )
     processed_on = models.DateTimeField(null=True)
 
     is_content_changed = models.BooleanField(
                     default=False, 
                     help_text="Flag to maintain if the existing content is changed and file_content is update"
                     )
-    deposite_path = models.TextChoices(null=True, blank=True, default=ARCHIVE_PATH)
+    deposite_path = models.TextField(default=ARCHIVE_PATH)
+
     def __str__(self) -> str:
         return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage
     

@@ -37,9 +37,9 @@ def get_article_dois_by_issn(issn, api, num_rows=1000):
                 print(e)
         return dois
     else:
-        api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        api.last_pull_status = 'completed'
-        api.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
+        api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        api.provider.status = 'completed'
+        api.provider.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
         api.save()
         return Response("error occured")
 
@@ -111,7 +111,7 @@ def save_files(dois, headers, api):
                         file_size = sys.getsizeof(response.json())
                         # save file
                         qs[0].file_size = file_size
-                        qs[0].is_processed = False
+                        qs[0].status = "waiting"
                         qs[0].is_content_changed = True
                         file_name = str(x.id) + '.' + qs[0].split('.')[-1]
                         qs[0].file_content.save(file_name, ContentFile(response.content))
@@ -123,7 +123,7 @@ def save_files(dois, headers, api):
                         file_name_on_source = file_name,
                         provider = api.provider,
                         processed_on = datetime.datetime.now(tz=pytz.utc),
-                        status = 'completed',
+                        status = 'processed',
                         file_size = file_size,
                         file_type = file_type,
                         unique_key = doi
@@ -176,8 +176,8 @@ def download_from_crossref_api(request):
         save_files(article_dois, headers, api)
 
         # update the last run status
-        api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        api.last_pull_status = 'completed'
-        api.last_error_message = 'N/A'
+        api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        api.provider.status = 'completed'
+        api.provider.last_error_message = 'N/A'
         api.save()
     return Response("success")

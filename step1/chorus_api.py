@@ -49,17 +49,6 @@ def filter_publisher_data(data):
     return result
 
 
-def filter_doi_data(data):
-    result = []
-    for item in data:
-        x = item['DOI']
-        # obj = {
-        #     'content-type' : item['link'][0]['content-type'],
-        #     'url' : item['link'][0]['URL']
-        # }
-        result.append(x)
-    return result
-
 def save_files(publishers,api):
     state = True
     current_date = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -113,9 +102,9 @@ def save_files(publishers,api):
                             os.remove(fname)
                             # save file
                             qs[0].file_size = file_size
-                            qs[0].is_processed = False
+                            qs[0].status = "waiting"
                             qs[0].is_content_changed = True
-                            file_name = str(x.id) + '.' + qs[0].split('.')[-1]
+                            file_name = str(qs[0].id) + '.' + file_name.split('.')[-1]
                             qs[0].file_content.save(file_name, _file)
 
                     else:
@@ -124,7 +113,7 @@ def save_files(publishers,api):
                             file_name_on_source = file_name,
                             provider = api.provider,
                             processed_on = datetime.datetime.now(tz=pytz.utc),
-                            status = 'completed',
+                            status = 'processed',
                             file_size = file_size,
                             file_type = file_type,
                             unique_key = doi
@@ -186,9 +175,9 @@ def download_from_chorus_api(request):
             save_files(publisher, api)
 
 
-        api.last_pull_time = datetime.datetime.now(tz=pytz.utc)
-        api.last_pull_status = 'completed'
-        api.last_error_message = 'N/A'
+        api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        api.provider.status = 'completed'
+        api.provider.last_error_message = 'N/A'
         api.save()
 
         # zip contents
