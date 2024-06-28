@@ -44,10 +44,19 @@ class Unreadable_xml_files(models.Model):
 
 # article attribute model
 class Article_attributes(models.Model):
-    article_file = models.FileField(upload_to=get_file_path, storage=OverWriteStorage(), help_text="Browse the file")
+
+    article_file = models.FileField(upload_to=get_file_path, 
+                                    storage=OverWriteStorage(), 
+                                    help_text="Browse the file"
+                                    )
+    
+    journal = models.FileField(blank=True, 
+                               null=True, 
+                               help_text="This field value will assigned automatically with the value assigned in article_file"
+                               )
+
     title = models.TextField(blank=True, null=True, help_text="Article title")
     type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
-    # journal = models.ForeignKey(Providers, related_name="journals", on_delete=models.DO_NOTHING)
     provider = models.ForeignKey(Providers, related_name="provsider", on_delete=models.DO_NOTHING)
     archive = models.ForeignKey(Archive, related_name="archives", on_delete=models.DO_NOTHING)
     last_step = models.IntegerField(default=2, help_text="Last stage article passed through 1-11")
@@ -61,3 +70,10 @@ class Article_attributes(models.Model):
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
     deposite_path = models.TextField(default=ARCHIVE_PATH)
+
+
+    def save(self, *args, **kwargs):
+        if self.file_name_on_local_storage in ('', None):
+            # article_file = journal
+            self.journal = self.article_file
+        super(Article_attributes, self).save(*args, **kwargs)
