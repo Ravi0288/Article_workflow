@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
     # MFA ENTRA
     'oauth2_provider'
-    'mail_service'
 ]
 # ..................#######
 
