@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %} {% endblock title %}
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #343a40;
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .title-bar {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .form-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container-title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="wrapper">
+    <div class="sidebar">
+        <div> <br/> <br/> <br/> <br/> <br/> <br/> <br/></div>
+        <h3 class="text-center">Menu</h3>
+        <a href="{% url 'user_list' %}">List Users</a>
+        <a href="{% url 'group_list' %}">List Groups</a>
+        <a href="{% url 'user_create' %}">Create User</a>
+        <a href="{% url 'group_create' %}">Create Group</a>
+    </div>
+    <div class="content">
+
+        {% block body %}
+
+        {% endblock %}
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 USDA. All rights reserved.</p>
+</div>
+
+</body>
+</html>

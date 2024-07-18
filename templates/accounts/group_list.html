@@ -1,0 +1,71 @@
+{% extends 'accounts/base.html' %}
+{% block title %} Group List {% endblock title %}
+
+{% block body %}
+    <div class="title-bar">
+        <h1>Group List</h1>
+    </div>
+
+<br/>
+<br/>
+    {% if page_obj %}
+    <div class="messages">
+        {% for obj in page_obj %}
+            {% if forloop.counter0|divisibleby:2 %}
+                <div class="alert" style="background-color: rgb(184, 214, 241); margin: 0px;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: red;">X</button>
+                    {{ obj.name }}
+                </div>
+            {% else %}
+                <div class="alert" style="background-color: aliceblue; margin: 0px;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: red;">X</button>
+                    {{ obj.name }}
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="messages">
+        NO GROUP FOUND
+    </div>
+
+    {% endif %}
+
+
+    <hr/>
+    <hr/>
+    <div class="button-container">
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.paginator.num_pages %}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+ 
+        <span class="m-5 p-5">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+
+    </div>
+    {% endblock %}

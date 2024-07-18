@@ -1,0 +1,18 @@
+{% extends 'accounts/base.html' %}
+{% block title %} Create New Group {% endblock title %}
+
+{% block body %}
+    <div class="title-bar">
+        <h1>Create Group</h1>
+    </div>
+
+    <div class="form-container">
+        <h2 class="form-container-title">Group Form</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </form>
+    </div>
+
+{% endblock %}
