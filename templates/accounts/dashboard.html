@@ -4,12 +4,10 @@
 
 
 {% block header %}
-    <h1>Welcome to the Dashboard</h1>
+    <h1>Welcome {{ user.username }}</h1>
 {% endblock header%}
 
 {% block body %}
     <h2>USDA Dashboard</h2>
-    <p>Welcome, {{ user.username }}!</p> 
     <p>This is your dashboard where you can manage users and groups.</p>
-
 {% endblock %}

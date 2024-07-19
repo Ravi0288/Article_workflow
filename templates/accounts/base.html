@@ -66,8 +66,11 @@
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             }
             .form-container-title {
-                margin-bottom: 30px;
                 text-align: center;
+                background-color: #a6c2fe;
+                border: #0951f7;
+                margin: 5px;
+                padding: 5px;
             }
 
             .title-bar {
@@ -96,6 +99,21 @@
             .logout button:hover {
                 background-color: #d32f2f;
             }
+
+            .table-header {
+                background-color: rgb(237, 22, 158);
+                margin: 0px;
+                text-decoration: solid black;
+            }
+            .even-row {
+                background-color: rgb(240, 248, 255);
+                margin: 0px;
+            }
+            .odd-row {
+                background-color: rgb(184, 214, 241);
+                margin: 0px;
+            }
+
         </style>
 
         <title> {% block title %} {% endblock title %}</title>
@@ -109,10 +127,11 @@
             <div class="sidebar">
                 <!-- <h3 class="text-center">Menu</h3> -->
                 <a href="{% url 'logout' %}" style="background-color: #f44336;">Logout</a>
-                <a href="{% url 'user_list' %}">List Users</a>
-                <a href="{% url 'group_list' %}">List Groups</a>
+                <a href="{% url 'dashboard' %}">Home</a>
                 <a href="{% url 'user_create' %}">Create User</a>
                 <a href="{% url 'group_create' %}">Create Group</a>
+                <a href="{% url 'user_list' %}">List Users</a>
+                <a href="{% url 'group_list' %}">List Groups</a>
             </div>
             <div class="content">
 
