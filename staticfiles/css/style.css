@@ -11,9 +11,9 @@ body {
 }
 
 .sidebar {
-    background-color: #a6c2fe; /* Background color of the sidebar */
+    background-color: #a6c2fe;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h3 {
@@ -24,17 +24,17 @@ body {
     display: block;
     text-decoration: none;
     text-align: center;
-    color: white; /* Text color */
-    background-color: #0951f7; /* Button background color */
-    padding: 10px 20px; /* Adjust padding to increase or decrease button size */
-    margin-bottom: 10px; /* Spacing between buttons */
-    border-radius: 6px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    color: white;
+    background-color: #0951f7;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
 }
 
 .sidebar a:hover {
-    background-color: #073db0; /* Darker shade for hover effect */
-    color: #fff; /* Text color on hover */
+    background-color: #073db0;
+    color: #fff;
 }
 .content {
     flex: 1;
@@ -72,12 +72,12 @@ body {
 }
 
 .logout {
-    margin-left: 10px; /* Optional: Adds spacing between title and logout button */
+    margin-left: 10px;
 }
 
 .logout button {
-    background-color: #f44336; /* Red color for logout button */
-    color: #fff; /* Text color */
+    background-color: #f44336;
+    color: #fff;
     border: none;
     padding: 8px 16px;
     border-radius: 4px;
@@ -86,5 +86,5 @@ body {
 }
 
 .logout button:hover {
-    background-color: #d32f2f; /* Darker shade on hover */
+    background-color: #d32f2f;
 }
