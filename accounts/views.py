@@ -97,4 +97,4 @@ def dashboard_view(request):
 
 def logout_view(request):
     logout(request)
-    return render('accounts/login.html')
+    return redirect('login')

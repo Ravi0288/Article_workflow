@@ -1,0 +1,90 @@
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f7f7f7;
+}
+.wrapper {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    background-color: #a6c2fe; /* Background color of the sidebar */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+}
+
+.sidebar h3 {
+    margin-top: 0;
+}
+
+.sidebar a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    color: white; /* Text color */
+    background-color: #0951f7; /* Button background color */
+    padding: 10px 20px; /* Adjust padding to increase or decrease button size */
+    margin-bottom: 10px; /* Spacing between buttons */
+    border-radius: 6px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.sidebar a:hover {
+    background-color: #073db0; /* Darker shade for hover effect */
+    color: #fff; /* Text color on hover */
+}
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #e6f0ff;
+}
+
+.footer {
+    background-color: #4b2aec;
+    color: rgb(18, 16, 16);
+    text-align: center;
+    padding: 10px;
+}
+
+.form-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-container-title {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.title-bar {
+    background-color: #0951f7;
+    color: white;
+    padding: 2px;
+    text-align: center;
+    font-size: small;
+    display: inline;
+}
+
+.logout {
+    margin-left: 10px; /* Optional: Adds spacing between title and logout button */
+}
+
+.logout button {
+    background-color: #f44336; /* Red color for logout button */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout button:hover {
+    background-color: #d32f2f; /* Darker shade on hover */
+}

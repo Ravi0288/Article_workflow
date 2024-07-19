@@ -1,13 +1,13 @@
 {% extends 'accounts/base.html' %}
 {% block title %} Dashboard {% endblock title %}
+{% load static %}
 
 
-
+{% block header %}
+    <h1>Welcome to the Dashboard</h1>
+{% endblock header%}
 
 {% block body %}
-<div class="title-bar">
-    <h1>Welcome to the Dashboard</h1>
-</div>
     <h2>USDA Dashboard</h2>
     <p>Welcome, {{ user.username }}!</p> 
     <p>This is your dashboard where you can manage users and groups.</p>

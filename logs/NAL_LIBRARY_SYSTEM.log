@@ -1,0 +1,719 @@
+ERROR 2024-07-19 08:18:45,252 log 35944 35920 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 10: 'static'. Did you forget to register or load this tag?
+ERROR 2024-07-19 08:18:45,260 basehttp 35944 35920 "GET /dashboard/ HTTP/1.1" 500 181527
+ERROR 2024-07-19 08:20:20,134 log 34528 9656 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 10: 'static'. Did you forget to register or load this tag?
+ERROR 2024-07-19 08:20:20,139 basehttp 34528 9656 "GET /dashboard/ HTTP/1.1" 500 181527
+ERROR 2024-07-19 08:21:10,974 log 30800 20224 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:21:10,982 basehttp 30800 20224 "GET /dashboard/ HTTP/1.1" 500 180178
+ERROR 2024-07-19 08:22:01,861 log 26004 27848 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:01,868 basehttp 26004 27848 "GET /dashboard/ HTTP/1.1" 500 180053
+ERROR 2024-07-19 08:22:02,558 log 26004 3676 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:02,565 basehttp 26004 3676 "GET /dashboard/ HTTP/1.1" 500 180053
+ERROR 2024-07-19 08:22:02,850 log 26004 25460 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:02,944 log 26004 34384 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:02,948 basehttp 26004 34384 "GET /dashboard/ HTTP/1.1" 500 180053
+ERROR 2024-07-19 08:22:03,292 log 26004 24556 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:03,295 basehttp 26004 24556 "GET /dashboard/ HTTP/1.1" 500 180053
+ERROR 2024-07-19 08:22:49,625 log 26004 22132 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:49,628 basehttp 26004 22132 "GET /dashboard/ HTTP/1.1" 500 179759
+ERROR 2024-07-19 08:22:52,130 log 26004 22132 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:22:52,133 basehttp 26004 22132 "GET /dashboard/ HTTP/1.1" 500 179619
+ERROR 2024-07-19 08:23:00,399 log 25792 31004 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:23:00,407 basehttp 25792 31004 "GET /dashboard/ HTTP/1.1" 500 179619
+ERROR 2024-07-19 08:24:12,554 log 36272 34468 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:24:12,562 basehttp 36272 34468 "GET /dashboard/ HTTP/1.1" 500 179673
+ERROR 2024-07-19 08:24:48,464 log 32492 18980 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:24:48,477 basehttp 32492 18980 "GET /dashboard/ HTTP/1.1" 500 179748
+ERROR 2024-07-19 08:24:53,093 log 32492 18980 Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
+    return render(request, 'accounts/dashboard.html')
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 226, in do_block
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'block' tag with name 'title' appears more than once
+ERROR 2024-07-19 08:24:53,096 basehttp 32492 18980 "GET /dashboard/ HTTP/1.1" 500 179748
+ERROR 2024-07-19 09:20:58,747 log 8972 3264 Internal Server Error: /logout/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 100, in logout_view
+    return render('accounts/login.html')
+TypeError: render() missing 1 required positional argument: 'template_name'
+ERROR 2024-07-19 09:20:58,748 basehttp 8972 3264 "GET /logout/ HTTP/1.1" 500 70455
