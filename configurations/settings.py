@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'sslserver',
 
     # MFA ENTRA
-    'oauth2_provider'
+    # 'oauth2_provider'
 ]
 # ..................#######
 
