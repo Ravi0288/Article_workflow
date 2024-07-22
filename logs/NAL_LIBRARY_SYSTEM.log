@@ -717,3 +717,51 @@ Traceback (most recent call last):
     return render('accounts/login.html')
 TypeError: render() missing 1 required positional argument: 'template_name'
 ERROR 2024-07-19 09:20:58,748 basehttp 8972 3264 "GET /logout/ HTTP/1.1" 500 70455
+ERROR 2024-07-21 12:53:28,206 log 30792 42152 Internal Server Error: /groups/
+Traceback (most recent call last):
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 58, in group_list
+    return render(request, 'accounts/group_list.html', context=context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 514, in parse
+    self.extend_nodelist(nodelist, compiled_result, token)
+  File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\base.py", line 531, in extend_nodelist
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: <ExtendsNode: extends 'footer.html'> must be the first tag in the template.
+ERROR 2024-07-21 12:53:28,222 basehttp 30792 42152 "GET /groups/ HTTP/1.1" 500 176030

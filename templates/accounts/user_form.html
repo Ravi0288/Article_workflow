@@ -5,6 +5,20 @@
     <h3>Create New User</h3>
 {% endblock header%}
 
+{% block menu %}
+
+<a href="{% url 'dashboard' %}">Home</a>
+<a href="{% url 'user_create' %}">Create User</a>
+<a href="{% url 'group_create' %}">Create Group</a>
+<a href="{% url 'user_list' %}">List Users</a>
+<a href="{% url 'group_list' %}">List Groups</a>
+    <!-- {% for item in menu %} -->
+
+    <!-- {% endfor %} -->
+
+{% endblock menu %}
+
+
 {% block body %}
     <!-- <div class="form-container">
         <h2 class="form-container-title">User Form</h2>

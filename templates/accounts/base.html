@@ -119,7 +119,6 @@
                 margin: 0px;
                 padding: 0px;
             }
-
         </style>
 
         <title> {% block title %} {% endblock title %}</title>
@@ -131,13 +130,9 @@
         </div>
         <div class="wrapper">
             <div class="sidebar">
-                <!-- <h3 class="text-center">Menu</h3> -->
                 <a href="{% url 'logout' %}" style="background-color: #f44336;">Logout</a>
-                <a href="{% url 'dashboard' %}">Home</a>
-                <a href="{% url 'user_create' %}">Create User</a>
-                <a href="{% url 'group_create' %}">Create Group</a>
-                <a href="{% url 'user_list' %}">List Users</a>
-                <a href="{% url 'group_list' %}">List Groups</a>
+                {% block menu %}
+                {% endblock %}
             </div>
             <div class="content">
 
@@ -150,6 +145,5 @@
         <div class="footer">
             <p>&copy; 2024 USDA. All rights reserved.</p>
         </div>
-
     </body>
 </html>
