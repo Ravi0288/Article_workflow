@@ -14,43 +14,7 @@ import pytz
 import datetime
 import shutil
 from model.article import Unreadable_xml_files, Article_attributes
-
-
-# unreadable xml file serializer
-class Unreadable_xml_files_serializers(ModelSerializer):
-    class Meta:
-        model = Unreadable_xml_files
-        fields = '__all__'
-
-# unreadable xml file view sets
-class Unreadable_xml_files_viewset(ModelViewSet):
-    serializer_class = Unreadable_xml_files_serializers
-    queryset = Unreadable_xml_files.objects.all()
-    
-    def get_queryset(self):
-        qs = super().get_queryset()
-        params = self.request.GET
-        qs = qs.filter(**params.dict())
-        return qs
-
-# article attribute serializer
-class Article_attributes_serializer(ModelSerializer):
-    class Meta:
-        model = Article_attributes
-        fields = '__all__'
-
-
-# article attribute viewset
-class Article_attributes_viewset(ModelViewSet):
-    queryset = Article_attributes.objects.all()
-    serializer_class = Article_attributes_serializer
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        params = self.request.GET
-        qs = qs.filter(**params.dict())
-        return qs
-
+from .splitter import splitter
 
 
 # read xml file and return dictionary
@@ -97,33 +61,27 @@ def is_article_tag_available(xml_file_path):
     
     ele = doc.get("article", None)
     if ele:
-        # print("article tag found. File will be saved for stage 2")
         return doc
     
     ele = doc.get("Article", None)
     if ele:
-        # print("article tag found. File will be saved for stage 2")
         return doc
     
     ele = doc.get("mods", None)
     if ele:
-        # print("article tag found. File will be saved for stage 2")
         return doc
 
     ele = doc.get("ArticleSet", None)
     if ele:
-        # print("article set found. File will be saved for stage 2")
-        # print(xml_file_path)
         return doc
 
-    # print("article / ArticleSet tag not found. File skipped")
     return False
-
 
 
 # update archive artile flags if processed
 def update_archive(row):
     row.status = "processed"
+    row.last_step = 2
     row.processed_on = datetime.datetime.now(tz=pytz.utc)
     row.save()
 
@@ -247,7 +205,7 @@ def unzip_file(source, destination, row):
     except zipfile.BadZipFile:
         # Handle the case where the file is not a valid ZIP file
         # os.remove(source)
-        print("zipped file can't be unzipped. Either it is corrupt or not a correct zipped file", source)
+        print("zipped file cant be unzipped. it is corrupt or unsupported zipped file", source)
         return False
     except Exception as e:
         # Handle any other exceptions
@@ -284,7 +242,15 @@ def unzip_file(source, destination, row):
                         pass
             else:
                 # if xml file found jsonify it and perform update / create based on row.is_content_changed flag
-                jsonify_file_content(new_source, row)
+                # jsonify_file_content(new_source, row)
+                result, message = splitter(read_xml_file(new_source))
+                if message == 'successful':
+                    if len(result) > 1:
+                        for file_content in result:
+                            file_path = new_source[:5] + '_' + '.xml'
+                            with open(file_path, 'w') as f:
+                                f.write(file_content)
+                                f.close()
         return True
 
     return False
@@ -340,7 +306,7 @@ def migrate_to_step2(request):
     for row in qs:
         source = 'ARCHIVE/' + row.file_content.name
         destination = 'TEMP/' + source[:-4]
-        # Create the output folder if it doesn't exist
+        # Create the output folder if doesn't exist
         if not os.path.exists(destination):
             os.makedirs(destination)
 
@@ -373,7 +339,14 @@ def migrate_to_step2(request):
         # 1: read each file and ensure all are jsonified from xml
         # 2: create / update records in article for each json files
         elif row.file_type == '.xml':
-            if jsonify_file_content(source, row):
+            result, message = splitter(read_xml_file(source))
+            if message == 'successful':
+                if len(result) > 1:
+                    for file_content in result:
+                        file_path = source[:5] + '_' + '.xml'
+                        with open(file_path, 'w') as f:
+                            f.write(file_content)
+                            f.close()
                 update_archive(row)
         else:
             print("unsupported file type found", source)

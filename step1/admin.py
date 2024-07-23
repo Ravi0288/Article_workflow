@@ -33,7 +33,7 @@ class EmailHistoryAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = ["email_ref", "email_subject", "email_body", "status"]
 
-class EmailNotificationEmailNotification(admin.ModelAdmin):
+class EmailNotification(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = ["email_from", "email_to", "email_subject", "email_body"]
 
@@ -46,4 +46,4 @@ admin.site.register(Provider_meta_data_FTP, ProviderMetaDataFTPAdmin)
 admin.site.register(Fetch_history,  FetchHistoryAdmin)
 
 admin.site.register(Email_history, EmailHistoryAdmin)
-admin.site.register(Email_notification, EmailNotificationEmailNotification)
+admin.site.register(Email_notification, EmailNotification)
