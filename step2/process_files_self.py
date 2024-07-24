@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from model.article import Unreadable_xml_files, Article_attributes
 from django.core.files.base import ContentFile
 
+import xml.etree.ElementTree as ET
 import json
 import pytz
 import datetime
@@ -189,50 +190,72 @@ def create_new_object(source, row, note):
 
 
 # in case the article objects are updated we need to fetch all the records that were packed in single xml file.
-def prepocess_records_of_segregated_xml_files(json_file_path, title, row):
-    qs = Article_attributes.objects.filter(article_file__startswith = json_file_path[:5], title=title)
+def prepocess_records_of_segregated_xml_files(xml_file_path, title, row):
+    qs = Article_attributes.objects.filter(article_file__startswith = xml_file_path, title=title)
     if qs.exists():
-        update_exisiting_object(json_file_path, row)
+        update_exisiting_object(xml_file_path, row)
     else:
-        create_new_object(json_file_path, row, "success")
+        create_new_object(xml_file_path, row, "success")
 
+
+def create_xml_file(file_name, file_content):
+    try:
+        root = ET.Element('root')  # Create a root element
+        name_element = ET.SubElement(root, 'article')  # Create a sub-element <name>
+        name_element.text = 'hello'  # Set the text content of <name>
+
+        # Convert the XML structure to a string
+        xml_str = ET.tostring(root, encoding='unicode', method='xml')
+
+        # Write the XML string to a file
+        with open(file_name, 'w') as file:
+            file.write(file_content)
+    except Exception as e:
+        print("exception occured while writing the data 214", e)
 
 # segregate the file if multiple record found, and save the file with same name prefixing underscore_index
-def segregate_article(article_set, json_file_path, row):
+def segregate_article(article_set, xml_file_path, row):
     # Create the output folder if it doesn't exist
-    if not os.path.exists(json_file_path):
-        os.makedirs(json_file_path)
-    if article_set:
-        for index, item  in enumerate(article_set):
-            try:
-                file_name = str(json_file_path[:-5]) + '_' + str(index+1) + '.json'
-                with open(file_name, 'w') as f:
-                    json.dump(item,f)
-                    f.close()
-                # title disabled in stage 2
-                # title = find_title(item)
-                prepocess_records_of_segregated_xml_files(json_file_path, "None", row)
-            except Exception as e:
-                print(e, "article_set in", json_file_path)
+    if not os.path.exists(xml_file_path):
+        os.makedirs(xml_file_path)
+
+    for index, item in enumerate(article_set):
+        try:
+            file_name = str(xml_file_path[:-4]) + '_' + str(index+1) + '.xml'
+            create_xml_file(file_name, item)
+            prepocess_records_of_segregated_xml_files(xml_file_path, "None", row)
+        except Exception as e:
+            print(e, "article_set in", xml_file_path)
 
     try:
         # delete the old file
-        os.remove(json_file_path)
+        os.remove(xml_file_path)
     except:
         pass
 
 
 # function to check if the file has more than one record
-def is_mulitple_record(json_file_path, row):
-    with open(json_file_path, 'r') as file:
-        data = json.load(file)
-        obj = data.get('ArticleSet', None)
-        if obj and (len(obj) > 1):
-            segregate_article(obj.get('Article', None), json_file_path, row)
-            return True
-        else:
-            return False
+def is_mulitple_record(xml_file_path, row):
+    # with open(xml_file_path, 'r') as f:
+    #     # Parse the XML data
+    #     data = f.read()
+    #     f.close()
+    doc = read_xml_file(xml_file_path)
 
+    ele = doc.get("ArticleSet", None)
+    if ele:
+        try:
+            root = ET.fromstring(str(doc))
+            # Find the 'ArticleSet' tag
+            article_set = root.find('ArticleSet')
+
+            if article_set is not None:
+                segregate_article(article_set, xml_file_path, row)
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Exception occured 251", e)
 
 # Function to unzip
 # This function will iterate through each directory / subdirectory of archive and will find the .zip / .ZIP file.
@@ -284,7 +307,7 @@ def unzip_file(source, destination, row):
                         pass
             else:
                 # if xml file found jsonify it and perform update / create based on row.is_content_changed flag
-                jsonify_file_content(new_source, row)
+                process_xml_file(new_source, row)
         return True
 
     return False
@@ -292,41 +315,31 @@ def unzip_file(source, destination, row):
 
 # if the content is of type xml, this function will jsonify the content, will save the json file to temporary location and 
 # finally new record will be created or the existing file will be updated based in row.is_content_changed flag
-def jsonify_file_content(source, row):
+def process_xml_file(source, row):
     # some file got the wrong xml format, 
     # hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
 
-    json_data = is_article_tag_available(source)
+    result = is_article_tag_available(source)
 
-    if not json_data:
+    if not result:
         # remove the xml file if not a valid xml file. 
         os.remove(source)
         return False
     else:
-        try:
-            # read the xml file and save as json to the same path
-            json_file_name = source[:-4] + '.json'
-            with open(json_file_name, "w") as f:
-                json.dump(json_data, f)
-            f.close()
+        # check if multiple records found
+        # if multiple file found than it will be processed in is_mulitple_record function itself.
+        if not is_mulitple_record(source, row):
+            # if json file found create record / update the record based on archive article flag
+            if row.is_content_changed:
+                update_exisiting_object(source, row)
+            else:
+                create_new_object(source, row, "success")
 
-            # check if multiple records found inside the same file
-            # if multiple file found than it will be processed in is_mulitple_record function itself.
-            if not is_mulitple_record(json_file_name, row):
-                # if json file found create record / update the record based on archive article flag
-                if row.is_content_changed:
-                    update_exisiting_object(json_file_name, row)
-                else:
-                    create_new_object(json_file_name, row, "success")
-
-            # remove the xml file
-            os.remove(source)
-            return True
+        # remove the xml file
+        os.remove(source)
+        return True
         
-        except Exception as e:
-            print("exception occured while jsonifying the xml content", e, source)
-            create_new_object(json_file_name, row, e)
-            return False
+
 
 
 # main function to create article objects from archive articles
@@ -345,9 +358,9 @@ def migrate_to_step2(request):
             os.makedirs(destination)
 
         # if record is of type zip than sequence of action will be 
-        # 1: unzip the content
-        # 2: read each file and ensure all are jsonified from xml
-        # 3: create / update records in article for each json files
+        # 1: Unzip the content
+        # 2: Read each file, if json, copy it, if xml, process it 
+        # 3: create / update records in article for each json/xml files
         if row.file_type in ('.zip', '.ZIP'):
             if unzip_file(source, destination, row):
                 update_archive(row)
@@ -367,13 +380,12 @@ def migrate_to_step2(request):
             # update archived article 
             if result:
                 update_archive(row)
-            # os.remove(destination[:-1] + '.json')
 
         # if record is of type xml than sequence of action will be 
-        # 1: read each file and ensure all are jsonified from xml
-        # 2: create / update records in article for each json files
+        # 1: read each file, if ArticleSet found, segregate the files or just copy from xml
+        # 2: create / update records in article_attribute
         elif row.file_type == '.xml':
-            if jsonify_file_content(source, row):
+            if process_xml_file(source, row):
                 update_archive(row)
         else:
             print("unsupported file type found", source)

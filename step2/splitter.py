@@ -90,6 +90,7 @@ def get_json(my_string: str):
         data_json = json.loads(my_string)
         return data_json, 'successful'
     except (json.decoder.JSONDecodeError, ValueError) as err:
+        print("json error", err)
         return None, 'JSON Error: ' + str(err)
 
 
@@ -98,10 +99,11 @@ def get_xml(my_string: str) -> lxml.etree.ElementTree:
         data_xml = etree.fromstring(my_string.encode('utf-8'))
         return data_xml, 'successful'
     except etree.XMLSyntaxError as err:
+        print("xml error", err)
         return None, 'XML Error: ' + str(err)
 
 
-def splitter(document_string: str, filepath : str):
+def splitter(document_string: str):
     """Receives a JSON or XML document string containing a single or collection of article records and
        returns a list of strings with a message string.
 
@@ -114,7 +116,7 @@ def splitter(document_string: str, filepath : str):
         :note Requires XML strings to start with "<?xml version="1.0" encoding="UTF-8"?>"
         :note Requires JSON strings to start with "{" or "["
     """
-
+    message = ' '
     document_string = document_string.lstrip()
 
     # If XML string

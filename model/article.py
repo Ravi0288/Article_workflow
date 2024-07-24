@@ -39,6 +39,7 @@ def get_file_path(instance, filename):
 class Unreadable_xml_files(models.Model):
     file_name = models.CharField(max_length=100)
     error_msg = models.TextField()
+    date_stamp = models.DateTimeField(auto_now=True)
 
 
 
@@ -72,8 +73,8 @@ class Article_attributes(models.Model):
     deposite_path = models.TextField(default=ARCHIVE_PATH)
 
 
-    def save(self, *args, **kwargs):
-        if self.file_name_on_local_storage in ('', None):
-            # article_file = journal
-            self.journal = self.article_file
-        super(Article_attributes, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.file_name_on_local_storage in ('', None):
+    #         # article_file = journal
+    #         self.journal = self.article_file
+    #     super(Article_attributes, self).save(*args, **kwargs)
