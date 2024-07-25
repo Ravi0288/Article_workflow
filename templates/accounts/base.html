@@ -34,14 +34,14 @@
                 text-align: center;
                 color: white;
                 background-color: #0951f7; 
-                padding: 5px 10px; 
-                margin-bottom: 5px; 
+                margin: 2px;
+                padding: 2px;
                 border-radius: 6px; 
                 transition: background-color 0.3s ease;
             }
 
             .sidebar a:hover {
-                background-color: #073db0; 
+                background-color: #3871eb; 
                 color: #fff; 
             }
             .content {
@@ -51,7 +51,7 @@
             }
 
             .footer {
-                background-color: #4b2aec;
+                background-color: #3871eb;
                 color: rgb(18, 16, 16);
                 text-align: center;
                 padding: 2px;
@@ -68,17 +68,17 @@
             .form-container-title {
                 text-align: center;
                 background-color: #a6c2fe;
-                border: #0951f7;
+                border: #3871eb;
                 margin: 5px;
                 padding: 5px;
             }
 
-            .title-bar {
-                background-color: #0951f7;
+            .header-bar {
+                background-color: #3871eb;
                 color: white;
-                padding: 2px;
+                padding: 4px;
                 text-align: center;
-                font-size: small;
+                font-size: smaller;
                 display: inline;
             }
 
@@ -121,16 +121,27 @@
             }
         </style>
 
-        <title> {% block title %} {% endblock title %}</title>
+        <title> 
+            {% block title %} 
+            
+            {% endblock title %}
+        </title>
     </head>
     <body>
 
-        <div class="title-bar">
-            {% block header %} {% endblock header %}
+        <div class="header-bar">
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    {% block header %} {% endblock header %}
+                </div>
+                <div class="col-4">
+                    <a href="{% url 'logout' %}" style="color: white;">Logout</a>
+                </div>
+            </div>
         </div>
         <div class="wrapper">
             <div class="sidebar">
-                <a href="{% url 'logout' %}" style="background-color: #f44336;">Logout</a>
                 {% block menu %}
                 {% endblock %}
             </div>
