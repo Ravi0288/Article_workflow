@@ -66,7 +66,7 @@ class Article_attributes(models.Model):
     last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
     note = models.TextField(default="ok", help_text="Note, warning or error note")
     DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
-    PID = models.TextField(null=True, blank=True, help_text="A locally assign identifie")
+    PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
     MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")
     provider_rec = models.CharField(max_length=10,null=True, blank=True, help_text="Provider article identifier")
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")

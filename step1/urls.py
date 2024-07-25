@@ -11,7 +11,7 @@ from .chorus_api import download_from_chorus_api
 
 
 router = DefaultRouter()
-router.register('archive-article', Archive_view, basename='archive-articl')
+router.register('archive-article', Archive_view, basename='archive-article')
 router.register('providers-ftp', Provider_meta_data_FTP_viewset, basename='provider-ftp')
 router.register('providers-api', Provider_meta_data_API_viewset, basename='provider-api')
 router.register('providers', Provider_viewset, basename='provider')
@@ -19,8 +19,8 @@ router.register('fetch-history', Fetch_history_viewset, basename='fetch-history'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('download-from-ftp/', download_from_ftp),
-    path('download-from-submission-api/', download_from_submission_api),
-    path('download-from-crossref-api/', download_from_crossref_api),
-    path('download-from-chorus-api/', download_from_chorus_api),
+    path('download-from-ftp/', download_from_ftp, name='download_from_ftp'),
+    path('download-from-submission-api/', download_from_submission_api, name='download_from_submission_api'),
+    path('download-from-crossref-api/', download_from_crossref_api, name='download_from_crossref_api'),
+    path('download-from-chorus-api/', download_from_chorus_api, name='download_from_chorus_api'),
 ]

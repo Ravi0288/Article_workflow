@@ -12,5 +12,5 @@ router.register('unreadable-xml-files', Unreadable_xml_files_viewset, basename='
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('migrate-to-step2/', migrate_to_step2)
+    path('migrate-to-step2/', migrate_to_step2, name='migrate-to-step2')
 ]

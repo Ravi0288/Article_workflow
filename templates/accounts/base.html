@@ -27,6 +27,11 @@
         </div>
         <div class="wrapper">
             <div class="sidebar">
+                <a href="{% url 'download_from_ftp' %}" style="color: white;">FTP</a>
+                <a href="{% url 'download_from_submission_api' %}" style="color: white;">Submission</a>
+                <a href="{% url 'download_from_crossref_api' %}" style="color: white;">Cross Ref</a>
+                <a href="{% url 'download_from_chorus_api' %}" style="color: white;">Chorus API</a>
+                <a href="{% url 'migrate-to-step2' %}" style="color: white;">Migrate to Step 2</a>
                 {% block menu %}
                 {% endblock %}
             </div>
