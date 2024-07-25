@@ -125,22 +125,20 @@ def is_article_tag_available(xml_file_path):
 # update archive artile flags if processed
 def update_archive(row):
     row.status = "processed"
+    row.is_content_changed = 0
     row.processed_on = datetime.datetime.now(tz=pytz.utc)
     row.save()
 
 
 # if archived articles are updated than we need to update articles file
 def update_exisiting_object(source, row):
-    # changing the default settings base directory root
-    settings.MEDIA_ROOT = settings.BASE_DIR / 'ARTICLES'
-    source = source.replace('ARCHIVE/','').replace('TEMP/','')
-    qs = Article_attributes.objects.filter(article_file = source)[0]
-    with open(source, 'rb') as f:
-        file_content = json.load(f)
-        # qs.title = find_title(file_content)
-        f.seek(0)
-        qs.article_file.save(source, ContentFile(f.read()))
-        return True
+    # Source may be ARCHIVE or TEMP based on from where this method is being called.
+    # making correct path from the received source
+    destination = 'ARTICLES/' + (source.replace('ARCHIVE/','').replace('TEMP/',''))
+
+    # Replace the destination file with the source file
+    shutil.copyfile(source, destination)
+    return True
 
 
 # create new objects in article table

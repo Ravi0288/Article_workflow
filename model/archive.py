@@ -3,6 +3,9 @@ from django.core.files.storage import FileSystemStorage
 from .provider import Providers
 import os
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # choices to be used for status of article attributs
 CHOICES= (
@@ -96,8 +99,14 @@ class Archive(models.Model):
         return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage
     
 
-    def save(self, *args, **kwargs):
-        if self.file_name_on_local_storage in ('', None):
-            # assign default file name as the id.extesnsion_of_the_received_file
-            self.file_name_on_local_storage = str(self.id) + self.file_name_on_source.split('.')[-1]
-        super(Archive, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.file_name_on_local_storage in ('', None):
+    #         # assign default file name as the id.extesnsion_of_the_received_file
+    #         self.file_name_on_local_storage = str(self.id) + self.file_name_on_source.split('.')[-1]
+    #     super(Archive, self).save(*args, **kwargs)
+
+@receiver(post_save, sender=Archive)
+def get_id_after_save(sender, instance, created, **kwargs):
+    if created:  # Only do this for new instances
+        instance.file_name_on_local_storage = str(instance.id) + '.' + instance.file_name_on_source.split('.')[-1]
+        instance.save()

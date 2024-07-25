@@ -19,7 +19,8 @@ STATUS = (
     ('completed', 'completed')
 )
 
-ARCHIVE_PATH = settings.MEDIA_ROOT
+# ARCHIVE_PATH = settings.MEDIA_ROOT
+ARTICLE_PATH = settings.ARTICLE_ROOT
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -70,7 +71,7 @@ class Article_attributes(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    deposite_path = models.TextField(default=ARCHIVE_PATH)
+    deposite_path = models.TextField(default=ARTICLE_PATH)
 
 
     # def save(self, *args, **kwargs):
