@@ -1,0 +1,12 @@
+"id","official_name","working_name","in_production","provider_type","archive_switch","article_switch","delivery_method","requirement_override","source_schema","usda_source","last_error_message","last_time_received","minimum_delivery_fq","next_due_date","status"
+1,CHORUS,CHORUS,1,API,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+2,CROSSREF,CROSSREF,1,API,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+3,SUBMISSION,SUBMISSION,1,API,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+4,Springer Nature,Springer Nature,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+5,Wiley,Wiley,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+6,CSIRO,CSIRO,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+7,BioOne,BioOne,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+8,Hindawi,Hindawi,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+9,Royal Society of Chemistry,Royal Society of Chemistry,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+10,Mary Ann Liebert,Mary Ann Liebert,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
+11,Walter de Gruyter GmbH,Walter de Gruyter GmbH,1,FTP,0,0,,0,,0,,2024-06-28 16:00:03.457,30,,success
