@@ -38,6 +38,7 @@ def get_file_path(instance, filename):
 
 # model class to archive the error message that occures during processing / reading the xml file
 class Unreadable_xml_files(models.Model):
+    source = models.TextField()
     file_name = models.CharField(max_length=100)
     error_msg = models.TextField()
     date_stamp = models.DateTimeField(auto_now=True)

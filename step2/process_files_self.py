@@ -78,7 +78,8 @@ def read_xml_file(xml_file_path):
         dest = shutil.copy(xml_file_path, destination)
         Unreadable_xml_files.objects.create(
             file_name = dest,
-            error_msg = e
+            error_msg = e,
+            source = xml_file_path.replace('TEMP/','').replace('\\', '/')
         )
         return None
 
