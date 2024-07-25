@@ -270,7 +270,7 @@ def unzip_file(source, destination, row):
     except zipfile.BadZipFile:
         # Handle the case where the file is not a valid ZIP file
         # os.remove(source)
-        print("zipped file can't be unzipped. Either it is corrupt or not a correct zipped file", source)
+        print("Error occured while unizipping the zipped file can't be unzipped. Please check the file", source)
         return False
     except Exception as e:
         # Handle any other exceptions
@@ -281,40 +281,30 @@ def unzip_file(source, destination, row):
     for root, dirs, files in os.walk(destination):
         for file_name in files:
             new_source = os.path.join(root, file_name)
-            if not file_name.endswith('.xml'):
-                # some folders have got files other than xml format.
-                if file_name.endswith('.json'):
-                    # if json file found create record / update the record based on archive article flag
-                    if row.is_content_changed:
-                        update_exisiting_object(new_source, row)
-                    else:
-                        create_new_object(new_source, row, "success")
-
-                    try:
-                        # once action done remove xml file 
-                        os.remove(new_source)
-                    except:
-                        pass
-
-                elif not file_name.endswith('.json'):
-                    # almost every folder/subfolders have text file for info purpose to the list of files / filders inside the path
-                    # We dont need to keep this file hence deleting. In case any other purpose requires the same can be implement here
-                    print(file_name, "is not of xml type. If known file, new action may be implemented here")
-                    # removing the file that is not xml or json
-                    try:
-                        os.remove(new_source)
-                    except:
-                        pass
-            else:
+            if file_name.endswith('.xml'):
                 # if xml file found jsonify it and perform update / create based on row.is_content_changed flag
                 process_xml_file(new_source, row)
+            elif file_name.endswith('.json'):
+
+                # if json file found create record / update the record based on archive article flag
+                process_json_file(new_source, row)
+
+            else:
+                # almost every folder/subfolders have text file for info purpose to the list of files / filders inside the path
+                # We dont need to keep this file hence deleting. In case any other purpose requires the same can be implement here
+                print(file_name, "is other than xml/json/zip.")
+                # removing the file that is not xml or json
+                try:
+                    os.remove(new_source)
+                except:
+                    pass
+
         return True
 
     return False
 
 
-# if the content is of type xml, this function will jsonify the content, will save the json file to temporary location and 
-# finally new record will be created or the existing file will be updated based in row.is_content_changed flag
+# processing xml file
 def process_xml_file(source, row):
     # some file got the wrong xml format, 
     # hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
@@ -340,6 +330,19 @@ def process_xml_file(source, row):
         return True
         
 
+
+# processing xml file
+def process_json_file(source, row):
+    if row.is_content_changed:
+        update_exisiting_object(source, row)
+    else:
+        create_new_object(source, row, "success")
+
+    try:
+        # once action done remove xml file 
+        os.remove(source)
+    except:
+        pass
 
 
 # main function to create article objects from archive articles
@@ -377,7 +380,7 @@ def migrate_to_step2(request):
             else:
                 result = create_new_object(source, row, "success")
 
-            # update archived article 
+            # update the status of archived article record
             if result:
                 update_archive(row)
 
