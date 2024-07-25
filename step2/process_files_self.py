@@ -8,7 +8,6 @@ from model.article import Unreadable_xml_files, Article_attributes
 from django.core.files.base import ContentFile
 
 import xml.etree.ElementTree as ET
-import json
 import pytz
 import datetime
 import shutil
@@ -17,13 +16,13 @@ import os
 import zipfile
 
 
-# unreadable xml file serializer
+# Unreadable xml file serializer
 class Unreadable_xml_files_serializers(ModelSerializer):
     class Meta:
         model = Unreadable_xml_files
         fields = '__all__'
 
-# unreadable xml file view sets
+# Unreadable xml file view sets
 class Unreadable_xml_files_viewset(ModelViewSet):
     serializer_class = Unreadable_xml_files_serializers
     queryset = Unreadable_xml_files.objects.all()
@@ -34,14 +33,15 @@ class Unreadable_xml_files_viewset(ModelViewSet):
         qs = qs.filter(**params.dict())
         return qs
 
-# article attribute serializer
+
+# Article attribute serializer
 class Article_attributes_serializer(ModelSerializer):
     class Meta:
         model = Article_attributes
         fields = '__all__'
 
 
-# article attribute viewset
+# Article attribute viewset
 class Article_attributes_viewset(ModelViewSet):
     queryset = Article_attributes.objects.all()
     serializer_class = Article_attributes_serializer
@@ -54,12 +54,12 @@ class Article_attributes_viewset(ModelViewSet):
 
 
 
-# read xml file and return dictionary
+# Read xml file and return dictionary
 def read_xml_file(xml_file_path):
     try:
-        # open file
+        # Open file
         with open(file=xml_file_path, mode='rb') as xml_txt:                 
-            # replace special character
+            # Replace special character
             xml_txt = xml_txt.read().replace(
                 b'&', b'&amp;').replace(
                     b'""epub""', b'"epub"').replace(
@@ -73,7 +73,7 @@ def read_xml_file(xml_file_path):
 
             return xmltodict.parse(xml_txt, encoding='utf-8')
     except Exception as e:
-        # if any invalid xml file found backup the file to INVALID_XML_FILES file for checking purposes
+        # If any invalid xml file found backup the file to INVALID_XML_FILES file for checking purposes
         destination = os.path.join(settings.BASE_DIR, 'INVALID_XML_FILES')
         dest = shutil.copy(xml_file_path, destination)
         Unreadable_xml_files.objects.create(
@@ -84,7 +84,7 @@ def read_xml_file(xml_file_path):
         return None
 
 
-# function to check if the xml file has <article> or <ArticleSet> tag
+# Function to check if the xml file has <article> or <ArticleSet> tag
 # Any file that have no <article> / <ArticleSet> tag at root shall be discarded
 # If condition meets this functio will return the file content as dictionary otherwise will return boolean False
 '''
@@ -122,8 +122,7 @@ def is_article_tag_available(xml_file_path):
     return False
 
 
-
-# update archive artile flags if processed
+# Update archive artile flags if processed
 def update_archive(row):
     row.status = "processed"
     row.is_content_changed = 0
@@ -131,29 +130,18 @@ def update_archive(row):
     row.save()
 
 
-# if archived articles are updated than we need to update articles file
-def update_exisiting_object(source, row):
-    # Source may be ARCHIVE or TEMP based on from where this method is being called.
-    # making correct path from the received source
-    destination = 'ARTICLES/' + (source.replace('ARCHIVE/','').replace('TEMP/',''))
-
-    # Replace the destination file with the source file
-    shutil.copyfile(source, destination)
-    return True
-
-
-# create new objects in article table
+# Create new objects in article table
 def create_new_object(source, row, note):
-    # changing the default settings base directory root
+    # Changing the default settings base directory root
     settings.MEDIA_ROOT = settings.BASE_DIR / 'ARTICLES'
     try:
-        # create new record
+        # Create new record
         qs = Article_attributes()
         qs.type_of_record = 'article'
         qs.provider = row.provider
         qs.archive = row
-        qs.last_step = 2
-        qs.last_status = 'completed'
+        qs.last_step = 1
+        qs.last_status = 'active'
         qs.note = note
         qs.PID = "A locally assign identifier"
         qs.MMSID = "The article's Alma identifier"
@@ -171,32 +159,79 @@ def create_new_object(source, row, note):
         return True
 
     except Exception as e:
-        # if exception occures create new record with status as failed
+        # If exception occures create new record with status as failed
         Article_attributes.objects.create(
             title = "Error occured for Archive Article id number  " + str(row.id) + " and file path : " + row.file_content.name,
             type_of_record = 'N/A',
             provider = row.provider,
             archive = row,
-            last_step = 2,
+            last_step = 1,
             last_status = 'failed',
             note = e,
             # DOI = row.unique_key,
-            PID = "A locally assign identifie",
-            MMSID = "The article's Alma identifer",
+            PID = "A locally assign identifier",
+            MMSID = "The article's Alma identfier",
             provider_rec = "identifier"   
         )
         return False
 
 
-# in case the article objects are updated we need to fetch all the records that were packed in single xml file.
+
+# If archived articles are updated than we need to update articles file
+# This function to be used for records with json/xml files
+def update_exisiting_object_single_file(source, row):
+    # Source may be ARCHIVE or TEMP based on from where this method is being called.
+    # Making correct path from the received source
+    destination = 'ARTICLES/' + (source.replace('ARCHIVE/','').replace('TEMP/',''))
+
+    # If article record is changed, update its status to active
+    q = Article_attributes.objects.get(archive__id=row.id)
+    q.last_status = 'active'
+    q.save()
+
+    # Replace the destination file with the source file
+    shutil.copyfile(source, destination)
+    return True
+
+
+# If archived articles are updated than we need to update articles file
+# This function to be used for records with .zip files
+def update_exisiting_object_zipped_file(source, row):
+    # Source may be ARCHIVE or TEMP based on from where this method is being called.
+    # Making correct path from the received source
+    destination = (source.replace('ARCHIVE/','').replace('TEMP/','').replace('\\','/'))
+    q = Article_attributes.objects.filter(archive__id=row.id)
+    for item in q:
+        print(item.article_file)
+    q = q.filter(article_file=destination)
+    destination = 'ARTICLES/' + destination
+    # Get the article record by archive_id and file_name.
+    # If record is present this file is available
+
+    if q.exists():
+        # If article record found, update its status to active
+        q[0].last_status = 'active'
+        q[0].save()
+        # Replace the destination file with the source file
+        shutil.copyfile(source, destination)
+        return True
+    else:
+        # If recrod is not available with file_name it means this is a new file entered in the zipped file
+        # Create new record
+        create_new_object(source, row, 'sucess')
+
+
+
+# In case the article objects are updated we need to fetch all the records that were packed in single xml file.
 def prepocess_records_of_segregated_xml_files(xml_file_path, title, row):
     qs = Article_attributes.objects.filter(article_file__startswith = xml_file_path, title=title)
     if qs.exists():
-        update_exisiting_object(xml_file_path, row)
+        update_exisiting_object_single_file(xml_file_path, row)
     else:
-        create_new_object(xml_file_path, row, "success")
+        create_new_object(xml_file_path, row, 'success')
 
 
+# Create xml file
 def create_xml_file(file_name, file_content):
     try:
         root = ET.Element('root')  # Create a root element
@@ -212,7 +247,8 @@ def create_xml_file(file_name, file_content):
     except Exception as e:
         print("exception occured while writing the data 214", e)
 
-# segregate the file if multiple record found, and save the file with same name prefixing underscore_index
+
+# Segregate the file if multiple record found, and save the file with same name prefixing underscore_index
 def segregate_article(article_set, xml_file_path, row):
     # Create the output folder if it doesn't exist
     if not os.path.exists(xml_file_path):
@@ -227,13 +263,13 @@ def segregate_article(article_set, xml_file_path, row):
             print(e, "article_set in", xml_file_path)
 
     try:
-        # delete the old file
+        # Delete the old file
         os.remove(xml_file_path)
     except:
         pass
 
 
-# function to check if the file has more than one record
+# Function to check if the file has more than one record
 def is_mulitple_record(xml_file_path, row):
     # with open(xml_file_path, 'r') as f:
     #     # Parse the XML data
@@ -256,9 +292,11 @@ def is_mulitple_record(xml_file_path, row):
         except Exception as e:
             print("Exception occured 251", e)
 
+
+
 # Function to unzip
 # This function will iterate through each directory / subdirectory of archive and will find the .zip / .ZIP file.
-# if file found the function will unzip the content to the same path under articles directory
+# If file found the function will unzip the content to the same path under articles directory
 def unzip_file(source, destination, row):
     try:
         # unzip the source file to destination path
@@ -276,23 +314,23 @@ def unzip_file(source, destination, row):
         print("exception occured", e, source)
         return False
 
-    # walk into the each folder / subfolders inside given source and perform action on each file
+    # Walk into the each folder / subfolders inside given source and perform action on each file
     for root, dirs, files in os.walk(destination):
         for file_name in files:
             new_source = os.path.join(root, file_name)
             if file_name.endswith('.xml'):
-                # if xml file found jsonify it and perform update / create based on row.is_content_changed flag
-                process_xml_file(new_source, row)
+                # If xml file found jsonify it and perform update / create based on row.is_content_changed flag
+                process_xml_file(new_source, row, 'zipped')
             elif file_name.endswith('.json'):
 
-                # if json file found create record / update the record based on archive article flag
+                # If json file found create record / update the record based on archive article flag
                 process_json_file(new_source, row)
 
             else:
-                # almost every folder/subfolders have text file for info purpose to the list of files / filders inside the path
+                # Almost every folder/subfolders have text file for info purpose to the list of files / filders inside the path
                 # We dont need to keep this file hence deleting. In case any other purpose requires the same can be implement here
                 print(file_name, "is other than xml/json/zip.")
-                # removing the file that is not xml or json
+                # Removing the file that is not xml or json
                 try:
                     os.remove(new_source)
                 except:
@@ -303,55 +341,62 @@ def unzip_file(source, destination, row):
     return False
 
 
-# processing xml file
-def process_xml_file(source, row):
-    # some file got the wrong xml format, 
-    # hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
+
+# Processing xml file
+# This function to be used with single xml file as well as unzipped xml_files. 
+# Archive_destination variable is the indicator if xml is single source or unzipped.
+# If this function is called for a xml file of unzipped directory than its value to archive_destination='zippped'
+def process_xml_file(source, row, archive_destination):
+    # Some file got the wrong xml format, 
+    # Hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
 
     result = is_article_tag_available(source)
 
     if not result:
-        # remove the xml file if not a valid xml file. 
+        # Remove the xml file if not a valid xml file. 
         os.remove(source)
         return False
     else:
-        # check if multiple records found
-        # if multiple file found than it will be processed in is_mulitple_record function itself.
+        # Check if multiple records found
+        # If multiple file found than it will be processed in is_mulitple_record function itself.
         if not is_mulitple_record(source, row):
-            # if json file found create record / update the record based on archive article flag
+            # If json file found create record / update the record based on archive article flag
             if row.is_content_changed:
-                update_exisiting_object(source, row)
+                if archive_destination=='zipped':
+                    update_exisiting_object_zipped_file(source, row)
+                else:
+                    update_exisiting_object_single_file(source, row)
             else:
                 create_new_object(source, row, "success")
 
-        # remove the xml file
+        # Remove the xml file
         os.remove(source)
         return True
         
 
 
-# processing xml file
+# Processing xml file
 def process_json_file(source, row):
     if row.is_content_changed:
-        update_exisiting_object(source, row)
+        update_exisiting_object_single_file(source, row)
     else:
         create_new_object(source, row, "success")
 
     try:
-        # once action done remove xml file 
+        # Once action done remove xml file 
         os.remove(source)
     except:
         pass
 
 
-# main function to create article objects from archive articles
+# Main function to create article objects from archive articles
 @api_view(['GET'])
 def migrate_to_step2(request):
-    # get the records from arhived article that are not processed
+    # Get the records from arhived article that are not processed
     # This includes new records as well as records that are modified
     qs = Archive.objects.all().exclude(status="processed")
 
-    # looping through each object in the query set
+    # Looping through each object in the query set
     for row in qs:
         source = 'ARCHIVE/' + row.file_content.name
         destination = 'TEMP/' + source[:-4]
@@ -359,10 +404,10 @@ def migrate_to_step2(request):
         if not os.path.exists(destination):
             os.makedirs(destination)
 
-        # if record is of type zip than sequence of action will be 
+        # If record is of type zip than sequence of action will be 
         # 1: Unzip the content
         # 2: Read each file, if json, copy it, if xml, process it 
-        # 3: create / update records in article for each json/xml files
+        # 3: Create / update records in article for each json/xml files
         if row.file_type in ('.zip', '.ZIP'):
             if unzip_file(source, destination, row):
                 update_archive(row)
@@ -371,26 +416,26 @@ def migrate_to_step2(request):
                 except Exception as e:
                     pass
 
-        # if file is json than create / update record in article 
+        # If file is json than create / update record in article 
         elif row.file_type == '.json':
-            # update or create record in article based on row.is_content_changed tag
+            # Update or create record in article based on row.is_content_changed tag
             if row.is_content_changed:
-                result = update_exisiting_object(source, row)
+                result = update_exisiting_object_single_file(source, row)
             else:
                 result = create_new_object(source, row, "success")
 
-            # update the status of archived article record
+            # Update the status of archived article record
             if result:
                 update_archive(row)
 
-        # if record is of type xml than sequence of action will be 
-        # 1: read each file, if ArticleSet found, segregate the files or just copy from xml
-        # 2: create / update records in article_attribute
+        # If record is of type xml than sequence of action will be 
+        # 1: Read each file, if ArticleSet found, segregate the files or just copy from xml
+        # 2: Create / update records in article_attribute
         elif row.file_type == '.xml':
-            if process_xml_file(source, row):
+            if process_xml_file(source, row, 'independent_file'):
                 update_archive(row)
         else:
-            print("unsupported file type found", source)
+            print("Unsupported file type found", source)
 
 
-    return Response("Successfully migrated all files")
+    return Response("Successfully migrated all files to step 2")
