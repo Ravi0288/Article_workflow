@@ -25,8 +25,8 @@ body {
     text-align: center;
     color: white;
     background-color: #0951f7; 
-    margin: 5px;
-    padding: 5px;
+    margin: 2px;
+    padding: 2px;
     border-radius: 6px; 
     transition: background-color 0.3s ease;
 }
@@ -67,7 +67,7 @@ body {
 .header-bar {
     background-color: #3871eb;
     color: white;
-    padding: 10px;
+    padding: 4px;
     text-align: center;
     font-size: smaller;
     display: inline;
