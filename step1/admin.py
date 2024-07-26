@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .archive import Archive
-from .provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
+from model.provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
 from mail_service.models import Email_history, Email_notification
 
 class ArchivedArticleAdmin(admin.ModelAdmin):

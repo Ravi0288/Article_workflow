@@ -4,7 +4,6 @@ import requests
 from step1.archive import Archive
 
 from step1.provider import Provider_meta_data_API
-from django.http import HttpResponse
 import pytz
 import datetime
 import os
@@ -14,7 +13,6 @@ import zipfile
 from rest_framework.response import Response
 import json
 import sys
-from django.core.files import File
 
 
 

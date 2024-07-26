@@ -8,7 +8,6 @@ import os
 from html2text import html2text
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.core.files.base import ContentFile
 from django.conf import settings
 import json
 import sys

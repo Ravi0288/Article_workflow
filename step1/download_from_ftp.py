@@ -1,5 +1,4 @@
 import ftplib
-from django.http import HttpResponse
 import os
 from rest_framework.decorators import api_view
 from .archive import Archive

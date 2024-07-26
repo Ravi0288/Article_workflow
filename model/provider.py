@@ -158,7 +158,6 @@ class Provider_meta_data_FTP(models.Model):
                 )
 
 
-
     # method to return decrypted password
     @property
     def pswd(self):

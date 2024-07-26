@@ -54,6 +54,19 @@ class Article_attributes_viewset(ModelViewSet):
 
 
 
+# Function to read file line by line and compare their content
+def compare_files_line_by_line(file1, file2):
+    # read the files
+    with open(file1, 'r') as f1, open(file2, 'r') as f2:
+        # zip them together and read line by line
+        for line1, line2 in zip(f1, f2):
+            # compare read lines
+            if line1 != line2:
+                return False
+    return True
+
+
+
 # Read xml file and return dictionary
 def read_xml_file(xml_file_path):
     try:
@@ -209,7 +222,12 @@ def update_exisiting_object_zipped_file(source, row):
     # If record is present this file is available
 
     if q.exists():
-        # If article record found, update its status to active
+
+        # compare content of source and destination files. If content are equal, no action required
+        if compare_files_line_by_line(source, destination):
+            return True
+
+        # If article record found, update it's status to active
         q[0].last_status = 'active'
         q[0].save()
         # Replace the destination file with the source file
@@ -218,7 +236,7 @@ def update_exisiting_object_zipped_file(source, row):
     else:
         # If recrod is not available with file_name it means this is a new file entered in the zipped file
         # Create new record
-        create_new_object(source, row, 'sucess')
+        create_new_object(source, row, 'success')
 
 
 
