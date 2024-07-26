@@ -30,7 +30,7 @@ def download_file(ftp_connection, article, item):
             file_name_on_source = article,
             provider = item.provider,
             processed_on = datetime.datetime.now(tz=pytz.utc),
-            status = 'processed',
+            status = 'waiting',
             file_size = file_size,
             file_type = file_type
         )
@@ -43,7 +43,7 @@ def download_file(ftp_connection, article, item):
         content = BytesIO()
         ftp_connection.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
-        x[0].status = 'processed'
+        x[0].status = 'active'
         x[0].is_content_changed = True
         article = str(x[0].id) + '.' + article.split('.')[-1]
         x[0].file_content.save(article, content)
@@ -77,7 +77,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
                 file_name_on_source = article,
                 provider = item.provider,
                 processed_on = datetime.datetime.now(tz=pytz.utc),
-                status = 'processed',
+                status = 'active',
                 file_size = os.path.getsize(zipped_file),
                 file_type = '.zip'
             )
@@ -91,7 +91,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
 
     # if file exists than check the file size. If file size is different update the existing record
     if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
-        x[0].status = 'processed'
+        x[0].status = 'active'
         with open(zipped_file, 'rb') as zip_file:
             zip_file.seek(0)
             x[0].file_content.save(article, zip_file)

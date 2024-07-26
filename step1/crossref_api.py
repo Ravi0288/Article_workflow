@@ -121,7 +121,7 @@ def save_files(dois, headers, api):
                         file_name_on_source = file_name,
                         provider = api.provider,
                         processed_on = datetime.datetime.now(tz=pytz.utc),
-                        status = 'processed',
+                        status = 'waiting',
                         file_size = file_size,
                         file_type = file_type,
                         unique_key = doi

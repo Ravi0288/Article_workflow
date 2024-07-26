@@ -93,7 +93,7 @@ def download_from_submission_api(request):
                     file_name_on_source = file_name,
                     provider = api.provider,
                     processed_on = datetime.datetime.now(tz=pytz.utc),
-                    status = 'processed',
+                    status = 'waiting',
                     file_size = file_size,
                     file_type = file_type
                 )
