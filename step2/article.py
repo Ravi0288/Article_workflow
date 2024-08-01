@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from model.article import Unreadable_xml_files, Article_attributes
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 import json
 import pytz
@@ -379,4 +381,10 @@ def migrate_to_step2(request):
             print("unsupported file type found", source)
 
 
-    return Response("Successfully migrated all files")
+    context = {
+        'heading' : 'Message',
+        'message' : 'Successfully migrated all files to steo 2'
+    }
+
+    return render(request, 'accounts/dashboard.html', context=context)
+    # return Response("Successfully migrated all files")

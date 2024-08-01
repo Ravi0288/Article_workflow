@@ -1,5 +1,7 @@
 import ftplib
+
 import os
+from django.shortcuts import render
 from rest_framework.decorators import api_view
 from .archive import Archive
 from .archive import Archive
@@ -12,6 +14,8 @@ import os
 from configurations.common import is_ftp_content_folder
 import pytz
 from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
+
 
 
 # function to download file
@@ -104,14 +108,21 @@ def download_folder_from_ftp_and_save_zip(article, item):
 
 
 # this function will fetch article from the FTP
-@api_view(['GET'])
+# @api_view(['GET'])
+@login_required()
 def download_from_ftp(request):
     # get all providers that are due to be accessed today
     due_for_download = Provider_meta_data_FTP.objects.all()
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
-        return Response("No pending action found")
+        context = {
+            'heading' : 'Message',
+            'message' : 'No pending action found'
+        }
+
+        return render(request, 'accounts/dashboard.html', context=context)
+        # return Response("No pending action found")
 
     # if providers are due to be accessed
     for item in due_for_download:
@@ -156,7 +167,14 @@ def download_from_ftp(request):
         # quite the current ftp connection 
         ftp_connection.quit()
 
-    return Response("done")
+        context = {
+            'heading' : 'Message',
+            'message' : 'FTP synced successfully'
+        }
+
+    return render(request, 'accounts/dashboard.html', context=context)
+
+    # return Response("done")
 
 
 

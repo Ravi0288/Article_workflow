@@ -1,18 +1,16 @@
-from html2text import html2text
 import requests
-
 from step1.archive import Archive
 from step1.provider import Provider_meta_data_API
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
 import pytz
 import datetime
 import os
 from rest_framework.decorators import api_view
-from django.core.files.base import ContentFile
 import json
 from django.conf import settings
 import zipfile
 from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
 
 
 # function to zip folder
@@ -67,7 +65,8 @@ class SubmissionMetadataHarvester:
     
 
 # function to handle submission api's
-@api_view(['GET'])
+# @api_view(['GET'])
+@login_required
 def download_from_submission_api(request):
     # Send a GET request to the URL.
 
@@ -136,7 +135,14 @@ def download_from_submission_api(request):
     except Exception as e:
         print(e)
 
-    return Response("done")
+
+    context = {
+        'heading' : 'Message',
+        'message' : 'Submission API synced successfully'
+    }
+
+    return render(request, 'accounts/dashboard.html', context=context)
+    # return Response("done")
 
 
 

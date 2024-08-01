@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 from .forms import UserForm, GroupForm
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -91,7 +90,12 @@ def login_view(request):
 
 @login_required
 def dashboard_view(request):
-    return render(request, 'accounts/dashboard.html')
+    context = {
+        'heading' : 'USDA Dashboard',
+        'message' : 'This is your dashboard where you can manage users and groups'
+    }
+
+    return render(request, 'accounts/dashboard.html', context=context)
 
 
 

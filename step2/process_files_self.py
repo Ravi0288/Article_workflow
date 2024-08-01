@@ -6,7 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from model.article import Unreadable_xml_files, Article_attributes
 from django.core.files.base import ContentFile
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 import xml.etree.ElementTree as ET
 import pytz
 import datetime
@@ -408,7 +409,8 @@ def process_json_file(source, row):
 
 
 # Main function to create article objects from archive articles
-@api_view(['GET'])
+# @api_view(['GET'])
+@login_required()
 def migrate_to_step2(request):
     # Get the records from arhived article that are not processed
     # This includes new records as well as records that are modified
@@ -456,4 +458,10 @@ def migrate_to_step2(request):
             print("Unsupported file type found", source)
 
 
-    return Response("Successfully migrated all files to step 2")
+    context = {
+        'heading' : 'Message',
+        'message' : 'Successfully migrated all files to step 2'
+    }
+
+    return render(request, 'accounts/dashboard.html', context=context)
+    # return Response("Successfully migrated all files to step 2")

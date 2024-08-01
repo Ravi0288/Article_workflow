@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.shortcuts import render
 from html2text import html2text
 import requests
 from step1.archive import Archive
@@ -13,11 +14,12 @@ import zipfile
 from rest_framework.response import Response
 import json
 import sys
+from django.contrib.auth.decorators import login_required
 
 
 
 # Function to retrieve a list of DOIs for articles from a given journal by ISSN
-def get_article_dois_by_issn(issn, api, num_rows=1000):
+def get_article_dois_by_issn(issn, api, request, num_rows=1000):
     dois = []
     # Make a GET request to the CrossRef journals endpoint
     response = requests.get(f"https://api.crossref.org/journals/{issn}/works", params={"rows": num_rows})
@@ -39,8 +41,13 @@ def get_article_dois_by_issn(issn, api, num_rows=1000):
         api.provider.status = 'completed'
         api.provider.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
         api.save()
-        return Response("error occured")
+        # return Response("error occured")
+        context = {
+            'heading' : 'Message',
+            'message' : 'CrossRef API synced successfully'
+        }
 
+    return render(request, 'accounts/dashboard.html', context=context)
 
 # function to zip folder
 def zip_folder(folder_path, zip_path):
@@ -145,7 +152,8 @@ def save_files(dois, headers, api):
 
 
 # function to handle all the crossref api's
-@api_view(['GET'])
+# @api_view(['GET'])
+@login_required()
 def download_from_crossref_api(request):
 
     # receive the issn_number
@@ -168,7 +176,7 @@ def download_from_crossref_api(request):
             }
 
         # get list of doi
-        article_dois = get_article_dois_by_issn(issn=issn_number, api=api)
+        article_dois = get_article_dois_by_issn(issn=issn_number, api=api, request=request)
 
         # as per received dois make urls and downloaded the file in json format
         save_files(article_dois, headers, api)
@@ -178,4 +186,11 @@ def download_from_crossref_api(request):
         api.provider.status = 'completed'
         api.provider.last_error_message = 'N/A'
         api.save()
-    return Response("success")
+    # return Response("success")
+
+        context = {
+            'heading' : 'Message',
+            'message' : 'CrossRef API synced successfully'
+        }
+
+    return render(request, 'accounts/dashboard.html', context=context)

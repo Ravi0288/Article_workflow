@@ -14,6 +14,8 @@ import sys
 from io import BytesIO
 from django.core.files import File
 import zipfile
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 
 # function to zip folder with content
@@ -182,7 +184,14 @@ def download_from_chorus_api(request):
         # zip contents
         # zip_folders(settings.CHORUS_ROOT)
 
-    return Response("processs executed successfully")
+    # return Response("processs executed successfully")
+
+        context = {
+            'heading' : 'Message',
+            'message' : 'Chorus API synced successfully'
+        }
+
+    return render(request, 'accounts/dashboard.html', context=context)
 
 
 
