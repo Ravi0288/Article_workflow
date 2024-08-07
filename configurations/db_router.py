@@ -1,7 +1,6 @@
 class DB_route:
     """
-    A router to control all database operations on models in the
-    user application.
+    A router to control all database operations on models in the application.
     """
     def db_for_read(self, model, **hints):
         if model._meta.app_label == 'handles_data':
