@@ -1,9 +1,4 @@
 from django.db import models
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from django.core.signals import request_finished
-from rest_framework.viewsets import ModelViewSet
-from rest_framework import serializers
 from datetime import datetime, timedelta
 from django.utils import timezone
 import logging

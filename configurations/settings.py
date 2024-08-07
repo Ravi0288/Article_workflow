@@ -101,8 +101,9 @@ DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
 DB_HOST = os.environ['ARTICLE_DB_HOST']
 DB_PORT = os.environ['ARTICLE_DB_PORT']
 
+
 # Database settings
-# ..................#####################
+# ..................##################### #####################
 DATABASES = {
    'default': {
    'ENGINE': DB_ENGINE,
@@ -111,18 +112,27 @@ DATABASES = {
    'PASSWORD': DB_PASSWORD,
    'HOST': DB_HOST,
    'PORT': DB_PORT,
-   }
+    },
+    'handles_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME':  BASE_DIR / 'handle.sqlite3',
+    },
+    'pid_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME':  BASE_DIR / 'pid.sqlite3',
+    }
 }
 
-# DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
-# DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.sqlite3',
-#          'NAME': DATABASE_DIR,
-#      }
-# }
 
-# ..................#####################
+# add router file for database settings
+DATABASE_ROUTERS = ['configurations.db_router.DB_route']
+
+# specify the app_name for django to decide what database to access for what table
+DATABASE_APPS_MAPPING = {'wf_data': 'default',
+                        'handles_data':'handles_db',
+                        'pid_data' : 'pid_db'}
+
+# ..................##################### #####################
 
 
 

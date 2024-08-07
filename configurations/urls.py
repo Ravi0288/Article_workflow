@@ -17,7 +17,8 @@ urlpatterns = [
     path('', include('step1.urls')),
     path('step2/', include('step2.urls')),
     path('step3/', include('step3.urls')),
-    path('email', include('mail_service.urls'))
+    path('email/', include('mail_service.urls')),
+    path('handles/', include('model.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
