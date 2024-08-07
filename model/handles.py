@@ -17,11 +17,11 @@ class Handle(models.Model):
 
     class Meta:
         app_label = 'handles_data'
-        # managed = False
+        managed = False
         db_table = 'handle'
 
-    # def __str__(self):
-    #     return self.handle
+    def __str__(self):
+        return self.handle
     
 
 class HandleSerializer(serializers.ModelSerializer):
