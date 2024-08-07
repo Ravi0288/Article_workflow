@@ -37,9 +37,11 @@ def get_article_dois_by_issn(issn, api, request, num_rows=1000):
                 print(e)
         return dois
     else:
-        api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        api.provider.status = 'completed'
-        api.provider.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
+        provider = api.provider
+        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        provider.status = 'completed'
+        provider.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
+        provider.save()
         api.save()
         # return Response("error occured")
         context = {
@@ -182,9 +184,11 @@ def download_from_crossref_api(request):
         save_files(article_dois, headers, api)
 
         # update the last run status
-        api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        api.provider.status = 'completed'
-        api.provider.last_error_message = 'N/A'
+        provider = api.provider
+        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        provider.status = 'completed'
+        provider.last_error_message = 'N/A'
+        provider.save()
         api.save()
     # return Response("success")
 

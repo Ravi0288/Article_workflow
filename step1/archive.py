@@ -1,10 +1,5 @@
-import os
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ModelSerializer
-from datetime import datetime
-from model.provider import Providers
-
-from rest_framework.decorators import api_view
 from model.archive import Archive
 
     

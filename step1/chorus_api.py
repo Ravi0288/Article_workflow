@@ -5,9 +5,7 @@ from step1.provider import Provider_meta_data_API
 import pytz
 import datetime
 import os
-from html2text import html2text
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from django.conf import settings
 import json
 import sys
@@ -176,9 +174,11 @@ def download_from_chorus_api(request):
             save_files(publisher, api)
 
 
-        api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        api.provider.status = 'completed'
-        api.provider.last_error_message = 'N/A'
+        provider = api.provider
+        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        provider.status = 'success'
+        provider.last_error_message = 'N/A'
+        provider.save()
         api.save()
 
         # zip contents

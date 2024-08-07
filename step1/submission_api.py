@@ -108,24 +108,31 @@ def download_from_submission_api(request):
                 os.remove(file_name)
 
                 # update status
-                api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-                api.provider.status = 'completed'
-                api.provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(api.provider.minimum_delivery_fq)
+                provider = api.provider
+                provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                provider.status = 'success'
+                provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(api.provider.minimum_delivery_fq)
+                provider.save()
                 api.save()
 
             except Exception as e:
                 # if error occured update the failed status
-                api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-                api.provider.status = 'failed'
-                api.provider.last_error_message = e
+                provider = api.provider
+                provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                provider.status = 'failed'
+                provider.last_error_message = e
+                provider.save()
                 api.save()
 
 
         else:
-            api.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-            api.provider.status = 'failed'
-            api.provider.last_error_message = 'No record found'
+            provider = api.provider
+            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+            provider.status = 'failed'
+            provider.last_error_message = 'No record found'
+            provider.save()
             api.save()
+
 
     try:
         # zip the file

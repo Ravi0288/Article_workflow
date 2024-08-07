@@ -133,9 +133,11 @@ def download_from_ftp(request):
             ftp_connection.login(item.account, item.pswd)
         except Exception as e:
             print("error occured", e)
-            item.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-            item.provider.status = 'failed'
-            item.provider.last_error_message = e
+            provider = item.provider
+            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+            provider.status = 'failed'
+            provider.last_error_message = e
+            provider.save()
             item.save()
             continue
 
@@ -159,9 +161,12 @@ def download_from_ftp(request):
                     pass
  
         # update the succes status to Provider_meta_data_FTP
-        item.provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        item.provider.status = 'completed'
-        item.provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
+        provider = item.provider
+        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+        provider.status = 'success'
+        provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
+
+        provider.save()
         item.save()
 
         # quite the current ftp connection 
