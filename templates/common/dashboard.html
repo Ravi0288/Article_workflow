@@ -1,4 +1,4 @@
-{% extends 'accounts/base.html' %}
+{% extends 'common/base.html' %}
 {% block title %} Dashboard {% endblock title %}
 {% load static %}
 
@@ -14,6 +14,7 @@
 <a href="{% url 'group_create' %}">Create Group</a>
 <a href="{% url 'user_list' %}">List Users</a>
 <a href="{% url 'group_list' %}">List Groups</a>
+<a href="{% url 'mint_handles' %}">Min Handle</a>
     <!-- {% for item in menu %} -->
 
     <!-- {% endfor %} -->

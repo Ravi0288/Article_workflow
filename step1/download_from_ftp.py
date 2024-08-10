@@ -121,7 +121,7 @@ def download_from_ftp(request):
             'message' : 'No pending action found'
         }
 
-        return render(request, 'accounts/dashboard.html', context=context)
+        return render(request, 'common/dashboard.html', context=context)
         # return Response("No pending action found")
 
     # if providers are due to be accessed
@@ -177,7 +177,7 @@ def download_from_ftp(request):
             'message' : 'FTP synced successfully'
         }
 
-    return render(request, 'accounts/dashboard.html', context=context)
+    return render(request, 'common/dashboard.html', context=context)
 
     # return Response("done")
 

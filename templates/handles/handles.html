@@ -1,7 +1,7 @@
 {% extends 'common/base.html' %}
-{% block title %} Create New Group {% endblock title %}
+{% block title %} Mint Handle {% endblock title %}
 {% block header %}
-    Create New Group
+    Mint Handle
 {% endblock header%}
 
 {% block menu %}
@@ -19,13 +19,8 @@
 
 
 {% block body %}
-    <div class="form-container">
-        <h2 class="form-container-title">Group Form</h2>
-        <form method="post" style="margin: 20px;">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary btn-block">Save</button>
-        </form>
-    </div>
-
+    <h2 class="ac">{{ heading }}</h2>
+    <p class="ac">
+        {{ message }}
+    </p>
 {% endblock %} 

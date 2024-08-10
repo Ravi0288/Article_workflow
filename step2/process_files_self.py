@@ -463,5 +463,5 @@ def migrate_to_step2(request):
         'message' : 'Successfully migrated all files to step 2'
     }
 
-    return render(request, 'accounts/dashboard.html', context=context)
+    return render(request, 'common/dashboard.html', context=context)
     # return Response("Successfully migrated all files to step 2")

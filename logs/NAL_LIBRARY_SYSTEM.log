@@ -14,7 +14,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -69,7 +69,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -117,7 +117,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -167,7 +167,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -217,7 +217,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -267,7 +267,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -316,7 +316,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -366,7 +366,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -416,7 +416,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -466,7 +466,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -516,7 +516,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -566,7 +566,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -616,7 +616,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -666,7 +666,7 @@ Traceback (most recent call last):
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\accounts\views.py", line 94, in dashboard_view
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'common/dashboard.html')
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "E:\NAL-USDA\NAL_LIBRARY_SYSTEM\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
@@ -1273,3 +1273,4 @@ ERROR 2024-07-23 22:42:42,621 basehttp 18896 21548 "GET /step2/migrate-to-step2/
 ERROR 2024-07-23 22:43:16,284 basehttp 6892 2776 "GET /step2/migrate-to-step2/ HTTP/1.1" 500 124497
 ERROR 2024-07-25 11:33:01,041 basehttp 3116 17260 "GET /dashboard/ HTTP/1.1" 500 144495
 ERROR 2024-07-25 11:33:02,322 basehttp 3116 25060 "GET /dashboard/ HTTP/1.1" 500 144495
+ERROR 2024-08-10 09:40:31,961 basehttp 18428 5428 "GET /handles/mint-handle HTTP/1.1" 500 214137

@@ -95,7 +95,7 @@ def dashboard_view(request):
         'message' : 'This is your dashboard where you can manage users and groups'
     }
 
-    return render(request, 'accounts/dashboard.html', context=context)
+    return render(request, 'common/dashboard.html', context=context)
 
 
 

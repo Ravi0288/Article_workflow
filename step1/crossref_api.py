@@ -49,7 +49,7 @@ def get_article_dois_by_issn(issn, api, request, num_rows=1000):
             'message' : 'CrossRef API synced successfully'
         }
 
-    return render(request, 'accounts/dashboard.html', context=context)
+    return render(request, 'common/dashboard.html', context=context)
 
 # function to zip folder
 def zip_folder(folder_path, zip_path):
@@ -197,4 +197,4 @@ def download_from_crossref_api(request):
             'message' : 'CrossRef API synced successfully'
         }
 
-    return render(request, 'accounts/dashboard.html', context=context)
+    return render(request, 'common/dashboard.html', context=context)

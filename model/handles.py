@@ -4,6 +4,8 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 import requests
 from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 class Handles(models.Model):
     handle = models.CharField(max_length=100, null=True, blank=True)
@@ -54,11 +56,38 @@ def get_new_handle():
 def mint_new_handle(handle, url):
 
     # mint handle api
-    mint_handle_api = "https://agricola.nal.usda.gov"
+    landing_page_url = "http://search.nal.usda.gov/permalink/01NAL INST/27vehl/alma9916422728207426"
+    put_url = "http://192.133.202.73:8000/api/handles/{0}"
+    mint_handle_api = "http://192.133.202.73:8000/api/handles/"
 
     # select next value FOR pid;
     # data to be post to the mint handle api.
-    json_data = {}
+    json_data = {
+        "handle" : handle,
+        "values" : [
+            {
+                "index" : 1,
+                "type"  : "URL",
+                "data"  : {
+                    "format" : "string",
+                    "value"  : url
+                }
+            },
+            {
+                "index" : 100,
+                "type"  : "HS_ADMIN",
+                "data"  : {
+                    "format" : "admin",
+                    "value": {
+                        "handle" : "0.NA/10113",
+                        "index" : 300,
+                        "permissions" : "111111111111",
+                        "legacyByteLength" : True
+                    }
+                }
+            }
+        ]
+    }
 
     # sending post request to mint-handle-api to mint new handle
     response = requests.post(mint_handle_api, data=json_data, verify=False)
@@ -86,8 +115,14 @@ def mint_handles(request):
     try: 
         res = requests.post(url, data=data)
         res.raise_for_status() 
-    except requests.exceptions.HTTPError as err:  
-        return Response({'error': err.args[0], 'error_code': res.status_code})
+    except requests.exceptions.HTTPError as err: 
+        context = {
+            'heading' : 'Mint Handle',
+            'message' : {'error': err.args[0], 'error_code': res.status_code}
+            }
+        return render(request, 'common/dashboard.html', context=context)
+        # return Response({'error': errh.args[0], 'error_code': res.status_code})
+    
     
     # if response received from the api, jsonify it
     res = res.json()
@@ -106,11 +141,15 @@ def mint_handles(request):
                     "new" : False
                 }
             )
-        
         else:
             result = mint_new_handle(get_new_handle, res['url'])
             # return Response("Handle minted successfully")
-            return Response(result)
+            # return Response(result)
+            context = {
+                'heading' : 'Mint Handle',
+                'message' : result
+             }
+            return render(request, 'common/dashboard.html', context=context)
 
 
     # if the received response has multiple urls
@@ -133,5 +172,16 @@ def mint_handles(request):
                 result = mint_new_handle(get_new_handle, 'url')
                 results.append(result)
 
-    return Response("The received record seems empty or is not of correct format", status=400)
+        context = {
+            'heading' : 'Mint Handle',
+            'message' : results
+        }
+
+        return render(request, 'common/dashboard.html', context=context)
+
+
+    return render(request, 'common/dashboard.html', context= {
+            'heading' : 'Mint Handle',
+            'message' : "The received response seems empty or is not required format"
+        })
 
