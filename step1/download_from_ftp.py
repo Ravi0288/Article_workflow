@@ -172,10 +172,10 @@ def download_from_ftp(request):
         # quite the current ftp connection 
         ftp_connection.quit()
 
-        context = {
-            'heading' : 'Message',
-            'message' : 'FTP synced successfully'
-        }
+    context = {
+        'heading' : 'Message',
+        'message' : 'FTP synced successfully'
+    }
 
     return render(request, 'common/dashboard.html', context=context)
 
