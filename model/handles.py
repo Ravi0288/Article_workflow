@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+
+# Handle model on 
 class Handles(models.Model):
     handle = models.CharField(max_length=100, null=True, blank=True)
     type = models.TextField(null=True, blank=True)
@@ -39,8 +41,9 @@ class HandleViewSet(ModelViewSet):
     queryset = Handles.objects.all()
     serializer_class = HandleSerializer
 
-# get new handle number
-def get_new_handle():
+
+# Prepare new handle number
+def make_new_handle():
     last_handle = Handles.objects.last()
 
     # If no record found, auto assign the accession number as 1, Else add 1 to existing accession number
@@ -142,7 +145,7 @@ def mint_handles(request):
                 }
             )
         else:
-            result = mint_new_handle(get_new_handle, res['url'])
+            result = mint_new_handle(make_new_handle, res['url'])
             # return Response("Handle minted successfully")
             # return Response(result)
             context = {
@@ -169,7 +172,7 @@ def mint_handles(request):
                     }
                 )
             else:
-                result = mint_new_handle(get_new_handle, 'url')
+                result = mint_new_handle(make_new_handle, 'url')
                 results.append(result)
 
         context = {

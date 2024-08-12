@@ -4,14 +4,14 @@ class DB_route:
     """
     def db_for_read(self, model, **hints):
         if model._meta.app_label == 'handles_data':
-            return 'handles_db'
+            return 'handle_db'
         if model._meta.app_label == 'pid_data':
             return 'pid_db'
         return 'default'
 
     def db_for_write(self, model, **hints):
         if model._meta.app_label == 'handles_data':
-            return 'handles_db'
+            return 'handle_db'
         if model._meta.app_label == 'pid_data':
             return 'pid_db'
         return 'default'
