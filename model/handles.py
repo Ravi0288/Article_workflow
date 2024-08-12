@@ -103,17 +103,17 @@ def mint_new_handle(handle, url):
     
 
 # main function to execute handle miniting process
-@api_view(['GET'])
+# @api_view(['GET'])
 def mint_handles(request):
     # get the response from main api
     data = {
         "url":"https://agricola.nal.usda.gov"
     }
     
-    url = "http://article-workflow-admin-dev.nal.usda.gov/api/mint_handle"
+    url = "https://article-workflow-admin-dev.nal.usda.gov/api/mint_handle"
 
     try: 
-        res = requests.post(url, data=data)
+        res = requests.post(url, data=data, verify=False)
         res.raise_for_status() 
     except requests.exceptions.HTTPError as err: 
         context = {
