@@ -186,10 +186,10 @@ def download_from_chorus_api(request):
 
     # return Response("processs executed successfully")
 
-        context = {
-            'heading' : 'Message',
-            'message' : 'Chorus API synced successfully'
-        }
+    context = {
+        'heading' : 'Message',
+        'message' : 'Chorus API synced successfully'
+    }
 
     return render(request, 'common/dashboard.html', context=context)
 

@@ -192,9 +192,9 @@ def download_from_crossref_api(request):
         api.save()
     # return Response("success")
 
-        context = {
-            'heading' : 'Message',
-            'message' : 'CrossRef API synced successfully'
-        }
+    context = {
+        'heading' : 'Message',
+        'message' : 'CrossRef API synced successfully'
+    }
 
     return render(request, 'common/dashboard.html', context=context)
