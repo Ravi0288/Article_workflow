@@ -45,7 +45,7 @@ def get_article_dois_by_issn(issn, api, request, num_rows=1000):
 
     context = {
         'heading' : 'Message',
-        'message' : 'CrossRef API synced successfully'
+        'message' : 'CrossRef API process executed successfully'
     }
 
     return render(request, 'common/dashboard.html', context=context)
@@ -195,7 +195,7 @@ def download_from_crossref_api(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'CrossRef API synced successfully'
+        'message' : 'CrossRef API process executed successfully'
     }
 
     return render(request, 'common/dashboard.html', context=context)

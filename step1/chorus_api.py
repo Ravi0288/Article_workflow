@@ -201,7 +201,7 @@ def download_from_chorus_api(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'Chorus API synced successfully.'
+        'message' : 'Chorus API process executed successfully.'
     }
 
     return render(request, 'common/dashboard.html', context=context)

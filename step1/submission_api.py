@@ -141,7 +141,7 @@ def download_from_submission_api(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'Submission API synced successfully'
+        'message' : 'Submission API processs executed successfully'
     }
 
     return render(request, 'common/dashboard.html', context=context)

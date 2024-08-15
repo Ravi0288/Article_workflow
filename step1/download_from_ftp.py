@@ -171,7 +171,7 @@ def download_from_ftp(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'FTP synced successfully'
+        'message' : 'FTP sync process executed successfully'
     }
 
     return render(request, 'common/dashboard.html', context=context)

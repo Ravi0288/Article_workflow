@@ -92,7 +92,7 @@ def login_view(request):
 def dashboard_view(request):
     context = {
         'heading' : 'USDA Dashboard',
-        'message' : 'This is your dashboard where you can manage users and groups'
+        'message' : 'Welcome to USDA Dashboard'
     }
 
     return render(request, 'common/dashboard.html', context=context)
