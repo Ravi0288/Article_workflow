@@ -82,7 +82,7 @@ class Providers(models.Model):
     usda_source = models.BooleanField(default=False)
     archive_switch = models.BooleanField(default=False)
     minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with API", default=30)
-    last_time_received = models.DateTimeField(auto_now=True, help_text="This will be auto field as and when the FTP will be accessed")
+    last_time_received = models.DateTimeField(help_text="This will be auto field as and when the FTP will be accessed")
     status = models.CharField(max_length=10, default="success", 
                                         help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
                                         )
@@ -91,7 +91,7 @@ class Providers(models.Model):
                                           help_text="In case of error last error message will be stored here. Don't enter anything here"
                                           )
 
-    next_due_date = models.DateTimeField(null=True, 
+    next_due_date = models.DateTimeField(default=timezone.now, 
                                          help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
                                          )
     def __str__(self) -> str:
@@ -99,7 +99,10 @@ class Providers(models.Model):
     
     # call save method to assign next due date
     def save(self, *args, **kwargs):
-        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
+        # If the api/ftp is accessed successfully then update the next_due date
+        # 'N/A' is the default value in last_error_message if the last status is success
+        if self.last_error_message == 'N/A':
+            self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
         super(Providers, self).save(*args, **kwargs)
 
 

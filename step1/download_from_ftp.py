@@ -2,7 +2,6 @@ import ftplib
 
 import os
 from django.shortcuts import render
-from rest_framework.decorators import api_view
 from .archive import Archive
 from .archive import Archive
 from .provider import Provider_meta_data_FTP
@@ -13,7 +12,6 @@ import shutil
 import os
 from configurations.common import is_ftp_content_folder
 import pytz
-from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 
 
@@ -111,8 +109,10 @@ def download_folder_from_ftp_and_save_zip(article, item):
 # @api_view(['GET'])
 @login_required()
 def download_from_ftp(request):
-    # get all providers that are due to be accessed today
-    due_for_download = Provider_meta_data_FTP.objects.all()
+    # get all providers that are due to be accessed
+    due_for_download = Provider_meta_data_FTP.objects.filter(
+        provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
+        )
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
@@ -134,11 +134,9 @@ def download_from_ftp(request):
         except Exception as e:
             print("error occured", e)
             provider = item.provider
-            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
             provider.status = 'failed'
             provider.last_error_message = e
             provider.save()
-            item.save()
             continue
 
         # read the destination location
@@ -167,7 +165,6 @@ def download_from_ftp(request):
         provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
 
         provider.save()
-        item.save()
 
         # quite the current ftp connection 
         ftp_connection.quit()

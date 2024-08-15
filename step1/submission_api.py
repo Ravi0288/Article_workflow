@@ -1,22 +1,20 @@
 import requests
 from step1.archive import Archive
 from step1.provider import Provider_meta_data_API
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import pytz
 import datetime
 import os
-from rest_framework.decorators import api_view
 import json
 from django.conf import settings
 import zipfile
-from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 
 
 # function to zip folder
 def zip_folder(folder_path, zip_path):
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, _, files in os.walk(folder_path):
+        for root, dirs, files in os.walk(folder_path):
             for file in files:
                 file_path = os.path.join(root, file)
                 arcname = os.path.relpath(file_path, os.path.abspath(folder_path))
@@ -118,7 +116,6 @@ def download_from_submission_api(request):
             except Exception as e:
                 # if error occured update the failed status
                 provider = api.provider
-                provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
                 provider.status = 'failed'
                 provider.last_error_message = e
                 provider.save()
@@ -127,7 +124,6 @@ def download_from_submission_api(request):
 
         else:
             provider = api.provider
-            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
             provider.status = 'failed'
             provider.last_error_message = 'No record found'
             provider.save()

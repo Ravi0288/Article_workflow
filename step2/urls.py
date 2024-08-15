@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from step2.article import Article_attributes_viewset
 # from .article import migrate_to_step2, Unreadable_xml_files_viewset
 # from .process_files import migrate_to_step2, Unreadable_xml_files_viewset
-from .process_files_self import migrate_to_step2, Unreadable_xml_files_viewset
+from .process_files import migrate_to_step2, Unreadable_xml_files_viewset
 
 
 router = DefaultRouter()

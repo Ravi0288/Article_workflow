@@ -3,7 +3,6 @@ from step1.archive import Archive
 from rest_framework.serializers import ModelSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from model.article import Unreadable_xml_files, Article_attributes
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required

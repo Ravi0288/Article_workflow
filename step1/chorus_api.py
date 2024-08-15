@@ -14,6 +14,7 @@ from django.core.files import File
 import zipfile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from html2text import html2text
 
 
 # function to zip folder with content
@@ -132,14 +133,16 @@ def save_files(publishers,api):
 def download_from_chorus_api(request):
     # Send a GET request to the URL.
     # query and fetch available submission api's
-    qs = Provider_meta_data_API.objects.filter(api_meta_type="Chorus")
+    due_for_download = Provider_meta_data_API.objects.filter(
+        api_meta_type="Chorus", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
+        )
     per_page = 100
     start_from_page = 0
     headers= {
         'Content-type' : 'json'
     }
     # iterate to all the available chorus apis
-    for api in qs:
+    for api in due_for_download:
 
         # get all the pages
         publisher = []
@@ -166,29 +169,39 @@ def download_from_chorus_api(request):
             f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/",
             headers=headers
             )
-        data = response.json()
-        if response.status_code == 200 and len(data):
-            publisher.extend(filter_publisher_data(data['publishers']))
+        
+        if response.status_code == 200:
+            data = response.json()
+            if response.status_code == 200 and len(data):
+                publisher.extend(filter_publisher_data(data['publishers']))
 
-        if len(publisher):
-            save_files(publisher, api)
+            if len(publisher):
+                save_files(publisher, api)
 
+            provider = api.provider
+            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+            provider.status = 'success'
+            provider.last_error_message = 'N/A'
+            provider.save()
+            # api.save()
 
-        provider = api.provider
-        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        provider.status = 'success'
-        provider.last_error_message = 'N/A'
-        provider.save()
-        api.save()
+            # zip contents
+            # zip_folders(settings.CHORUS_ROOT)
+        else:
+            provider = api.provider
+            provider.status = 'failed'
+            provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
+            provider.save()
+            # api.save()
 
-        # zip contents
-        # zip_folders(settings.CHORUS_ROOT)
+            print(provider.last_error_message)
+
 
     # return Response("processs executed successfully")
 
     context = {
         'heading' : 'Message',
-        'message' : 'Chorus API synced successfully'
+        'message' : 'Chorus API synced successfully.'
     }
 
     return render(request, 'common/dashboard.html', context=context)

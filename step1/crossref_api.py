@@ -8,10 +8,8 @@ from step1.provider import Provider_meta_data_API
 import pytz
 import datetime
 import os
-from rest_framework.decorators import api_view
 from django.core.files.base import ContentFile
 import zipfile
-from rest_framework.response import Response
 import json
 import sys
 from django.contrib.auth.decorators import login_required
@@ -38,23 +36,24 @@ def get_article_dois_by_issn(issn, api, request, num_rows=1000):
         return dois
     else:
         provider = api.provider
-        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        provider.status = 'completed'
-        provider.last_error_message = '=>// error code = error-code =' + str(response.status_code) + ' =>// error message = ' + html2text(response.text)
+        provider.status = 'failed'
+        provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
         provider.save()
-        api.save()
+        # api.save()
         # return Response("error occured")
-        context = {
-            'heading' : 'Message',
-            'message' : 'CrossRef API synced successfully'
-        }
+
+
+    context = {
+        'heading' : 'Message',
+        'message' : 'CrossRef API synced successfully'
+    }
 
     return render(request, 'common/dashboard.html', context=context)
 
 # function to zip folder
 def zip_folder(folder_path, zip_path):
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, _, files in os.walk(folder_path):
+        for root, dirs, files in os.walk(folder_path):
             for file in files:
                 file_path = os.path.join(root, file)
                 arcname = os.path.relpath(file_path, os.path.abspath(folder_path))
@@ -166,10 +165,12 @@ def download_from_crossref_api(request):
         issn_number = "0066-4804"
 
     # query and fetch available submission api's
-    qs = Provider_meta_data_API.objects.filter(api_meta_type="CrossRef")
+    due_for_download = Provider_meta_data_API.objects.filter(
+        api_meta_type="CrossRef", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
+        )
     
     # iterate through each records found
-    for api in qs:
+    for api in due_for_download:
 
         # set request header
         headers = {
@@ -186,10 +187,10 @@ def download_from_crossref_api(request):
         # update the last run status
         provider = api.provider
         provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        provider.status = 'completed'
+        provider.status = 'success'
         provider.last_error_message = 'N/A'
         provider.save()
-        api.save()
+        # api.save()
     # return Response("success")
 
     context = {
