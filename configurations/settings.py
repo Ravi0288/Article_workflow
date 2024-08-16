@@ -103,20 +103,20 @@ DB_HOST = os.environ['ARTICLE_DB_HOST']
 DB_PORT = os.environ['ARTICLE_DB_PORT']
 
 # # Handle DB details
-# HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
-# HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
-# HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
-# HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
-# HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
-# HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
+HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
+HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
+HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
+HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
+HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
+HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
 
 # # PID DB details
-# PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
-# PID_DB_NAME = os.environ['PID_DB_NAME']
-# PID_DB_USER = os.environ['PID_DB_USER']
-# PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
-# PID_DB_HOST = os.environ['HANDLE_DB_HOST']
-# PID_DB_PORT = os.environ['PID_DB_PORT']
+PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
+PID_DB_NAME = os.environ['PID_DB_NAME']
+PID_DB_USER = os.environ['PID_DB_USER']
+PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
+PID_DB_HOST = os.environ['HANDLE_DB_HOST']
+PID_DB_PORT = os.environ['PID_DB_PORT']
 
 
 # Database settings
@@ -131,31 +131,31 @@ DATABASES = {
    'PORT': DB_PORT,
     },
 
-    'handles_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':  BASE_DIR / 'handle.sqlite3',
-    },
-    'pid_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':  BASE_DIR / 'pid.sqlite3',
-    }
-    # 'handle_db': {
-    #     'ENGINE': HANDLE_DB_ENGINE,
-    #     'NAME': HANDLE_DB_NAME,
-    #     'USER': HANDLE_DB_USER,
-    #     'PASSWORD': HANDLE_DB_PASSWORD,
-    #     'HOST': HANDLE_DB_HOST,
-    #     'PORT': HANDLE_DB_PORT,
+    # 'handles_db': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME':  BASE_DIR / 'handle.sqlite3',
     # },
-
     # 'pid_db': {
-    #     'ENGINE': PID_DB_ENGINE,
-    #     'NAME': PID_DB_NAME,
-    #     'USER': PID_DB_USER,
-    #     'PASSWORD': PID_DB_PASSWORD,
-    #     'HOST': PID_DB_HOST,
-    #     'PORT': PID_DB_PORT,
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME':  BASE_DIR / 'pid.sqlite3',
     # }
+    'handle_db': {
+        'ENGINE': HANDLE_DB_ENGINE,
+        'NAME': HANDLE_DB_NAME,
+        'USER': HANDLE_DB_USER,
+        'PASSWORD': HANDLE_DB_PASSWORD,
+        'HOST': HANDLE_DB_HOST,
+        'PORT': HANDLE_DB_PORT,
+    },
+
+    'pid_db': {
+        'ENGINE': PID_DB_ENGINE,
+        'NAME': PID_DB_NAME,
+        'USER': PID_DB_USER,
+        'PASSWORD': PID_DB_PASSWORD,
+        'HOST': PID_DB_HOST,
+        'PORT': PID_DB_PORT,
+    }
 }
 
 
