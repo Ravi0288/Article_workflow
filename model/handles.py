@@ -1,4 +1,5 @@
 from django.db import models
+from django.http import HttpResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import serializers
 from rest_framework.decorators import api_view
@@ -103,16 +104,40 @@ def mint_new_handle(handle, url):
     }
     # return response based on received http code
     return data
-    
+
+
+# mint_handle view to request for user data
+def mint_handles(request):
+    default_value = "https://agricola.nal.usda.gov"
+    if request.method == 'POST':
+        url = request.POST.get('user_input', None)
+        # Process the input as needed
+        min_handle_main_function(request, url)
+    return render(request, 'handles/handle.html', {'default_value': default_value})
+
 
 # main function to execute handle miniting process
 # @api_view(['GET'])
-def mint_handles(request):
-    # get the response from main api
+def min_handle_main_function(request, url=None):
+    # default data for mint url parameters
     data = {
         "url":"https://agricola.nal.usda.gov"
     }
+
+    # if parameter received from url than use the provide url as data for mint url parameter 
+    if request.GET.get('url', None):
+        data = {
+            "url":request.GET.get('url')
+        }
     
+    # if parameter received from user input
+    if url:
+        data = {
+            "url":url
+        }
+
+    # get the response from main api
+    # This url is fixed and thats why its harcoded here
     url = "https://article-workflow-admin-dev.nal.usda.gov/api/mint_handle"
 
     try: 
@@ -179,12 +204,12 @@ def mint_handles(request):
             'heading' : 'Mint Handle',
             'message' : results
         }
-
         return render(request, 'common/dashboard.html', context=context)
 
 
-    return render(request, 'common/dashboard.html', context= {
+    context = {
             'heading' : 'Mint Handle',
             'message' : "The received response seems empty or is not required format"
-        })
+        }
+    return render(request, 'common/dashboard.html', context=context)
 
