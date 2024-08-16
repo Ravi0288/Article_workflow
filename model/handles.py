@@ -118,42 +118,42 @@ def mint_handles(request):
 
 # main function to execute handle miniting process
 # @api_view(['GET'])
-def min_handle_main_function(request, url=None):
+def min_handle_main_function(request, landing_page_url=None):
     # default data for mint url parameters
     data = {
         "url":"https://agricola.nal.usda.gov"
     }
 
+    res = {
+        'url' : None
+    }
+
     # if parameter received from url than use the provide url as data for mint url parameter 
     if request.GET.get('url', None):
-        data = {
-            "url":request.GET.get('url')
-        }
+        res['url'] = request.GET.get('url')
     
-    # if parameter received from user input
-    if url:
-        data = {
-            "url":url
-        }
+    if landing_page_url:
+        res['url'] = landing_page_url
 
     # get the response from main api
     # This url is fixed and thats why its harcoded here
     url = "https://article-workflow-admin-dev.nal.usda.gov/api/mint_handle"
 
-    try: 
-        res = requests.post(url, data=data, verify=False)
-        res.raise_for_status() 
-    except requests.exceptions.HTTPError as err: 
-        context = {
-            'heading' : 'Mint Handle',
-            'message' : {'error': err.args[0], 'error_code': res.status_code}
-            }
-        return render(request, 'common/dashboard.html', context=context)
-        # return Response({'error': errh.args[0], 'error_code': res.status_code})
+    # if no input value for landing_page_url provided
+    if not res['url']:
+        try: 
+            res = requests.post(url, data=data, verify=False)
+            res.raise_for_status() 
+        except requests.exceptions.HTTPError as err: 
+            context = {
+                'heading' : 'Mint Handle',
+                'message' : {'error': err.args[0], 'error_code': res.status_code}
+                }
+            return render(request, 'common/dashboard.html', context=context)
+            # return Response({'error': errh.args[0], 'error_code': res.status_code})
     
-    
-    # if response received from the api, jsonify it
-    res = res.json()
+        # if response received from the api, jsonify it
+        res = res.json()
     
     # if the received response has single url
     if type(res['url']) is str:
