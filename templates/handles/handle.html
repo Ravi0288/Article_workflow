@@ -1,39 +1,39 @@
+<!-- template.html -->
 {% extends 'common/base.html' %}
 {% block title %} Dashboard {% endblock title %}
 {% load static %}
 
-
 {% block header %}
     Welcome {{ user.username }}
-{% endblock header%}
+{% endblock header %}
 
 {% block menu %}
-
     <a href="{% url 'dashboard' %}">Home</a>
     <a href="{% url 'user_create' %}">Create User</a>
     <a href="{% url 'group_create' %}">Create Group</a>
     <a href="{% url 'user_list' %}">List Users</a>
     <a href="{% url 'group_list' %}">List Groups</a>
     <a href="{% url 'mint_handles' %}">Mint Handle</a>
-    <!-- {% for item in menu %} -->
-
-    <!-- {% endfor %} -->
-
 {% endblock menu %}
-
 
 {% block body %}
     <div class="container">
         <div id="submitButton">
-            <h2 >Click 'Enter URL' button to proceed</h2>
-            <button id="submitButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#inputModal">
-                Enter URL
-            </button>
+            <h2>Click 'Enter URL' button to proceed</h2>
+
+            <div style="display: inline;">
+                <!-- This button will open the modal -->
+                <button id="openModalButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#inputModal">
+                    Enter URL
+                </button>
+                <!-- This button will not open the modal -->
+                <button id="submitDefault" type="button" onclick="accessUrl()" class="btn btn-primary" data-target="#inputModal">
+                    Mint-Handle With Default URL
+                </button>
+            </div>
         </div>
 
-        <div id="postSubmit">
-
-        </div>
+        <div id="postSubmit"></div>
 
         <!-- Modal -->
         <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
@@ -66,9 +66,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
+        function accessUrl() {
+            window.location.href = "{% url 'mint' %}";
+        }
+
         // Hide the button and insert text when clicked
-        document.getElementById('submitButton').onclick = function() {
+        document.getElementById('openModalButton').onclick = function() {
             this.style.display = 'none';
+            document.getElementById('submitDefault').style.display='none';
             document.getElementById('postSubmit').innerText = 'Please wait. Loading .....';
         };
 
@@ -83,5 +88,4 @@
             this.submit();
         };
     </script>
-
 {% endblock %}

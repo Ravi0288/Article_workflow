@@ -108,12 +108,18 @@ def mint_new_handle(handle, url):
 
 # mint_handle view to request for user data
 def mint_handles(request):
-    default_value = "https://agricola.nal.usda.gov"
-    if request.method == 'POST':
-        url = request.POST.get('user_input', None)
-        # Process the input as needed
-        min_handle_main_function(request, url)
-    return render(request, 'handles/handle.html', {'default_value': default_value})
+    # if parameter received from url than use the provide url as data for mint url parameter 
+    if request.GET.get('url', None):
+        return min_handle_main_function(request)
+
+    # This code will be executed in case user access mint-handle from UI.
+    else:
+        default_value = "https://agricola.nal.usda.gov"
+        if request.method == 'POST':
+            url = request.POST.get('user_input', None)
+            # Process the input as needed
+            min_handle_main_function(request, url)
+        return render(request, 'handles/handle.html', {'default_value': default_value})
 
 
 # main function to execute handle miniting process
@@ -127,13 +133,12 @@ def min_handle_main_function(request, landing_page_url=None):
     res = {
         'url' : None
     }
-
-    # if parameter received from url than use the provide url as data for mint url parameter 
-    if request.GET.get('url', None):
-        res['url'] = request.GET.get('url')
     
     if landing_page_url:
         res['url'] = landing_page_url
+
+    if request.GET.get('url', None):
+        res['url'] = request.GET.get('url')
 
     # get the response from main api
     # This url is fixed and thats why its harcoded here
@@ -144,10 +149,10 @@ def min_handle_main_function(request, landing_page_url=None):
         try: 
             res = requests.post(url, data=data, verify=False)
             res.raise_for_status() 
-        except requests.exceptions.HTTPError as err: 
+        except Exception as err: 
             context = {
                 'heading' : 'Mint Handle',
-                'message' : {'error': err.args[0], 'error_code': res.status_code}
+                'message' : 'Error Message=' + str(err.args)
                 }
             return render(request, 'common/dashboard.html', context=context)
             # return Response({'error': errh.args[0], 'error_code': res.status_code})
