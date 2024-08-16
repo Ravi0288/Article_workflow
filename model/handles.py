@@ -129,36 +129,32 @@ def min_handle_main_function(request, landing_page_url=None):
     data = {
         "url":"https://agricola.nal.usda.gov"
     }
-
-    res = {
-        'url' : None
-    }
     
     if landing_page_url:
-        res['url'] = landing_page_url
+        data['url'] = landing_page_url
 
     if request.GET.get('url', None):
-        res['url'] = request.GET.get('url')
+        data['url'] = request.GET.get('url')
 
     # get the response from main api
     # This url is fixed and thats why its harcoded here
     url = "https://article-workflow-admin-dev.nal.usda.gov/api/mint_handle"
 
     # if no input value for landing_page_url provided
-    if not res['url']:
-        try: 
-            res = requests.post(url, data=data, verify=False)
-            res.raise_for_status() 
-        except Exception as err: 
-            context = {
-                'heading' : 'Mint Handle',
-                'message' : 'Error Message=' + str(err.args)
-                }
-            return render(request, 'common/dashboard.html', context=context)
-            # return Response({'error': errh.args[0], 'error_code': res.status_code})
-    
-        # if response received from the api, jsonify it
-        res = res.json()
+
+    try: 
+        res = requests.post(url, data=data, verify=False)
+        res.raise_for_status() 
+    except Exception as err: 
+        context = {
+            'heading' : 'Mint Handle',
+            'message' : 'Error Message=' + str(err.args)
+            }
+        return render(request, 'common/dashboard.html', context=context)
+        # return Response({'error': errh.args[0], 'error_code': res.status_code})
+
+    # if response received from the api, jsonify it
+    res = res.json()
     
     # if the received response has single url
     if type(res['url']) is str:
