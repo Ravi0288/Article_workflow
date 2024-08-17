@@ -107,7 +107,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
 
 # this function will fetch article from the FTP
 # @api_view(['GET'])
-@login_required()
+@login_required
 def download_from_ftp(request):
     # get all providers that are due to be accessed
     due_for_download = Provider_meta_data_FTP.objects.filter(

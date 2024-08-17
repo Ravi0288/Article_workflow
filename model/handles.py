@@ -107,10 +107,11 @@ def mint_new_handle(handle, url):
 
 
 # mint_handle view to request for user data
+@login_required
 def mint_handles(request):
     # if parameter received from url than use the provide url as data for mint url parameter 
     if request.GET.get('url', None):
-        return min_handle_main_function(request)
+        return mint_handle_main_function(request)
 
     # This code will be executed in case user access mint-handle from UI.
     else:
@@ -118,13 +119,14 @@ def mint_handles(request):
         if request.method == 'POST':
             url = request.POST.get('user_input', None)
             # Process the input as needed
-            min_handle_main_function(request, url)
+            mint_handle_main_function(request, url)
         return render(request, 'handles/handle.html', {'default_value': default_value})
 
 
 # main function to execute handle miniting process
 # @api_view(['GET'])
-def min_handle_main_function(request, landing_page_url=None):
+@login_required
+def mint_handle_main_function(request, landing_page_url=None):
     # default data for mint url parameters
     data = {
         "url":"https://agricola.nal.usda.gov"

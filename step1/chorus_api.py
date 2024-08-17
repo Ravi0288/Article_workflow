@@ -5,7 +5,6 @@ from step1.provider import Provider_meta_data_API
 import pytz
 import datetime
 import os
-from rest_framework.decorators import api_view
 from django.conf import settings
 import json
 import sys
@@ -129,7 +128,8 @@ def save_files(publishers,api):
 
 
 # function to handle chorus ref api's
-@api_view(['GET'])
+# @api_view(['GET'])
+@login_required
 def download_from_chorus_api(request):
     # Send a GET request to the URL.
     # query and fetch available submission api's

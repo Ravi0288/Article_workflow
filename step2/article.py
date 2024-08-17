@@ -407,7 +407,7 @@ def process_json_file(source, row):
 
 # Main function to create article objects from archive articles
 # @api_view(['GET'])
-@login_required()
+@login_required
 def migrate_to_step2(request):
     
     # Get the records from arhived article that are not processed

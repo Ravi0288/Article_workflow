@@ -21,6 +21,11 @@ DEBUG = True
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
 
+# CSRF Related settings
+CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_COOKIE_SECURE = False   # True if working with HTTPS else False
+
 
 # Application definition
 # ..................######
@@ -202,21 +207,16 @@ OAUTH2_PROVIDER = {
 # Rest framework authentication
 # This settings is for preventing the endpoints from unauthorised access.
 # ..................################
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-# }
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',
-#     ],
-#     'DEFAULT_PERMISSION_CLASSES':(
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
 # ..................##################
 
 
