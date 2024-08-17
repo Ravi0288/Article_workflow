@@ -469,4 +469,3 @@ def migrate_to_step2(request):
     }
 
     return render(request, 'common/dashboard.html', context=context)
-    # return Response("Successfully migrated all files to step 2")
