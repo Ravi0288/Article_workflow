@@ -14,6 +14,7 @@ import zipfile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from html2text import html2text
+from django.views.decorators.csrf import csrf_exempt
 
 
 # function to zip folder with content
@@ -130,6 +131,7 @@ def save_files(publishers,api):
 # function to handle chorus ref api's
 # @api_view(['GET'])
 @login_required
+@csrf_exempt
 def download_from_chorus_api(request):
     # Send a GET request to the URL.
     # query and fetch available submission api's

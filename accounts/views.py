@@ -6,8 +6,10 @@ from .forms import CustomAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
+@csrf_exempt
 def user_list(request):
     users = User.objects.all().order_by('username')
     
@@ -23,6 +25,7 @@ def user_list(request):
 
     return render(request, 'accounts/user_list.html', context=context)
 
+
 @login_required
 def user_create(request):
     if request.method == 'POST':
@@ -37,7 +40,10 @@ def user_create(request):
         form = UserForm()
     return render(request, 'accounts/user_form.html', {'form': form})
 
+
+
 @login_required
+@csrf_exempt
 def group_list(request):
 
     # groups = Group.objects.all().values_list()
@@ -56,6 +62,8 @@ def group_list(request):
 
     return render(request, 'accounts/group_list.html', context=context)
 
+
+
 @login_required
 def group_create(request):
     if request.method == 'POST':
@@ -68,6 +76,8 @@ def group_create(request):
     return render(request, 'accounts/group_form.html', {'form': form})
 
 
+
+@csrf_exempt
 def login_view(request):
 
     if request.session.get('_auth_user_id'):
@@ -89,6 +99,7 @@ def login_view(request):
 
 
 @login_required
+@csrf_exempt
 def dashboard_view(request):
     context = {
         'heading' : 'USDA Dashboard',
@@ -96,7 +107,6 @@ def dashboard_view(request):
     }
 
     return render(request, 'common/dashboard.html', context=context)
-
 
 
 def logout_view(request):

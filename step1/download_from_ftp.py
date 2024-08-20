@@ -13,7 +13,7 @@ import os
 from configurations.common import is_ftp_content_folder
 import pytz
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 # function to download file
@@ -108,6 +108,7 @@ def download_folder_from_ftp_and_save_zip(article, item):
 # this function will fetch article from the FTP
 # @api_view(['GET'])
 @login_required
+@csrf_exempt
 def download_from_ftp(request):
     # get all providers that are due to be accessed
     due_for_download = Provider_meta_data_FTP.objects.filter(

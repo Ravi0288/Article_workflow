@@ -23,6 +23,7 @@
 
 
 {% block body %}
+    {%csrf_token %}
     <h2 class="ac">{{ heading }}</h2>
     <p class="ac">
         {{ message }}

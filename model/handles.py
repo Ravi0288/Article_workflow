@@ -7,6 +7,7 @@ import requests
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Handle model on 
@@ -108,6 +109,7 @@ def mint_new_handle(handle, url):
 
 # mint_handle view to request for user data
 @login_required
+@csrf_exempt
 def mint_handles(request):
     # if parameter received from url than use the provide url as data for mint url parameter 
     if request.GET.get('url', None):
@@ -126,6 +128,7 @@ def mint_handles(request):
 # main function to execute handle miniting process
 # @api_view(['GET'])
 @login_required
+@csrf_exempt
 def mint_handle_main_function(request, landing_page_url=None):
     # default data for mint url parameters
     data = {

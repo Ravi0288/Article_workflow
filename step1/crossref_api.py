@@ -13,6 +13,7 @@ import zipfile
 import json
 import sys
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -155,6 +156,7 @@ def save_files(dois, headers, api):
 # function to handle all the crossref api's
 # @api_view(['GET'])
 @login_required
+@csrf_exempt
 def download_from_crossref_api(request):
 
     # receive the issn_number

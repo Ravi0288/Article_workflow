@@ -13,6 +13,7 @@ import shutil
 import xmltodict
 import os
 import zipfile
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Unreadable xml file serializer
@@ -408,6 +409,7 @@ def process_json_file(source, row):
 # Main function to create article objects from archive articles
 # @api_view(['GET'])
 @login_required
+@csrf_exempt
 def migrate_to_step2(request):
     
     # Get the records from arhived article that are not processed

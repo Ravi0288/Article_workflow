@@ -9,6 +9,7 @@ import json
 from django.conf import settings
 import zipfile
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 # function to zip folder
@@ -65,6 +66,7 @@ class SubmissionMetadataHarvester:
 # function to handle submission api's
 # @api_view(['GET'])
 @login_required
+@csrf_exempt
 def download_from_submission_api(request):
     # Send a GET request to the URL.
 
