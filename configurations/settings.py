@@ -255,14 +255,18 @@ USE_TZ = True
 
 # .........#####################
 
+# settings for proxy error
+if DEBUG==False:
+    SCRIPT_NAME = '/api'
+    FORCE_SCRIPT_NAME = SCRIPT_NAME
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static',]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 
 # data downloaded in step one will be stored here
 MEDIA_ROOT = BASE_DIR / 'ARCHIVE'

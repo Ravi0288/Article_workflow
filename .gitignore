@@ -9,7 +9,7 @@ downloads
 env
 venv
 logs
-
+media
 ARCHIVE/*
 ARCHIVE_ARTICLE//*
 TEMP/*
