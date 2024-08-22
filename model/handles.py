@@ -121,7 +121,7 @@ def mint_handles(request):
         if request.method == 'POST':
             url = request.POST.get('user_input', None)
             # Process the input as needed
-            mint_handle_main_function(request, url)
+            return mint_handle_main_function(request, url)
         return render(request, 'handles/handle.html', {'default_value': default_value})
 
 
@@ -148,7 +148,7 @@ def mint_handle_main_function(request, landing_page_url=None):
     # if no input value for landing_page_url provided
 
     try: 
-        res = requests.post(url, data=data, verify=False)
+        res = requests.post(url, data=data, verify="E:\\NAL-USDA\\NAL_LIBRARY_SYSTEM\\certificates\\nal.usda.cer")
         res.raise_for_status() 
     except Exception as err: 
         context = {
