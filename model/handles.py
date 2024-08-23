@@ -8,10 +8,8 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-import urllib3
+import certifi
 
-urllib3.disable_warnings(urllib3.exceptions.InsecurePlatformWarning)
 
 # Handle model on 
 class Handles(models.Model):
@@ -151,7 +149,7 @@ def mint_handle_main_function(request, landing_page_url=None):
     # if no input value for landing_page_url provided
 
     try: 
-        res = requests.post(url, data=data, verify=settings.CERT_ROOT)
+        res = requests.post(url, data=data, verify=certifi.where())
         res.raise_for_status() 
     except Exception as err: 
         context = {

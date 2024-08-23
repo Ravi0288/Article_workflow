@@ -14,7 +14,7 @@ import json
 import sys
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-
+import certifi
 
 
 # Function to retrieve a list of DOIs for articles from a given journal by ISSN
@@ -87,7 +87,8 @@ def save_files(dois, headers, api):
 
         # access the url
         url = f"https://api.crossref.org/works/{doi}"
-        response = requests.get(url, params=params, headers=headers)
+        response = requests.get(url, params=params, headers=headers, verify=certifi.where())
+        # response = requests.get(url)
         # response = http.request("GET", f"https://api.crossref.org/works/{doi}", body=params, headers=headers)
         if response.status_code == 200:
             try:
