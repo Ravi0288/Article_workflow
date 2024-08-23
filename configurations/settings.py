@@ -266,6 +266,8 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static',]
 
+CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
+
 MEDIA_URL = 'media/'
 
 # data downloaded in step one will be stored here

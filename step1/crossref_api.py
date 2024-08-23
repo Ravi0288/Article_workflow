@@ -86,8 +86,9 @@ def save_files(dois, headers, api):
                         query='alma.local_field_918=crossref and alma.local_notes="PubAg Journal"')
 
         # access the url
-        # response = requests.get(url['url'],params=params, headers=headers)
-        response = requests.get(f"https://api.crossref.org/works/{doi}", params=params, headers=headers)
+        url = f"https://api.crossref.org/works/{doi}"
+        response = requests.get(url, params=params, headers=headers)
+        # response = http.request("GET", f"https://api.crossref.org/works/{doi}", body=params, headers=headers)
         if response.status_code == 200:
             try:
                 # prepare properties
@@ -144,10 +145,11 @@ def save_files(dois, headers, api):
                 print(e)
                 continue
         else:
-            print(response.status_code, " : response code")
+            x = (response.__dict__)
+            print("Response code:", response.status_code,", reason :", response.reason)
 
     # zip the file
-    path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
+    # path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
     # zip_folder(settings.CROSSREF_ROOT, path)
 
 
