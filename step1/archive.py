@@ -21,4 +21,3 @@ class Archive_view(ModelViewSet):
         params = self.request.GET
         qs = qs.filter(**params.dict())
         return qs
-

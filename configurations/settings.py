@@ -147,43 +147,70 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # Database settings
 # ..................##################### #####################
-DATABASES = {
-   'default': {
-   'ENGINE': DB_ENGINE,
-   'NAME': DB_NAME,
-   'USER': DB_USER,
-   'PASSWORD': DB_PASSWORD,
-   'HOST': DB_HOST,
-   'PORT': DB_PORT,
-    },
+if DEBUG:
+    DATABASES = {
+    'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME':  BASE_DIR / 'article.sqlite3',
+        },
 
-    # 'handles_db': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME':  BASE_DIR / 'handle.sqlite3',
-    # },
-    # 'pid_db': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME':  BASE_DIR / 'pid.sqlite3',
-    # }
-    'handle_db': {
-        'ENGINE': HANDLE_DB_ENGINE,
-        'NAME': HANDLE_DB_NAME,
-        'USER': HANDLE_DB_USER,
-        'PASSWORD': HANDLE_DB_PASSWORD,
-        'HOST': HANDLE_DB_HOST,
-        'PORT': HANDLE_DB_PORT,
-    },
+        'handles_db': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME':  BASE_DIR / 'handle.sqlite3',
+        },
 
-    'pid_db': {
-        'ENGINE': PID_DB_ENGINE,
-        'NAME': PID_DB_NAME,
-        'USER': PID_DB_USER,
-        'PASSWORD': PID_DB_PASSWORD,
-        'HOST': PID_DB_HOST,
-        'PORT': PID_DB_PORT,
+        'pid_db': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME':  BASE_DIR / 'pid.sqlite3',
+        }
+
+        # 'handle_db': {
+        #     'ENGINE': HANDLE_DB_ENGINE,
+        #     'NAME': HANDLE_DB_NAME,
+        #     'USER': HANDLE_DB_USER,
+        #     'PASSWORD': HANDLE_DB_PASSWORD,
+        #     'HOST': HANDLE_DB_HOST,
+        #     'PORT': HANDLE_DB_PORT,
+        # },
+
+        # 'pid_db': {
+        #     'ENGINE': PID_DB_ENGINE,
+        #     'NAME': PID_DB_NAME,
+        #     'USER': PID_DB_USER,
+        #     'PASSWORD': PID_DB_PASSWORD,
+        #     'HOST': PID_DB_HOST,
+        #     'PORT': PID_DB_PORT,
+        # }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+        },
 
+        'handle_db': {
+            'ENGINE': HANDLE_DB_ENGINE,
+            'NAME': HANDLE_DB_NAME,
+            'USER': HANDLE_DB_USER,
+            'PASSWORD': HANDLE_DB_PASSWORD,
+            'HOST': HANDLE_DB_HOST,
+            'PORT': HANDLE_DB_PORT,
+        },
+
+        'pid_db': {
+            'ENGINE': PID_DB_ENGINE,
+            'NAME': PID_DB_NAME,
+            'USER': PID_DB_USER,
+            'PASSWORD': PID_DB_PASSWORD,
+            'HOST': PID_DB_HOST,
+            'PORT': PID_DB_PORT,
+        }
+    }
 
 # add router file for database settings
 DATABASE_ROUTERS = ['configurations.db_router.DB_route']
