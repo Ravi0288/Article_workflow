@@ -21,28 +21,6 @@ DEBUG = True
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
 
-# CSRF Related settings
-# CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# CSRF_COOKIE_SECURE = False   # True if working with HTTPS else False
-# CSRF_COOKIE_DOMAIN = None
-CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOWED_ORIGINS = [
-#     'https://article-workflow-admin-dev.nal.usda.gov',
-#     'http://article-workflow-admin-dev.nal.usda.gov'
-#     ]
-
-CORS_ORIGIN_WHITELIST = [
-    'https://article-workflow-admin-dev.nal.usda.gov',
-    'http://article-workflow-admin-dev.nal.usda.gov'
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'origin',
-    'x-requested-with',
-    'content-type',
-]
 
 # Application definition
 # ..................######
@@ -75,10 +53,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     # required middlewares for corseheader 
     'corsheaders.middleware.CorsMiddleware',
-    
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -87,12 +64,42 @@ MIDDLEWARE = [
 # ..................#############
 
 
+# CSRF Related settings
+CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# CSRF_COOKIE_SECURE = False   # True if working with HTTPS else False
+# CSRF_COOKIE_DOMAIN = None
+CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOWED_ORIGINS = [
+    'https://article-workflow-admin-dev.nal.usda.gov',
+    'http://article-workflow-admin-dev.nal.usda.gov'
+]
+CORS_ORIGIN_WHITELIST = [
+    'https://article-workflow-admin-dev.nal.usda.gov',
+    'http://article-workflow-admin-dev.nal.usda.gov'
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
 
 # Root URL file path
 ROOT_URLCONF = 'configurations.urls'
-
-
 
 
 # Template for serving the result
