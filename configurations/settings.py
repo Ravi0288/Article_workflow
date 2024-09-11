@@ -289,10 +289,10 @@ USE_TZ = True
 
 # .........#####################
 
-# settings for proxy error
-if DEBUG==False:
-    SCRIPT_NAME = '/api'
-    FORCE_SCRIPT_NAME = SCRIPT_NAME
+# # settings for proxy error
+# if DEBUG==False:
+#     SCRIPT_NAME = '/api'
+#     FORCE_SCRIPT_NAME = SCRIPT_NAME
 
 
 # Static files (CSS, JavaScript, Images)
