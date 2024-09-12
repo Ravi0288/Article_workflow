@@ -85,7 +85,7 @@ class Article_attributes(models.Model):
 
 
 
-# article attribute model
+# jsonified article attribute model
 class Jsonified_articles(models.Model):
 
     article_file = models.FileField(upload_to=get_file_path, 
