@@ -21,6 +21,7 @@ STATUS = (
 
 # ARCHIVE_PATH = settings.MEDIA_ROOT
 ARTICLE_PATH = settings.ARTICLE_ROOT
+PROCESSED_ARTICLE = settings.PROCESSED_ARTICLE
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -60,7 +61,7 @@ class Article_attributes(models.Model):
 
     title = models.TextField(blank=True, null=True, help_text="Article title")
     type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
-    provider = models.ForeignKey(Providers, related_name="provsider", on_delete=models.DO_NOTHING)
+    provider = models.ForeignKey(Providers, related_name="provider", on_delete=models.DO_NOTHING)
     archive = models.ForeignKey(Archive, related_name="archives", on_delete=models.DO_NOTHING)
     last_step = models.IntegerField(default=2, help_text="Last stage article passed through 1-11")
     last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
@@ -80,3 +81,35 @@ class Article_attributes(models.Model):
     #         # article_file = journal
     #         self.journal = self.article_file
     #     super(Article_attributes, self).save(*args, **kwargs)
+
+
+
+
+# article attribute model
+class Jsonified_articles(models.Model):
+
+    article_file = models.FileField(upload_to=get_file_path, 
+                                    storage=OverWriteStorage(), 
+                                    help_text="Browse the file"
+                                    )
+    
+    journal = models.FileField(blank=True, 
+                               null=True, 
+                               help_text="This field value will assigned automatically with the value assigned in article_file"
+                               )
+
+    title = models.TextField(blank=True, null=True, help_text="Article title")
+    type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
+    article_attributes = models.ForeignKey(Article_attributes, related_name="article_attribute", on_delete=models.DO_NOTHING)
+    last_step = models.IntegerField(default=3, help_text="Last stage article passed through 1-11")
+    last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
+    note = models.TextField(default="ok", help_text="Note, warning or error note")
+    DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
+    PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
+    MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")
+    provider_rec = models.CharField(max_length=10,null=True, blank=True, help_text="Provider article identifier")
+    start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
+    current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
+    end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
+    deposite_path = models.TextField(default=PROCESSED_ARTICLE)
+

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'mail_service',
     'authentication',
     'accounts',
+    'handle_app',
 
     # run django on https in development environment
     'sslserver',
@@ -136,12 +137,12 @@ DB_HOST = os.environ['ARTICLE_DB_HOST']
 DB_PORT = os.environ['ARTICLE_DB_PORT']
 
 # # Handle DB details
-HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
-HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
-HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
-HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
-HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
-HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
+# HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
+# HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
+# HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
+# HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
+# HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
+# HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
 
 # # PID DB details
 PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
@@ -200,14 +201,14 @@ else:
             'PORT': DB_PORT,
         },
 
-        'handle_db': {
-            'ENGINE': HANDLE_DB_ENGINE,
-            'NAME': HANDLE_DB_NAME,
-            'USER': HANDLE_DB_USER,
-            'PASSWORD': HANDLE_DB_PASSWORD,
-            'HOST': HANDLE_DB_HOST,
-            'PORT': HANDLE_DB_PORT,
-        },
+        # 'handle_db': {
+        #     'ENGINE': HANDLE_DB_ENGINE,
+        #     'NAME': HANDLE_DB_NAME,
+        #     'USER': HANDLE_DB_USER,
+        #     'PASSWORD': HANDLE_DB_PASSWORD,
+        #     'HOST': HANDLE_DB_HOST,
+        #     'PORT': HANDLE_DB_PORT,
+        # },
 
         'pid_db': {
             'ENGINE': PID_DB_ENGINE,
@@ -312,6 +313,7 @@ CHORUS_ROOT = MEDIA_ROOT / 'CHORUS'
 
 # data once processed from step one will stored at this location
 ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
+PROCESSED_ARTICLE = BASE_DIR / 'PROCESSED_ARTICLES'
 INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
 
 # Default primary key field type
