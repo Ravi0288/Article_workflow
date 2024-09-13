@@ -12,13 +12,10 @@ urlpatterns = [
     path('step3/', include('step3.urls')),
     path('email/', include('mail_service.urls')),
     path('accounts/', include('accounts.urls')),
-    # path('', include('accounts.urls')),
-    # path('', include('authentication.urls')),
-    path('', include('step1.urls')),
-    path('step2/', include('step2.urls')),
-    path('step3/', include('step3.urls')),
+    path('', include('accounts.urls')),
+    path('', include('authentication.urls')),
     path('email/', include('mail_service.urls')),
-    path('handles/', include('handle_app.urls'))
+    path('handles/', include('handles.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

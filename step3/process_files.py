@@ -6,6 +6,7 @@ import json
 from .common.find_doi import find_doi
 from .common.find_title import find_title
 from model.article import Article_attributes, Jsonified_articles
+from django.contrib.auth.decorators import login_required
 
 
 def process_file(article, new_file_path):
@@ -48,7 +49,7 @@ def process_file(article, new_file_path):
             f.close()
 
 
-
+@login_required
 @api_view(['GET'])
 def jsonify_xml_file(request):
     articles = Article_attributes.objects.filter(last_step=2)
