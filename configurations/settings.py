@@ -15,7 +15,7 @@ FERNET_KEY = b'KD2D79IHyj-01T9vC75gNxwDvhTvO370uqjPbzWIaAs='
 # FERNET_KEY = get_env_variable('FERNET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # List of whitelisted host to be proivded here
@@ -299,7 +299,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static',]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 

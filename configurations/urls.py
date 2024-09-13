@@ -16,7 +16,6 @@ urlpatterns = [
     path('', include('authentication.urls')),
     path('email/', include('mail_service.urls')),
     path('handles/', include('handles.urls'))
-]
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += staticfiles_urlpatterns()
