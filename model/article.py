@@ -84,11 +84,14 @@ class Article_attributes(models.Model):
 
 
 
+# Function to return the storage file path.
+def get_json_file_path(instance, filename):
+    return (settings.PROCESSED_ARTICLES + '\\' + filename)
 
 # jsonified article attribute model
 class Jsonified_articles(models.Model):
 
-    article_file = models.FileField(upload_to=get_file_path, 
+    article_file = models.FileField(upload_to=get_json_file_path, 
                                     storage=OverWriteStorage(), 
                                     help_text="Browse the file"
                                     )
