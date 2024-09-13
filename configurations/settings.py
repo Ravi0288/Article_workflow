@@ -15,7 +15,7 @@ FERNET_KEY = b'KD2D79IHyj-01T9vC75gNxwDvhTvO370uqjPbzWIaAs='
 # FERNET_KEY = get_env_variable('FERNET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 # List of whitelisted host to be proivded here

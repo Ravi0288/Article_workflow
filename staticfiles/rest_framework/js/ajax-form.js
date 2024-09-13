@@ -84,7 +84,7 @@ function doAjaxSubmit(e) {
   });
 
   ret.always(function(data, textStatus, jqXHR) {
-    if (textStatus != 'completed') {
+    if (textStatus != 'success') {
       jqXHR = data;
     }
 
