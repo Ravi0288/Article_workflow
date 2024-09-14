@@ -18,16 +18,7 @@
 
 
 {% block body %}
-    <!-- <div class="form-container">
-        <h2 class="form-container-title">User Form</h2>
-
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary btn-block">Save</button>
-        </form>
-    </div> -->
-    
+     
     <div class="form-container">
         <h2 class="form-container-title">User Form</h2>
     
@@ -63,7 +54,7 @@
 
             <div class="row" style="padding: 10px;">
                 <div class="col-3">
-                    <label for="groups">Groups:</label>
+                    <label for="groups">Groups: </br> (One user can be part of multiple group)</label>
                 </div>
                 <div class="col-9">
                     {{ form.groups }}
