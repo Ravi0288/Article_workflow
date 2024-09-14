@@ -33,18 +33,16 @@
     <body>
 
         <div class="header-bar">
-            <div class="row">
-                <div class="col-4"></div>
-                <div class="col-4">
-                    {% block header %} {% endblock header %}
-                </div>
-                <div class="col-4">
-                    <a href="{% url 'logout' %}" style="color: white;">Logout</a>
-                </div>
-            </div>
+            <span>
+                {% block header %} {% endblock header %}
+            </span>
+            <span style="float: inline-end; padding-right:25px;">
+                <a href="{% url 'logout' %}" style="color: white;">Logout</a>
+            </span>
         </div>
         <div class="wrapper">
             <div class="sidebar">
+                <a href="{% url 'dashboard' %}">Home</a>
                 <a href="{% url 'download_from_ftp' %}" style="color: white;">FTP</a>
                 <a href="{% url 'download_from_submission_api' %}" style="color: white;">Submission</a>
                 <a href="{% url 'download_from_crossref_api' %}" style="color: white;">Cross Ref</a>

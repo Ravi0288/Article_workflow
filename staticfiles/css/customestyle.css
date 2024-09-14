@@ -13,6 +13,8 @@ body {
     background-color: #a6c2fe;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: smaller;
+    font-weight: lighter;
 }
 
 .sidebar h3 {
@@ -67,10 +69,9 @@ body {
 .header-bar {
     background-color: #3871eb;
     color: white;
-    padding: 4px;
+
     text-align: center;
     font-size: smaller;
-    display: inline;
 }
 
 .logout {
