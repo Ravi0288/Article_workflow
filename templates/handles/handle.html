@@ -18,17 +18,23 @@
 {% block body %}
     <div class="container">
         <div id="submitButton">
-            <h2>Click 'Enter URL' button to proceed</h2>
-
             <div style="display: inline;">
-                <!-- This button will open the modal -->
-                <button id="openModalButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#inputModal">
-                    Enter URL
-                </button>
-                <!-- This button will not open the modal -->
-                <button id="submitDefault" type="button" onclick="accessUrl()" class="btn btn-primary" data-target="#inputModal">
-                    Mint-Handle With Default URL
-                </button>
+                 <span style="float: inline-start;">
+                    <!-- This button will open the modal -->
+                    <h4>Enter Custom URL to Proceed</h4>
+                    <button id="openModalButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#inputModal">
+                        Mint-Handle With Custom URL
+                    </button>
+                 </span>
+
+                <span style="float: inline-end;">
+                    <!-- This button will not open the modal -->
+                    <h4>Proceed With Default URL</h4>
+                    <button id="submitDefault" type="button" onclick="accessUrl()" class="btn btn-primary" data-target="#inputModal">
+                        Mint-Handle With Default URL
+                    </button>
+                </span>
+
             </div>
         </div>
 
