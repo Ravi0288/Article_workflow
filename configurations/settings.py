@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'step2',
     'model',
     'mail_service',
-    'authentication',
     'accounts',
     'handles',
     'rest_framework.authtoken',

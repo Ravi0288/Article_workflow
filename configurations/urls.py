@@ -13,7 +13,6 @@ urlpatterns = [
     path('email/', include('mail_service.urls')),
     path('accounts/', include('accounts.urls')),
     path('', include('accounts.urls')),
-    path('', include('authentication.urls')),
     path('email/', include('mail_service.urls')),
     path('handles/', include('handles.urls'))
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

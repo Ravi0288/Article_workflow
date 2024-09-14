@@ -1,0 +1,49 @@
+{% extends 'common/base.html' %}
+{% block title %} Create New Group {% endblock title %}
+{% block header %}
+    Create New Group
+{% endblock header%}
+
+{% block menu %}
+<a href="{% url 'user_create' %}">Create User</a>
+<a href="{% url 'group_create' %}">Create Group</a>
+<a href="{% url 'user_list' %}">List Users</a>
+<a href="{% url 'group_list' %}">List Groups</a>
+<a href="{% url 'create_authorization' %}">Access Authorization</a>
+    <!-- {% for item in menu %} -->
+
+    <!-- {% endfor %} -->
+
+{% endblock menu %}
+
+
+{% block body %}
+    <div class="form-container">
+        <h2 class="form-container-title">Create Authorization</h2>
+
+        <form method="post" action="{% url 'create_authorization' %}">
+            {% csrf_token %}
+
+            <div class="row" style="padding: 20px;">
+                <div class="col-4">
+                    <label for="password">Menu:</label>
+                </div>
+                <div class="col-8">
+                    {{ form.menu }}
+                </div>
+            </div>
+
+            <div class="row" style="padding: 20px;">
+                <div class="col-4">
+                    <label for="groups">Groups: </br> (One menu can be accessed by multiple group)</label>
+                </div>
+                <div class="col-8">
+                    {{ form.groups }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+        </form>
+    </div> 
+{% endblock %} 
+
