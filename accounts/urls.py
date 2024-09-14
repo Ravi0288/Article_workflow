@@ -1,18 +1,17 @@
 from django.urls import path
-from . import views
-
 from django.urls import path, include
 from .fallback import  callback  
 from .entra_login import entra_login
-from rest_framework.routers import DefaultRouter
+# from rest_framework.routers import DefaultRouter
 # from .authorization import Authorization_viewset, get_url_names
 from .authorization import create_authorization
+from . import views
 
-router = DefaultRouter()
+# router = DefaultRouter()
 # router.register('authorized-menu', Authorization_viewset, basename='authorized-menu')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # path('', include(router.urls)),
     path('users/', views.user_list, name='user_list'),
     path('users/create/', views.user_create, name='user_create'),
     path('groups/', views.group_list, name='group_list'),

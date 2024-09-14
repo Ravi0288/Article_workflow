@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
+from .authorization import Authorization
 
 @login_required
 @csrf_exempt
@@ -77,6 +78,7 @@ def group_create(request):
 
 
 
+
 @csrf_exempt
 def login_view(request):
 
@@ -91,6 +93,15 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+
+                # try:
+                #     user_groups = user.groups.all()
+                #     menu_list = Authorization.objects.filter(groups__in=user_groups).values_list('menu')
+                #     print(menu_list)
+                #     request.session['menu_list'] = menu_list
+                # except Authorization.DoesNotExist:
+                #     request.session['menu_list'] = []
+
                 return redirect('dashboard')  # Redirect to dashboard
     else:
         form = CustomAuthenticationForm()

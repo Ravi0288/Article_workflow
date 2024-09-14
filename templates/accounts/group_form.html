@@ -22,13 +22,7 @@
         <h2 class="form-container-title">Group Form</h2>
         <form method="post" style="margin: 20px;">
             {% csrf_token %}
-            <!-- {{ form.as_p }} -->
-            <select name="menu">
-                {% for value, name in form.fields.menu.field.choices %}
-                    <option value="{{ value }}">{{ name }}</option>
-                {% endfor %}
-            </select>
-
+            {{ form.as_p }}
             <button type="submit" class="btn btn-primary btn-block">Save</button>
         </form>
     </div>

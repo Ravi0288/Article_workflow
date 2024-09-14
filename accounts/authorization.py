@@ -47,16 +47,14 @@ class Authorization(models.Model):
     menu = models.CharField(max_length=100, choices=get_url_names())
 
 
-# class Authorization_serilalizer(ModelSerializer):
-#     class Meta:
-#         model = Authorization
-#         fields = '__all__'
+class Authorization_serilalizer(ModelSerializer):
+    class Meta:
+        model = Authorization
+        fields = '__all__'
 
-# class Authorization_viewset(ModelViewSet):
-#     queryset = Authorization.objects.all()
-#     serializer_class = Authorization_serilalizer
-
-
+class Authorization_viewset(ModelViewSet):
+    queryset = Authorization.objects.all()
+    serializer_class = Authorization_serilalizer
 
 
 
