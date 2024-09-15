@@ -37,6 +37,10 @@ def get_url_names() -> tuple:
             # print(f"An error occurred: {ex}")
             pass
 
+    # # Remove duplicates by converting to a set and back to a list
+    list_of_url_names = tuple(set(list_of_url_names))
+
+
     return list_of_url_names
 
 

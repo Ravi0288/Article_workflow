@@ -7,5 +7,5 @@ router.register('email-address', Email_notification_viewset, basename='email-add
 router.register('email-history', Email_history_viewset, basename='email-history')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # path('', include(router.urls)),
 ]

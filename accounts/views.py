@@ -36,7 +36,7 @@ def user_create(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
             form.save_m2m()
-            return redirect('user_list')
+            return redirect('user-list')
     else:
         form = UserForm()
     return render(request, 'accounts/user_form.html', {'form': form})
@@ -71,7 +71,7 @@ def group_create(request):
         form = GroupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('group_list')
+            return redirect('group-list')
     else:
         form = GroupForm()
     return render(request, 'accounts/group_form.html', {'form': form})
@@ -94,13 +94,13 @@ def login_view(request):
             if user is not None:
                 login(request, user)
 
-                # try:
-                #     user_groups = user.groups.all()
-                #     menu_list = Authorization.objects.filter(groups__in=user_groups).values_list('menu')
-                #     print(menu_list)
-                #     request.session['menu_list'] = menu_list
-                # except Authorization.DoesNotExist:
-                #     request.session['menu_list'] = []
+                # if logged in successfully, fetch authorized menu and store it to sesssion
+                try:
+                    user_groups = user.groups.all()
+                    menu_list = Authorization.objects.filter(groups__in=user_groups).values_list('menu', flat=True)
+                    request.session['menu_list'] = list(menu_list)
+                except Authorization.DoesNotExist:
+                    request.session['menu_list'] = []
 
                 return redirect('dashboard')  # Redirect to dashboard
     else:

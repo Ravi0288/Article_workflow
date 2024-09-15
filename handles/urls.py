@@ -7,6 +7,6 @@ router.register('', HandleViewSet, basename='handles')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('mint-handle', mint_handles, name="mint_handles"),
-    path('mint', mint_handle_main_function, name="mint"),
+    path('mint-handle', mint_handles, name="mint-handles-api"),
+    path('mint', mint_handle_main_function, name="mint-handle"),
 ]

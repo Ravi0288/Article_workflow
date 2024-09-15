@@ -19,8 +19,8 @@ router.register('fetch-history', Fetch_history_viewset, basename='fetch-history'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('download-from-ftp/', download_from_ftp, name='download_from_ftp'),
-    path('download-from-submission-api/', download_from_submission_api, name='download_from_submission_api'),
-    path('download-from-crossref-api/', download_from_crossref_api, name='download_from_crossref_api'),
-    path('download-from-chorus-api/', download_from_chorus_api, name='download_from_chorus_api'),
+    path('download-from-ftp/', download_from_ftp, name='download-from-ftp'),
+    path('download-from-submission-api/', download_from_submission_api, name='download-from-submission-api'),
+    path('download-from-crossref-api/', download_from_crossref_api, name='download-from-crossref-api'),
+    path('download-from-chorus-api/', download_from_chorus_api, name='download-from-chorus-api'),
 ]

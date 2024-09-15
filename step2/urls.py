@@ -8,7 +8,7 @@ from .article import migrate_to_step2, Unreadable_xml_files_viewset
 
 router = DefaultRouter()
 router.register('articles', Article_attributes_viewset, basename='articles')
-router.register('unreadable-xml-files', Unreadable_xml_files_viewset, basename='unreadable_xml_files')
+router.register('unreadable-xml-files', Unreadable_xml_files_viewset, basename='unreadable-xml-files')
 
 urlpatterns = [
     path('', include(router.urls)),

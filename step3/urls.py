@@ -8,5 +8,5 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('jsonify-xml-files/', jsonify_xml_file),
+    path('jsonify-xml-files/', jsonify_xml_file, name="jsonify-xml-testing-purpose"),
 ]
