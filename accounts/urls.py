@@ -21,9 +21,11 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
     
+    path('create-authorization/', create_authorization, name='create-authorization'),
+
     # for entra
-    path('entra-login/', entra_login, name='entra-login'),
-    path('callback/', callback, name='callback'),
+    # path('entra-login/', entra_login, name='entra-login'),
+    # path('callback/', callback, name='callback'),
     # path('get_url_names/', get_url_names, name='get_url_names'),
-    path('create-authorization/', create_authorization, name='create-authorization')
+
 ]

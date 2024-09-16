@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.urls import resolve
+from django.conf import settings
 
 class MenuAuthorizationMiddleware:
     def __init__(self, get_response):
@@ -13,6 +14,10 @@ class MenuAuthorizationMiddleware:
         return response
 
     def process_request(self, request):
+
+        if request.user.is_staff:
+            return None
+
         # Get the current path
         current_url_name = resolve(request.path_info).url_name
 

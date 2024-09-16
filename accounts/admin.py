@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import GroupAdmin, UserAdmin
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group
+from .authorization import Authorization
 
 
 
@@ -9,6 +10,10 @@ class PermissionAdmin(admin.ModelAdmin):
     search_fields = ('name', 'codename')
     list_filter = ('content_type',)
 
+class AuthorizationAdmin(admin.ModelAdmin):
+    # list_display = ('menu',)
+    search_fields = ('groups', 'menu')
+    list_filter = ('groups', 'menu')
 
 
-admin.site.register(Permission, PermissionAdmin)
+admin.site.register(Authorization, AuthorizationAdmin)
