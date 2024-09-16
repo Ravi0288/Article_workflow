@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     # Middleware to protect unauthorized access of any URL that is not authorized to logged in user
-    # 'accounts.middleware.MenuAuthorizationMiddleware',
+    'accounts.middleware.MenuAuthorizationMiddleware',
 ]
 # ..................#############
 
