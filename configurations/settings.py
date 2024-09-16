@@ -15,8 +15,9 @@ FERNET_KEY = b'KD2D79IHyj-01T9vC75gNxwDvhTvO370uqjPbzWIaAs='
 # FERNET_KEY = get_env_variable('FERNET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = True
+# If using sqlite3 db set this variable True.
+SQLIT3_DB = False
 
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
@@ -157,7 +158,7 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # Database settings
 # ..................##################### #####################
-if DEBUG:
+if SQLIT3_DB:
     DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -173,24 +174,6 @@ if DEBUG:
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME':  BASE_DIR / 'pid.sqlite3',
         }
-
-        # 'handle_db': {
-        #     'ENGINE': HANDLE_DB_ENGINE,
-        #     'NAME': HANDLE_DB_NAME,
-        #     'USER': HANDLE_DB_USER,
-        #     'PASSWORD': HANDLE_DB_PASSWORD,
-        #     'HOST': HANDLE_DB_HOST,
-        #     'PORT': HANDLE_DB_PORT,
-        # },
-
-        # 'pid_db': {
-        #     'ENGINE': PID_DB_ENGINE,
-        #     'NAME': PID_DB_NAME,
-        #     'USER': PID_DB_USER,
-        #     'PASSWORD': PID_DB_PASSWORD,
-        #     'HOST': PID_DB_HOST,
-        #     'PORT': PID_DB_PORT,
-        # }
     }
 else:
     DATABASES = {
@@ -203,14 +186,7 @@ else:
             'PORT': DB_PORT,
         },
 
-        # 'handle_db': {
-        #     'ENGINE': HANDLE_DB_ENGINE,
-        #     'NAME': HANDLE_DB_NAME,
-        #     'USER': HANDLE_DB_USER,
-        #     'PASSWORD': HANDLE_DB_PASSWORD,
-        #     'HOST': HANDLE_DB_HOST,
-        #     'PORT': HANDLE_DB_PORT,
-        # },
+        # Handle DB is accesed directly. And the code is written in handles.py file in core python
 
         'pid_db': {
             'ENGINE': PID_DB_ENGINE,
@@ -221,6 +197,7 @@ else:
             'PORT': PID_DB_PORT,
         }
     }
+
 
 # add router file for database settings
 DATABASE_ROUTERS = ['configurations.db_router.DB_route']
