@@ -16,8 +16,12 @@ FERNET_KEY = b'KD2D79IHyj-01T9vC75gNxwDvhTvO370uqjPbzWIaAs='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 # If using sqlite3 db set this variable True.
-SQLIT3_DB = False
+try:
+    SQLIT3_DB = os.environ['USE_SQLIT3_DB']
+except:
+    SQLIT3_DB = False
 
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
