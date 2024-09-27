@@ -19,3 +19,4 @@ handle.sqlite3
 pid.sqlite3
 article.sqlite3
 certificates
+data/*
