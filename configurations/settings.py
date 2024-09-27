@@ -288,25 +288,33 @@ STATICFILES_DIRS = [
 
 CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
-MEDIA_URL = 'media/'
+# MEDIA_URL = 'media/'
+
+MEDIA_URL = 'data/metadata/'
 
 # data downloaded in step one will be stored here
-MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
-SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
-CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
-CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
+# MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
+# SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
+# CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
+# CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
 
-# data once processed from step one will stored at this location
-ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
-PROCESSED_ARTICLE = BASE_DIR / 'PROCESSED_ARTICLES'
-INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
+MEDIA_ROOT = 'data/metadata/ARCHIVE'
+SUBMISSION_ROOT = 'data/metadata/ARCHIVE/SUBMISSION' 
+CROSSREF_ROOT = 'data/metadata/ARCHIVE/CROSSREF' 
+CHORUS_ROOT = 'data/metadata/ARCHIVE/CHORUS' 
+
+
+# data once processed from step one will be stored here
+# ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
+# PROCESSED_ARTICLE = BASE_DIR / 'PROCESSED_ARTICLES'
+# INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
+
+ARTICLE_ROOT = 'data/metadata/ARTICLES'
+PROCESSED_ARTICLE = 'data/metadata/PROCESSED_ARTICLES'
+INVALID_XML_DIR = 'data/metada/INVALID_XML_FILES'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# HTTPS related settings
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SECURE_SSL_REDIRECT = True
 
 
 # logger to log errors in file
