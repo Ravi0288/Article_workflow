@@ -14,7 +14,6 @@ import xmltodict
 import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
-from 
 
 # Unreadable xml file serializer
 class Unreadable_xml_files_serializers(ModelSerializer):
