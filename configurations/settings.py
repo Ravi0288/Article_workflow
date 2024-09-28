@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'model',
     'mail_service',
     'accounts',
-    'handles',
     'rest_framework.authtoken',
     # run django on https in development environment
     'sslserver',
