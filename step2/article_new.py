@@ -14,6 +14,8 @@ import xmltodict
 import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
+from metadata_routines.splitter import splitter
+
 
 # Unreadable xml file serializer
 class Unreadable_xml_files_serializers(ModelSerializer):
@@ -65,73 +67,23 @@ def compare_files_line_by_line(file1, file2):
     return True
 
 
-
 # Read xml file and return dictionary
 def read_xml_file(xml_file_path):
-    try:
-        # Open file
-        with open(file=xml_file_path, mode='rb') as xml_txt:                 
-            # Replace special character
-            xml_txt = xml_txt.read().replace(
-                b'&', b'&amp;').replace(
-                    b'""epub""', b'"epub"').replace(
-                        b'<i>',b'').replace(
-                            b'</i>', b''
-                        ).replace(
-                            b' < ', b' less than '
-                        ).replace(
-                            b' > ', b' greater than '
-                        )
-
-            return xmltodict.parse(xml_txt, encoding='utf-8')
-    except Exception as e:
-        # If any invalid xml file found backup the file to INVALID_XML_FILES file for checking purposes
-        destination = os.path.join(settings.BASE_DIR, 'INVALID_XML_FILES')
-        dest = shutil.copy(xml_file_path, destination)
-        Unreadable_xml_files.objects.create(
-            file_name = dest,
-            error_msg = e,
-            source = xml_file_path.replace('TEMP/','').replace('\\', '/')
-        )
+    with open(file=xml_file_path, mode='rb') as xml_txt:                 
+        # Replace special character
+        result = splitter(xml_txt)
+        if result[0]:
+            return result[0]
+        if result[1]:
+            # If any invalid xml file found backup the file to INVALID_XML_FILES file for checking purposes
+            destination = os.path.join(settings.BASE_DIR, 'INVALID_XML_FILES')
+            dest = shutil.copy(xml_file_path, destination)
+            Unreadable_xml_files.objects.create(
+                file_name = dest,
+                error_msg = e,
+                source = xml_file_path.replace('TEMP/','').replace('\\', '/')
+            )
         return None
-
-
-# Function to check if the xml file has <article> or <ArticleSet> tag
-# Any file that have no <article> / <ArticleSet> tag at root shall be discarded
-# If condition meets this functio will return the file content as dictionary otherwise will return boolean False
-'''
-NAL receives data from different sources and the data structures of any xml files should  be in this formate
-<article>, <Article>, <mods>, {}, [{}]. If any file not following this structres that file may be ommited
-'''
-def is_article_tag_available(xml_file_path):
-
-    doc = read_xml_file(xml_file_path)
-    if not doc:
-        return False
-    
-    ele = doc.get("article", None)
-    if ele:
-        # print("article tag found. File will be saved for stage 2")
-        return doc
-    
-    ele = doc.get("Article", None)
-    if ele:
-        # print("article tag found. File will be saved for stage 2")
-        return doc
-    
-    ele = doc.get("mods", None)
-    if ele:
-        # print("article tag found. File will be saved for stage 2")
-        return doc
-
-    ele = doc.get("ArticleSet", None)
-    if ele:
-        # print("article set found. File will be saved for stage 2")
-        # print(xml_file_path)
-        return doc
-
-    # print("article / ArticleSet tag not found. File skipped")
-    return False
 
 
 # Update archive artile flags if processed
@@ -160,7 +112,6 @@ def create_new_object(source, row, note):
         qs.provider_rec = "indentfier"
 
         x = source.replace('ARCHIVE/','').replace('TEMP/','')
-
         with open(source, 'rb') as f:
             # file_content = json.load(f)
             # qs.title = find_title(file_content)
@@ -364,16 +315,19 @@ def process_xml_file(source, row, archive_destination):
     # Some file got the wrong xml format, 
     # Hence caused to stop the execution. Using try except to ignore the error due to corrupted xml files
 
-    result = is_article_tag_available(source)
+    result = ([], '')
 
-    if not result:
+    with open(source, 'r') as f:
+        result = splitter(f.read())
+
+    if not result[0]:
         # Remove the xml file if not a valid xml file. 
         os.remove(source)
         return False
     else:
         # Check if multiple records found
         # If multiple file found than it will be processed in is_mulitple_record function itself.
-        if not is_mulitple_record(source, row):
+        if len(result[0]) > 1:
             # If json file found create record / update the record based on archive article flag
             if row.is_content_changed:
                 if archive_destination=='zipped':
@@ -424,8 +378,8 @@ def migrate_to_step2(request):
     # Looping through each object in the query set
     for row in qs:
         # source = 'ARCHIVE/' + row.file_content.name
-        source = settings.MEDIA_ROOT + '/' + row.file_content.name
-        destination = 'TEMP/' + source[:-4]
+        source = 'data/metadata/ARCHIVE/' + row.file_content.name
+        destination = 'TEMP/' + source.split('.')[0]
         # Create the output folder if it doesn't exist
         if not os.path.exists(destination):
             os.makedirs(destination)

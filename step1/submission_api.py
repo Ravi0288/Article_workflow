@@ -43,6 +43,7 @@ class SubmissionMetadataHarvester:
                 response = requests.get(url)
             except Exception as e:
                 print(e)
+                break
 
             # if status code is not success exit
             if response.status_code != 200:
