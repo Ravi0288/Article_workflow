@@ -291,6 +291,8 @@ CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
 MEDIA_URL = 'data/metadata/'
 
+
+
 # data downloaded in step one will be stored here
 # MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
 # SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
@@ -298,7 +300,7 @@ MEDIA_URL = 'data/metadata/'
 # CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
 
 # MEDIA_ROOT = os.path.join('data/metadata/ARCHIVE')
-MEDIA_ROOT = 'D:/data/media/'
+MEDIA_ROOT = '/var/www/media/'
 SUBMISSION_ROOT = 'data/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = 'data/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = 'data/metadata/ARCHIVE/CHORUS' 
