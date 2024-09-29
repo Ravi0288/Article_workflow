@@ -297,7 +297,8 @@ MEDIA_URL = 'data/metadata/'
 # CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
 # CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
 
-MEDIA_ROOT = 'data/metadata/ARCHIVE'
+# MEDIA_ROOT = os.path.join('data/metadata/ARCHIVE')
+MEDIA_ROOT = 'D:/data/media/'
 SUBMISSION_ROOT = 'data/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = 'data/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = 'data/metadata/ARCHIVE/CHORUS' 

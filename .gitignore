@@ -17,6 +17,5 @@ ARTICLES/*
 INVALID_XML_FILES/*
 handle.sqlite3
 pid.sqlite3
-article.sqlite3
 certificates
 data/*
