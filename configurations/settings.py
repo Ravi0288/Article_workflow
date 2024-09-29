@@ -134,29 +134,30 @@ TEMPLATES = [
 WSGI_APPLICATION = 'configurations.wsgi.application'
 
 
-# Default DB details
-DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
-DB_NAME = os.environ['ARTICLE_DB_NAME']
-DB_USER = os.environ['ARTICLE_DB_USER']
-DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
-DB_HOST = os.environ['ARTICLE_DB_HOST']
-DB_PORT = os.environ['ARTICLE_DB_PORT']
+if not SQLIT3_DB:
+    # Default DB details
+    DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
+    DB_NAME = os.environ['ARTICLE_DB_NAME']
+    DB_USER = os.environ['ARTICLE_DB_USER']
+    DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
+    DB_HOST = os.environ['ARTICLE_DB_HOST']
+    DB_PORT = os.environ['ARTICLE_DB_PORT']
 
-# # Handle DB details
-# HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
-# HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
-# HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
-# HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
-# HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
-# HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
+    # # Handle DB details
+    # HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
+    # HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
+    # HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
+    # HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
+    # HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
+    # HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
 
-# # PID DB details
-PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
-PID_DB_NAME = os.environ['PID_DB_NAME']
-PID_DB_USER = os.environ['PID_DB_USER']
-PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
-PID_DB_HOST = os.environ['HANDLE_DB_HOST']
-PID_DB_PORT = os.environ['PID_DB_PORT']
+    # # PID DB details
+    PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
+    PID_DB_NAME = os.environ['PID_DB_NAME']
+    PID_DB_USER = os.environ['PID_DB_USER']
+    PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
+    PID_DB_HOST = os.environ['HANDLE_DB_HOST']
+    PID_DB_PORT = os.environ['PID_DB_PORT']
 
 
 # Database settings
