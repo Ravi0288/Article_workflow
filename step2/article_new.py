@@ -1,3 +1,4 @@
+'''
 from django.conf import settings
 from step1.archive import Archive
 from rest_framework.serializers import ModelSerializer
@@ -423,3 +424,6 @@ def migrate_to_step2(request):
     }
 
     return render(request, 'common/dashboard.html', context=context)
+
+
+'''
