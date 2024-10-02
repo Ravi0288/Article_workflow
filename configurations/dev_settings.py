@@ -139,8 +139,8 @@ WSGI_APPLICATION = 'configurations.wsgi.application'
 
 # Database settings
 # ..................##################### #####################
-if SQLIT3_DB:
-    DATABASES = {
+
+DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME':  BASE_DIR / 'article.sqlite3',
@@ -155,7 +155,7 @@ if SQLIT3_DB:
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME':  BASE_DIR / 'pid.sqlite3',
         }
-    }
+}
 
 # add router file for database settings
 DATABASE_ROUTERS = ['configurations.db_router.DB_route']
