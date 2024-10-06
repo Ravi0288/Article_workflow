@@ -17,15 +17,8 @@ FERNET_KEY = b'KD2D79IHyj-01T9vC75gNxwDvhTvO370uqjPbzWIaAs='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# If using sqlite3 db set this variable True.
-try:
-    SQLIT3_DB = os.environ['USE_SQLIT3_DB']
-except:
-    SQLIT3_DB = False
-
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 # ..................######
@@ -161,45 +154,26 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # Database settings
 # ..................##################### #####################
-if SQLIT3_DB:
-    DATABASES = {
+
+DATABASES = {
     'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME':  BASE_DIR / 'article.sqlite3',
-        },
-
-        'handles_db': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME':  BASE_DIR / 'handle.sqlite3',
-        },
-
-        'pid_db': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME':  BASE_DIR / 'pid.sqlite3',
-        }
+        'ENGINE': DB_ENGINE,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+    },
+    # Handle DB is accesed directly. And the code is written in handles.py file in core python
+    'pid_db': {
+        'ENGINE': PID_DB_ENGINE,
+        'NAME': PID_DB_NAME,
+        'USER': PID_DB_USER,
+        'PASSWORD': PID_DB_PASSWORD,
+        'HOST': PID_DB_HOST,
+        'PORT': PID_DB_PORT,
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': DB_ENGINE,
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,
-            'PORT': DB_PORT,
-        },
-
-        # Handle DB is accesed directly. And the code is written in handles.py file in core python
-
-        'pid_db': {
-            'ENGINE': PID_DB_ENGINE,
-            'NAME': PID_DB_NAME,
-            'USER': PID_DB_USER,
-            'PASSWORD': PID_DB_PASSWORD,
-            'HOST': PID_DB_HOST,
-            'PORT': PID_DB_PORT,
-        }
-    }
+}
 
 
 # add router file for database settings
