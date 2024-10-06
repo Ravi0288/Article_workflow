@@ -161,7 +161,7 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # Database settings
 # ..................##################### #####################
-if SQLIT3_DB:
+if True:
     DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.sqlite3',

@@ -4,7 +4,7 @@ import zipfile
 from django.db import models
 from cryptography.fernet import Fernet
 from django.conf import settings
-
+import stat
 
 # Function to read the file
 # This function will take file path as input and will return the file content    
@@ -54,6 +54,17 @@ def is_ftp_content_folder(connect, path):
         except Exception as e:
             return False
 
+
+def is_sftp_content_folder(sftp_connection, article):
+    try:
+        # Get the file status for the article
+        file_info = sftp_connection.stat(article)
+        # Check if the file mode indicates a directory
+        return stat.S_ISDIR(file_info.st_mode)  # Return True if it's a directory
+
+    except IOError:
+        # If the file does not exist or there's an error accessing it, return False
+        return False
 
 # function to return the folder size on FTP.
 # Since in FTP we don't have build in function to read folder size hence we need to iterate
