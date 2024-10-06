@@ -145,7 +145,7 @@ def update_archive(row):
 # Create new objects in article table
 def create_new_object(source, row, note):
     # Changing the default settings base directory root
-    settings.MEDIA_ROOT = '/home/boss/data/metadata/ARTICLES'
+    settings.MEDIA_ROOT = '/home/automation/ai/metadata/ARTICLES'
     try:
         # Create new record
         qs = Article_attributes()

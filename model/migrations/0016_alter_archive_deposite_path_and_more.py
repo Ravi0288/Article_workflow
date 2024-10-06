@@ -13,16 +13,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='archive',
             name='deposite_path',
-            field=models.TextField(default='/home/boss/data/metadata/ARCHIVE'),
+            field=models.TextField(default='/home/automation/ai/metadata/ARCHIVE'),
         ),
         migrations.AlterField(
             model_name='article_attributes',
             name='deposite_path',
-            field=models.TextField(default='/home/boss/data/metadata/ARTICLES'),
+            field=models.TextField(default='/home/automation/ai/metadata/ARTICLES'),
         ),
         migrations.AlterField(
             model_name='jsonified_articles',
             name='deposite_path',
-            field=models.TextField(default='/home/boss/data/metadata/PROCESSED_ARTICLES'),
+            field=models.TextField(default='/home/automation/ai/metadata/PROCESSED_ARTICLES'),
         ),
     ]
