@@ -79,7 +79,9 @@ def download_from_submission_api(request):
         submissions = harvester.fetch_submissions(last_date)
         if submissions:
             file_type = '.json'
-            file_name = str(datetime.datetime.now().strftime("%Y-%m-%d")) + '.json'
+            source_file_name = str(datetime.datetime.now().strftime("%Y-%m-%d")) + '.json'
+            file_name = '/ai/metadata/temp_download/' + source_file_name
+
 
             # save the file to temporary location
             with open(file_name, 'w') as f:
@@ -90,7 +92,7 @@ def download_from_submission_api(request):
             # save the file in table
             try:
                 x = Archive.objects.create(
-                    file_name_on_source = file_name,
+                    file_name_on_source = source_file_name,
                     provider = api.provider,
                     processed_on = datetime.datetime.now(tz=pytz.utc),
                     status = 'waiting',
@@ -99,7 +101,7 @@ def download_from_submission_api(request):
                 )
 
                 # save file
-                new_file_name = str(x.id) + '.' + file_name.split('.')[-1]
+                new_file_name = str(x.id) + '.' + source_file_name.split('.')[-1]
                 x.file_content.save(new_file_name, fs)
 
                 # close the opened file
