@@ -81,7 +81,7 @@ def download_file(ftp_connection, article, item):
 
 # function to download folder with its content and convert to zip, finally save to table
 def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
-    temp_dir = 'temp_download/' + item.provider.official_name
+    temp_dir = '/ai/metadata/temp_download/' + item.provider.official_name
     state = download_directory_from_ftp(ftp_connection, article, temp_dir)
 
     if state:

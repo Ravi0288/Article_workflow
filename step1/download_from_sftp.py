@@ -78,7 +78,7 @@ def download_file(sftp_connection, article, item):
 
 # Function to download folder with its content, convert to zip, and save to table
 def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
-    temp_dir = 'temp_download/' + item.provider.official_name
+    temp_dir = '/ai/metadata/temp_download/' + item.provider.official_name
     state = download_directory_from_sftp(sftp_connection, article, temp_dir)
 
     if state:

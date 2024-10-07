@@ -263,7 +263,7 @@ CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
 # MEDIA_URL = 'media/'
 
-MEDIA_URL = '/home/automation/ai/metadata/'
+MEDIA_URL = '/ai/metadata/'
 
 # data downloaded in step one will be stored here
 # MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
@@ -271,10 +271,10 @@ MEDIA_URL = '/home/automation/ai/metadata/'
 # CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
 # CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
 
-MEDIA_ROOT = '/home/automation/ai/metadata/ARCHIVE'
-SUBMISSION_ROOT = '/home/automation/ai/metadata/ARCHIVE/SUBMISSION' 
-CROSSREF_ROOT = '/home/automation/ai/metadata/ARCHIVE/CROSSREF' 
-CHORUS_ROOT = '/home/automation/ai/metadata/ARCHIVE/CHORUS' 
+MEDIA_ROOT = '/ai/metadata/ARCHIVE'
+SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
+CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
+CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS' 
 
 
 # data once processed from step one will be stored here
@@ -282,8 +282,8 @@ CHORUS_ROOT = '/home/automation/ai/metadata/ARCHIVE/CHORUS'
 # PROCESSED_ARTICLE = BASE_DIR / 'PROCESSED_ARTICLES'
 # INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
 
-ARTICLE_ROOT = '/home/automation/ai/metadata/ARTICLES'
-PROCESSED_ARTICLE = '/home/automation/ai/metadata/PROCESSED_ARTICLES'
+ARTICLE_ROOT = '/ai/metadata/ARTICLES'
+PROCESSED_ARTICLE = '/ai/metadata/PROCESSED_ARTICLES'
 INVALID_XML_DIR = '/data/metada/INVALID_XML_FILES'
 
 # Default primary key field type
