@@ -289,7 +289,7 @@ INVALID_XML_DIR = '/data/metada/INVALID_XML_FILES'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-'''
+
 # logger to log errors in file
 LOGGING = {
     'version': 1,
@@ -308,7 +308,7 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': "logdir/NAL_LIBRARY_SYSTEM.log",
+            'filename': "/ai/metadata/logdir/NAL_LIBRARY_SYSTEM.log",
             'maxBytes': 100000,
             'backupCount': 2,
             'formatter': 'verbose',
@@ -333,7 +333,7 @@ LOGGING = {
         },
     },
 }
-'''
+
 
 ############### email service #####################
 

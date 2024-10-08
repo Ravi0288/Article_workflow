@@ -3,7 +3,6 @@ import ftplib
 import os
 from django.shortcuts import render
 from .archive import Archive
-from .archive import Archive
 from .provider import Provider_meta_data_FTP
 import datetime
 from io import BytesIO
@@ -144,7 +143,6 @@ def download_from_ftp(request):
     due_for_download = Provider_meta_data_FTP.objects.filter(
         provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
         ).exclude(protocol='SFTP')
-    # .exclude(provider__working_name="CSIRO")
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
@@ -158,6 +156,7 @@ def download_from_ftp(request):
 
     # if providers are due to be accessed
     for item in due_for_download:
+        print("FTP :", item.provider.official_name, ", Address :", item.server, ", user id : ", item.account, ", password : ", item.password)    
         # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
             ftp_connection = ftplib.FTP(item.server)
