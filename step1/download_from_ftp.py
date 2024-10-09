@@ -146,6 +146,8 @@ def download_from_ftp(request):
         provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
         ).exclude(Q(protocol='SFTP') | Q(provider__in_production=False))
     
+    print("total record to be executed", due_for_download.count())
+    
     # if none is due to be accessed abort the process
     if not due_for_download.count():
         context = {
