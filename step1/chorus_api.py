@@ -145,9 +145,12 @@ def download_from_chorus_api(request):
     }
     # iterate to all the available chorus apis
     for api in due_for_download:
-
+        err = []
+        succ = []
         # get all the pages
         publisher = []
+
+        # # this code is written as per existing logic.
         # while True:
         #     params = {
         #         "limit" : per_page,
@@ -162,11 +165,11 @@ def download_from_chorus_api(request):
         #     data = response.json()
         #     print(len(data))
         #     if response.status_code == 200 and len(data):
-        #         publisher.extend(filter_publisher_data(data['items']))
+        #         publisher.extend(filter_publisher_data(data['publishers']))
         #         start_from_page += 1
         #     else:
         #         break
-            # f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/histories/current",
+
         response = requests.get(
             f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/",
             headers=headers
@@ -185,16 +188,14 @@ def download_from_chorus_api(request):
             provider.status = 'success'
             provider.last_error_message = 'N/A'
             provider.save()
-            # api.save()
+            succ.append(api.provider__official_name)
 
-            # zip contents
-            # zip_folders(settings.CHORUS_ROOT)
         else:
             provider = api.provider
             provider.status = 'failed'
             provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
             provider.save()
-            # api.save()
+            err.append(api.provider__official_name)
 
             print(provider.last_error_message)
 
@@ -203,7 +204,7 @@ def download_from_chorus_api(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'Chorus API process executed successfully.'
+        'message' : 'Chorus API process executed successfully'
     }
 
     return render(request, 'common/dashboard.html', context=context)

@@ -80,7 +80,7 @@ def download_from_submission_api(request):
         if submissions:
             file_type = '.json'
             source_file_name = str(datetime.datetime.now().strftime("%Y-%m-%d")) + '.json'
-            file_name = '/ai/metadata/temp_download/' + source_file_name
+            file_name = '/ai/metadata/' + source_file_name
 
 
             # save the file to temporary location

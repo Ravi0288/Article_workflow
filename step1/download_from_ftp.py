@@ -13,7 +13,8 @@ from configurations.common import is_ftp_content_folder
 import pytz
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-
+from django.db.models import Q
+import socket
 
 # This function will download each file/dir from SFTP server to the local directory
 # in case of given folder is blank or have any kind of error this will return False
@@ -80,7 +81,7 @@ def download_file(ftp_connection, article, item):
 
 # function to download folder with its content and convert to zip, finally save to table
 def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
-    temp_dir = '/ai/metadata/temp_download/' + item.provider.official_name
+    temp_dir = '/ai/metadata/' + item.provider.official_name
     state = download_directory_from_ftp(ftp_connection, article, temp_dir)
 
     if state:
@@ -133,16 +134,17 @@ def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
 
 
 
-
 # this function will fetch article from the FTP
 # @api_view(['GET'])
 @login_required
 @csrf_exempt
 def download_from_ftp(request):
+    err = []
+    succ = []
     # get all providers that are due to be accessed
     due_for_download = Provider_meta_data_FTP.objects.filter(
         provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
-        ).exclude(protocol='SFTP')
+        ).exclude(Q(protocol='SFTP') | Q(provider__in_production=False))
     
     # if none is due to be accessed abort the process
     if not due_for_download.count():
@@ -161,47 +163,58 @@ def download_from_ftp(request):
         try:
             ftp_connection = ftplib.FTP(item.server)
             ftp_connection.login(item.account, item.pswd)
+            # read the destination location
+            ftp_connection.cwd(item.site_path)
+            article_library = ftp_connection.nlst()
+            succ.append(item.provider.official_name)
+
+            # if record found explore inside.
+            if article_library:
+                # iterate through each file
+                for article in article_library:
+                    try:
+                        # check if the article is file or directory
+                        if is_ftp_content_folder(ftp_connection, article):
+                            # download the folder
+                            download_folder_from_ftp_and_save_zip(ftp_connection, article, item)
+                        else:
+                            # download the file
+                            download_file(ftp_connection, article, item)
+                    except Exception as e:
+                        pass
+    
+            # update the succes status to Provider_meta_data_FTP
+            provider = item.provider
+            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+            provider.status = 'success'
+            provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
+
+            provider.save()
+
+            # quite the current ftp connection 
+            ftp_connection.quit()
+
+        except (ftplib.error_temp, ftplib.error_perm, socket.timeout) as e:
+            print("error occurred", e)
+            provider = item.provider
+            provider.status = 'failed'
+            provider.last_error_message = e
+            provider.save()
+            err.append(item.provider.official_name)
+            continue
+
         except Exception as e:
             print("error occured", e)
             provider = item.provider
             provider.status = 'failed'
             provider.last_error_message = e
             provider.save()
+            err.append(item.provider.official_name)
             continue
-
-        # read the destination location
-        ftp_connection.cwd(item.site_path)
-        article_library = ftp_connection.nlst()
-
-        # if record found explore inside.
-        if article_library:
-            # iterate through each file
-            for article in article_library:
-                try:
-                    # check if the article is file or directory
-                    if is_ftp_content_folder(ftp_connection, article):
-                        # download the folder
-                        download_folder_from_ftp_and_save_zip(ftp_connection, article, item)
-                    else:
-                        # download the file
-                        download_file(ftp_connection, article, item)
-                except Exception as e:
-                    pass
- 
-        # update the succes status to Provider_meta_data_FTP
-        provider = item.provider
-        provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-        provider.status = 'success'
-        provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
-
-        provider.save()
-
-        # quite the current ftp connection 
-        ftp_connection.quit()
 
     context = {
         'heading' : 'Message',
-        'message' : 'FTP sync process executed successfully'
+        'message' : f'''FTP sync process executed successfully. Error occured in {err} FTP's while {succ} executed succesfully. The error is logged in the Provider model.'''
     }
 
     return render(request, 'common/dashboard.html', context=context)
