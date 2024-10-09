@@ -14,31 +14,38 @@
         pip install -r requirements.txt
 
 6: Navigate to root directory of the project where manage.py is kept and run the command
-    py3 manage.py migrate
+    
+    To run with mariadb:
+        py3 manage.py migrate
+
+    To run in development environment and use sqlite3 db:
+        py3 dev_manage.py migrate    
+
 
     This command will create the default tables to the schema 'usda'.
 
 7: Run the development server
-    py3 manage.py runserver <ip><port>
 
-    By default the Django runs the server on localhost:8000 if ip and port not provided.
-    so you cna simply run 
-        py3 manage.py runserver
+    To run with mariadb:
+        py3 manage.py runserver <ip><port>
+
+    To run in development environment and use sqlite3 db:
+        py3 dev_manage.py runserver <ip><port>   
+
+    By default, If IP and Port is not provided, Django runs the server on localhost:8000.
 
 
 8:  Access the url
     localhost:8000
 
-9:  Access django Admin console 
-    To create id and password run this command and provide the params
+9:  To access the django Admin console 
+    a: Create user id and password
         py3 manage.py createsuperuser
             -provide user id
             -provide password
             -repeate password
             -provide email
 
-
     now access the URL
-        localhost:8000/admin
-
-        provide the user id and password
+        localhost:8000/admin and
+        login with user id and password and sign-in
