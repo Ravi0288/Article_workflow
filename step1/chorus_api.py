@@ -202,12 +202,22 @@ def download_from_chorus_api(request):
 
     # return Response("processs executed successfully")
 
+    # # return Response("processs executed successfully")
+    # if err:
+    #     context = {
+    #         'heading' : 'Message',
+    #         'message' : f'''Chorus API exited with error. Error message: {provider.last_error_message}'''
+    #     }
+
+    # if succ:
+    #     context = {
+    #         'heading' : 'Message',
+    #         'message' : f'''Chorus API process executed successfully. Total {len(publisher)} record saved.'''
+    #     }
+
     context = {
         'heading' : 'Message',
         'message' : 'Chorus API process executed successfully'
     }
 
     return render(request, 'common/dashboard.html', context=context)
-
-
-

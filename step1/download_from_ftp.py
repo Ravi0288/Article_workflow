@@ -81,6 +81,7 @@ def download_file(ftp_connection, article, item):
 
 # function to download folder with its content and convert to zip, finally save to table
 def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
+    print("zipping content")
     temp_dir = '/ai/metadata/' + item.provider.official_name
     state = download_directory_from_ftp(ftp_connection, article, temp_dir)
 
@@ -127,6 +128,8 @@ def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
             with open(zipped_file, 'rb') as zip_file:
                 zip_file.seek(0)
                 x[0].file_content.save(article, zip_file)
+
+    print("zipped and exiting content")
             
     # Cleanup temporary directory
     shutil.rmtree(temp_dir)
@@ -165,22 +168,29 @@ def download_from_ftp(request):
         try:
             ftp_connection = ftplib.FTP(item.server)
             ftp_connection.login(item.account, item.pswd)
+            print("logged in successfully")
             # read the destination location
             ftp_connection.cwd(item.site_path)
+            print("changing path")
             article_library = ftp_connection.nlst()
+            print("listing directories")
             succ.append(item.provider.official_name)
-
+            print("appending list")
             # if record found explore inside.
             if article_library:
                 # iterate through each file
+                print("trying to loo")
                 for article in article_library:
+                    print("inside loop")
                     try:
                         # check if the article is file or directory
                         if is_ftp_content_folder(ftp_connection, article):
+                            print("inside loop => if it is a directory")
                             # download the folder
                             download_folder_from_ftp_and_save_zip(ftp_connection, article, item)
                         else:
                             # download the file
+                            print("inside loop => if it is a file")
                             download_file(ftp_connection, article, item)
                     except Exception as e:
                         pass
