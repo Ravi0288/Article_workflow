@@ -18,7 +18,7 @@ def file_transfer_from_deposites(request):
         )
 
     if not due_for_transfer.count():
-        context['message'] = 'No action pending for Deposits'
+        context['message'] = 'Process successfully executed. Nil deposits found for action.'
 
     for provs in due_for_transfer:
         source_dir = provs.source
