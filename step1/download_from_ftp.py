@@ -163,12 +163,19 @@ def download_from_ftp(request):
 
     # if providers are due to be accessed
     for item in due_for_download:
-        print("FTP :", item.provider.official_name, ", Address :", item.server, ", user id : ", item.account, ", password : ", item.password)    
+        print(item.server, item.account, item.pswd)
+        err_occured = False
+        err_msg = ''
         # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
-            ftp_connection = ftplib.FTP(item.server)
+            ftp_connection =  ftplib.FTP()
+            print("ftp object created")
+            ftp_connection.connect(item.server, timeout=30)
+            print("connected successfully")
             ftp_connection.login(item.account, item.pswd)
             print("logged in successfully")
+            ftp_connection.set_pasv(True)
+            print("passive mode enable")
             # read the destination location
             ftp_connection.cwd(item.site_path)
             print("changing path")
@@ -179,59 +186,72 @@ def download_from_ftp(request):
             # if record found explore inside.
             if article_library:
                 # iterate through each file
-                print("trying to loo")
-                for article in article_library:
-                    print("inside loop")
-                    try:
+                try:
+                    print("trying to loo")
+                    for article in article_library:
+                        print("inside loop")
                         # check if the article is file or directory
                         if is_ftp_content_folder(ftp_connection, article):
-                            print("inside loop => if it is a directory")
+                            print("inside loop => Processing directory")
                             # download the folder
                             download_folder_from_ftp_and_save_zip(ftp_connection, article, item)
                         else:
                             # download the file
-                            print("inside loop => if it is a file")
+                            print("inside loop => Processing file")
                             download_file(ftp_connection, article, item)
-                    except Exception as e:
-                        pass
-    
-            # update the succes status to Provider_meta_data_FTP
-            provider = item.provider
-            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-            provider.status = 'success'
-            provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
 
-            provider.save()
+        
+                    # update the succes status to Provider_meta_data_FTP
+                    provider = item.provider
+                    provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                    provider.status = 'success'
+                    provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
 
-            # quite the current ftp connection 
-            ftp_connection.quit()
+                    provider.save()
 
-        except (ftplib.error_temp, ftplib.error_perm, socket.timeout) as e:
-            print("error occurred", e)
+                    # quite the current ftp connection 
+                    ftp_connection.quit()
+                except Exception as e:
+                    err_msg = e
+                    print("error while processsing content", e)
+                    err_occured = True
+
+        except ftplib.error_temp as e:
+            err_msg = e
+            err_occured = True
+            print(f"Temporary error: {e}")
+        except ftplib.error_perm as e:
+            err_msg = e
+            err_occured = True
+            print(f"Permanent error: {e}")
+        except ftplib.error_proto as e:
+            err_msg = e
+            err_occured = True
+            print(f"Protocol error: {e}")
+        except ftplib.all_errors as e:
+            err_msg = e
+            err_occured = True
+            print(f"FTP error: {e}")
+        except socket.timeout as e:
+            err_msg = e
+            err_occured = True
+            print(f"FTP error: {e}")
+
+        if err_occured:
             provider = item.provider
             provider.status = 'failed'
-            provider.last_error_message = e
+            provider.last_error_message = err_msg
             provider.save()
             err.append(item.provider.official_name)
-            continue
 
-        except Exception as e:
-            print("error occured", e)
-            provider = item.provider
-            provider.status = 'failed'
-            provider.last_error_message = e
-            provider.save()
-            err.append(item.provider.official_name)
-            continue
+
 
     context = {
         'heading' : 'Message',
-        'message' : f'''FTP sync process executed successfully. Error occured in {err} FTP's while {succ} executed succesfully. The error is logged in the Provider model.'''
+        'message' : f'''FTP sync process executed successfully. Error occured in {err} and {succ} FTP's executed succesfully. The error is logged in the Provider model.'''
     }
 
     return render(request, 'common/dashboard.html', context=context)
-
-    # return Response("done")
 
 
 
