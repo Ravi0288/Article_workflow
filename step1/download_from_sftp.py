@@ -151,6 +151,8 @@ def download_from_sftp(request):
 
     # If providers are due to be accessed
     for item in due_for_download:
+        err_count = 0
+        succ_count = 0
         # Try to connect to SFTP, if error occurs, update the status to Provider_meta_data_FTP
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
@@ -172,15 +174,18 @@ def download_from_sftp(request):
                             else:
                                 # Download the file
                                 download_file(sftp_connection, article, item)
+                            succ_count += 1
                         except Exception as e:
                             print(f"Error processing article {article}: {e}")
-        
+                            err_count += 1
+
                 # Update the success status in Provider_meta_data_FTP
                 provider = item.provider
                 provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
                 provider.status = 'success'
                 provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(days=item.provider.minimum_delivery_fq)
                 provider.save()
+                provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occured while saving {err_count} file/directories. '''
                 succ.append(item.provider.official_name)
 
         except Exception as e:

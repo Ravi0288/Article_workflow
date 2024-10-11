@@ -68,6 +68,10 @@ PROVIDER_TYPE = (
     ('API', 'API')
 )
  
+deposite_file_action = (
+    ('COPY', 'COPY'),
+    ('MOVE', 'MOVE')
+)
 
 # providers model
 class Providers(models.Model):
@@ -100,9 +104,9 @@ class Providers(models.Model):
     # call save method to assign next due date
     def save(self, *args, **kwargs):
         # If the api/ftp is accessed successfully then update the next_due date
-        # 'N/A' is the default value in last_error_message if the last status is success
-        if self.last_error_message == 'N/A':
-            self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
+        # # 'N/A' is the default value in last_error_message if the last status is success
+        # if self.last_error_message == 'N/A':
+        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
         super(Providers, self).save(*args, **kwargs)
 
 
@@ -239,3 +243,15 @@ class Provider_meta_data_API(models.Model):
     def pswd(self):
         # return decrypt_data(self.site_token)
         return self.site_token
+
+
+# Model to list all the API's with attributes
+class Provider_meta_data_deposit(models.Model):
+    provider = models.ForeignKey(Providers, 
+                                 related_name="deposite_provider", 
+                                 on_delete=models.DO_NOTHING,
+                                 help_text="Select Provider name"
+                                 ) 
+    source = models.TextField(default='/', help_text='Enter path of source')
+    destination = models.TextField(help_text='Enter path of destination')
+    operation_type = models.CharField(max_length=10, default='MOVE', choices=deposite_file_action, help_text='Select if data will be moved or copied')

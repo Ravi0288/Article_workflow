@@ -289,7 +289,7 @@ INVALID_XML_DIR = '/data/metada/INVALID_XML_FILES'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-'''
+
 # logger to log errors in file
 LOGGING = {
     'version': 1,
@@ -333,10 +333,9 @@ LOGGING = {
         },
     },
 }
-'''
+
 
 ############### email service #####################
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mailproxy1.usda.gov'
 EMAIL_USE_TLS = True

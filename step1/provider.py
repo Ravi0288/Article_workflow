@@ -2,7 +2,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import serializers
-from model.provider import Providers, Fetch_history, Provider_meta_data_FTP, Provider_meta_data_API
+from model.provider import Providers, Fetch_history, Provider_meta_data_FTP, Provider_meta_data_API, Provider_meta_data_deposit
 
 
 
@@ -44,6 +44,12 @@ class Provider_meta_data_API_serializer(serializers.ModelSerializer):
         return attrs
 
 
+class Provider_meta_data_deposit_serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Provider_meta_data_deposit
+        fields = '__all__'
+
+
 # viewsets to models
 class Provider_viewset(ModelViewSet):
     queryset = Providers.objects.all()
@@ -78,6 +84,16 @@ class Provider_meta_data_FTP_viewset(ModelViewSet):
 class Provider_meta_data_API_viewset(ModelViewSet):
     queryset = Provider_meta_data_API.objects.all()
     serializer_class = Provider_meta_data_API_serializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        params = self.request.GET
+        qs = qs.filter(**params.dict())
+        return qs
+
+class Provider_meta_data_deposit_viewset(ModelViewSet):
+    queryset = Provider_meta_data_deposit.objects.all()
+    serializer_class = Provider_meta_data_deposit_serializer
 
     def get_queryset(self):
         qs = super().get_queryset()

@@ -65,7 +65,6 @@ class SubmissionMetadataHarvester:
     
 
 # function to handle submission api's
-# @api_view(['GET'])
 @login_required
 @csrf_exempt
 def download_from_submission_api(request):
@@ -115,6 +114,7 @@ def download_from_submission_api(request):
                 provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
                 provider.status = 'success'
                 provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(api.provider.minimum_delivery_fq)
+                provider.last_error_message = f''' Total {len(submissions)} submission saved.'''
                 provider.save()
                 api.save()
 
@@ -129,28 +129,17 @@ def download_from_submission_api(request):
 
         else:
             provider = api.provider
-            provider.status = 'failed'
-            provider.last_error_message = 'No record found'
+            provider.status = 'success'
+            provider.last_error_message = 'Nil new record found to save'
             provider.save()
             api.save()
 
-
-    try:
-        # zip the file
-        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-        path = os.path.join(settings.SUBMISSION_ROOT , current_date + '.zip')
-        # zip_folder(settings.SUBMISSION_ROOT, path)
-    except Exception as e:
-        print(e)
-
-
     context = {
         'heading' : 'Message',
-        'message' : 'Submission API processs executed successfully'
+        'message' : f'''Submission API processs executed successfully. Total {len(submissions)} submissions saved.'''
     }
 
     return render(request, 'common/dashboard.html', context=context)
-    # return Response("done")
 
 
 

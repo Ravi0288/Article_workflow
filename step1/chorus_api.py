@@ -133,6 +133,9 @@ def save_files(publishers,api):
 @login_required
 @csrf_exempt
 def download_from_chorus_api(request):
+    err = []
+    succ = []
+    publisher = []
     # Send a GET request to the URL.
     # query and fetch available submission api's
     due_for_download = Provider_meta_data_API.objects.filter(
@@ -145,11 +148,6 @@ def download_from_chorus_api(request):
     }
     # iterate to all the available chorus apis
     for api in due_for_download:
-        err = []
-        succ = []
-        # get all the pages
-        publisher = []
-
         # # this code is written as per existing logic.
         # while True:
         #     params = {
@@ -188,36 +186,36 @@ def download_from_chorus_api(request):
             provider.status = 'success'
             provider.last_error_message = 'N/A'
             provider.save()
-            succ.append(api.provider__official_name)
+            succ.append(api.provider.official_name)
 
         else:
             provider = api.provider
             provider.status = 'failed'
             provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
             provider.save()
-            err.append(api.provider__official_name)
+            err.append(api.provider.official_name)
 
             print(provider.last_error_message)
 
 
+
     # return Response("processs executed successfully")
+    if err:
+        context = {
+            'heading' : 'Message',
+            'message' : f'''Chorus API exited with error. Error message: {provider.last_error_message}'''
+        }
 
-    # # return Response("processs executed successfully")
-    # if err:
-    #     context = {
-    #         'heading' : 'Message',
-    #         'message' : f'''Chorus API exited with error. Error message: {provider.last_error_message}'''
-    #     }
+    elif succ:
+        context = {
+            'heading' : 'Message',
+            'message' : f'''Chorus API process executed successfully. Total {len(publisher)} record saved.'''
+        }
 
-    # if succ:
-    #     context = {
-    #         'heading' : 'Message',
-    #         'message' : f'''Chorus API process executed successfully. Total {len(publisher)} record saved.'''
-    #     }
-
-    context = {
-        'heading' : 'Message',
-        'message' : 'Chorus API process executed successfully'
-    }
+    else:
+        context = {
+            'heading' : 'Message',
+            'message' : 'Chorus API process executed successfully. No pending chorus api action found'
+        }
 
     return render(request, 'common/dashboard.html', context=context)

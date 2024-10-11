@@ -166,6 +166,8 @@ def download_from_ftp(request):
         print(item.server, item.account, item.pswd)
         err_occured = False
         err_msg = ''
+        err_count = 0
+        succ_count = 0
         # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
             ftp_connection =  ftplib.FTP()
@@ -186,9 +188,9 @@ def download_from_ftp(request):
             # if record found explore inside.
             if article_library:
                 # iterate through each file
-                try:
-                    print("trying to loo")
-                    for article in article_library:
+                print("trying to loo")
+                for article in article_library:
+                    try:
                         print("inside loop")
                         # check if the article is file or directory
                         if is_ftp_content_folder(ftp_connection, article):
@@ -200,21 +202,24 @@ def download_from_ftp(request):
                             print("inside loop => Processing file")
                             download_file(ftp_connection, article, item)
 
+                        succ_count += 1 
+
+                    except Exception as e:
+                        err_count += 1
+                        print("error while processsing content", e)
+                        pass
         
-                    # update the succes status to Provider_meta_data_FTP
-                    provider = item.provider
-                    provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-                    provider.status = 'success'
-                    provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
+                # update the succes status to Provider_meta_data_FTP
+                provider = item.provider
+                provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                provider.status = 'success'
+                provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
+                provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occured while saving {err_count} file/directories. '''
+                provider.save()
 
-                    provider.save()
+                # quite the current ftp connection 
+                ftp_connection.quit()
 
-                    # quite the current ftp connection 
-                    ftp_connection.quit()
-                except Exception as e:
-                    err_msg = e
-                    print("error while processsing content", e)
-                    err_occured = True
 
         except ftplib.error_temp as e:
             err_msg = e
