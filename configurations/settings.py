@@ -274,7 +274,7 @@ MEDIA_URL = '/ai/metadata/'
 MEDIA_ROOT = '/ai/metadata/ARCHIVE'
 SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
-CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS' 
+CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS'
 
 
 # data once processed from step one will be stored here

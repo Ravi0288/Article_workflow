@@ -45,7 +45,7 @@ CHOICES= (
 
 # delivery method choices
 DELIVERY_METHOD = (
-    ('deposit','deposit'),
+    ('Deposite','Deposite'),
     ('FTP','FTP'),
     ('SFTP','SFTP'),
     ('API','API')
@@ -57,7 +57,6 @@ API_TYPE = (
     ('Submission','Submission')
 )
 
-
 FTP_CHOICES = (
     ('FTP', 'FTP'),
     ('SFTP', 'SFTP')
@@ -65,12 +64,13 @@ FTP_CHOICES = (
 
 PROVIDER_TYPE = (
     ('FTP', 'FTP'),
-    ('API', 'API')
+    ('API', 'API'),
+    ('DEPOSIT', 'DEPOSIT'),
 )
  
 deposite_file_action = (
-    ('COPY', 'COPY'),
-    ('MOVE', 'MOVE')
+    ('MOVE', 'MOVE'),
+    ('COPY', 'COPY')
 )
 
 # providers model
@@ -78,26 +78,33 @@ class Providers(models.Model):
     official_name = models.CharField(max_length=64)
     working_name = models.CharField(max_length=64)
     in_production = models.BooleanField(default=True)
-    provider_type = models.CharField(max_length=4, default='FTP', choices=PROVIDER_TYPE)
+    provider_type = models.CharField(max_length=8, default='FTP', choices=PROVIDER_TYPE)
     source_schema = models.CharField(max_length=50, blank=True, null=True)
     delivery_method = models.CharField(max_length=50, blank=True, null=True, choices=DELIVERY_METHOD)
     article_switch = models.BooleanField(default=False)
     requirement_override = models.BooleanField(default=False)
     usda_source = models.BooleanField(default=False)
     archive_switch = models.BooleanField(default=False)
-    minimum_delivery_fq = models.IntegerField(help_text="Enter frequency (number of days) when to sync the data with API", default=30)
-    last_time_received = models.DateTimeField(help_text="This will be auto field as and when the FTP will be accessed")
-    status = models.CharField(max_length=10, default="success", 
-                                        help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
-                                        )
-    last_error_message = models.TextField(null=True, 
-                                          blank=True,
-                                          help_text="In case of error last error message will be stored here. Don't enter anything here"
-                                          )
+    minimum_delivery_fq = models.IntegerField(
+                                    help_text="Enter frequency (number of days) when to sync the data with API", default=30
+                                    )
+    last_time_received = models.DateTimeField(
+                                    help_text="This will be auto field as and when the FTP will be accessed"
+                                    )
+    status = models.CharField(
+                            max_length=10, default="success", 
+                            help_text="For the first time enter 'Initial'. This field will maintain last sync status success or failed"
+                            )
+    last_error_message = models.TextField( 
+                            null=True, blank=True,
+                            help_text="In case of error last error message will be stored here. Don't enter anything here"
+                            )
 
-    next_due_date = models.DateTimeField(default=timezone.now, 
-                                         help_text="This will be filled automatically base on minimum_delivery_frequency. Don't enter anything here"
-                                         )
+    next_due_date = models.DateTimeField(
+                            default=timezone.now, 
+                            help_text="This will be filled. In case you need to set due date manually, set last_error_message = manual and than set this field"
+                            )
+    
     def __str__(self) -> str:
         return self.official_name
     
@@ -105,8 +112,8 @@ class Providers(models.Model):
     def save(self, *args, **kwargs):
         # If the api/ftp is accessed successfully then update the next_due date
         # # 'N/A' is the default value in last_error_message if the last status is success
-        # if self.last_error_message == 'N/A':
-        self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
+        if not self.last_error_message == 'manual':
+            self.next_due_date = datetime.now(tz=timezone.utc) + timedelta(self.minimum_delivery_fq)
         super(Providers, self).save(*args, **kwargs)
 
 
@@ -253,5 +260,5 @@ class Provider_meta_data_deposit(models.Model):
                                  help_text="Select Provider name"
                                  ) 
     source = models.TextField(default='/', help_text='Enter path of source')
-    destination = models.TextField(help_text='Enter path of destination')
-    operation_type = models.CharField(max_length=10, default='MOVE', choices=deposite_file_action, help_text='Select if data will be moved or copied')
+    # destination = models.TextField(help_text='Enter path of destination')
+    # operation_type = models.CharField(max_length=10, default='MOVE', choices=deposite_file_action, help_text='Select if data will be moved or copied')

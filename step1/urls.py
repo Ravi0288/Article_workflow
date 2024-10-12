@@ -16,9 +16,9 @@ router = DefaultRouter()
 router.register('archive-article', Archive_view, basename='archive-article')
 router.register('providers-ftp', Provider_meta_data_FTP_viewset, basename='provider-ftp')
 router.register('providers-api', Provider_meta_data_API_viewset, basename='provider-api')
+router.register('providers-deposit', Provider_meta_data_deposit_viewset, basename='provider-deposite')
 router.register('providers', Provider_viewset, basename='provider')
 router.register('fetch-history', Fetch_history_viewset, basename='fetch-history')
-router.register('providers-deposit', Provider_meta_data_deposit_viewset, basename='provider-deposite')
 
 urlpatterns = [
     path('', include(router.urls)),
