@@ -21,7 +21,7 @@ def file_transfer_from_deposites(request):
         )
 
     if not due_for_transfer.exists():
-        context['message'] = 'Process successfully executed. No pending Deposit found for action.'
+        context['message'] = 'Deposit sync successfully executed. No pending Deposit found for action.'
 
     else:
         for provs in due_for_transfer:
@@ -74,8 +74,6 @@ def file_transfer_from_deposites(request):
                                 os.remove(destination_file_path)
                                 # Copy the new file to the destination path
                                 shutil.copy(file_path, destination_file_path)
-                                # with open(file_path, 'rb') as f:
-                                #     x.file_content.save(destination_file_path, File(f))
                                 x.save()
                                 updated +=1
 
