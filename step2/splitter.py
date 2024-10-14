@@ -138,3 +138,24 @@ def splitter(document_string: str):
             return [], message
 
     return [], 'Unknown metadata format'
+
+
+import os
+from django.http import HttpResponse
+def test_cases(request):
+    dest = 'E:\\ai\\test'
+    source = 'ai\\test2'
+    files = ['1.xml','2.xml','3.xml','4.xml','5.xml','6.txt','7.json']
+    for item in files:
+        file_path = os.path.join(dest, item)
+        print(file_path)
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                x = f.read()
+                x = splitter(x)
+                print("#####################################################################################")
+                print(x[1])
+                print(len(x[0]), "#############3")
+        except Exception as e:
+            print(e)
+    return HttpResponse("done")

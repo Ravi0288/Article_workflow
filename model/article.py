@@ -74,7 +74,9 @@ class Article_attributes(models.Model):
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
     deposite_path = models.TextField(default=ARTICLE_PATH)
-
+    is_content_changed = models.BooleanField(
+                    default=False, 
+                    help_text="Flag to maintain if the existing content is changed and file_content is updated")
 
     # def save(self, *args, **kwargs):
     #     if self.file_name_on_local_storage in ('', None):

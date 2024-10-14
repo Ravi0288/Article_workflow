@@ -91,7 +91,7 @@ class Archive(models.Model):
 
     is_content_changed = models.BooleanField(
                     default=False, 
-                    help_text="Flag to maintain if the existing content is changed and file_content is update"
+                    help_text="Flag to maintain if the existing content is changed and file_content is updated"
                     )
     deposite_path = models.TextField(default=ARCHIVE_PATH)
 

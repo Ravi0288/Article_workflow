@@ -45,7 +45,6 @@ def get_url_names() -> tuple:
 
 
 
-
 class Authorization(models.Model):
     groups = models.ManyToManyField(Group)
     menu = models.CharField(max_length=100, choices=get_url_names())
