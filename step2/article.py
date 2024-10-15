@@ -283,7 +283,7 @@ def migrate_to_step2(request):
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                print("replied by splitter function", new_source,  data[1])
+                                print("replied by splitter function", data[1])
                                 create_invalid_xml_json(new_source, "Invalid", file_name, file_name.split('.')[-1])
 
 
