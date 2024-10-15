@@ -145,7 +145,7 @@ def download_from_sftp(request):
     if not due_for_download.count():
         context = {
             'heading': 'Message',
-            'message': 'No pending action found'
+            'message': 'SFTP sync process executed successfully. No pending action found'
         }
         return render(request, 'common/dashboard.html', context=context)
 

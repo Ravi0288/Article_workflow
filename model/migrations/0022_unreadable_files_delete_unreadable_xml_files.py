@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('source', models.TextField()),
                 ('file_type', models.CharField(max_length=10)),
-                ('file_content', models.FileField(help_text='Browse the file', storage=model.article.OverWriteStorage(), upload_to=model.article.get_file_path)),
+                ('file_content', models.FileField(help_text='Browse the file', storage=model.article.OverWriteStorage(), upload_to=model.article.get_invalid_file_path)),
                 ('error_msg', models.TextField()),
                 ('date_stamp', models.DateTimeField(auto_now=True)),
             ],

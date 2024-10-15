@@ -19,7 +19,6 @@ STATUS = (
     ('completed', 'completed')
 )
 
-# ARCHIVE_PATH = settings.MEDIA_ROOT
 ARTICLE_PATH = settings.ARTICLE_ROOT
 PROCESSED_ARTICLE = settings.PROCESSED_ARTICLE
 
@@ -34,15 +33,18 @@ class OverWriteStorage(FileSystemStorage):
 
 
 # Function to return the storage file path.
-def get_file_path(instance, filename):
-    return filename
+def get_invalid_file_path(instance, filename):
+    return '{0}/{1}'.format('INVALID_FILES',filename)
+
+def get_article_file_path(instance, filename):
+    return '{0}/{1}'.format('ARTICLE',filename)
 
 
 # model class to archive the error message that occures during processing / reading the xml/json file
 class Unreadable_files(models.Model):
     source = models.TextField()
     file_type = models.CharField(max_length=10)
-    file_content = models.FileField(upload_to=get_file_path, 
+    file_content = models.FileField(upload_to=get_invalid_file_path, 
                                     storage=OverWriteStorage(),
                                     help_text="Browse the file"
                                 )
@@ -54,7 +56,7 @@ class Unreadable_files(models.Model):
 # article attribute model
 class Article_attributes(models.Model):
 
-    article_file = models.FileField(upload_to=get_file_path, 
+    article_file = models.FileField(upload_to=get_article_file_path, 
                                     storage=OverWriteStorage(), 
                                     help_text="Browse the file"
                                     )

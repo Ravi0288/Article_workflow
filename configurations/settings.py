@@ -253,7 +253,8 @@ CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 MEDIA_URL = '/ai/metadata/'
 
 # data downloaded in step one will be stored here
-MEDIA_ROOT = '/ai/metadata/ARCHIVE'
+MEDIA_ROOT = '/ai/metadata'
+ARCHIVE_ROOT = '/ai/metadata/ARCHIVE'
 SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS'
@@ -286,7 +287,7 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': "/ai/metadata/logdir/NAL_LIBRARY_SYSTEM.log",
+            'filename': "/ai/metadata/LOGDIR/NAL_LIBRARY_SYSTEM.log",
             'maxBytes': 100000,
             'backupCount': 2,
             'formatter': 'verbose',

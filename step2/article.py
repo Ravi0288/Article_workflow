@@ -74,7 +74,7 @@ def read_file(file_path):
 
 # Make entry of invalid xml
 def create_invalid_xml_json(invalid_file_path, error_msg, file_name, file_type):
-    destination =  '/ai/metadata/INVALID_FILES/'
+    destination = '/ai/metadata/INVALID_FILES/'
 
     # check if the same file entry is already exists.
     if Unreadable_files.objects.filter(file_content=file_name).exists():
@@ -85,7 +85,8 @@ def create_invalid_xml_json(invalid_file_path, error_msg, file_name, file_type):
         os.makedirs(destination)
 
     # Read the file and make entry in invalid_files table
-    file_name =  '/ai/metadata/INVALID_FILES/' + file_name
+    file_name = '/ai/metadata/INVALID_FILES/' + file_name
+    source = invalid_file_path.replace('\\', '/').replace('/ai/metadata/TEMP_DOWNLOAD','')
     with open(invalid_file_path, 'rb') as f:
         file_content = File(f)
  
@@ -93,7 +94,7 @@ def create_invalid_xml_json(invalid_file_path, error_msg, file_name, file_type):
         x = Unreadable_files.objects.create(
             file_type = file_type.lower(),
             error_msg = error_msg,
-            source = invalid_file_path.replace('TEMP_DOWNLOAD/','').replace('\\', '/')
+            source = source
         )
 
         # Assign the File object to the file_content field and save the model instance
@@ -112,8 +113,6 @@ def update_archive(row):
 
 # Create new Article
 def create_new_object(source, row, note, content):
-    # Changing the default settings base directory root
-    settings.MEDIA_ROOT = '/ai/metadata/ARTICLES'
     # Create new record
     qs = Article_attributes()
     qs.type_of_record = 'article'
@@ -124,17 +123,34 @@ def create_new_object(source, row, note, content):
     qs.note = note
     qs.PID = "A locally assign identifier"
     qs.MMSID = "The article's Alma identifier"
-    qs.provider_rec = "indentfier"
+    qs.provider_rec = "identifier"
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
     x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
+    
     try:
+        if isinstance(content, str) and content.startswith("'"):
+            content = content[1:].encode('utf-8')
+
+        if isinstance(content, (list, tuple)):
+            if isinstance(content[0], str):
+                if content[0].startswith("'"):
+                    content[0] = (content[0][1:]).encode('utf-8')
+                else:
+                    content = (content[0]).encode('utf-8')
+
+            if isinstance(content[0], (list, tuple)):
+                if isinstance(content[0][0], str):
+                    if content[0][0].startswith("'"):
+                        content = (content[0][0][1:]).encode('utf-8')
+                    else:
+                        content = (content[0][0]).encode('utf-8')
         qs.article_file.save(x, ContentFile(content))
-    except TypeError as e:
-        qs.article_file.save(x, ContentFile(content[0]))
+
     except Exception as e:
-        print(e, "errr while creating file")
+        # print(content)
+        print(e, "error occurred while creating file")
 
     return True
 
@@ -231,6 +247,7 @@ def migrate_to_step2(request):
     # Looping through each object in the query set
     for archive_row in archive_records:
         source = archive_row.file_content.path
+        print(source, "##############")
         # If record is of type zip than sequence of action will be 
         # 1: Unzip the content
         # 2: Read each file, if json, copy it, if xml, process it 
@@ -266,6 +283,7 @@ def migrate_to_step2(request):
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
+                                print("replied by splitter function", new_source,  data[1])
                                 create_invalid_xml_json(new_source, "Invalid", file_name, file_name.split('.')[-1])
 
 
@@ -279,8 +297,10 @@ def migrate_to_step2(request):
         elif archive_row.file_type in ['.xml', '.json', '.JSON','.XML']:
             # Update or create record in article based on row.is_content_changed tag
             source = archive_row.file_content.path
-            with open(source, 'r', encoding='utf-8') as f:
-                data = splitter(read_file(f))
+            file_name = archive_row.file_content.name
+
+            # with open(source, 'r', encoding='utf-8') as f:
+            data = splitter(read_file(source))
 
             if data[1] == 'successful':
                 destination = source.replace('ARCHIVE','ARTICLES')

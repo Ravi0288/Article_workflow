@@ -32,7 +32,7 @@ def file_transfer_from_deposites(request):
             os.makedirs(dest_dir, exist_ok=True)
 
             if not os.path.exists(source_dir):
-                context['message'] = {'error': 'Source directory does not exist.'}
+                context['message'] = {'error': 'Deposit sync successfully executed. Source directory does not exist.'}
 
             # # copy from source
             # if provs.operation_type == 'COPY':
@@ -97,7 +97,7 @@ def file_transfer_from_deposites(request):
 
                         # os.remove(file_path)
                     
-                context['message'] = f'''{created} files created and {updated} files updated successfully.'''
+                context['message'] = f'''Deposit sync successfully executed. {created} files created and {updated} files updated successfully.'''
                 succ = True
             except Exception as e:
                     context['message'] = {'error': str(e)}

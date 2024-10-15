@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
             name='Article_attributes',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('article_file', models.FileField(help_text='Browse the file', storage=model.article.OverWriteStorage(), upload_to=model.article.get_file_path)),
+                ('article_file', models.FileField(help_text='Browse the file', storage=model.article.OverWriteStorage(), upload_to=model.article.get_article_file_path)),
                 ('title', models.TextField(blank=True, help_text='Article title', null=True)),
                 ('type_of_record', models.CharField(choices=[('article', 'article'), ('retraction', 'retraction'), ('letter to the editor', 'letter to the editor')], help_text='Select from drop down', max_length=24)),
                 ('last_stage', models.IntegerField(default=2, help_text='Last stage article passed through 1-11')),

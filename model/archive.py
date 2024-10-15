@@ -21,7 +21,7 @@ RECORD_CHOICES = (
     ('letter to the editor','letter to the editor')
 )
 
-ARCHIVE_PATH = settings.MEDIA_ROOT
+ARCHIVE_PATH = settings.ARCHIVE_ROOT
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -39,7 +39,8 @@ class OverWriteStorage(FileSystemStorage):
 def get_file_path(instance, filename):
     extenstion = filename.split('.')[-1]
     filename = str(instance.id) + '.' + extenstion
-    return '{0}/{1}'.format(
+    return '{0}/{1}/{2}'.format(
+        'ARCHIVE',
         instance.provider.official_name,
         filename
         )
