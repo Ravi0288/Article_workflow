@@ -72,7 +72,7 @@ def download_file(ftp_connection, article, item):
         content = BytesIO()
         ftp_connection.retrbinary(f'RETR {article}', content.write)
         content.seek(0)
-        x[0].status = 'active'
+        x[0].status = 'waiting'
         x[0].is_content_changed = True
         article = str(x[0].id) + '.' + article.split('.')[-1]
         x[0].file_content.save(article, content)

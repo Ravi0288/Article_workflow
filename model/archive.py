@@ -95,8 +95,8 @@ class Archive(models.Model):
                     )
     deposite_path = models.TextField(default=ARCHIVE_PATH)
 
-    def __str__(self) -> str:
-        return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage
+    # def __str__(self) -> str:
+    #     return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage
     
 
     # def save(self, *args, **kwargs):

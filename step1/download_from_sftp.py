@@ -69,7 +69,7 @@ def download_file(sftp_connection, article, item):
         content = BytesIO()
         sftp_connection.getfo(article, content)  # Using getfo to download file to BytesIO
         content.seek(0)
-        x[0].status = 'active'
+        x[0].status = 'waiting'
         x[0].is_content_changed = True
         article = str(x[0].id) + '.' + article.split('.')[-1]
         x[0].file_content.save(article, content)

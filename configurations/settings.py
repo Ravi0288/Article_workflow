@@ -275,6 +275,7 @@ MEDIA_ROOT = '/ai/metadata/ARCHIVE'
 SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS'
+TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
 
 
 # data once processed from step one will be stored here

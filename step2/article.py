@@ -72,13 +72,15 @@ def read_file(file_path):
 
 
 # make entry of invalid xml
-def create_invalid_xml(xml_file_path, error_msg):
+def create_invalid_xml_json(xml_file_path, error_msg):
     destination =  '/ai/metadata/INVALID_XML_FILES'
+    if not os.path.exists(destination):
+        os.makedirs(destination)
     dest = shutil.copy(xml_file_path, destination)
     Unreadable_xml_files.objects.create(
         file_name = dest,
         error_msg = error_msg,
-        source = xml_file_path.replace('temp_download/','').replace('\\', '/')
+        source = xml_file_path.replace('TEMP_DOWNLOAD/','').replace('\\', '/')
     )
     return True
 
@@ -107,11 +109,15 @@ def create_new_object(source, row, note, content):
     qs.MMSID = "The article's Alma identifier"
     qs.provider_rec = "indentfier"
 
-    # since the file is stored in temp file that contains temp_download and ARCHIVE in its path. 
+    # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
-    x = source.replace('ARCHIVE/','').replace('temp_download/','')
-
-    qs.article_file.save(x, ContentFile(content))
+    x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
+    try:
+        qs.article_file.save(x, ContentFile(content))
+    except TypeError as e:
+        qs.article_file.save(x, ContentFile(content[0]))
+    except Exception as e:
+        print(e, "errr while creating file")
 
     return True
 
@@ -121,7 +127,9 @@ def update_article(obj, note='', content=''):
     if note:
         obj.note = note
     if content:
-        obj.article_file.save(obj.article_file.name, ContentFile(content))
+        file_name = obj.article_file.name
+        os.remove(obj.article_file.path)
+        obj.article_file.save(file_name, ContentFile(content))
     else:
         obj.save()
     return True
@@ -154,30 +162,35 @@ def unzip_file(source, destination, row):
 def process_success_result_from_splitter_function(data, source, destination, archive_row):
 
     # if single record found
-    if len(data[1]) == 1:
+    if len(data[0]) == 1:
         try:
             article = Article_attributes.objects.get(article_file=source)
             # compare content of the file line by line. If change found update the file else do nothinf
             with open(article.article_file.path, 'r', encoding='utf-8') as f1:
-                if compare_files_line_by_line(f1,data[1]):
-                    shutil.copy(source, destination.replace('temp_download', ''))
+                if compare_files_line_by_line(f1,data[0]):
+                    shutil.copy(source, destination.replace('TEMP_DOWNLOAD', ''))
                     update_article(article)
         except Article_attributes.DoesNotExist:
-            create_new_object(source, archive_row, note="", content=data[1])
+            create_new_object(source, archive_row, note="", content=data[0])
 
 
     # if multiple record found
     else:
-        for index, line in enumerate(data[1]):
-            indexed_file_name = str(source[:-4]) + '_' + str(index) + '.xml'
+        for index, line in enumerate(data[0]):
+            if source.endswith("xml"):
+                indexed_file_name = str(source[:-4]) + '_' + str(index) + '.xml'
+            elif source.endswith('json'):
+                indexed_file_name = str(source[:-5]) + '_' + str(index) + '.json'
+            else:
+                continue
             try:
-                # compare content of the file line by line. If change found update the file else do nothinf
+                article = Article_attributes.objects.get(article_file=source)
+                # compare content of the file line by line. If change found update the file else do nothing
                 with open(article.article_file.path, 'r', encoding='utf-8') as f1:
                     if compare_files_line_by_line(f1,line):
-                        shutil.copy(source, destination.replace('temp_download', ''))
                         update_article(article=article, content=line)
             except Article_attributes.DoesNotExist:
-                create_new_object(indexed_file_name, archive_row, note="", content=data[1])
+                create_new_object(indexed_file_name, archive_row, note="", content=line)
 
 
 # Main function to create article objects from archive articles
@@ -206,8 +219,8 @@ def migrate_to_step2(request):
         # 2: Read each file, if json, copy it, if xml, process it 
         # 3: Create / update records in article for each json/xml files
         if archive_row.file_type in ('.zip', '.ZIP'):
-            # Create the output folder if it doesn't exist. Output folder is source path prefixed by 'temp_download' and .zip removed
-            destination = '/ai/metadata/temp_download/' + source[:-4]
+            # Create the output folder if it doesn't exist. Output folder is source path prefixed by 'TEMP_DOWNLOAD' and .zip removed
+            destination = '/ai/metadata/TEMP_DOWNLOAD' + source[:-4].replace('E:','').replace('\\', '/')
             if not os.path.exists(destination):
                 os.makedirs(destination)
             
@@ -221,10 +234,10 @@ def migrate_to_step2(request):
                             new_source = os.path.join(root, file_name)
                             data = splitter(read_file(new_source))
 
-                            if data[0] == 'successful':
+                            if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                create_invalid_xml(new_source, "Invalid")
+                                create_invalid_xml_json(new_source, "Invalid")
                 
                 # create all the row
                 else:
@@ -233,13 +246,13 @@ def migrate_to_step2(request):
                             new_source = os.path.join(root, file_name)
                             data = splitter(read_file(new_source))
 
-                            if data[0] == 'successful':
+                            if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                create_invalid_xml(new_source, "Invalid")
+                                create_invalid_xml_json(new_source, "Invalid")
 
 
-                # remove the unzipped directory from temp_download location
+                # remove the unzipped directory from TEMP_DOWNLOAD location
                 try:
                     shutil.rmtree(destination)
                 except:
@@ -252,12 +265,12 @@ def migrate_to_step2(request):
             with open(source, 'r', encoding='utf-8') as f:
                 data = splitter(read_file(f))
 
-            if data[0] == 'successful':
+            if data[1] == 'successful':
                 destination = source.replace('ARCHIVE','ARTICLES')
                 process_success_result_from_splitter_function(data, source, destination, archive_row)
             
             else:
-                create_invalid_xml(source, "Invalid")
+                create_invalid_xml_json(source, "Invalid")
 
         # if file is other than xml/json/zip, ignore the file
         else:
@@ -266,12 +279,11 @@ def migrate_to_step2(request):
         # update the row status
         update_archive(archive_row)
 
-
     # for loop ends here.
     # return the result to UI
     context = {
         'heading' : 'Message',
-        'message' : 'Successfully executed the step 2 migration process'
+        'message' : 'All valid archives of step 1 successfully migrated to step 2'
     }
 
     return render(request, 'common/dashboard.html', context=context)
