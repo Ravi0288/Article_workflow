@@ -66,9 +66,6 @@ MIDDLEWARE = [
 
 # CSRF Related settings
 CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# CSRF_COOKIE_SECURE = False   # True if working with HTTPS else False
-# CSRF_COOKIE_DOMAIN = None
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
@@ -134,14 +131,6 @@ DB_USER = os.environ['ARTICLE_DB_USER']
 DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
 DB_HOST = os.environ['ARTICLE_DB_HOST']
 DB_PORT = os.environ['ARTICLE_DB_PORT']
-
-# # Handle DB details
-# HANDLE_DB_ENGINE = os.environ['HANDLE_DB_ENGINE']
-# HANDLE_DB_NAME = os.environ['HANDLE_DB_NAME']
-# HANDLE_DB_USER = os.environ['HANDLE_DB_USER']
-# HANDLE_DB_PASSWORD = os.environ['HANDLE_DB_PASSWORD']
-# HANDLE_DB_HOST = os.environ['HANDLE_DB_HOST']
-# HANDLE_DB_PORT = os.environ['HANDLE_DB_PORT']
 
 # # PID DB details
 PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
@@ -261,31 +250,19 @@ STATICFILES_DIRS = [
 
 CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
-# MEDIA_URL = 'media/'
-
 MEDIA_URL = '/ai/metadata/'
 
 # data downloaded in step one will be stored here
-# MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
-# SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
-# CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
-# CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
-
 MEDIA_ROOT = '/ai/metadata/ARCHIVE'
 SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS'
 TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
 
-
-# data once processed from step one will be stored here
-# ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
-# PROCESSED_ARTICLE = BASE_DIR / 'PROCESSED_ARTICLES'
-# INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
-
+# data once processed from step two will be stored here
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
 PROCESSED_ARTICLE = '/ai/metadata/PROCESSED_ARTICLES'
-INVALID_XML_DIR = '/data/metada/INVALID_XML_FILES'
+INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -67,11 +67,7 @@ MIDDLEWARE = [
 
 # CSRF Related settings
 CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# CSRF_COOKIE_SECURE = False   # True if working with HTTPS else False
-# CSRF_COOKIE_DOMAIN = None
 CORS_ORIGIN_ALLOW_ALL = True
-
 CORS_ALLOWED_ORIGINS = [
     'https://article-workflow-admin-dev.nal.usda.gov',
     'http://article-workflow-admin-dev.nal.usda.gov'
@@ -80,7 +76,6 @@ CORS_ORIGIN_WHITELIST = [
     'https://article-workflow-admin-dev.nal.usda.gov',
     'http://article-workflow-admin-dev.nal.usda.gov'
 ]
-
 CORS_ALLOW_HEADERS = [
     "accept",
     "authorization",
@@ -89,7 +84,6 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
-
 CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
@@ -99,12 +93,12 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
+
 # Root URL file path
 ROOT_URLCONF = 'configurations.urls'
 
 
 # Template for serving the result
-# ..................###############
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -120,7 +114,6 @@ TEMPLATES = [
         },
     },
 ]
-# ..................#####################
 
 
 # Project interface
@@ -128,8 +121,6 @@ WSGI_APPLICATION = 'configurations.wsgi.application'
 
 
 # Database settings
-# ..................##################### #####################
-
 DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -146,17 +137,15 @@ DATABASES = {
 DATABASE_ROUTERS = ['configurations.db_router.DB_route']
 
 # specify the app_name for django to decide what database to access for what table
-DATABASE_APPS_MAPPING = {'wf_data': 'default',
-                        'handle_data':'handle_db',
-                        'pid_data' : 'pid_db'}
-
-# ..................##################### #####################
-
+DATABASE_APPS_MAPPING = {
+                'wf_data': 'default',
+                'handle_data':'handle_db',
+                'pid_data' : 'pid_db'
+                }
 
 
 
 # Default Django password validations
-# ..................#######################
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -171,7 +160,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-# ..................##################
 
 
 # configure outh settings
@@ -184,7 +172,6 @@ OAUTH2_PROVIDER = {
 
 # Rest framework authentication
 # This settings is for preventing the endpoints from unauthorised access.
-# ..................################
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
@@ -195,22 +182,13 @@ REST_FRAMEWORK = {
     )
 }
 
-# ..................##################
-
-
-
 
 # Internationalization
-# .........#####################
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-# .........#####################
 
 # # settings for proxy error
 # if DEBUG==False:
@@ -227,35 +205,21 @@ STATICFILES_DIRS = [
 
 CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
-# MEDIA_URL = 'media/'
-
+# path to store media
 MEDIA_URL = '/ai/metadata/'
-
-# data downloaded in step one will be stored here
-# MEDIA_ROOT = BASE_DIR / 'ARCHIVE'
-# SUBMISSION_ROOT = MEDIA_ROOT / 'SUBMISSION' 
-# CROSSREF_ROOT = MEDIA_ROOT / 'CROSSREF' 
-# CHORUS_ROOT = MEDIA_ROOT / 'CHORUS' 
-
 MEDIA_ROOT = '/ai/metadata/ARCHIVE'
 SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS' 
-
-
-# data once processed from step one will be stored here
-# ARTICLE_ROOT = BASE_DIR / 'ARTICLES'
-# PROCESSED_ARTICLE = BASE_DIR / 'PROCESSED_ARTICLES'
-# INVALID_XML_DIR = BASE_DIR / 'INVALID_XML_FILES'
-
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
 PROCESSED_ARTICLE = '/ai/metadata/PROCESSED_ARTICLES'
-INVALID_XML_DIR = '/data/metada/INVALID_XML_FILES'
+INVALID_XML_DIR = '/data/metada/INVALID_FILES'
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-'''
+
 # logger to log errors in file
 LOGGING = {
     'version': 1,
@@ -299,10 +263,9 @@ LOGGING = {
         },
     },
 }
-'''
+
 
 ############### email service #####################
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mailproxy1.usda.gov'
 EMAIL_USE_TLS = True

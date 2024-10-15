@@ -2,7 +2,7 @@ from django.conf import settings
 from step1.archive import Archive
 from rest_framework.serializers import ModelSerializer
 from rest_framework.viewsets import ModelViewSet
-from model.article import Unreadable_xml_files, Article_attributes
+from model.article import Unreadable_files, Article_attributes
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -13,17 +13,18 @@ import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
 from .splitter import splitter
+from django.core.files import File
 
 # Unreadable xml file serializer
-class Unreadable_xml_files_serializers(ModelSerializer):
+class Unreadable_files_serializers(ModelSerializer):
     class Meta:
-        model = Unreadable_xml_files
+        model = Unreadable_files
         fields = '__all__'
 
-# Unreadable xml file view sets
-class Unreadable_xml_files_viewset(ModelViewSet):
-    serializer_class = Unreadable_xml_files_serializers
-    queryset = Unreadable_xml_files.objects.all()
+# Unreadable files view sets
+class Unreadable_files_viewset(ModelViewSet):
+    serializer_class = Unreadable_files_serializers
+    queryset = Unreadable_files.objects.all()
     
     def get_queryset(self):
         qs = super().get_queryset()
@@ -71,17 +72,33 @@ def read_file(file_path):
             return f.read()        
 
 
-# make entry of invalid xml
-def create_invalid_xml_json(xml_file_path, error_msg):
-    destination =  '/ai/metadata/INVALID_XML_FILES'
+# Make entry of invalid xml
+def create_invalid_xml_json(invalid_file_path, error_msg, file_name, file_type):
+    destination =  '/ai/metadata/INVALID_FILES/'
+
+    # check if the same file entry is already exists.
+    if Unreadable_files.objects.filter(file_content=file_name).exists():
+        return True
+    
+    # if destination directory not available create
     if not os.path.exists(destination):
         os.makedirs(destination)
-    dest = shutil.copy(xml_file_path, destination)
-    Unreadable_xml_files.objects.create(
-        file_name = dest,
-        error_msg = error_msg,
-        source = xml_file_path.replace('TEMP_DOWNLOAD/','').replace('\\', '/')
-    )
+
+    # Read the file and make entry in invalid_files table
+    file_name =  '/ai/metadata/INVALID_FILES/' + file_name
+    with open(invalid_file_path, 'rb') as f:
+        file_content = File(f)
+ 
+        # dest = shutil.copy(invalid_file_path, file_name)
+        x = Unreadable_files.objects.create(
+            file_type = file_type.lower(),
+            error_msg = error_msg,
+            source = invalid_file_path.replace('TEMP_DOWNLOAD/','').replace('\\', '/')
+        )
+
+        # Assign the File object to the file_content field and save the model instance
+        x.file_content.save(os.path.basename(file_name), file_content)
+        file_content.close()
     return True
 
 
@@ -122,16 +139,16 @@ def create_new_object(source, row, note, content):
     return True
 
 # Update Archive
-def update_article(obj, note='', content=''):
-    obj.is_content_changed = True
+def update_article(article, note='', content=''):
+    article.is_content_changed = True
     if note:
-        obj.note = note
+        article.note = note
     if content:
-        file_name = obj.article_file.name
-        os.remove(obj.article_file.path)
-        obj.article_file.save(file_name, ContentFile(content))
+        file_name = article.article_file.name
+        os.remove(article.article_file.path)
+        article.article_file.save(file_name, ContentFile(content))
     else:
-        obj.save()
+        article.save()
     return True
 
 # Function to unzip
@@ -169,7 +186,7 @@ def process_success_result_from_splitter_function(data, source, destination, arc
             with open(article.article_file.path, 'r', encoding='utf-8') as f1:
                 if compare_files_line_by_line(f1,data[0]):
                     shutil.copy(source, destination.replace('TEMP_DOWNLOAD', ''))
-                    update_article(article)
+                    update_article(article=article)
         except Article_attributes.DoesNotExist:
             create_new_object(source, archive_row, note="", content=data[0])
 
@@ -237,7 +254,7 @@ def migrate_to_step2(request):
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                create_invalid_xml_json(new_source, "Invalid")
+                                create_invalid_xml_json(new_source, "Invalid", file_name, file_name.split('.')[-1])
                 
                 # create all the row
                 else:
@@ -249,7 +266,7 @@ def migrate_to_step2(request):
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                create_invalid_xml_json(new_source, "Invalid")
+                                create_invalid_xml_json(new_source, "Invalid", file_name, file_name.split('.')[-1])
 
 
                 # remove the unzipped directory from TEMP_DOWNLOAD location
@@ -270,7 +287,7 @@ def migrate_to_step2(request):
                 process_success_result_from_splitter_function(data, source, destination, archive_row)
             
             else:
-                create_invalid_xml_json(source, "Invalid")
+                create_invalid_xml_json(source, "Invalid", file_name, file_name.split('.')[-1])
 
         # if file is other than xml/json/zip, ignore the file
         else:

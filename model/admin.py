@@ -2,7 +2,7 @@ from django.contrib import admin
 from .archive import Archive
 from model.provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
 from mail_service.models import Email_history, Email_notification
-from .article import Unreadable_xml_files, Article_attributes, Jsonified_articles
+from .article import Unreadable_files, Article_attributes, Jsonified_articles
 
 class ArchivedArticleAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
@@ -64,10 +64,10 @@ class JsonifiedAdmin(admin.ModelAdmin):
                     "last_step", "last_status",
                     ]
 
-class UnreadableXMLAdmin(admin.ModelAdmin):
+class UnreadableFilesAdmin(admin.ModelAdmin):
     empty_value_display = "-empty-"
     list_display = [
-                    "source", "file_name", "error_msg",
+                    "source", "error_msg",
                     "date_stamp"
                     ]
 
@@ -83,4 +83,4 @@ admin.site.register(Email_notification, EmailNotification)
 
 admin.site.register(Article_attributes, ArticleAdmin)
 admin.site.register(Jsonified_articles, JsonifiedAdmin)
-admin.site.register(Unreadable_xml_files, UnreadableXMLAdmin)
+admin.site.register(Unreadable_files, UnreadableFilesAdmin)

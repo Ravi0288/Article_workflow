@@ -37,10 +37,15 @@ class OverWriteStorage(FileSystemStorage):
 def get_file_path(instance, filename):
     return filename
 
-# model class to archive the error message that occures during processing / reading the xml file
-class Unreadable_xml_files(models.Model):
+
+# model class to archive the error message that occures during processing / reading the xml/json file
+class Unreadable_files(models.Model):
     source = models.TextField()
-    file_name = models.CharField(max_length=100)
+    file_type = models.CharField(max_length=10)
+    file_content = models.FileField(upload_to=get_file_path, 
+                                    storage=OverWriteStorage(),
+                                    help_text="Browse the file"
+                                )
     error_msg = models.TextField()
     date_stamp = models.DateTimeField(auto_now=True)
 

@@ -54,7 +54,7 @@ class Archive(models.Model):
         help_text="Select provider"
         )
 
-    file_content = models.FileField( upload_to=get_file_path, 
+    file_content = models.FileField(upload_to=get_file_path, 
                                     blank=True, null=True, 
                                     storage=OverWriteStorage(),
                                     help_text="Browse the file"
