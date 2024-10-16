@@ -77,12 +77,12 @@ def create_authorization(request):
         if form.is_valid():
             form.save()
             context = {
-                'heading' : 'Menu Authorization',
+                'heading' : 'Authorization',
                 'message' : 'authorization successfully added'
             }
         else:
             context = {
-                'heading' : 'Menu Authorization',
+                'heading' : 'Authorization',
                 'message' : 'Error Message=' "Ensure correct value is provided for each form fields"
             }
         return render(request, 'common/dashboard.html', context=context)

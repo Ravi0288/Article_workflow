@@ -160,7 +160,28 @@ def download_from_sftp(request):
             with pysftp.Connection(item.server, username=item.account, password=item.pswd, cnopts=cnopts) as sftp_connection:
                 # Read the destination location
                 sftp_connection.cwd(item.site_path)  # Change directory
-                article_library = sftp_connection.listdir()  # List directory contents
+                article_library = []
+
+                xx = sftp_connection.listdir()  # List directory contents
+                files = sftp_connection.listdir_attr(item.site_path)
+                for f in files:
+                    file_name = f.filename
+                    file_size = f.st_size
+                    last_modified = f.st_mtime
+                    try:
+                        last_modified = datetime.datetime.fromtimestamp(last_modified).strftime('%Y-%m-%d %H:%M:%S')
+                        last_modified = datetime.datetime.strptime(last_modified, '%Y-%m-%d %H:%M:%S')
+                        last_modified = last_modified.replace(tzinfo=datetime.timezone.utc)
+                    except:
+                        last_modified = 0
+                        
+                    try:
+                        if last_modified:
+                            Archive.objects.get(file_name_on_source = file_name, received_on__lt = last_modified)
+                        else:
+                            Archive.objects.get(file_name_on_source = file_name, file_size=file_size)
+                    except Archive.DoesNotExist:
+                        article_library.append(file_name)
 
                 # If records found, explore inside.
                 if article_library:

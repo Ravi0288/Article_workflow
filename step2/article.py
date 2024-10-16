@@ -1,4 +1,3 @@
-from django.conf import settings
 from step1.archive import Archive
 from rest_framework.serializers import ModelSerializer
 from rest_framework.viewsets import ModelViewSet
@@ -12,7 +11,7 @@ import shutil
 import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
-from .splitter import splitter
+from metadata_routines.splitter import splitter
 from django.core.files import File
 
 # Unreadable xml file serializer
@@ -135,7 +134,7 @@ def create_new_object(source, row, note, content):
 
         if isinstance(content, (list, tuple)):
             if isinstance(content[0], str):
-                if content[0].startswith("'"):
+                if content[0].startswith("'"): 
                     content[0] = (content[0][1:]).encode('utf-8')
                 else:
                     content = (content[0]).encode('utf-8')

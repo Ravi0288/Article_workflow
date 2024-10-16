@@ -16,6 +16,19 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 import socket
 
+
+# Funciton to parse the information collected from FTP for each files
+def parse_file_info_of_files_on_ftp(attr):
+    # Parse a single line from MLSD response
+    facts = {}
+    segments = attr.split(';')
+    for segment in segments[:-1]:
+        key, value = segment.split('=')
+        facts[key.lower()] = value
+    facts['name'] = segments[-1].strip()
+    return facts
+
+
 # This function will download each file/dir from SFTP server to the local directory
 # in case of given folder is blank or have any kind of error this will return False
 def download_directory_from_ftp(ftp_connection, remote_directory, local_directory):
@@ -148,9 +161,7 @@ def download_from_ftp(request):
     due_for_download = Provider_meta_data_FTP.objects.filter(
         provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
         ).exclude(Q(protocol='SFTP') | Q(provider__in_production=False))
-    
-    print("total record to be executed", due_for_download.count())
-    
+        
     # if none is due to be accessed abort the process
     if not due_for_download.count():
         context = {
@@ -163,43 +174,67 @@ def download_from_ftp(request):
 
     # if providers are due to be accessed
     for item in due_for_download:
-        print(item.server, item.account, item.pswd)
+        
         err_occured = False
         err_msg = ''
         err_count = 0
         succ_count = 0
         # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
-            ftp_connection =  ftplib.FTP()
-            print("ftp object created")
+            ftp_connection = ftplib.FTP()
             ftp_connection.connect(item.server, timeout=30)
-            print("connected successfully")
             ftp_connection.login(item.account, item.pswd)
             print("logged in successfully")
             ftp_connection.set_pasv(True)
-            print("passive mode enable")
             # read the destination location
             ftp_connection.cwd(item.site_path)
             print("changing path")
-            article_library = ftp_connection.nlst()
-            print("listing directories")
+            # article_library = ftp_connection.nlst()
+            
+            '''
+            preprocess the list of files to be downloaded.
+            compare the files and their size, filter out all the files that are already downloaded and flag those who have modified
+            '''
+            # make list of file attributes
+            attrs = []
+            article_library = []
+            ftp_connection.retrlines('MLSD', attrs.append)
+            # iterate each lines and filter required files
+            for attr in attrs:
+                facts = parse_file_info_of_files_on_ftp(attr)
+                file_name = facts['name']
+                file_size = int(facts.get('size', 0))
+                last_modified = facts.get('modify', '')
+                try:
+                    last_modified = datetime.datetime.strptime(last_modified, '%Y%m%d%H%M%S')
+                    last_modified = last_modified.replace(tzinfo=datetime.timezone.utc)
+                except:
+                    last_modified = 0
+
+                try:
+                    if last_modified:
+                        Archive.objects.get(file_name_on_source = file_name, received_on__lt = last_modified)
+                    else:
+                        Archive.objects.get(file_name_on_source = file_name, file_size=file_size)
+                    print("found")
+                except Archive.DoesNotExist:
+                    article_library.append(file_name)
+
+            # Showing list of successfull providers for view purpose
             succ.append(item.provider.official_name)
-            print("appending list")
-            # if record found explore inside.
+
+            # if files found than start download
+            print(f''' Total {len(article_library)} to be downloaded''')
             if article_library:
                 # iterate through each file
-                print("trying to loo")
                 for article in article_library:
                     try:
-                        print("inside loop")
                         # check if the article is file or directory
                         if is_ftp_content_folder(ftp_connection, article):
-                            print("inside loop => Processing directory")
                             # download the folder
                             download_folder_from_ftp_and_save_zip(ftp_connection, article, item)
                         else:
                             # download the file
-                            print("inside loop => Processing file")
                             download_file(ftp_connection, article, item)
 
                         succ_count += 1 
@@ -257,6 +292,3 @@ def download_from_ftp(request):
     }
 
     return render(request, 'common/dashboard.html', context=context)
-
-
-

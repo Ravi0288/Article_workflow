@@ -9,5 +9,5 @@ router.register('unreadable-files', Unreadable_files_viewset, basename='unreadab
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('migrate-to-step2/', migrate_to_step2, name='migrate-to-step2'),
+    path('migrate-to-step-2/', migrate_to_step2, name='migrate-to-step-2'),
 ]

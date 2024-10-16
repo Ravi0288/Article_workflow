@@ -10,7 +10,7 @@
 <a href="{% url 'group-create' %}">Create Group</a>
 <a href="{% url 'user-list' %}">List Users</a>
 <a href="{% url 'group-list' %}">List Groups</a>
-<a href="{% url 'create-authorization' %}">Create Authorization</a>
+<a href="{% url 'create-authorization' %}">Authorization</a>
     <!-- {% for item in menu %} -->
 
     <!-- {% endfor %} -->
@@ -20,7 +20,7 @@
 
 {% block body %}
     <div class="form-container">
-        <h2 class="form-container-title">Create Authorization</h2>
+        <h2 class="form-container-title">Authorization</h2>
 
         <form method="post" action="{% url 'create-authorization' %}">
             {% csrf_token %}

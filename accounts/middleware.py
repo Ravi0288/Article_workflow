@@ -21,10 +21,10 @@ class MenuAuthorizationMiddleware:
         # Get the current path
         current_url_name = resolve(request.path_info).url_name
 
-        # List of URLs that don't need menu authorization checks (e.g., login, logout, dashboard)
+        # List of URLs that don't need Authorization checks (e.g., login, logout, dashboard)
         exempt_urls = ['login', 'logout', 'dashboard']
 
-        # Check if the URL requires menu authorization
+        # Check if the URL requires Authorization
         if current_url_name not in exempt_urls:
             # Get the menu list from the session
             menu_list = request.session.get('menu_list', [])
