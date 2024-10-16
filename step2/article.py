@@ -117,7 +117,7 @@ def create_new_object(source, row, note, content):
     qs.type_of_record = 'article'
     qs.provider = row.provider
     qs.archive = row
-    qs.last_step = 1
+    qs.last_step = 2
     qs.last_status = 'active'
     qs.note = note
     qs.PID = "A locally assign identifier"
@@ -156,6 +156,8 @@ def create_new_object(source, row, note, content):
 # Update Archive
 def update_article(article, note='', content=''):
     article.is_content_changed = True
+    article.last_status = 'active'
+    article.last_step = 2
     if note:
         article.note = note
     if content:
@@ -319,7 +321,7 @@ def migrate_to_step2(request):
     # return the result to UI
     context = {
         'heading' : 'Message',
-        'message' : 'All valid archives of step 1 successfully migrated to step 2'
+        'message' : 'All valid archives successfully migrated to step-2'
     }
 
     return render(request, 'common/dashboard.html', context=context)

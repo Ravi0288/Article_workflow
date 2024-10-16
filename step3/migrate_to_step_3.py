@@ -7,6 +7,8 @@ from .common.find_doi import find_doi
 from .common.find_title import find_title
 from model.article import Article_attributes, Jsonified_articles
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
 
 
 def process_file(article, new_file_path):
@@ -52,7 +54,7 @@ def process_file(article, new_file_path):
 @login_required
 @api_view(['GET'])
 def jsonify_xml_file(request):
-    articles = Article_attributes.objects.filter(last_step=2)
+    articles = Article_attributes.objects.filter(last_status='active')
     for article in articles:
         qs=Jsonified_articles.objects.filter(article_attributes=article.id)
         if(qs.exists()):
@@ -70,6 +72,7 @@ def jsonify_xml_file(request):
             qs.save()
 
             article.last_status = 'completed'
+            article.last_step = 2 
             article.save()
 
         else:
@@ -90,6 +93,11 @@ def jsonify_xml_file(request):
                 article.last_status = 'completed'
                 article.save()
 
+    context = {
+        'heading' : 'Message',
+        'message' : 'All valid articles successfully migrated to step-3'
+    }
 
+    return render(request, 'common/dashboard.html', context=context)
 
 
