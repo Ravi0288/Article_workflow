@@ -182,13 +182,12 @@ def download_from_ftp(request):
         # try to ftp_connection to FTP, if error occures update the status to Provider_meta_data_FTP and continue to access next FTP
         try:
             ftp_connection = ftplib.FTP()
-            ftp_connection.connect(item.server, timeout=30)
+            ftp_connection.set_debuglevel(0)
+            ftp_connection.connect(item.server, timeout=60)
             ftp_connection.login(item.account, item.pswd)
-            print("logged in successfully")
             ftp_connection.set_pasv(True)
             # read the destination location
             ftp_connection.cwd(item.site_path)
-            print("changing path")
             # article_library = ftp_connection.nlst()
             
             '''
@@ -199,8 +198,10 @@ def download_from_ftp(request):
             attrs = []
             article_library = []
             ftp_connection.retrlines('MLSD', attrs.append)
+            print("MLSD executed")
             # iterate each lines and filter required files
             for attr in attrs:
+                print(attr)
                 facts = parse_file_info_of_files_on_ftp(attr)
                 file_name = facts['name']
                 file_size = int(facts.get('size', 0))
