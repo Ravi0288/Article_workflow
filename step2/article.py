@@ -11,7 +11,7 @@ import shutil
 import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
-from metadata_routines.splitter import splitter
+from .splitter import splitter
 from django.core.files import File
 
 # Unreadable xml file serializer
