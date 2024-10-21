@@ -84,10 +84,8 @@ def save_files(publishers,api):
                     qs = Archive.objects.filter(unique_key=doi)
                     if qs.exists():
                         # if record exists, compare existing content with received content.
-                        # if existing content == received content do nothing
-                        # fname = os.path.join(settings.CHORUS_ROOT, file_name)
-                        fname = os.path.join(settings.ARCHIVE_ROOT, qs[0].file_content.name)
-                        
+                        fname = qs[0].file_content.path
+                        # fname = os.path.join(settings.CHORUS_ROOT, qs[0].file_content.name)
                         # read the existing file
                         f = open(fname, 'r')
                         jsonified_content = json.load(f)
