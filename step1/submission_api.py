@@ -71,7 +71,7 @@ def download_from_submission_api(request):
     # Send a GET request to the URL.
 
     # query and fetch available submission api's
-    qs = Provider_meta_data_API.objects.filter(api_meta_type="Submission")
+    qs = Provider_meta_data_API.objects.filter(api_meta_type="Submission").exclude(provider__in_production=False)
     for api in qs:
         harvester = SubmissionMetadataHarvester(api.base_url)
         last_date = api.provider.last_time_received.strftime("%Y-%m-%d")

@@ -140,7 +140,7 @@ def download_from_chorus_api(request):
     # query and fetch available submission api's
     due_for_download = Provider_meta_data_API.objects.filter(
         api_meta_type="Chorus", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
-        )
+        ).exclude(provider__in_production=False)
     per_page = 100
     start_from_page = 0
     headers= {

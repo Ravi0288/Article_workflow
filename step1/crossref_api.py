@@ -172,7 +172,7 @@ def download_from_crossref_api(request):
     # query and fetch available submission api's
     due_for_download = Provider_meta_data_API.objects.filter(
         api_meta_type="CrossRef", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
-        )
+        ).exclude(provider__in_production=False)
     
     # iterate through each records found
     for api in due_for_download:
