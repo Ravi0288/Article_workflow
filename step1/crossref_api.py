@@ -102,8 +102,8 @@ def save_files(dois, api):
     for doi in dois:
         # access the url
         url = f'''https://api.crossref.org/works/{doi}'''
-        # response = requests.get(url, params=params, headers=headers, verify=certifi.where())
-        response = requests.get(url)
+        response = requests.get(url, params=params, headers=headers, verify=certifi.where())
+        # response = requests.get(url)
 
         if response.status_code == 200:
             try:
