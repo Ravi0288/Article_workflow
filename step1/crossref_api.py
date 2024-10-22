@@ -84,7 +84,6 @@ def save_files(dois, api):
     #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/999.0.9999.999 Safari/537.36'
     #     }
 
-    print(api.pswd)
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -103,8 +102,8 @@ def save_files(dois, api):
     for doi in dois:
         # access the url
         url = f'''https://api.crossref.org/works/{doi}'''
-        response = requests.get(url, params=params, headers=headers, verify=certifi.where())
-        # response = requests.get(url)
+        # response = requests.get(url, params=params, headers=headers, verify=certifi.where())
+        response = requests.get(url)
 
         if response.status_code == 200:
             try:
