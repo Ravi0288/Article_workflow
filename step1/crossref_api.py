@@ -103,9 +103,20 @@ def save_files(dois, api):
     for doi in dois:
         # access the url
         url = f'''https://api.crossref.org/works/{doi}'''
-        # response = requests.get(url, params=params, headers=headers, verify=certifi.where())
-        response = requests.get(url, headers=headers, verify=certifi.where())
-        # response = requests.get(url)
+
+        try:
+            # response = requests.get(url, params=params, headers=headers, verify=certifi.where())
+            response = requests.get(url, headers=headers, verify=certifi.where(), timeout=10)
+            # response = requests.get(url)
+            response.raise_for_status()
+
+        except requests.exceptions.Timeout:
+            print(f"The request timed out after")
+            continue
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+            continue
+
 
         if response.status_code == 200:
             try:
@@ -198,10 +209,15 @@ def download_from_crossref_api(request):
         api_meta_type="CrossRef", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
         ).exclude(provider__in_production=False)
     
+    # if crossref is not due to access, return response
+    if not due_for_download.count():
+        context['message'] = f'''No Pending action found for CrossRef.'''
+        return render(request, 'common/dashboard.html', context=context)
+
+
     # iterate through each records found
     rec_count = 0
     for api in due_for_download:
-
 
         # get list of doi
         article_dois = get_article_dois_by_funder_id(funder_id=funder_id, api=api)
