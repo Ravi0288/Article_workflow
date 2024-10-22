@@ -75,7 +75,8 @@ def filter_data(data):
 
 def save_files(dois, api):
 
-    succ = 0
+    updated = 0
+    created = 0
     err = 0
 
     # # set request header
@@ -102,7 +103,8 @@ def save_files(dois, api):
     for doi in dois:
         # access the url
         url = f'''https://api.crossref.org/works/{doi}'''
-        response = requests.get(url, params=params, headers=headers, verify=certifi.where())
+        # response = requests.get(url, params=params, headers=headers, verify=certifi.where())
+        response = requests.get(url, headers=headers, verify=certifi.where())
         # response = requests.get(url)
 
         if response.status_code == 200:
@@ -119,31 +121,34 @@ def save_files(dois, api):
                     # if existing content == received content do nothing
                     doi = doi.replace('/', '_')
                     # fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
-                    fname = os.path.join(settings.MEDIA_ROOT, qs[0].file_content.name)
+                    fname = qs[0].file_content.path
                     
                     # read the existing files
                     f = open(fname, 'r')
                     jsonified_content = json.load(f)
                     f.close()
 
-                    # compare the contents
+                    # compare the contents, If content are unchanged pass
                     if jsonified_content == data:
                         pass
+
+                    # if content found changed, update the record
                     else:
-                        # if existing content differs with received content, remove the exisitng file an update the record
+                        # if existing content differs with received content, remove the exisitng file and update the record
                         os.remove(fname)
                         file_size = sys.getsizeof(response.json())
                         # save file
                         qs[0].file_size = file_size
                         qs[0].status = "waiting"
                         qs[0].is_content_changed = True
-                        file_name = str(x.id) + '.' + qs[0].split('.')[-1]
-                        qs[0].file_content.save(file_name, ContentFile(response.content))
+                        qs[0].file_content.save(qs[0].file_content.name, ContentFile(response.content))
+
+                        updated += 1
 
                 else:
                     # Getting size using getsizeof() method
                     file_size = sys.getsizeof(response.json())
-                    x = Archive.objects.create(
+                    qs = Archive.objects.create(
                         file_name_on_source = file_name,
                         provider = api.provider,
                         processed_on = datetime.datetime.now(tz=pytz.utc),
@@ -154,10 +159,10 @@ def save_files(dois, api):
                     )
 
                     # save file
-                    file_name = str(x.id) + '.' + file_name.split('.')[-1]
-                    x.file_content.save(file_name, ContentFile(response.content))
+                    file_name = str(qs.id) + '.' + file_name.split('.')[-1]
+                    qs.file_content.save(file_name, ContentFile(response.content))
 
-                succ += 1
+                    created += 1
 
             except Exception as e:
                 print(e)
@@ -165,7 +170,7 @@ def save_files(dois, api):
         else:
             print("Response code:", response.status_code,", reason :", response.reason)
             err += 1
-    return succ, err
+    return created, updated, err
 
 
 
@@ -203,7 +208,7 @@ def download_from_crossref_api(request):
 
         if len(article_dois):
             # as per received dois make urls and download the file in json format
-            succ, err = save_files(article_dois, api)
+            created, updated, err = save_files(article_dois, api)
             rec_count += len(article_dois)
 
         # update the last run status
@@ -217,7 +222,8 @@ def download_from_crossref_api(request):
     if rec_count:
         context['message'] = f'''CrossRef API process executed successfully. 
                                 Total {rec_count} records found
-                                and {succ} created / updated successylly while {err} records ended with error.
+                                and {created} created, {updated} updated successylly while {err} records ended with error. 
+                                {rec_count - ({created} + {updated})} records skipped because they are same as in our archive.
                                 '''
     else:
         context['message'] = f'''CrossRef API process executed successfully. No records found to update / create.'''
