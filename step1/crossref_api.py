@@ -236,7 +236,7 @@ def download_from_crossref_api(request):
     if rec_count:
         context['message'] = f'''CrossRef API process executed successfully. 
                                 Total {rec_count} records found
-                                and {created} created, {updated} updated successylly while {err} records ended with error. 
+                                and {created} created, {updated} updated successfully while {err} records ended with error. 
                                 {skipped} records skipped because they are same as in our archive.
                                 '''
     else:
