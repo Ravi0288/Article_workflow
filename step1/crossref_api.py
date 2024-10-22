@@ -18,10 +18,17 @@ import certifi
 
 
 # Function to retrieve a list of DOIs for articles from a given journal by ISSN
-def get_article_dois_by_issn(issn, api, request, num_rows=1000):
+def get_article_dois_by_funder_id(funder_id, api, num_rows=1000):
     dois = []
+
     # Make a GET request to the CrossRef journals endpoint
-    response = requests.get(f"https://api.crossref.org/journals/{issn}/works", params={"rows": num_rows})
+    response = requests.get(
+        f"https://api.crossref.org/funders/{funder_id}//works?filter=has-abstract:true", 
+        params={"rows": num_rows, "cursor": '*'}
+        )
+
+    # Make a GET request to the CrossRef journals endpoint
+    # response = requests.get(f"https://api.crossref.org/journals/{funder_id}/works", params={"rows": num_rows})
     if response.status_code == 200:
         data = response.json()
         # Extract DOIs from the response JSON
@@ -31,25 +38,16 @@ def get_article_dois_by_issn(issn, api, request, num_rows=1000):
             try:
                 if doi:
                     dois.append(doi)
-                    # print(item['message']['items']['link'][0]['URL'], "#################",doi)
             except Exception as e:
                 print(e)
-        return dois
+
     else:
         provider = api.provider
         provider.status = 'failed'
         provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
         provider.save()
-        # api.save()
-        # return Response("error occured")
 
-
-    context = {
-        'heading' : 'Message',
-        'message' : 'CrossRef API process executed successfully'
-    }
-
-    return render(request, 'common/dashboard.html', context=context)
+    return dois
 
 # function to zip folder
 def zip_folder(folder_path, zip_path):
@@ -75,21 +73,39 @@ def filter_data(data):
     return result
     
 
-def save_files(dois, headers, api):
-    state = True
-    current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    # i=0
-    for doi in dois:
-        # setting url parameters
-        params = dict(version='1.2', operation='searchRetrieve', startRecord=0,
-                        maximumRecords=1000,
-                        query='alma.local_field_918=crossref and alma.local_notes="PubAg Journal"')
+def save_files(dois, api):
 
+    succ = 0
+    err = 0
+
+    # # set request header
+    # headers = {
+    #     'Crossref-Plus-API-Token': 'Bearer {}'.format(api.pswd),
+    #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/999.0.9999.999 Safari/537.36'
+    #     }
+
+    print(api.pswd)
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Crossref-Plus-API-Token': f'Bearer {api.pswd}'
+    }
+
+    # setting url parameters
+    params = {
+        'version' : '1.2', 
+        'operation' : 'searchRetrieve', 
+        'startRecord'  : 0,
+        'maximumRecords' : 1000,
+        'query' : 'alma.local_field_918=crossref and alma.local_notes="PubAg Journal"'
+    }
+
+    for doi in dois:
         # access the url
-        url = f"https://api.crossref.org/works/{doi}"
+        url = f'''https://api.crossref.org/works/{doi}'''
         response = requests.get(url, params=params, headers=headers, verify=certifi.where())
         # response = requests.get(url)
-        # response = http.request("GET", f"https://api.crossref.org/works/{doi}", body=params, headers=headers)
+
         if response.status_code == 200:
             try:
                 # prepare properties
@@ -142,17 +158,15 @@ def save_files(dois, headers, api):
                     file_name = str(x.id) + '.' + file_name.split('.')[-1]
                     x.file_content.save(file_name, ContentFile(response.content))
 
+                succ += 1
+
             except Exception as e:
                 print(e)
-                continue
+                err += 1
         else:
-            x = (response.__dict__)
             print("Response code:", response.status_code,", reason :", response.reason)
-
-    # zip the file
-    # path = os.path.join(settings.CROSSREF_ROOT , current_date + '.zip')
-    # zip_folder(settings.CROSSREF_ROOT, path)
-
+            err += 1
+    return succ, err
 
 
 
@@ -162,12 +176,18 @@ def save_files(dois, headers, api):
 @csrf_exempt
 def download_from_crossref_api(request):
 
-    # receive the issn_number
-    issn_number = request.GET.get('issn_number')
+    context = {
+        'heading' : 'Message',
+        'message' : 'CrossRef API process executed successfully'
+    }
 
-    # if issn_number not received, assign default
-    if not issn_number:
-        issn_number = "0066-4804"
+    # receive the funder_id
+    funder_id = request.GET.get('funder_id')
+
+    # if funder_id not received, assign default
+    if not funder_id:
+        # funder_id = "0066-4804"
+        funder_id = "100000199"
 
     # query and fetch available submission api's
     due_for_download = Provider_meta_data_API.objects.filter(
@@ -175,19 +195,17 @@ def download_from_crossref_api(request):
         ).exclude(provider__in_production=False)
     
     # iterate through each records found
+    rec_count = 0
     for api in due_for_download:
 
-        # set request header
-        headers = {
-            'Crossref-Plus-API-Token': 'Bearer {}'.format(api.pswd),
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/999.0.9999.999 Safari/537.36'
-            }
 
         # get list of doi
-        article_dois = get_article_dois_by_issn(issn=issn_number, api=api, request=request)
+        article_dois = get_article_dois_by_funder_id(funder_id=funder_id, api=api)
 
-        # as per received dois make urls and downloaded the file in json format
-        save_files(article_dois, headers, api)
+        if len(article_dois):
+            # as per received dois make urls and download the file in json format
+            succ, err = save_files(article_dois, api)
+            rec_count += len(article_dois)
 
         # update the last run status
         provider = api.provider
@@ -195,12 +213,14 @@ def download_from_crossref_api(request):
         provider.status = 'success'
         provider.last_error_message = 'N/A'
         provider.save()
-        # api.save()
-    # return Response("success")
 
-    context = {
-        'heading' : 'Message',
-        'message' : 'CrossRef API process executed successfully'
-    }
+
+    if rec_count:
+        context['message'] = f'''CrossRef API process executed successfully. 
+                                Total {rec_count} records found
+                                and {succ} created / updated successylly while {err} records ended with error.
+                                '''
+    else:
+        context['message'] = f'''CrossRef API process executed successfully. No records found to update / create.'''
 
     return render(request, 'common/dashboard.html', context=context)

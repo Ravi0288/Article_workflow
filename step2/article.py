@@ -11,7 +11,7 @@ import shutil
 import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
-from metadata_routines import splitter
+from metadata_routines.splitter import splitter
 from django.core.files import File
 
 # Unreadable xml file serializer
@@ -321,7 +321,7 @@ def migrate_to_step2(request):
     # return the result to UI
     context = {
         'heading' : 'Message',
-        'message' : 'All valid archives successfully migrated to step-2'
+        'message' : 'All valid archives successfully migrated to Step-2, and files are stored in Article directory.'
     }
 
     return render(request, 'common/dashboard.html', context=context)
