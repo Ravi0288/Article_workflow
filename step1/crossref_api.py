@@ -109,7 +109,12 @@ def save_files(dois, api):
             response = requests.get(url, headers=headers, verify=certifi.where(), timeout=10)
             # response = requests.get(url)
             response.raise_for_status()
-
+        except requests.exceptions.SSLError as ssl_err:
+            if "EOF occurred in violation of protocol" in str(ssl_err):
+                print("SSL error: Unexpected EOF occurred in violation of protocol.")
+            else:
+                print(f"SSL error occurred: {ssl_err}")
+            continue
         except requests.exceptions.Timeout:
             print(f"The request timed out after")
             continue
@@ -196,14 +201,6 @@ def download_from_crossref_api(request):
         'message' : 'CrossRef API process executed successfully'
     }
 
-    # receive the funder_id
-    funder_id = request.GET.get('funder_id')
-
-    # if funder_id not received, assign default
-    if not funder_id:
-        # funder_id = "0066-4804"
-        funder_id = "100000199"
-
     # query and fetch available submission api's
     due_for_download = Provider_meta_data_API.objects.filter(
         api_meta_type="CrossRef", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
@@ -218,6 +215,7 @@ def download_from_crossref_api(request):
     # iterate through each records found
     rec_count = 0
     for api in due_for_download:
+        funder_id = api.identifier_code
 
         # get list of doi
         article_dois = get_article_dois_by_funder_id(funder_id=funder_id, api=api)
@@ -234,12 +232,12 @@ def download_from_crossref_api(request):
         provider.last_error_message = 'N/A'
         provider.save()
 
-
+    skipped = rec_count - (created + updated)
     if rec_count:
         context['message'] = f'''CrossRef API process executed successfully. 
                                 Total {rec_count} records found
                                 and {created} created, {updated} updated successylly while {err} records ended with error. 
-                                {rec_count - ({created} + {updated})} records skipped because they are same as in our archive.
+                                {skipped} records skipped because they are same as in our archive.
                                 '''
     else:
         context['message'] = f'''CrossRef API process executed successfully. No records found to update / create.'''
