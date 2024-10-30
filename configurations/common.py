@@ -5,6 +5,23 @@ from django.db import models
 from cryptography.fernet import Fernet
 from django.conf import settings
 import stat
+from rest_framework.renderers import BrowsableAPIRenderer
+
+
+# Class to update title of the viewsets with custom title.
+# This is to be used only with rest framework viewsets where title need to be customised
+class CustomBrowsableAPIRenderer(BrowsableAPIRenderer):
+    def __init__(self, title=None, *args, **kwargs):
+        self.custom_title = title
+        super().__init__(*args, **kwargs)
+
+    def get_context(self, data, accepted_media_type, renderer_context):
+        context = super().get_context(data, accepted_media_type, renderer_context)
+        if self.custom_title:
+            context['title'] = self.custom_title
+        return context
+ 
+
 
 # Function to read the file
 # This function will take file path as input and will return the file content    

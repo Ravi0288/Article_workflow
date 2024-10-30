@@ -119,7 +119,7 @@ def download_from_submission_api(request):
                 api.save()
 
             except Exception as e:
-                # if error occured update the failed status
+                # if error occurred update the failed status
                 provider = api.provider
                 provider.status = 'failed'
                 provider.last_error_message = e

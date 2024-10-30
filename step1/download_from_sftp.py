@@ -162,7 +162,7 @@ def download_from_sftp(request):
                 sftp_connection.cwd(item.site_path)  # Change directory
                 article_library = []
 
-                xx = sftp_connection.listdir()  # List directory contents
+                sftp_connection.listdir()  # List directory contents
                 files = sftp_connection.listdir_attr(item.site_path)
                 for f in files:
                     file_name = f.filename
@@ -190,7 +190,7 @@ def download_from_sftp(request):
                         try:
                             # Check if the article is a file or directory
                             if is_sftp_content_folder(sftp_connection, article):
-                                # Download the folder
+                                # Download directory as a zip
                                 download_folder_from_sftp_and_save_zip(sftp_connection, article, item)
                             else:
                                 # Download the file
@@ -206,7 +206,7 @@ def download_from_sftp(request):
                 provider.status = 'success'
                 provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(days=item.provider.minimum_delivery_fq)
                 provider.save()
-                provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occured while saving {err_count} file/directories. '''
+                provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occurred while saving {err_count} file/directories. '''
                 succ.append(item.provider.official_name)
 
         except Exception as e:
@@ -220,7 +220,7 @@ def download_from_sftp(request):
 
     context = {
         'heading': 'Message',
-        'message': f'''SFTP sync process executed successfully. Error occured in {err} SFTP's while {succ} executed succesfully. The error is logged in the Provider model.'''
+        'message': f'''SFTP sync process executed successfully. Error occurred in {err} SFTP's while {succ} executed successfully. The error is logged in the Provider model.'''
     }
 
     return render(request, 'common/dashboard.html', context=context)

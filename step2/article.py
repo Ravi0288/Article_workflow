@@ -181,11 +181,11 @@ def unzip_file(source, destination, row):
     except zipfile.BadZipFile:
         # Handle the case where the file is not a valid ZIP file
         # os.remove(source)
-        print("Error occured while unizipping the zipped file can't be unzipped. Please check the file", source)
+        print("Error occurred while unizipping the zipped file can't be unzipped. Please check the file", source)
         return False
     except Exception as e:
         # Handle any other exceptions
-        print("exception occured", e, source)
+        print("exception occurred", e, source)
         return False
 
     return True

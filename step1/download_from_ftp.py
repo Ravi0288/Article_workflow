@@ -175,7 +175,7 @@ def download_from_ftp(request):
     # if providers are due to be accessed
     for item in due_for_download:
         
-        err_occured = False
+        err_occurred = False
         err_msg = ''
         err_count = 0
         succ_count = 0
@@ -250,7 +250,7 @@ def download_from_ftp(request):
                 provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
                 provider.status = 'success'
                 provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(item.provider.minimum_delivery_fq)
-                provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occured while saving {err_count} file/directories. '''
+                provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occurred while saving {err_count} file/directories. '''
                 provider.save()
 
                 # quite the current ftp connection 
@@ -259,26 +259,26 @@ def download_from_ftp(request):
 
         except ftplib.error_temp as e:
             err_msg = e
-            err_occured = True
+            err_occurred = True
             print(f"Temporary error: {e}")
         except ftplib.error_perm as e:
             err_msg = e
-            err_occured = True
+            err_occurred = True
             print(f"Permanent error: {e}")
         except ftplib.error_proto as e:
             err_msg = e
-            err_occured = True
+            err_occurred = True
             print(f"Protocol error: {e}")
         except ftplib.all_errors as e:
             err_msg = e
-            err_occured = True
+            err_occurred = True
             print(f"FTP error: {e}")
         except socket.timeout as e:
             err_msg = e
-            err_occured = True
+            err_occurred = True
             print(f"FTP error: {e}")
 
-        if err_occured:
+        if err_occurred:
             provider = item.provider
             provider.status = 'failed'
             provider.last_error_message = err_msg
@@ -289,7 +289,7 @@ def download_from_ftp(request):
 
     context = {
         'heading' : 'Message',
-        'message' : f'''FTP sync process executed successfully. Error occured in {err} and {succ} FTP's executed succesfully. The error is logged in the Provider model.'''
+        'message' : f'''FTP sync process executed successfully. Error occurred in {err} and {succ} FTP's executed successfully. The error is logged in the Provider model.'''
     }
 
     return render(request, 'common/dashboard.html', context=context)
