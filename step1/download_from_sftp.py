@@ -46,12 +46,14 @@ def download_file(sftp_connection, article, item):
     # Check if record downloaded in our record and the file size is not zero
     x = Archive.objects.filter(file_name_on_source=article)
 
+    print("saving the file")
     # If file does not exist in the database, create a new record
     if not x.exists():
         content = BytesIO()
         sftp_connection.getfo(article, content)  # Using getfo to download file to BytesIO
         content.seek(0)
         file_type = os.path.splitext(article)[1]
+        print("getting the file")
         x = Archive.objects.create(
             file_name_on_source=article,
             provider=item.provider,
@@ -62,10 +64,12 @@ def download_file(sftp_connection, article, item):
         )
         article = str(x.id) + '.' + article.split('.')[-1]
         x.file_content.save(article, content)
+        print("file created successfully")
         return
 
     # If file exists, check the file size. If file size is different, update the existing record
     if x.exists() and not (x[0].file_size == file_size):
+        print("file found")
         content = BytesIO()
         sftp_connection.getfo(article, content)  # Using getfo to download file to BytesIO
         content.seek(0)
@@ -73,6 +77,7 @@ def download_file(sftp_connection, article, item):
         x[0].is_content_changed = True
         article = str(x[0].id) + '.' + article.split('.')[-1]
         x[0].file_content.save(article, content)
+        print("file updated")
         return
 
 
@@ -80,6 +85,8 @@ def download_file(sftp_connection, article, item):
 def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
     temp_dir = '/ai/metadata/' + item.provider.official_name
     state = download_directory_from_sftp(sftp_connection, article, temp_dir)
+
+    print("downloading directory as zip")
 
     if state:
         article = article + '.zip'
@@ -97,8 +104,10 @@ def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
 
         x = Archive.objects.filter(file_name_on_source=article)
 
+        print("geting file if available in record or not")
         # If file does not exist in the database, create a new record
         if not x.exists():
+            print("file not found, creating new record")
             # Save the zip file to the Django model
             with open(zipped_file, 'rb') as zip_file:
                 zip_file.seek(0)
@@ -114,12 +123,14 @@ def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
                 article = str(x.id) + '.' + article.split('.')[-1]
                 x.file_content.save(article, zip_file)
 
+            print("file not saved")
             # Cleanup temporary directory and return
             shutil.rmtree(temp_dir)
             return
 
         # If file exists, check the file size. If file size is different, update the existing record
         if x.exists() and not (x[0].file_size == os.path.getsize(zipped_file)):
+            print("file found and updating the record")
             x[0].status = 'active'
             with open(zipped_file, 'rb') as zip_file:
                 zip_file.seek(0)
@@ -156,15 +167,18 @@ def download_from_sftp(request):
         # Try to connect to SFTP, if error occurs, update the status to Provider_meta_data_FTP
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
+        print("sftp started for", item)
         try:
+            print("connecting")
             with pysftp.Connection(item.server, username=item.account, password=item.pswd, cnopts=cnopts) as sftp_connection:
                 # Read the destination location
                 sftp_connection.cwd(item.site_path)  # Change directory
                 article_library = []
-
+                print("listing")
                 sftp_connection.listdir()  # List directory contents
                 files = sftp_connection.listdir_attr(item.site_path)
                 for f in files:
+                    print("saving file", f.filename)
                     file_name = f.filename
                     file_size = f.st_size
                     last_modified = f.st_mtime
@@ -183,10 +197,12 @@ def download_from_sftp(request):
                     except Archive.DoesNotExist:
                         article_library.append(file_name)
 
+                print("all files listed")
                 # If records found, explore inside.
                 if article_library:
                     # Iterate through each file
                     for article in article_library:
+                        print("working for article", article)
                         try:
                             # Check if the article is a file or directory
                             if is_sftp_content_folder(sftp_connection, article):
@@ -200,6 +216,7 @@ def download_from_sftp(request):
                             print(f"Error processing article {article}: {e}")
                             err_count += 1
 
+                print("for loop ended. updating provider status")
                 # Update the success status in Provider_meta_data_FTP
                 provider = item.provider
                 provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
