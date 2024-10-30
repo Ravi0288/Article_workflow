@@ -175,10 +175,11 @@ def download_from_sftp(request):
                 sftp_connection.cwd(item.site_path)  # Change directory
                 article_library = []
                 print("listing")
-                sftp_connection.listdir()  # List directory contents
+                # List directory contents
+                # sftp_connection.listdir()
                 files = sftp_connection.listdir_attr(item.site_path)
                 for f in files:
-                    print("saving file", f.filename)
+                    print("getting file parameters", f.filename)
                     file_name = f.filename
                     file_size = f.st_size
                     last_modified = f.st_mtime
@@ -207,9 +208,11 @@ def download_from_sftp(request):
                             # Check if the article is a file or directory
                             if is_sftp_content_folder(sftp_connection, article):
                                 # Download directory as a zip
+                                print("article is a directory")
                                 download_folder_from_sftp_and_save_zip(sftp_connection, article, item)
                             else:
                                 # Download the file
+                                print("article is a file")
                                 download_file(sftp_connection, article, item)
                             succ_count += 1
                         except Exception as e:
