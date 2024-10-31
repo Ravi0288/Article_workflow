@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from html2text import html2text
 from django.views.decorators.csrf import csrf_exempt
-
+from model.provider import Providers
 
 # function to zip folder with content
 def zip_folder(folder_path):
@@ -61,16 +61,14 @@ def save_files(publishers,api):
             data = response.json()
             if data.get('items', None):
                 # iterate to each json object
-                # i=0
                 for content in data['items']:
-                    # i=+1
-                    # if(i>2):
-                    #     break
                     doi = content['DOI']
+
                     # prepare properties
                     file_name = os.path.join(str(item), doi.replace('/','_') + '.json')
                     file_type = '.json'
                     file_size = sys.getsizeof(content)
+
                     # Serialize JSON object to a string
                     json_string = json.dumps(content)
 
@@ -82,16 +80,17 @@ def save_files(publishers,api):
 
                     # check if record against same doi exists
                     qs = Archive.objects.filter(unique_key=doi)
+
                     if qs.exists():
                         # if record exists, compare existing content with received content.
                         fname = qs[0].file_content.path
-                        # fname = os.path.join(settings.CHORUS_ROOT, qs[0].file_content.name)
+
                         # read the existing file
                         f = open(fname, 'r')
                         jsonified_content = json.load(f)
                         f.close()
 
-                        # compare the contents
+                        # compare the contents, if content are not changed continue to next record
                         if jsonified_content == content:
                             continue
                         else:
@@ -196,8 +195,7 @@ def download_from_chorus_api(request):
             print(provider.last_error_message)
 
 
-
-    # return Response("processs executed successfully")
+    # set response based on the different flags
     if err:
         context = {
             'heading' : 'Message',

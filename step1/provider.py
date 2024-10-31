@@ -5,7 +5,6 @@ from rest_framework import serializers
 from model.provider import Providers, Fetch_history, Provider_meta_data_FTP, Provider_meta_data_API, Provider_meta_data_deposit
 
 
-
 # serializers to models
 class Providers_serializer(serializers.ModelSerializer):
     class Meta:
@@ -55,6 +54,7 @@ class Provider_viewset(ModelViewSet):
     queryset = Providers.objects.all()
     serializer_class = Providers_serializer
 
+    # Function to get queryset based on received parameters
     def get_queryset(self):
         qs = super().get_queryset()
         params = self.request.GET
@@ -65,6 +65,7 @@ class Fetch_history_viewset(ModelViewSet):
     queryset = Fetch_history.objects.all()
     serializer_class = Fetch_history_serializer
 
+    # Function to get queryset based on received parameters
     def get_queryset(self):
         qs = super().get_queryset()
         params = self.request.GET
@@ -75,6 +76,11 @@ class Provider_meta_data_FTP_viewset(ModelViewSet):
     queryset = Provider_meta_data_FTP.objects.all()
     serializer_class = Provider_meta_data_FTP_serializer
 
+    # Function to change custom title of the viewset page
+    def get_view_name(self):
+        return "Provider Meta Data FTP Viewset List"
+    
+    # Function to get queryset based on received parameters
     def get_queryset(self):
         qs = super().get_queryset()
         params = self.request.GET
@@ -85,6 +91,11 @@ class Provider_meta_data_API_viewset(ModelViewSet):
     queryset = Provider_meta_data_API.objects.all()
     serializer_class = Provider_meta_data_API_serializer
 
+    # Function to change custom title of the viewset page
+    def get_view_name(self):
+        return "Provider Meta Data API Viewset List"
+
+    # Function to get queryset based on received parameters
     def get_queryset(self):
         qs = super().get_queryset()
         params = self.request.GET
@@ -95,6 +106,7 @@ class Provider_meta_data_deposit_viewset(ModelViewSet):
     queryset = Provider_meta_data_deposit.objects.all()
     serializer_class = Provider_meta_data_deposit_serializer
 
+    # Function to get queryset based on received parameters
     def get_queryset(self):
         qs = super().get_queryset()
         params = self.request.GET
