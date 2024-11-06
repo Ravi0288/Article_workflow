@@ -40,5 +40,5 @@ def delivery_view(request):
         'page_obj' : page_obj
     }
 
-    return render(request, 'reports/delivery.html', context=context)
+    return render(request, 'reports/backlog.html', context=context)
 
