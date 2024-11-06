@@ -1,0 +1,112 @@
+{% extends 'common/base.html' %}
+{% block title %} Publisher's Report {% endblock title %}
+
+{% block header %}
+    Publisher's Report
+{% endblock header%}
+
+
+{% block menu %}
+
+{% endblock menu %}
+
+
+
+{% block body %}
+    {% if page_obj %}
+    <div class="messages">
+        <div class="alert table-header">
+            <button type="button" class="close" data-dismiss="alert" style="color: red;"></button>
+            <div class="row">
+                <div class="col-2"> Provider</div>
+                <div class="col-2"> Acronym</div>
+                <div class="col-1"> Overdue in Days</div>
+                <div class="col-1"> Frequency</div>
+                <div class="col-1"> date 1</div>
+                <div class="col-1"> date 2</div>
+                <div class="col-1"> date 3</div>
+                <div class="col-1"> date 4</div>
+                <div class="col-1"> date 5</div>
+                <div class="col-1"> date 6</div>
+            </div>
+        </div>
+
+        {% for row in page_obj %}
+            {% if forloop.counter0|divisibleby:2 %}
+                <div class="alert even-row">
+                    <div class="row">
+                        <div class="col-2"> {{ row.provider }} </div>
+                        <div class="col-2"> {{ row.acronym }} </div>
+                        <div class="col-1"> {{ row.frequency }} </div>
+                        <div class="col-1"> {{ row.over_due_in_days }} </div>
+                        <div class="col-1"> {{ row.date1 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date2 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date3 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date4 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date5 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date6 |date:"d/m/Y h:i A" }} </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert odd-row">
+                    <div class="row">
+                        <div class="col-2"> {{ row.provider }} </div>
+                        <div class="col-2"> {{ row.acronym }} </div>
+                        <div class="col-1"> {{ row.frequency }} </div>
+                        <div class="col-1"> {{ row.Over_due_in_days }} </div>
+                        <div class="col-1"> {{ row.date1 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date2 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date3 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date4 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date5 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date6 |date:"d/m/Y h:i A" }} </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="messages">
+        NIL REPORT FOUND
+    </div>
+
+    {% endif %}
+
+    <hr/>
+    <hr/>
+
+    <div class="button-container">
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.paginator.num_pages %}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+ 
+        <span class="m-5 p-5">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+
+    </div>
+    {% endblock %}

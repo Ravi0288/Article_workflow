@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # run django on https in development environment
     'sslserver',
+    'reports',
 
     # MFA ENTRA
     # 'oauth2_provider'

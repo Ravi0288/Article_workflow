@@ -15,7 +15,7 @@ def user_list(request):
     users = User.objects.all().order_by('username')
     
     # Pagination
-    paginator = Paginator(users, 20)  # Show 10 items per page
+    paginator = Paginator(users, 20)  # Show 20 items per page
     page_number = request.GET.get('page')  # Get the current page number
     page_obj = paginator.get_page(page_number)  # Get the page object for the current page
 
@@ -51,7 +51,7 @@ def group_list(request):
     groups = Group.objects.all().order_by('name')
 
     # Pagination
-    paginator = Paginator(groups, 20)  # Show 10 items per page
+    paginator = Paginator(groups, 20)  # Show 20 items per page
     page_number = request.GET.get('page')  # Get the current page number
     page_obj = paginator.get_page(page_number)  # Get the page object for the current page
 
