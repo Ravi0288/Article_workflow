@@ -26,7 +26,7 @@ def Provider_access_view(request):
 
 @login_required
 @csrf_exempt
-def delivery_view(request):
+def backlog_view(request):
     report = Provider_delivery_report.objects.all()
 
     # Pagination
