@@ -1,0 +1,86 @@
+{% extends 'common/base.html' %}
+{% block title %} Group List {% endblock title %}
+
+{% block header %}
+    List of Groups
+{% endblock header%}
+
+{% block menu %}
+    <a href="{% url 'user-create' %}">Create User</a>
+    <a href="{% url 'group-create' %}">Create Group</a>
+    <a href="{% url 'user-list' %}">List Users</a>
+    <a href="{% url 'group-list' %}">List Groups</a>
+    <!-- {% for item in menu %} -->
+    <!-- {% endfor %} -->
+
+{% endblock menu %}
+
+
+{% block body %}
+    {% if page_obj %}
+    <div class="messages">
+        <div class="alert table-header">
+            <button type="button" class="close" data-dismiss="alert" style="color: red;"></button>
+            <div class="row">
+                <div class="col-12"> Name </div>
+            </div>
+        </div>
+        {% for obj in page_obj %}
+            {% if forloop.counter0|divisibleby:2 %}
+                <div class="alert even-row">
+                    <button type="button" class="close" data-dismiss="alert" style="color: red;">X</button>
+                    {{ obj.name }}
+                </div>
+            {% else %}
+                <div class="alert odd-row">
+                    <button type="button" class="close" data-dismiss="alert" style="color: red;">X</button>
+                    {{ obj.name }}
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="messages">
+        NO GROUP FOUND
+    </div>
+
+    {% endif %}
+
+
+    <hr/>
+    <hr/>
+    <div class="button-container">
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.paginator.num_pages %}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            {% endif %}
+        </span>
+
+        <span class="m-5 p-5">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+ 
+        <span class="m-5 p-5">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+
+    </div>
+    {% endblock %}

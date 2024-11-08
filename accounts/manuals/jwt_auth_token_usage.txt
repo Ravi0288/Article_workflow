@@ -1,0 +1,30 @@
+
+1: create user 
+    for example create a user with name 'ravi' having email id as ravi@example.com:
+    python manage.py createsuperuser --username ravi --email ravi@example.com
+
+2: generate token for created user
+    python manage.py drf_create_token ravi
+
+3: Note the generated key.
+   This token will be stick to the created user and any time if the user comes with the token he will be authorized.
+   example token: 76b110f39b644533f6c88dd0ec3428912ad4c754
+
+
+4: Make a get call with the authorization key using Postman
+    Enter the url in address bar and go to Authorization tab and select
+        type = Api key 
+        key = Authorization, 
+
+        value = Token 76b110f39b644533f6c88dd0ec3428912ad4c754
+
+        Add to = Header
+
+
+5: Use python requests module to access the api:
+
+    import requests
+
+    url = 'http://127.0.0.1:8000/....endpoint.../'
+    headers = {'Authorization': 'Token 9054f7aa9305e012b3c2300408c3dfdf390fcddf'}
+    r = requests.get(url, headers=headers)
