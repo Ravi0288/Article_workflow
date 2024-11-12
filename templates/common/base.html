@@ -51,6 +51,14 @@
                 <a href="{% url 'download-from-chorus-api' %}" style="color: white;">Chorus API</a>
                 <a href="{% url 'migrate-to-step-2' %}" style="color: white;">Migrate to Step 2</a>
                 <a href="{% url 'migrate-to-step-3' %}" style="color: white;">Migrate to Step 3</a>
+                <a href="{% url 'user-create' %}">Create User</a>
+                <a href="{% url 'group-create' %}">Create Group</a>
+                <a href="{% url 'user-list' %}">List Users</a>
+                <a href="{% url 'group-list' %}">List Groups</a>
+                <a href="{% url 'create-authorization' %}">Authorization</a>
+                <a href="{% url 'provider-access-report' %}" style="color: white;">Access Report</a>
+                <a href="{% url 'backlog-report' %}" style="color: white;">Backlog Report</a>
+
                 {% block menu %}
                 {% endblock %}
             </div>
