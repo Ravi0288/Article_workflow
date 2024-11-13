@@ -92,6 +92,13 @@
             {% endif %}
         </span>
 
+        <span class="m-5 p-5">
+            <form action="{% url 'export-provider-delivery-report' %}" method="get">
+                <button type="submit" name="type" value="csv" class="btn btn-primary">Export as CSV</button>
+                <button type="submit" name="type" value="excel" class="btn btn-primary">Export as Excel</button>
+            </form>
+        </span>
+
     </div>
     <!-- <small> ** 'Over due in days' prefixed with minus (-) means that the due date to execute the provider is already passed by given number of days</small> -->
     {% endblock %}

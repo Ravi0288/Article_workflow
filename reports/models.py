@@ -19,7 +19,7 @@ class Provider_access_report(models.Model):
         db_table = 'Provider_access_report'
 
 
-class Provider_delivery_report(models.Model):
+class Provider_backlog_report(models.Model):
     id = models.AutoField(primary_key=True)
     provider = models.CharField(blank=True, null=True, max_length=50) 
     acronym = models.CharField(blank=True, null=True, max_length=50)
@@ -29,7 +29,7 @@ class Provider_delivery_report(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Provider_delivery_report'
+        db_table = 'Provider_backlog_report'
 
 
 
