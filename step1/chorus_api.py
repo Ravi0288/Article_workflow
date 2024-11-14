@@ -196,8 +196,6 @@ def download_from_chorus_api(request):
             print(provider.last_error_message)
 
 
-
-    # return Response("processs executed successfully")
     if err:
         context = {
             'heading' : 'Message',
