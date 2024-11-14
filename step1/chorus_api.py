@@ -207,7 +207,7 @@ def download_from_chorus_api(request):
     elif succ:
         context = {
             'heading' : 'Message',
-            'message' : f'''Chorus API process executed successfully. Total {len(publisher)} record saved.'''
+            'message' : f'''Chorus API process executed successfully. Total {len(publisher)} publisher found.'''
         }
 
     else:
