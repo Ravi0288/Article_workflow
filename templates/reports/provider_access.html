@@ -37,14 +37,14 @@
                     <div class="row">
                         <div class="col-2"> {{ row.provider }} </div>
                         <div class="col-2"> {{ row.acronym }} </div>
+                        <div class="col-1"> {{ row.overdue_in_days }} </div>
                         <div class="col-1"> {{ row.frequency }} </div>
-                        <div class="col-1"> {{ row.over_due_in_days }} </div>
-                        <div class="col-1"> {{ row.date1 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date2 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date3 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date4 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date5 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date6 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date1 }} </div>
+                        <div class="col-1"> {{ row.date2 }} </div>
+                        <div class="col-1"> {{ row.date3 }} </div>
+                        <div class="col-1"> {{ row.date4 }} </div>
+                        <div class="col-1"> {{ row.date5 }} </div>
+                        <div class="col-1"> {{ row.date6 }} </div>
                     </div>
                 </div>
             {% else %}
@@ -52,14 +52,14 @@
                     <div class="row">
                         <div class="col-2"> {{ row.provider }} </div>
                         <div class="col-2"> {{ row.acronym }} </div>
+                        <div class="col-1"> {{ row.overdue_in_days }} </div>
                         <div class="col-1"> {{ row.frequency }} </div>
-                        <div class="col-1"> {{ row.Over_due_in_days }} </div>
-                        <div class="col-1"> {{ row.date1 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date2 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date3 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date4 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date5 |date:"d/m/Y h:i A" }} </div>
-                        <div class="col-1"> {{ row.date6 |date:"d/m/Y h:i A" }} </div>
+                        <div class="col-1"> {{ row.date1 }} </div>
+                        <div class="col-1"> {{ row.date2 }} </div>
+                        <div class="col-1"> {{ row.date3 }} </div>
+                        <div class="col-1"> {{ row.date4 }} </div>
+                        <div class="col-1"> {{ row.date5 }} </div>
+                        <div class="col-1"> {{ row.date6 }} </div>
                     </div>
                 </div>
             {% endif %}

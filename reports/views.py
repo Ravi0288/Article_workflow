@@ -7,13 +7,15 @@ import csv
 import openpyxl
 from rest_framework.views import APIView
 from django.http import HttpResponse
+from datetime import datetime
 
 
-# Utility function to remove timezone info from a datetime object
-def remove_timezone(dt):
-    if dt and dt.tzinfo:
-        return dt.replace(tzinfo=None)
-    return dt
+# function to format the date
+def format_date(date_str):
+        if date_str:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+            return date_obj.strftime('%Y-%m-%d')  # Format date as string in 'yyyy-mm-dd'
+        return None
 
 
 # This will show Provider access report in tabular format in UI
@@ -67,12 +69,12 @@ class ProviderDeliveryReportExportView(APIView):
         queryset = Provider_access_report.objects.all()
         for record in queryset:
             writer.writerow([record.provider, record.acronym, record.frequency, record.overdue_in_days,
-                            remove_timezone(record.date1).strftime('%Y-%m-%d') if record.date1 else None, 
-                            remove_timezone(record.date2).strftime('%Y-%m-%d') if record.date2 else None, 
-                            remove_timezone(record.date3).strftime('%Y-%m-%d') if record.date3 else None, 
-                            remove_timezone(record.date4).strftime('%Y-%m-%d') if record.date4 else None, 
-                            remove_timezone(record.date5).strftime('%Y-%m-%d') if record.date5 else None, 
-                            remove_timezone(record.date6).strftime('%Y-%m-%d') if record.date6 else None
+                            format_date(record.date1),
+                            format_date(record.date2),
+                            format_date(record.date3),
+                            format_date(record.date4),
+                            format_date(record.date5),
+                            format_date(record.date6)
                             ])
         
         return response
@@ -92,12 +94,12 @@ class ProviderDeliveryReportExportView(APIView):
         queryset = Provider_access_report.objects.all()
         for record in queryset:
             ws.append([record.provider, record.acronym, record.frequency, record.overdue_in_days,
-                            remove_timezone(record.date1).strftime('%Y-%m-%d') if record.date1 else None, 
-                            remove_timezone(record.date2).strftime('%Y-%m-%d') if record.date2 else None, 
-                            remove_timezone(record.date3).strftime('%Y-%m-%d') if record.date3 else None, 
-                            remove_timezone(record.date4).strftime('%Y-%m-%d') if record.date4 else None, 
-                            remove_timezone(record.date5).strftime('%Y-%m-%d') if record.date5 else None, 
-                            remove_timezone(record.date6).strftime('%Y-%m-%d') if record.date6 else None
+                            format_date(record.date1),
+                            format_date(record.date2),
+                            format_date(record.date3),
+                            format_date(record.date4),
+                            format_date(record.date5),
+                            format_date(record.date6)
                         ])
 
         # Create a file-like object to hold the data
