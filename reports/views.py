@@ -67,12 +67,12 @@ class ProviderDeliveryReportExportView(APIView):
         queryset = Provider_access_report.objects.all()
         for record in queryset:
             writer.writerow([record.provider, record.acronym, record.frequency, record.overdue_in_days,
-                            remove_timezone(record.date1).strftime('%Y-%m-%d %H:%M:%S') if record.date1 else None, 
-                            remove_timezone(record.date2).strftime('%Y-%m-%d %H:%M:%S') if record.date2 else None, 
-                            remove_timezone(record.date3).strftime('%Y-%m-%d %H:%M:%S') if record.date3 else None, 
-                            remove_timezone(record.date4).strftime('%Y-%m-%d %H:%M:%S') if record.date4 else None, 
-                            remove_timezone(record.date5).strftime('%Y-%m-%d %H:%M:%S') if record.date5 else None, 
-                            remove_timezone(record.date6).strftime('%Y-%m-%d %H:%M:%S') if record.date6 else None
+                            remove_timezone(record.date1).strftime('%Y-%m-%d') if record.date1 else None, 
+                            remove_timezone(record.date2).strftime('%Y-%m-%d') if record.date2 else None, 
+                            remove_timezone(record.date3).strftime('%Y-%m-%d') if record.date3 else None, 
+                            remove_timezone(record.date4).strftime('%Y-%m-%d') if record.date4 else None, 
+                            remove_timezone(record.date5).strftime('%Y-%m-%d') if record.date5 else None, 
+                            remove_timezone(record.date6).strftime('%Y-%m-%d') if record.date6 else None
                             ])
         
         return response
@@ -92,12 +92,12 @@ class ProviderDeliveryReportExportView(APIView):
         queryset = Provider_access_report.objects.all()
         for record in queryset:
             ws.append([record.provider, record.acronym, record.frequency, record.overdue_in_days,
-                            remove_timezone(record.date1).strftime('%Y-%m-%d %H:%M:%S') if record.date1 else None, 
-                            remove_timezone(record.date2).strftime('%Y-%m-%d %H:%M:%S') if record.date2 else None, 
-                            remove_timezone(record.date3).strftime('%Y-%m-%d %H:%M:%S') if record.date3 else None, 
-                            remove_timezone(record.date4).strftime('%Y-%m-%d %H:%M:%S') if record.date4 else None, 
-                            remove_timezone(record.date5).strftime('%Y-%m-%d %H:%M:%S') if record.date5 else None, 
-                            remove_timezone(record.date6).strftime('%Y-%m-%d %H:%M:%S') if record.date6 else None
+                            remove_timezone(record.date1).strftime('%Y-%m-%d') if record.date1 else None, 
+                            remove_timezone(record.date2).strftime('%Y-%m-%d') if record.date2 else None, 
+                            remove_timezone(record.date3).strftime('%Y-%m-%d') if record.date3 else None, 
+                            remove_timezone(record.date4).strftime('%Y-%m-%d') if record.date4 else None, 
+                            remove_timezone(record.date5).strftime('%Y-%m-%d') if record.date5 else None, 
+                            remove_timezone(record.date6).strftime('%Y-%m-%d') if record.date6 else None
                         ])
 
         # Create a file-like object to hold the data
