@@ -50,22 +50,17 @@ def filter_publisher_data(data):
 
 
 def save_files(publishers,api):
-    state = True
-    current_date = datetime.datetime.now().strftime('%Y-%m-%d')
     publishers = [12,13]
+    processed = created = updated = 0
     for item in publishers:
         # access the url
-        # response = requests.get(url['url'],params=params, headers=headers)
         response = requests.get(f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/{item}")
         if response.status_code == 200:
             data = response.json()
             if data.get('items', None):
                 # iterate to each json object
-                # i=0
                 for content in data['items']:
-                    # i=+1
-                    # if(i>2):
-                    #     break
+                    processed += 1
                     doi = content['DOI']
                     # prepare properties
                     file_name = os.path.join(str(item), doi.replace('/','_') + '.json')
@@ -104,6 +99,7 @@ def save_files(publishers,api):
                             qs[0].is_content_changed = True
                             file_name = str(qs[0].id) + '.' + file_name.split('.')[-1]
                             qs[0].file_content.save(file_name, _file)
+                            updated += 1
 
                     else:
                         # Getting size using getsizeof() method
@@ -120,9 +116,10 @@ def save_files(publishers,api):
                         # save file
                         file_name = str(x.id) + '.' + file_name.split('.')[-1]
                         x.file_content.save(file_name, _file)
+                        created += 1
 
     
-    return True
+    return processed, created, updated
 
 
 
@@ -134,6 +131,7 @@ def download_from_chorus_api(request):
     err = []
     succ = []
     publisher = []
+    processed = created = updated = 0
     # Send a GET request to the URL.
     # query and fetch available submission api's
     due_for_download = Provider_meta_data_API.objects.filter(
@@ -177,7 +175,7 @@ def download_from_chorus_api(request):
                 publisher.extend(filter_publisher_data(data['publishers']))
 
             if len(publisher):
-                save_files(publisher, api)
+                processed, created, updated = save_files(publisher, api)
 
             provider = api.provider
             provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
@@ -203,15 +201,19 @@ def download_from_chorus_api(request):
         }
 
     elif succ:
+        unchanged = processed - (created - updated)
         context = {
             'heading' : 'Message',
-            'message' : f'''Chorus API process executed successfully. Total {len(publisher)} publisher found.'''
+            'message' : f'''Chorus API synced successfully. 
+                        Total {processed} record found, 
+                        {created} new records created, 
+                        {updated} records updated. {unchanged} records skipped as no chnages found unchanged from our saved records.'''
         }
 
     else:
         context = {
             'heading' : 'Message',
-            'message' : 'Chorus API process executed successfully. No pending chorus api action found'
+            'message' : 'Chorus API synced successfully. No pending Chorus API found to sync.'
         }
 
     return render(request, 'common/dashboard.html', context=context)
