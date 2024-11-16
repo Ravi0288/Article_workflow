@@ -132,16 +132,13 @@ def download_from_chorus_api(request):
     succ = []
     publisher = []
     processed = created = updated = 0
-    # Send a GET request to the URL.
-    # query and fetch available submission api's
+    # query and fetch available chorus api's
     due_for_download = Provider_meta_data_API.objects.filter(
         api_meta_type="Chorus", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
         ).exclude(provider__in_production=False)
-    per_page = 100
-    start_from_page = 0
-    headers= {
-        'Content-type' : 'json'
-    }
+
+    # per_page = 100
+    # start_from_page = 0
     # iterate to all the available chorus apis
     for api in due_for_download:
         # # this code is written as per existing logic.
@@ -163,6 +160,11 @@ def download_from_chorus_api(request):
         #         start_from_page += 1
         #     else:
         #         break
+
+        headers= {
+            'Content-type' : 'json',
+            'Authorization': f'''Bearer {api.site_token}'''
+        }
 
         response = requests.get(
             f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/",
@@ -191,13 +193,10 @@ def download_from_chorus_api(request):
             provider.save()
             err.append(api.provider.official_name)
 
-            print(provider.last_error_message)
-
-
     if err:
         context = {
             'heading' : 'Message',
-            'message' : f'''Chorus API exited with error. Error message: {provider.last_error_message}'''
+            'message' : f'''Chorus API exited with error. Error message: {err}'''
         }
 
     elif succ:
