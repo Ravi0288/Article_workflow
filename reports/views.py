@@ -18,6 +18,13 @@ def format_date(date_str):
         return None
 
 
+# function to fill custom value to overdue_in_days fields
+def format_overdue_days(data):
+    if data >= 0:
+        return 'On Schedule'
+    else:
+        return '0'
+
 # This will show Provider access report in tabular format in UI
 @login_required
 @csrf_exempt
@@ -68,7 +75,7 @@ class ProviderDeliveryReportExportView(APIView):
 
         queryset = Provider_access_report.objects.all()
         for record in queryset:
-            writer.writerow([record.provider, record.acronym, record.frequency, record.overdue_in_days,
+            writer.writerow([record.provider, record.acronym, record.frequency, format_overdue_days(record.overdue_in_days),
                             format_date(record.date1),
                             format_date(record.date2),
                             format_date(record.date3),
@@ -93,7 +100,7 @@ class ProviderDeliveryReportExportView(APIView):
         # Add data
         queryset = Provider_access_report.objects.all()
         for record in queryset:
-            ws.append([record.provider, record.acronym, record.frequency, record.overdue_in_days,
+            ws.append([record.provider, record.acronym, record.frequency, format_overdue_days(record.overdue_in_days),
                             format_date(record.date1),
                             format_date(record.date2),
                             format_date(record.date3),
@@ -164,7 +171,7 @@ class backlogReportExportView(APIView):
 
         queryset = Provider_backlog_report.objects.all()
         for record in queryset:
-            writer.writerow([record.provider, record.acronym, record.overdue_in_days,
+            writer.writerow([record.provider, record.acronym, format_overdue_days(record.overdue_in_days),
                              record.archive_in_backlog, record.articles_waiting])
         
         return response
@@ -183,7 +190,7 @@ class backlogReportExportView(APIView):
         # Add data
         queryset = Provider_backlog_report.objects.all()
         for record in queryset:
-            ws.append([record.provider, record.acronym, record.overdue_in_days,
+            ws.append([record.provider, record.acronym, format_overdue_days(record.overdue_in_days),
                        record.archive_in_backlog, record.articles_waiting])
 
         # Create a file-like object to hold the data
