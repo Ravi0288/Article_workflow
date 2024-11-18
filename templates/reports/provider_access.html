@@ -19,7 +19,7 @@
             <button type="button" class="close" data-dismiss="alert" style="color: red;"></button>
             <div class="row">
                 <div class="col-2"> Provider</div>
-                <div class="col-2"> Acronym</div>
+                <div class="col-2"> Working Name</div>
                 <div class="col-1"> Overdue in Days</div>
                 <div class="col-1"> Frequency</div>
                 <div class="col-1"> date 1</div>
@@ -37,7 +37,12 @@
                     <div class="row">
                         <div class="col-2"> {{ row.provider }} </div>
                         <div class="col-2"> {{ row.acronym }} </div>
-                        <div class="col-1"> {{ row.overdue_in_days }} </div>
+                        <div class="col-1"> {% if row.overdue_in_days >= 0 %}
+                                On Schedule
+                            {% else %}
+                                0
+                            {% endif %} 
+                        </div>
                         <div class="col-1"> {{ row.frequency }} </div>
                         <div class="col-1"> {{ row.date1 }} </div>
                         <div class="col-1"> {{ row.date2 }} </div>
@@ -52,7 +57,12 @@
                     <div class="row">
                         <div class="col-2"> {{ row.provider }} </div>
                         <div class="col-2"> {{ row.acronym }} </div>
-                        <div class="col-1"> {{ row.overdue_in_days }} </div>
+                        <div class="col-1"> {% if row.overdue_in_days >= 0 %}
+                                    On Schedule
+                                {% else %}
+                                    0
+                                {% endif %} 
+                        </div>
                         <div class="col-1"> {{ row.frequency }} </div>
                         <div class="col-1"> {{ row.date1 }} </div>
                         <div class="col-1"> {{ row.date2 }} </div>

@@ -19,7 +19,7 @@
             <button type="button" class="close" data-dismiss="alert" style="color: red;"></button>
             <div class="row">
                 <div class="col-3"> Provider</div>
-                <div class="col-3"> Acronym</div>
+                <div class="col-3"> Working Name</div>
                 <div class="col-2"> Overdue in Days</div>
                 <div class="col-2"> Archive in Backlog</div>
                 <div class="col-2"> Article Waiting</div>
@@ -32,7 +32,12 @@
                     <div class="row">
                         <div class="col-3"> {{ row.provider }} </div>
                         <div class="col-3"> {{ row.acronym }} </div>
-                        <div class="col-2"> {{ row.overdue_in_days }} </div>
+                        <div class="col-2"> {% if row.overdue_in_days >= 0 %}
+                                                On Schedule
+                                            {% else %}
+                                                0
+                                            {% endif %} 
+                        </div>
                         <div class="col-2"> {{ row.archive_in_backlog }} </div>
                         <div class="col-2"> {{ row.articles_waiting }} </div>
                     </div>
@@ -42,7 +47,12 @@
                     <div class="row">
                         <div class="col-3"> {{ row.provider }} </div>
                         <div class="col-3"> {{ row.acronym }} </div>
-                        <div class="col-2"> {{ row.overdue_in_days }} </div>
+                        <div class="col-2"> {% if row.overdue_in_days >= 0 %}
+                                                    On Schedule
+                                                {% else %}
+                                                    0
+                                                {% endif %} 
+                            </div>
                         <div class="col-2"> {{ row.archive_in_backlog }} </div>
                         <div class="col-2"> {{ row.articles_waiting }} </div>
                     </div>
