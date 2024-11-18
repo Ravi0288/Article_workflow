@@ -87,7 +87,7 @@ class ProviderDeliveryReportExportView(APIView):
         ws.title = "Provider Access Report"
 
         # Add headers
-        headers = ['ID', 'Provider', 'Acronym', 'Frequency', 'Overdue in Days', 'Date-1', 'Date-2', 'Date-3', 'Date-4', 'Date-5', 'Date-6']
+        headers = ['Provider', 'Acronym', 'Frequency', 'Overdue in Days', 'Date-1', 'Date-2', 'Date-3', 'Date-4', 'Date-5', 'Date-6']
         ws.append(headers)
 
         # Add data
