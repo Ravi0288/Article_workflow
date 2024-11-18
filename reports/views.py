@@ -64,7 +64,7 @@ class ProviderDeliveryReportExportView(APIView):
         response['Content-Disposition'] = 'attachment; filename="Provider_access_report.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['Provider', 'Acronym', 'Frequency', 'Overdue in Days', 'Date-1', 'Date-2', 'Date-3', 'Date-4', 'Date-5', 'Date-6'])
+        writer.writerow(['Provider', 'Working Name', 'Frequency', 'Overdue in Days', 'Date-1', 'Date-2', 'Date-3', 'Date-4', 'Date-5', 'Date-6'])
 
         queryset = Provider_access_report.objects.all()
         for record in queryset:
@@ -87,7 +87,7 @@ class ProviderDeliveryReportExportView(APIView):
         ws.title = "Provider Access Report"
 
         # Add headers
-        headers = ['Provider', 'Acronym', 'Frequency', 'Overdue in Days', 'Date-1', 'Date-2', 'Date-3', 'Date-4', 'Date-5', 'Date-6']
+        headers = ['Provider', 'Working Name', 'Frequency', 'Overdue in Days', 'Date-1', 'Date-2', 'Date-3', 'Date-4', 'Date-5', 'Date-6']
         ws.append(headers)
 
         # Add data
@@ -160,7 +160,7 @@ class backlogReportExportView(APIView):
         response['Content-Disposition'] = 'attachment; filename="Provider_backlog_report.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['Provider', 'Acronym', 'Overdue in Days', 'Archive in Backlog', 'Articles Waiting'])
+        writer.writerow(['Provider', 'Working Name', 'Overdue in Days', 'Archive in Backlog', 'Articles Waiting'])
 
         queryset = Provider_backlog_report.objects.all()
         for record in queryset:
@@ -177,7 +177,7 @@ class backlogReportExportView(APIView):
         ws.title = "Provider Delivery Report"
 
         # Add headers
-        headers = ['Provider', 'Acronym', 'Overdue in Days', 'Archive in Backlog', 'Articles Waiting']
+        headers = ['Provider', 'Working Name', 'Overdue in Days', 'Archive in Backlog', 'Articles Waiting']
         ws.append(headers)
 
         # Add data
