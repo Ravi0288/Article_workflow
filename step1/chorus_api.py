@@ -54,7 +54,23 @@ def save_files(publishers,api):
     processed = created = updated = 0
     for item in publishers:
         # access the url
-        response = requests.get(f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/{item}")
+        try:
+            response = requests.get(f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/{item}")
+            response.raise_for_status()
+        except requests.exceptions.SSLError as ssl_err:
+            if "EOF occurred in violation of protocol" in str(ssl_err):
+                print("SSL error: Unexpected EOF occurred in violation of protocol.")
+            else:
+                print(f"SSL error occurred: {ssl_err}")
+            continue
+        except requests.exceptions.Timeout:
+            print(f"The request timed out.")
+            continue
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred : {e}")
+            continue
+        
+
         if response.status_code == 200:
             data = response.json()
             if data.get('items', None):
