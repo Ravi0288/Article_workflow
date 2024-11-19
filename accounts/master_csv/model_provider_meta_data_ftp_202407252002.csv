@@ -1,9 +1,0 @@
-"id","server","protocol","site_path","is_password_required","account","password","provider_id","pull_switch"
-1,ftp.springernature.com,SFTP,/data/in,1,sftpari,gAAAAABmoglJd2q3eeldtSiHYf0lHS-mMA3_VbDk52HOm38zzeRS48xr2rOouyHudLXh2_VDe45h2zyLsZm68Rn7cCaBmAlnlw==,4,
-2,xfer.wiley.com,FTP,/,1,SerialSubscriptions@ars.usda.gov,gAAAAABmogleMOAAUP6bwPwWzOCT7PzH9nTCizF_7EYrcLOCC9OWYNnKY0w_I0hV7zRv5oQrXEPjfiaCfdfIk09mqSKTERpBxg==,5,
-3,ftp.publish.csiro.au,FTP,/,1,usdaftp,gAAAAABmUaIUff9nPWdrsa57OZ0LNjIDVDHctbrv0McSEvXhATP_knS5ZRUdaBIdwFbEetZgkVUhdV7bgIRHqlczSG9dBgCdZw==,6,
-4,ftp.apop.allenpress.com,FTP,/,1,bio1deposit,gAAAAABmUaIt7uVKgaIG_nD8wre0ZTUPKgjRtAxYpb-wFcTqfeTAPbQk_BwhARYv0DS3Y6Y4x4ifxvAWG3gWmZzPQG1fb_LoOg==,7,
-5,ftp.hindawi.com,FTP,/,1,AGRICOLA,gAAAAABmUaJHMbcV2taDiX6mR1cPiSnCA9hFLhKe4PL-2OD-kOFaHFujFby2voOcP6dAcCXv9N-x9Q_rxw62dpWCQU1YCMQRCQ==,8,
-6,ftp2.rsc.org,FTP,/,1,NAL,gAAAAABmUaJlOXxVqE3SCTdFwjt-xD2ct32b58W3v0LfSM6hQAEzyS5okGr9X1CSr7Y3gtO6MzScWTmOPk8NtT0odNUEu-BpIQ==,9,
-7,ftp.liebertpub.com,SFTP,/,1,Agricola,gAAAAABmUaKEw_cmNw2SRuVkbSsUCvay8EXUxA9EqE_f7tBVwlOmKSoJzcF777_8KFjLZ2OAzZdcTgAFtUq7NDz4r4s05baaAQ==,10,
-8,ftp.degruyter.de,FTP,/,1,Agricola,gAAAAABmUaKf1Z_cHpG-vS2Anoo3lixwglg4ons1DTdEZ9w2RdsyhqNLCDIgCwDQsTW8esP7E2acTL36yUhtKP7gwrQmWkRNww==,11,

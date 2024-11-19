@@ -126,8 +126,9 @@ def create_new_object(source, row, note, content):
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
-    # x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
-    x = (source.replace('\\','/')).split('/')[-1]
+    x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
+    # x = (source.replace('\\','/')).split('/')[-1]
+    # file_name = row.
     try:
         if isinstance(content, str) and content.startswith("'"):
             content = content[1:].encode('utf-8')
@@ -149,7 +150,7 @@ def create_new_object(source, row, note, content):
 
     except Exception as e:
         # print(content)
-        print(e, "error occurred while creating file")
+        print("Couldn't create file : ", e)
 
     return True
 
@@ -321,7 +322,7 @@ def migrate_to_step2(request):
     # return the result to UI
     context = {
         'heading' : 'Message',
-        'message' : 'All valid archives successfully migrated to Step-2, and files are stored in Article directory.'
+        'message' : 'All valid archives successfully migrated to Step-2, and files were stored in Article directory.'
     }
 
     return render(request, 'common/dashboard.html', context=context)

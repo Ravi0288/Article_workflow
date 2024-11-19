@@ -206,7 +206,7 @@ def download_from_chorus_api(request):
             'message' : f'''Chorus API synced successfully. 
                         Total {processed} record found, 
                         {created} new records created, 
-                        {updated} records updated. {unchanged} records skipped as no chnages found unchanged from our saved records.'''
+                        {updated} records updated. {unchanged} records found unchanged.'''
         }
 
     else:
