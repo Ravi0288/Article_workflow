@@ -321,7 +321,7 @@ def migrate_to_step2(request):
     # return the result to UI
     context = {
         'heading' : 'Message',
-        'message' : 'All valid archives successfully migrated to Step-2, and files were stored in Article directory.'
+        'message' : 'All valid archive files successfully migrated to step two, and files were stored in Article directory.'
     }
 
     return render(request, 'common/dashboard.html', context=context)
