@@ -41,7 +41,7 @@ def get_file_path(instance, filename):
     filename = str(instance.id) + '.' + extenstion
     return '{0}/{1}/{2}'.format(
         'ARCHIVE',
-        instance.provider.official_name,
+        (instance.provider.working_name).replace(' ','_'),
         filename
         )
 

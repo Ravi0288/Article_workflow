@@ -184,17 +184,14 @@ def download_from_chorus_api(request):
             provider.status = 'success'
             provider.last_error_message = 'N/A'
             provider.save()
-            succ.append(api.provider.official_name)
+            succ.append(api.provider.working_name)
 
         else:
             provider = api.provider
             provider.status = 'failed'
             provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
             provider.save()
-            err.append(api.provider.official_name)
-
-            print(provider.last_error_message)
-
+            err.append(api.provider.working_name)
 
 
     # return Response("processs executed successfully")

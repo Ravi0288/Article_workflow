@@ -83,14 +83,14 @@ def download_file(sftp_connection, article, item):
 
 # Function to download folder with its content, convert to zip, and save to table
 def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
-    temp_dir = '/ai/metadata/' + item.provider.official_name
+    temp_dir = '/ai/metadata/' + (item.provider.working_name).replace(' ', '_')
     state = download_directory_from_sftp(sftp_connection, article, temp_dir)
 
     print("downloading directory as zip")
 
     if state:
         article = article + '.zip'
-        zip_name = item.provider.official_name
+        zip_name = (item.provider.working_name).replace(' ', '_')
         # Create a temporary directory to store downloaded files
         if not os.path.exists(temp_dir):
             os.makedirs(temp_dir)
@@ -224,7 +224,7 @@ def download_from_sftp(request):
                 provider.next_due_date = datetime.datetime.now(tz=pytz.utc) + datetime.timedelta(days=item.provider.minimum_delivery_fq)
                 provider.save()
                 provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occurred while saving {err_count} file/directories. '''
-                succ.append(item.provider.official_name)
+                succ.append(item.provider.working_name)
 
         except Exception as e:
             print("Error occurred:", e)
@@ -232,7 +232,7 @@ def download_from_sftp(request):
             provider.status = 'failed'
             provider.last_error_message = str(e)
             provider.save()
-            err.append(item.provider.official_name)
+            err.append(item.provider.working_name)
             continue
 
     context = {

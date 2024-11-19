@@ -95,12 +95,12 @@ def download_file(ftp_connection, article, item):
 # function to download folder with its content and convert to zip, finally save to table
 def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
     print("zipping content")
-    temp_dir = '/ai/metadata/' + item.provider.official_name
+    temp_dir = '/ai/metadata/' + (item.provider.working_name).replace(' ', '_')
     state = download_directory_from_ftp(ftp_connection, article, temp_dir)
 
     if state:
         article = article + '.zip'
-        zip_name = item.provider.official_name
+        zip_name = (item.provider.working_name).replace(' ', '_')
         # Create a temporary directory to store downloaded files
         if not os.path.exists(temp_dir):
             os.makedirs(temp_dir)
@@ -222,7 +222,7 @@ def download_from_ftp(request):
                     article_library.append(file_name)
 
             # Showing list of successfull providers for view purpose
-            succ.append(item.provider.official_name)
+            succ.append(item.provider.working_name)
 
             # if files found than start download
             print(f''' Total {len(article_library)} to be downloaded''')
@@ -283,7 +283,7 @@ def download_from_ftp(request):
             provider.status = 'failed'
             provider.last_error_message = err_msg
             provider.save()
-            err.append(item.provider.official_name)
+            err.append(item.provider.working_name)
 
 
 
