@@ -120,14 +120,14 @@ def create_new_object(source, row, note, content):
     qs.last_step = 2
     qs.last_status = 'active'
     qs.note = note
-    qs.PID = "A locally assign identifier"
+    qs.PID = "A locally assigned identifier"
     qs.MMSID = "The article's Alma identifier"
     qs.provider_rec = "identifier"
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
-    x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
-    
+    # x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
+    x = (source.replace('\\','/')).split('/')[-1]
     try:
         if isinstance(content, str) and content.startswith("'"):
             content = content[1:].encode('utf-8')
