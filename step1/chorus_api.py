@@ -51,7 +51,9 @@ def filter_publisher_data(data):
 
 def save_files(publishers,api):
     # publishers = [12,13]  # filter the list of required publishers if needed
-    processed = created = updated = 0
+    processed = 0
+    created = 0
+    updated = 0
     for item in publishers:
         # access the url
         try:
