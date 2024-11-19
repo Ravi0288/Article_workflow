@@ -60,7 +60,7 @@ class ProviderDeliveryReportExportView(APIView):
             # prepare the error to be rendered on HTML page
             context = {
                 'title' : 'Provider Access Report',
-                'page_obj' : "Error Occured"
+                'page_obj' : "Error Occurred"
             }
 
             return render(request, 'reports/provider_access.html', context=context)
@@ -155,7 +155,7 @@ class backlogReportExportView(APIView):
             # prepare the error to be rendered on HTML page
             context = {
                 'title' : 'Provider Backlog Report',
-                'page_obj' : "Error Occured"
+                'page_obj' : "Error Occurred"
             }
 
             return render(request, 'reports/backlog.html', context=context)

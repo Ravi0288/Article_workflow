@@ -126,9 +126,9 @@ def create_new_object(source, row, note, content):
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
-    x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
-    # x = (source.replace('\\','/')).split('/')[-1]
-    # file_name = row.
+    # x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
+    x = (source.replace('\\','/')).split('/')[-1]
+
     try:
         if isinstance(content, str) and content.startswith("'"):
             content = content[1:].encode('utf-8')
@@ -146,10 +146,10 @@ def create_new_object(source, row, note, content):
                         content = (content[0][0][1:]).encode('utf-8')
                     else:
                         content = (content[0][0]).encode('utf-8')
+
         qs.article_file.save(x, ContentFile(content))
 
     except Exception as e:
-        # print(content)
         print("Couldn't create file : ", e)
 
     return True
@@ -182,11 +182,11 @@ def unzip_file(source, destination, row):
     except zipfile.BadZipFile:
         # Handle the case where the file is not a valid ZIP file
         # os.remove(source)
-        print("Error occurred while unizipping the zipped file can't be unzipped. Please check the file", source)
+        print("Error occurred while unizipping the file. Zipped file may be corrupt / invalid. Source : ", source)
         return False
     except Exception as e:
         # Handle any other exceptions
-        print("exception occurred", e, source)
+        print("exception occurred : ", e, ". Source : ", source)
         return False
 
     return True
@@ -249,7 +249,6 @@ def migrate_to_step2(request):
     # Looping through each object in the query set
     for archive_row in archive_records:
         source = archive_row.file_content.path
-        print(source, "##############")
         # If record is of type zip than sequence of action will be 
         # 1: Unzip the content
         # 2: Read each file, if json, copy it, if xml, process it 
@@ -285,7 +284,7 @@ def migrate_to_step2(request):
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                print("replied by splitter function", data[1])
+                                print("Splitter function returned error : ", data[1])
                                 create_invalid_xml_json(new_source, "Invalid", file_name, file_name.split('.')[-1])
 
 
@@ -313,7 +312,7 @@ def migrate_to_step2(request):
 
         # if file is other than xml/json/zip, ignore the file
         else:
-            print("Unsupported file type found", source)
+            print("Unsupported file type found. Source : ", source)
 
         # update the row status
         update_archive(archive_row)

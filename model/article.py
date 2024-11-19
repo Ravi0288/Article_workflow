@@ -37,7 +37,7 @@ def get_invalid_file_path(instance, filename):
     return '{0}/{1}'.format('INVALID_FILES',filename)
 
 def get_article_file_path(instance, filename):
-    return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).split(' ', '_') ,filename)
+    return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_') ,filename)
 
 
 # model class to archive the error message that occures during processing / reading the xml/json file

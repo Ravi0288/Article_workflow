@@ -39,7 +39,7 @@ def get_article_dois_by_funder_id(funder_id, api, num_rows=1000):
                 if doi:
                     dois.append(doi)
             except Exception as e:
-                print(e)
+                print("Error occurred : ", e)
 
     else:
         provider = api.provider
@@ -116,10 +116,10 @@ def save_files(dois, api):
                 print(f"SSL error occurred: {ssl_err}")
             continue
         except requests.exceptions.Timeout:
-            print(f"The request timed out after")
+            print(f"The request timed out.")
             continue
         except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
+            print(f"An error occurred : {e}")
             continue
 
 
@@ -181,10 +181,10 @@ def save_files(dois, api):
                     created += 1
 
             except Exception as e:
-                print(e)
+                print("Error occurred : " , e)
                 err += 1
         else:
-            print("Response code:", response.status_code,", reason :", response.reason)
+            print("Response code : ", response.status_code, ", reason : ", response.reason)
             err += 1
     return created, updated, err
 
