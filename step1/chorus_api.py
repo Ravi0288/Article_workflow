@@ -54,21 +54,25 @@ def save_files(publishers,api):
     processed = 0
     created = 0
     updated = 0
+    error_in_publishers = 0
     for item in publishers:
         # access the url
         try:
             response = requests.get(f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/{item}")
             response.raise_for_status()
         except requests.exceptions.SSLError as ssl_err:
+            error_in_publishers += 1
             if "EOF occurred in violation of protocol" in str(ssl_err):
                 print("SSL error: Unexpected EOF occurred in violation of protocol.")
             else:
                 print(f"SSL error occurred: {ssl_err}")
             continue
         except requests.exceptions.Timeout:
+            error_in_publishers += 1
             print(f"The request timed out.")
             continue
         except requests.exceptions.RequestException as e:
+            error_in_publishers += 1
             print(f"An error occurred : {e}")
             continue
         
@@ -137,7 +141,7 @@ def save_files(publishers,api):
                         created += 1
 
     
-    return processed, created, updated
+    return processed, created, updated, error_in_publishers
 
 
 
@@ -149,7 +153,7 @@ def download_from_chorus_api(request):
     err = []
     succ = []
     publisher = []
-    processed = created = updated = 0
+    processed = created = updated = error_in_publishers = 0
     # query and fetch available chorus api's
     due_for_download = Provider_meta_data_API.objects.filter(
         api_meta_type="Chorus", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
@@ -195,7 +199,7 @@ def download_from_chorus_api(request):
                 publisher.extend(filter_publisher_data(data['publishers']))
 
             if len(publisher):
-                processed, created, updated = save_files(publisher, api)
+                processed, created, updated, error_in_publishers = save_files(publisher, api)
 
             provider = api.provider
             provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
@@ -219,12 +223,14 @@ def download_from_chorus_api(request):
 
     elif succ:
         unchanged = processed - (created - updated)
+        total_publishers = len(publisher)
         context = {
             'heading' : 'Message',
             'message' : f'''Chorus API synced successfully. 
                         Total {processed} record found, 
                         {created} new records created, 
-                        {updated} records updated. {unchanged} records either found unchanged or skipped.'''
+                        {updated} records updated. {unchanged} records either found unchanged or skipped. 
+                        {total_publishers} publishers found and Error occurred in {error_in_publishers} publishers while fetching data.'''
         }
 
     else:
