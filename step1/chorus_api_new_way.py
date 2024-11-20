@@ -19,7 +19,7 @@ def save_files(data, api, processed, created, updated, error_in_publishers):
         processed += 1
         doi = content['DOI']
         # prepare properties
-        file_name = os.path.join(doi.replace('/','_').replace(".", '-') + '.json')
+        file_name = doi.replace('/','_').replace('//','_').replace('\\','_') + '.json'
         file_type = '.json'
         file_size = sys.getsizeof(content)
         # Serialize JSON object to a string
@@ -59,7 +59,7 @@ def save_files(data, api, processed, created, updated, error_in_publishers):
                 qs[0].file_size = file_size
                 qs[0].status = "waiting"
                 qs[0].is_content_changed = True
-                file_name = str(qs[0].id) + '.' + file_name.split('.')[-1]
+                file_name = str(qs[0].id) + '.json'
                 qs[0].file_content.save(file_name, _file)
                 updated += 1
 
@@ -76,7 +76,7 @@ def save_files(data, api, processed, created, updated, error_in_publishers):
             )
 
             # save file
-            file_name = str(x.id) + '.' + file_name.split('.')[-1]
+            file_name = str(x.id) + '.json'
             x.file_content.save(file_name, _file)
             created += 1
 
