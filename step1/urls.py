@@ -9,6 +9,7 @@ from .submission_api import download_from_submission_api
 from .crossref_api import download_from_crossref_api
 from .chorus_api import download_from_chorus_api
 from .action_deposites import file_transfer_from_deposites
+from .chorus_api_new_way import download_from_chorus_api_new
 
 
 
@@ -27,5 +28,6 @@ urlpatterns = [
     path('download-from-submission-api/', download_from_submission_api, name='download-from-submission-api'),
     path('download-from-crossref-api/', download_from_crossref_api, name='download-from-crossref-api'),
     path('download-from-chorus-api/', download_from_chorus_api, name='download-from-chorus-api'),
+    path('download-from-chorus-api-new/', download_from_chorus_api_new, name='download-from-chorus-api-new'),
     path('action-deposites/', file_transfer_from_deposites, name='action-deposites'),
 ]

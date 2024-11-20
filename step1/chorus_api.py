@@ -17,34 +17,11 @@ from html2text import html2text
 from django.views.decorators.csrf import csrf_exempt
 
 
-# function to zip folder with content
-def zip_folder(folder_path):
-    zip_file_path = f"{folder_path}.zip"
-    with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, dirs, files in os.walk(folder_path):
-            for file in files:
-                file_path = os.path.join(root, file)
-                arcname = os.path.relpath(file_path, folder_path)
-                zipf.write(file_path, arcname)
-
-# function to iterate through each folder inside folder and call zip_function
-def zip_folders(root_folder):
-    for root, dirs, files in os.walk(root_folder):
-        for dir_name in dirs:
-            folder_path = os.path.join(root, dir_name)
-            zip_folder(folder_path)
-
-
-
 # function to filter dataset
 def filter_publisher_data(data):
     result = []
     for item in data:
         x = item['member_id']
-        # obj = {
-        #     'content-type' : item['link'][0]['content-type'],
-        #     'url' : item['link'][0]['URL']
-        # }
         result.append(x)
     return result
 
@@ -102,11 +79,14 @@ def save_files(publishers,api):
                     if qs.exists():
                         # if record exists, compare existing content with received content.
                         fname = qs[0].file_content.path
-                        # fname = os.path.join(settings.CHORUS_ROOT, qs[0].file_content.name)
                         # read the existing file
-                        f = open(fname, 'r')
-                        jsonified_content = json.load(f)
-                        f.close()
+                        # Exception is added to ensure in case previous file is corrupt or deleted the freash file will be updated
+                        try:
+                            f = open(fname, 'r')
+                            jsonified_content = json.load(f)
+                            f.close()
+                        except Exception as e:
+                            jsonified_content = {}
 
                         # compare the contents
                         if jsonified_content == content:
@@ -114,7 +94,10 @@ def save_files(publishers,api):
                         else:
                             # if existing content differs with received content, than
                             # remove the exisitng file and update the record
-                            os.remove(fname)
+                            try:
+                                os.remove(fname)
+                            except:
+                                pass
                             # save file
                             qs[0].file_size = file_size
                             qs[0].status = "waiting"
@@ -159,30 +142,8 @@ def download_from_chorus_api(request):
         api_meta_type="Chorus", provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
         ).exclude(provider__in_production=False)
 
-    # per_page = 100
-    # start_from_page = 0
     # iterate to all the available chorus apis
     for api in due_for_download:
-        # # this code is written as per existing logic.
-        # while True:
-        #     params = {
-        #         "limit" : per_page,
-        #         "offset" : per_page * start_from_page
-        #     }
-
-        #     response = requests.get(
-        #         f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/histories/current",
-        #         headers=headers,
-        #         params=params
-        #         )
-        #     data = response.json()
-        #     print(len(data))
-        #     if response.status_code == 200 and len(data):
-        #         publisher.extend(filter_publisher_data(data['publishers']))
-        #         start_from_page += 1
-        #     else:
-        #         break
-
         headers= {
             'Content-type' : 'json',
             'Authorization': f'''Bearer {api.site_token}'''
@@ -192,7 +153,6 @@ def download_from_chorus_api(request):
             f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/",
             headers=headers
             )
-        
         if response.status_code == 200:
             data = response.json()
             if response.status_code == 200 and len(data):

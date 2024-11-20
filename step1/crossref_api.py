@@ -139,10 +139,13 @@ def save_files(dois, api):
                     # fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
                     fname = qs[0].file_content.path
                     
-                    # read the existing files
-                    f = open(fname, 'r')
-                    jsonified_content = json.load(f)
-                    f.close()
+                  # read the existing files
+                    try:
+                        f = open(fname, 'r')
+                        jsonified_content = json.load(f)
+                        f.close()
+                    except Exception as e:
+                        jsonified_content = {}
 
                     # compare the contents, If content are unchanged pass
                     if jsonified_content == data:
@@ -151,7 +154,10 @@ def save_files(dois, api):
                     # if content found changed, update the record
                     else:
                         # if existing content differs with received content, remove the exisitng file and update the record
-                        os.remove(fname)
+                        try:
+                            os.remove(fname)
+                        except:
+                            pass
                         file_size = sys.getsizeof(response.json())
                         # save file
                         qs[0].file_size = file_size
