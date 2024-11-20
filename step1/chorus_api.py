@@ -1,16 +1,13 @@
 import requests
-
 from step1.archive import Archive
 from step1.provider import Provider_meta_data_API
 import pytz
 import datetime
 import os
-from django.conf import settings
 import json
 import sys
 from io import BytesIO
 from django.core.files import File
-import zipfile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from html2text import html2text
@@ -26,12 +23,7 @@ def filter_publisher_data(data):
     return result
 
 
-def save_files(publishers,api):
-    # publishers = [12,13]  # filter the list of required publishers if needed
-    processed = 0
-    created = 0
-    updated = 0
-    error_in_publishers = 0
+def save_files(publishers, api, processed, created, updated, error_in_publishers):
     for item in publishers:
         # access the url
         try:
@@ -159,7 +151,7 @@ def download_from_chorus_api(request):
                 publisher.extend(filter_publisher_data(data['publishers']))
 
             if len(publisher):
-                processed, created, updated, error_in_publishers = save_files(publisher, api)
+                processed, created, updated, error_in_publishers = save_files(publisher, api, processed, created, updated, error_in_publishers)
 
             provider = api.provider
             provider.last_time_received = datetime.datetime.now(tz=pytz.utc)

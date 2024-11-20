@@ -1,16 +1,13 @@
 import requests
-
 from step1.archive import Archive
 from step1.provider import Provider_meta_data_API
 import pytz
 import datetime
 import os
-from django.conf import settings
 import json
 import sys
 from io import BytesIO
 from django.core.files import File
-import zipfile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from html2text import html2text
