@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # function to create / update the json objects
 def save_files(data, api, processed, created, updated, error_in_publishers):
+    print("inside save file function")
     for content in data:
         processed += 1
         doi = content['DOI']
@@ -80,7 +81,7 @@ def save_files(data, api, processed, created, updated, error_in_publishers):
             x.file_content.save(file_name, _file)
             created += 1
 
-    
+    print("exiting save file function")
     return processed, created, updated, error_in_publishers
 
 
@@ -120,30 +121,39 @@ def download_from_chorus_api_new(request):
                     "offset" : per_page * start_from_page
                 }
 
-                response = requests.get(
-                    f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/histories/current",
-                    headers=headers,
-                    params=params
-                    )
-                data = response.json()
-                data=data['items']
+                try:
+                    response = requests.get(
+                        f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/histories/current",
+                        headers=headers,
+                        params=params
+                        )
+                except Exception as e:
+                    print(e, "error occured in api, This is line number 131")
+                    
+                if response.status_code == 200:
+                    print("success response received")
+                    data = response.json()
+                    data=data.get('items', None)
+                    if data:
+                        start_from_page += 1
+                    else:
+                        break
 
-                processed, created, updated, error_in_publishers = save_files(data, api, processed, created, updated, error_in_publishers)
+                    processed, created, updated, error_in_publishers = save_files(data, api, processed, created, updated, error_in_publishers)
 
-                if len(data):
-                    start_from_page += 1
-                else:
-                    break
 
-            provider = api.provider
-            provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
-            provider.status = 'success'
-            provider.last_error_message = 'N/A'
-            provider.save()
-            succ.append(api.provider.working_name)
+                    provider = api.provider
+                    provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
+                    provider.status = 'success'
+                    provider.last_error_message = 'N/A'
+                    provider.save()
+                    succ.append(api.provider.working_name)
             
-
+                else:
+                    print("error", response.status_code)
+                    
         except Exception as e:
+            print("error occured in api https://api.chorusaccess.org/v1.1/agencies/api.identifier_code/histories/current")
             provider = api.provider
             provider.status = 'failed'
             provider.last_error_message = e
