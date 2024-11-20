@@ -24,6 +24,7 @@ def filter_publisher_data(data):
 
 
 def save_files(publishers, api, processed, created, updated, error_in_publishers):
+    print("in save files function")
     for item in publishers:
         # access the url
         try:
@@ -45,7 +46,6 @@ def save_files(publishers, api, processed, created, updated, error_in_publishers
             print(f"An error occurred : {e}")
             continue
         
-
         if response.status_code == 200:
             data = response.json()
             if data.get('items', None):
@@ -141,31 +141,42 @@ def download_from_chorus_api(request):
             'Authorization': f'''Bearer {api.site_token}'''
         }
 
-        response = requests.get(
-            f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/",
-            headers=headers
-            )
+        try:
+            response = requests.get(
+                f"https://api.chorusaccess.org/v1.1/agencies/{api.identifier_code}/publishers/",
+                headers=headers
+                )
+        except Exception as e:
+            print(e, "Error occured while requesting https://api.chorusaccess.org/v1.1/agencies/api.identifier_code/publishers/ url")
+        
         if response.status_code == 200:
             data = response.json()
+            print("response 200 and response converted to json")
             if response.status_code == 200 and len(data):
                 publisher.extend(filter_publisher_data(data['publishers']))
-
+            print("publishers list extended")
             if len(publisher):
+                print("publishers found")
                 processed, created, updated, error_in_publishers = save_files(publisher, api, processed, created, updated, error_in_publishers)
+                print("data saved successfully")
 
+            print("updating api")
             provider = api.provider
             provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
             provider.status = 'success'
             provider.last_error_message = 'N/A'
             provider.save()
             succ.append(api.provider.working_name)
+            print("api updated successfully")
 
         else:
+            print("error occured", response.status_code)
             provider = api.provider
             provider.status = 'failed'
             provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
             provider.save()
             err.append(api.provider.working_name)
+            print("api updated with failed status")
 
     if err:
         context = {
