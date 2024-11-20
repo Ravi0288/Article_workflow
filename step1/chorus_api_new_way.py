@@ -151,9 +151,9 @@ def download_from_chorus_api_new(request):
             
                 else:
                     print("error", response.status_code)
-                    
+
         except Exception as e:
-            print("error occured in api https://api.chorusaccess.org/v1.1/agencies/api.identifier_code/histories/current")
+            print("error occured in api https://api.chorusaccess.org/v1.1/agencies/api.identifier_code/histories/current", e)
             provider = api.provider
             provider.status = 'failed'
             provider.last_error_message = e
