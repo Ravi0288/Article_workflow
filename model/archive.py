@@ -94,7 +94,7 @@ class Archive(models.Model):
                     default=False, 
                     help_text="Flag to maintain if the existing content is changed and file_content is updated"
                     )
-    deposite_path = models.TextField(default=ARCHIVE_PATH)
+    deposit_path = models.TextField(default=ARCHIVE_PATH)
 
     # def __str__(self) -> str:
     #     return 'File Name on Source :' + self.file_name_on_source + ', Local Storage File name :' + self.file_name_on_local_storage

@@ -57,7 +57,7 @@ def file_transfer_from_deposites(request):
                         file_type = file.split('.')[-1]
                         file_size = os.path.getsize(file_path)
 
-                        x = Archive.objects.filter(deposite_path=file_path)
+                        x = Archive.objects.filter(deposit_path=file_path)
                         
                         # if file already stored update else created new file
                         if x.exists():
@@ -88,7 +88,7 @@ def file_transfer_from_deposites(request):
                                 file_type = file_type,
 
                                 # deposit path will store source address
-                                deposite_path = file_path
+                                deposit_path = file_path
                             )
                             file_name = str(x.id) + '.' + file.split('.')[-1]
                             with open(file_path, 'rb') as f:

@@ -80,10 +80,11 @@ class Article_attributes(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    deposite_path = models.TextField(default=ARTICLE_PATH)
+    deposit_path = models.TextField(default=ARTICLE_PATH)
     is_content_changed = models.BooleanField(
                     default=False, 
                     help_text="Flag to maintain if the existing content is changed and file_content is updated")
+    record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
 
     # def save(self, *args, **kwargs):
     #     if self.file_name_on_local_storage in ('', None):
@@ -97,8 +98,9 @@ class Article_attributes(models.Model):
 def get_json_file_path(instance, filename):
     return (settings.PROCESSED_ARTICLES + '\\' + filename)
 
+
 # jsonified article attribute model
-class Jsonified_articles(models.Model):
+class Article(models.Model):
 
     article_file = models.FileField(upload_to=get_json_file_path, 
                                     storage=OverWriteStorage(), 
@@ -123,5 +125,6 @@ class Jsonified_articles(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    deposite_path = models.TextField(default=PROCESSED_ARTICLE)
+
+    record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
 

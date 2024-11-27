@@ -1,11 +1,9 @@
 from rest_framework.decorators import api_view
-from django.conf import settings
-import os
 import xmltodict
 import json
 from .common.find_doi import find_doi
 from .common.find_title import find_title
-from model.article import Article_attributes, Jsonified_articles
+from model.article import Article_attributes, Article
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
@@ -56,7 +54,7 @@ def process_file(article, new_file_path):
 def jsonify_xml_file(request):
     articles = Article_attributes.objects.filter(last_status='active')
     for article in articles:
-        qs=Jsonified_articles.objects.filter(article_attributes=article.id)
+        qs=Article.objects.filter(article_attributes=article.id)
         if(qs.exists()):
             new_file = (article.article_file.name[:-4] + '.json').replace('ARTICLES','PROCESSED_ARTICLES')
             # create new record
@@ -81,7 +79,7 @@ def jsonify_xml_file(request):
             file_content = process_file(article, new_file)
 
             if file_content:
-                Jsonified_articles.create(
+                Article.create(
                     article_file = new_file,
                     journal = '',
                     title = find_title(file_content),

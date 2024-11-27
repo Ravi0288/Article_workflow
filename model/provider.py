@@ -68,7 +68,7 @@ PROVIDER_TYPE = (
     ('DEPOSIT', 'DEPOSIT'),
 )
  
-deposite_file_action = (
+deposit_file_action = (
     ('MOVE', 'MOVE'),
     ('COPY', 'COPY')
 )
@@ -255,10 +255,10 @@ class Provider_meta_data_API(models.Model):
 # Model to list all the API's with attributes
 class Provider_meta_data_deposit(models.Model):
     provider = models.ForeignKey(Providers, 
-                                 related_name="deposite_provider", 
+                                 related_name="deposit_provider", 
                                  on_delete=models.DO_NOTHING,
                                  help_text="Select Provider name"
                                  ) 
     source = models.TextField(default='/', help_text='Enter path of source')
     # destination = models.TextField(help_text='Enter path of destination')
-    # operation_type = models.CharField(max_length=10, default='MOVE', choices=deposite_file_action, help_text='Select if data will be moved or copied')
+    # operation_type = models.CharField(max_length=10, default='MOVE', choices=deposit_file_action, help_text='Select if data will be moved or copied')
