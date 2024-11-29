@@ -45,7 +45,7 @@ CHOICES= (
 
 # delivery method choices
 DELIVERY_METHOD = (
-    ('Deposite','Deposite'),
+    ('Deposit','Deposit'),
     ('FTP','FTP'),
     ('SFTP','SFTP'),
     ('API','API')
