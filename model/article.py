@@ -80,7 +80,6 @@ class Article_attributes(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    deposit_path = models.TextField(default=ARTICLE_PATH)
     is_content_changed = models.BooleanField(
                     default=False, 
                     help_text="Flag to maintain if the existing content is changed and file_content is updated")
@@ -125,6 +124,5 @@ class Article(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-
     record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
 
