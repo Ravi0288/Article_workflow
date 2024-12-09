@@ -167,18 +167,14 @@ def download_from_sftp(request):
         # Try to connect to SFTP, if error occurs, update the status to Provider_meta_data_FTP
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys = None
-        print("sftp started for", item)
         try:
-            print("connecting")
             with pysftp.Connection(item.server, username=item.account, password=item.pswd, cnopts=cnopts) as sftp_connection:
                 # Read the destination location
                 sftp_connection.cwd(item.site_path)  # Change directory
                 article_library = []
-                print("listing")
                 sftp_connection.listdir()  # List directory contents
                 files = sftp_connection.listdir_attr(item.site_path)
                 for f in files:
-                    print("saving file", f.filename)
                     file_name = f.filename
                     file_size = f.st_size
                     last_modified = f.st_mtime
@@ -197,7 +193,6 @@ def download_from_sftp(request):
                     except Archive.DoesNotExist:
                         article_library.append(file_name)
 
-                print("all files listed")
                 # If records found, explore inside.
                 if article_library:
                     # Iterate through each file
@@ -216,7 +211,6 @@ def download_from_sftp(request):
                             print(f"Error processing article {article}: {e}")
                             err_count += 1
 
-                print("for loop ended. updating provider status")
                 # Update the success status in Provider_meta_data_FTP
                 provider = item.provider
                 provider.last_time_received = datetime.datetime.now(tz=pytz.utc)
@@ -225,6 +219,15 @@ def download_from_sftp(request):
                 provider.save()
                 provider.last_error_message = f''' {succ_count} files/directories saved successfully and error occurred while saving {err_count} file/directories. '''
                 succ.append(item.provider.working_name)
+
+        except (pysftp.ConnectionException, pysftp.CredentialException, pysftp.SSHException) as e:
+            print("Error occurred:", e)
+            provider = item.provider
+            provider.status = 'failed'
+            provider.last_error_message = str(e)
+            provider.save()
+            err.append(item.provider.working_name)
+            continue
 
         except Exception as e:
             print("Error occurred:", e)
