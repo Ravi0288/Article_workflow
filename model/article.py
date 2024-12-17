@@ -20,7 +20,7 @@ STATUS = (
 )
 
 ARTICLE_PATH = settings.ARTICLE_ROOT
-PROCESSED_ARTICLE = settings.PROCESSED_ARTICLE
+JSONIFIED_ARTICLE = settings.JSONIFIED_ARTICLE
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -95,7 +95,7 @@ class Article_attributes(models.Model):
 
 # Function to return the storage file path.
 def get_json_file_path(instance, filename):
-    return (settings.PROCESSED_ARTICLES + '\\' + filename)
+    return (settings.JSONIFIED_ARTICLE + '\\' + filename)
 
 
 # jsonified article attribute model

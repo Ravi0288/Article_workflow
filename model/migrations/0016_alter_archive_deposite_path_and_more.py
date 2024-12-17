@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='jsonified_articles',
             name='deposite_path',
-            field=models.TextField(default='/ai/metadata/PROCESSED_ARTICLES'),
+            field=models.TextField(default='/ai/metadata/JSONIFIED_ARTICLES'),
         ),
     ]

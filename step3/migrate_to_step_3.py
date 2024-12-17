@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 
-
-def process_file(article, new_file_path):
+# Function to read xml / json file in utf-8 mode. This function will return the content of the file
+def read_and_return_file_content(article, new_file_path):
     if article.article_file.name.endswith('.xml'):
         try:
             # open file
@@ -32,34 +32,36 @@ def process_file(article, new_file_path):
                 json.dump(json_data, f)
                 file_content = f.read()
             f.close()
-
-            # with open(new_file_path, 'r') as f:
-            #     file_content = f.read()
-            # f.close()
-
             return file_content
+        
         except Exception as e:
             article.note = e
             article.save()
             return False
 
     else:
-        with open(article.article_file.path, 'r') as f:
+        with open(article.article_file.path, 'r', encoding='utf-8') as f:
             file_content = f.read()
             f.close()
+        return file_content        
 
 
 @login_required
 @api_view(['GET'])
 def jsonify_xml_file(request):
-    articles = Article_attributes.objects.filter(last_status='active')
-    for article in articles:
+    step2_articles = Article_attributes.objects.filter(last_status='active').filter(provider__in_production=True)
+    for article in step2_articles:
         qs=Article.objects.filter(article_attributes=article.id)
-        if(qs.exists()):
-            new_file = (article.article_file.name[:-4] + '.json').replace('ARTICLES','PROCESSED_ARTICLES')
-            # create new record
-            file_content = process_file(article, new_file)
 
+        # if file already exists, compare and update
+        if(qs.exists()):
+            new_file = (article.article_file.name[:-4] + '.json').replace('ARTICLES','JSONIFIED_ARTICLES')
+
+            # create new record
+            # read_and_return_file_content function to be updated with Chuck functions
+            file_content = read_and_return_file_content(article, new_file)
+
+            # field values to be updated from the function Citation.step3_info()
             qs.article_file = new_file,
             qs.journal = '',
             qs.title = find_title(file_content),
@@ -68,15 +70,17 @@ def jsonify_xml_file(request):
             qs.note = 'ok',
             qs.DOI = find_doi(file_content),
             qs.save()
+            ########################
 
             article.last_status = 'completed'
-            article.last_step = 2 
+            article.last_step = 3 
             article.save()
 
+        # if file is new, create new record
         else:
-            new_file = (article.article_file.name[:-4] + '.json').replace('ARTICLES','PROCESSED_ARTICLES')
+            new_file = (article.article_file.name[:-4] + '.json').replace('ARTICLES','JSONIFIED_ARTICLES')
             # create new record
-            file_content = process_file(article, new_file)
+            file_content = read_and_return_file_content(article, new_file)
 
             if file_content:
                 Article.create(
@@ -89,11 +93,12 @@ def jsonify_xml_file(request):
                     DOI = find_doi(file_content),
                 )
                 article.last_status = 'completed'
+                article.last_step = 3
                 article.save()
 
     context = {
         'heading' : 'Message',
-        'message' : 'All valid articles successfully migrated to step-3'
+        'message' : 'All valid articles from step 2 successfully migrated to step-3'
     }
 
     return render(request, 'common/dashboard.html', context=context)

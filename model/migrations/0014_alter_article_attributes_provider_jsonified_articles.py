@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('start_date', models.DateTimeField(auto_now=True, help_text='The date the article object was created')),
                 ('current_date', models.DateTimeField(auto_now_add=True, help_text='The date finished the last stage')),
                 ('end_date', models.DateTimeField(help_text='The data the article is staged for Alma', null=True)),
-                ('deposite_path', models.TextField(default=pathlib.PureWindowsPath('E:/NAL-USDA/NAL_LIBRARY_SYSTEM/PROCESSED_ARTICLES'))),
+                ('deposite_path', models.TextField(default=pathlib.PureWindowsPath('E:/NAL-USDA/NAL_LIBRARY_SYSTEM/JSONIFIED_ARTICLES'))),
                 ('article_attributes', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='article_attribute', to='model.article_attributes')),
             ],
         ),
