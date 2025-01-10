@@ -80,6 +80,7 @@ class Providers(models.Model):
     in_production = models.BooleanField(default=True)
     provider_type = models.CharField(max_length=8, default='FTP', choices=PROVIDER_TYPE)
     source_schema = models.CharField(max_length=50, blank=True, null=True)
+    source_schema_acronym = models.CharField(max_length=50, blank=True, null=True)
     delivery_method = models.CharField(max_length=50, blank=True, null=True, choices=DELIVERY_METHOD)
     article_switch = models.BooleanField(default=False)
     requirement_override = models.BooleanField(default=False)

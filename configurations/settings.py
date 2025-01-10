@@ -266,7 +266,7 @@ TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
 
 # data once processed from step two will be stored here
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
-JSONIFIED_ARTICLE = '/ai/metadata/JSONIFIED_ARTICLES'
+PROCESSED_ARTICLES = '/ai/metadata/PROCESSED_ARTICLES'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 
 # Default primary key field type

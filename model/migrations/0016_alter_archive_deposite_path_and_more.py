@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
             field=models.TextField(default='/ai/metadata/ARTICLES'),
         ),
         migrations.AlterField(
-            model_name='jsonified_articles',
+            model_name='PROCESSED_ARTICLES',
             name='deposite_path',
-            field=models.TextField(default='/ai/metadata/JSONIFIED_ARTICLES'),
+            field=models.TextField(default='/ai/metadata/PROCESSED_ARTICLES'),
         ),
     ]
