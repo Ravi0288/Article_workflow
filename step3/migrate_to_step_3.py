@@ -27,6 +27,8 @@ def migrate_to_step3(request):
         )
     print(articles.count(), " Article found to be migrated to step 3")
 
+    counter=0
+
     if not articles.exists():
         context = {
             'heading' : 'Message',
@@ -62,9 +64,11 @@ def migrate_to_step3(request):
             item.save()
             print("last status of article is updated. Going to next iteration")
 
+            counter +=1
+ 
         context = {
             'heading' : 'Message',
-            'message' : 'All valid articles from Step 2 have been successfully migrated to Step 3'
+            'message' : f'''All valid articles "(total " {counter} from step 2 have been successfully migrated to Step 3'''
         }
 
     return render(request, 'common/dashboard.html', context=context)
