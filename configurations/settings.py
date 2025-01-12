@@ -157,20 +157,21 @@ DATABASES = {
         'HOST': DB_HOST,
         'PORT': DB_PORT,
     },
-    # Handle DB is accesed directly. And the code is written in handles.py file in core python
-    'pid_db': {
-        'ENGINE': PID_DB_ENGINE,
-        'NAME': PID_DB_NAME,
-        'USER': PID_DB_USER,
-        'PASSWORD': PID_DB_PASSWORD,
-        'HOST': PID_DB_HOST,
-        'PORT': PID_DB_PORT,
-    }
+
+    # # Handle DB is accesed directly. And the code is written in handles.py file in core python
+    # 'pid_db': {
+    #     'ENGINE': PID_DB_ENGINE,
+    #     'NAME': PID_DB_NAME,
+    #     'USER': PID_DB_USER,
+    #     'PASSWORD': PID_DB_PASSWORD,
+    #     'HOST': PID_DB_HOST,
+    #     'PORT': PID_DB_PORT,
+    # }
 }
 
 
 # add router file for database settings
-DATABASE_ROUTERS = ['configurations.db_router.DB_route']
+# DATABASE_ROUTERS = ['configurations.db_router.DB_route']
 
 # specify the app_name for django to decide what database to access for what table
 DATABASE_APPS_MAPPING = {'wf_data': 'default',
@@ -266,7 +267,7 @@ TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
 
 # data once processed from step two will be stored here
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
-PROCESSED_ARTICLES = '/ai/metadata/PROCESSED_ARTICLES'
+# PROCESSED_ARTICLES = '/ai/metadata/PROCESSED_ARTICLES'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 
 # Default primary key field type

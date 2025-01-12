@@ -1,7 +1,7 @@
 from step1.archive import Archive
 from rest_framework.serializers import ModelSerializer
 from rest_framework.viewsets import ModelViewSet
-from model.article import Unreadable_files, Article_attributes
+from model.article import Unreadable_files, Article
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -33,16 +33,16 @@ class Unreadable_files_viewset(ModelViewSet):
 
 
 # Article attribute serializer
-class Article_attributes_serializer(ModelSerializer):
+class Article_serializer(ModelSerializer):
     class Meta:
-        model = Article_attributes
+        model = Article
         fields = '__all__'
 
 
 # Article attribute viewset
-class Article_attributes_viewset(ModelViewSet):
-    queryset = Article_attributes.objects.all()
-    serializer_class = Article_attributes_serializer
+class Article_viewset(ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = Article_serializer
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -113,7 +113,7 @@ def update_archive(row):
 # Create new Article
 def create_new_object(source, row, note, content):
     # Create new record
-    qs = Article_attributes()
+    qs = Article()
     qs.type_of_record = 'article'
     qs.provider = row.provider
     qs.archive = row
@@ -156,7 +156,7 @@ def create_new_object(source, row, note, content):
 
 # Update Archive
 def update_article(article, note='', content=''):
-    article.is_content_changed = True
+    # article.is_content_changed = True
     article.last_status = 'active'
     article.last_step = 2
     if note:
@@ -199,13 +199,13 @@ def process_success_result_from_splitter_function(data, source, destination, arc
     # if single record found
     if len(data[0]) == 1:
         try:
-            article = Article_attributes.objects.get(article_file=source)
+            article = Article.objects.get(article_file=source)
             # compare content of the file line by line. If change found update the file else do nothinf
             with open(article.article_file.path, 'r', encoding='utf-8') as f1:
                 if compare_files_line_by_line(f1,data[0]):
                     shutil.copy(source, destination.replace('TEMP_DOWNLOAD', ''))
                     update_article(article=article)
-        except Article_attributes.DoesNotExist:
+        except Article.DoesNotExist:
             create_new_object(source, archive_row, note="", content=data[0])
 
 
@@ -219,12 +219,12 @@ def process_success_result_from_splitter_function(data, source, destination, arc
             else:
                 continue
             try:
-                article = Article_attributes.objects.get(article_file=source)
+                article = Article.objects.get(article_file=source)
                 # compare content of the file line by line. If change found update the file else do nothing
                 with open(article.article_file.path, 'r', encoding='utf-8') as f1:
                     if compare_files_line_by_line(f1,line):
                         update_article(article=article, content=line)
-            except Article_attributes.DoesNotExist:
+            except Article.DoesNotExist:
                 create_new_object(indexed_file_name, archive_row, note="", content=line)
 
 

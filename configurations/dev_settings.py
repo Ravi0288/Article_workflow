@@ -128,14 +128,14 @@ DATABASES = {
             'NAME':  BASE_DIR / 'article.sqlite3',
         },
 
-        'pid_db': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME':  BASE_DIR / 'pid.sqlite3',
-        }
+        # 'pid_db': {
+        #     'ENGINE': 'django.db.backends.sqlite3',
+        #     'NAME':  BASE_DIR / 'pid.sqlite3',
+        # }
 }
 
 # add router file for database settings
-DATABASE_ROUTERS = ['configurations.db_router.DB_route']
+# DATABASE_ROUTERS = ['configurations.db_router.DB_route']
 
 # specify the app_name for django to decide what database to access for what table
 DATABASE_APPS_MAPPING = {
@@ -214,7 +214,7 @@ SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION'
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
 CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS' 
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
-PROCESSED_ARTICLES = '/ai/metadata/PROCESSED_ARTICLES'
+# PROCESSED_ARTICLES = '/ai/metadata/PROCESSED_ARTICLES'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 
 

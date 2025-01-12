@@ -2,7 +2,7 @@ from django.contrib import admin
 from .archive import Archive
 from model.provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
 from mail_service.models import Email_history, Email_notification
-from .article import Unreadable_files, Article_attributes, Article
+from .article import Unreadable_files, Article
 
 class ArchivedArticleAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
@@ -67,7 +67,7 @@ class EmailNotification(admin.ModelAdmin):
     list_filter = ('email_from', 'email_to', 'email_subject', 'email_body')
 
 
-class ArticleAttributesAdmin(admin.ModelAdmin):
+class ArticleAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
     list_display = [
                     'article_file', 'journal', 'title', 
@@ -79,13 +79,13 @@ class ArticleAttributesAdmin(admin.ModelAdmin):
     search_fields = ('article_file', 'journal', 'title','type_of_record')
 
 
-class ArticleAdmin(admin.ModelAdmin):
-    empty_value_display = 'N/A'
-    list_display = [
-                    'article_file', 'journal', 'title', 
-                    'type_of_record', 'article_attributes', 
-                    'last_step', 'last_status',
-                    ]
+# class ArticleAdmin(admin.ModelAdmin):
+#     empty_value_display = 'N/A'
+#     list_display = [
+#                     'article_file', 'journal', 'title', 
+#                     'type_of_record', 'article_attributes', 
+#                     'last_step', 'last_status',
+#                     ]
 
 class UnreadableFilesAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
@@ -104,6 +104,6 @@ admin.site.register(Fetch_history,  FetchHistoryAdmin)
 # admin.site.register(Email_history, EmailHistoryAdmin)
 # admin.site.register(Email_notification, EmailNotification)
 
-admin.site.register(Article_attributes, ArticleAttributesAdmin)
 admin.site.register(Article, ArticleAdmin)
+# admin.site.register(Article, ArticleAdmin)
 admin.site.register(Unreadable_files, UnreadableFilesAdmin)

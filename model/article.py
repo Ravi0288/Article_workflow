@@ -20,7 +20,7 @@ STATUS = (
 )
 
 ARTICLE_PATH = settings.ARTICLE_ROOT
-PROCESSED_ARTICLES = settings.PROCESSED_ARTICLES
+# PROCESSED_ARTICLES = settings.PROCESSED_ARTICLES
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -53,8 +53,8 @@ class Unreadable_files(models.Model):
 
 
 
-# article attribute model
-class Article_attributes(models.Model):
+# article attribute model Article_attributes
+class Article(models.Model):
 
     article_file = models.FileField(upload_to=get_article_file_path, 
                                     storage=OverWriteStorage(), 
@@ -80,9 +80,9 @@ class Article_attributes(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    is_content_changed = models.BooleanField(
-                    default=False, 
-                    help_text="Flag to maintain if the existing content is changed and file_content is updated")
+    # is_content_changed = models.BooleanField(
+    #                 default=False, 
+    #                 help_text="Flag to maintain if the existing content is changed and file_content is updated")
     record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
 
     # def save(self, *args, **kwargs):
@@ -93,36 +93,36 @@ class Article_attributes(models.Model):
 
 
 
-# Function to return the storage file path.
-def get_json_file_path(instance, filename):
-    return (settings.PROCESSED_ARTICLES + '\\' + filename)
+# # Function to return the storage file path.
+# def get_json_file_path(instance, filename):
+#     return (settings.PROCESSED_ARTICLES + '\\' + filename)
 
 
-# jsonified article attribute model
-class Article(models.Model):
+# # jsonified article attribute model
+# class Article(models.Model):
 
-    article_file = models.FileField(upload_to=get_json_file_path, 
-                                    storage=OverWriteStorage(), 
-                                    help_text="Browse the file"
-                                    )
+#     article_file = models.FileField(upload_to=get_json_file_path, 
+#                                     storage=OverWriteStorage(), 
+#                                     help_text="Browse the file"
+#                                     )
     
-    journal = models.FileField(blank=True, 
-                               null=True, 
-                               help_text="This field value will assigned automatically with the value assigned in article_file"
-                               )
+#     journal = models.FileField(blank=True, 
+#                                null=True, 
+#                                help_text="This field value will assigned automatically with the value assigned in article_file"
+#                                )
 
-    title = models.TextField(blank=True, null=True, help_text="Article title")
-    type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
-    article_attributes = models.ForeignKey(Article_attributes, related_name="article_attribute", on_delete=models.DO_NOTHING)
-    last_step = models.IntegerField(default=3, help_text="Last stage article passed through 1-11")
-    last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
-    note = models.TextField(default="ok", help_text="Note, warning or error note")
-    DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
-    PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
-    MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")
-    provider_rec = models.CharField(max_length=10,null=True, blank=True, help_text="Provider article identifier")
-    start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
-    current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
-    end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
+#     title = models.TextField(blank=True, null=True, help_text="Article title")
+#     type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
+#     article_attributes = models.ForeignKey(Article_attributes, related_name="article_attribute", on_delete=models.DO_NOTHING)
+#     last_step = models.IntegerField(default=3, help_text="Last stage article passed through 1-11")
+#     last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
+#     note = models.TextField(default="ok", help_text="Note, warning or error note")
+#     DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
+#     PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
+#     MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")
+#     provider_rec = models.CharField(max_length=10,null=True, blank=True, help_text="Provider article identifier")
+#     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
+#     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
+#     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
+#     record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
 

@@ -11,9 +11,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='jsonified_articles',
-            name='article_file',
-            field=models.FileField(help_text='Browse the file', storage=model.article.OverWriteStorage(), upload_to=model.article.get_json_file_path),
-        ),
+        # migrations.AlterField(
+        #     model_name='jsonified_articles',
+        #     name='article_file',
+        #     field=models.FileField(help_text='Browse the file', storage=model.article.OverWriteStorage(), upload_to=model.article.get_article_file_path),
+        # ),
     ]

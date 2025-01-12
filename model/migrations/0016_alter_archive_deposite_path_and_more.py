@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
             name='deposite_path',
             field=models.TextField(default='/ai/metadata/ARTICLES'),
         ),
-        migrations.AlterField(
-            model_name='PROCESSED_ARTICLES',
-            name='deposite_path',
-            field=models.TextField(default='/ai/metadata/PROCESSED_ARTICLES'),
-        ),
+        # migrations.AlterField(
+        #     model_name='PROCESSED_ARTICLES',
+        #     name='deposite_path',
+        #     field=models.TextField(default='/ai/metadata/PROCESSED_ARTICLES'),
+        # ),
     ]
