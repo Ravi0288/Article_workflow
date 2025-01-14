@@ -63,13 +63,11 @@ def migrate_to_step3(request):
                 item.last_step = 3 
                 item.save()
                 print("last status of article is updated. Going to next iteration")
+                counter +=1
+                
             except Exception as e:
                 print(e)
                 print("error occured while updating the article. Going to next iteration")
-
-
-
-            counter +=1
  
         context = {
             'heading' : 'Message',
