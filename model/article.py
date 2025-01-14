@@ -76,7 +76,7 @@ class Article(models.Model):
     DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
     PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
     MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")
-    provider_rec = models.CharField(max_length=10,null=True, blank=True, help_text="Provider article identifier")
+    provider_rec = models.TextField(null=True, blank=True, help_text="Provider article identifier")
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")

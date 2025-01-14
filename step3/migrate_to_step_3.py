@@ -23,7 +23,8 @@ def migrate_to_step3(request):
     articles = Article.objects.filter(
         last_status__in=('active', 'failed'),
         provider__in_production=True, 
-        last_step=2
+        last_step=2,
+        provider__in = (2,3) 
         )
     print(articles.count(), " Article found to be migrated to step 3")
 
@@ -43,32 +44,36 @@ def migrate_to_step3(request):
             citation_object, msg_string = mapper.mapper(file_content, item.provider.source_schema) 
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
-            if msg_string != 'successful':
-                print("Mapper function returned = '", msg_string, "'. Skiping this iteration")
+            if msg_string != 'success':
+                print("Mapper function returned = '",msg_string,"'. Skiping this iteration")
                 item.last_status = 'failed'
                 item.save()
                 continue
 
             # if mapper function returns successful result than update the article
-            obj = Citation.step3_info(citation_object)
-            item.journal = '',
-            item.title = obj["title"],
-            item.type_of_record = obj["type"],
-            item.provider_rec = obj["provider_rec"],
-            item.note = None,
-            item.DOI = obj["doi"],
+            try:
+                obj = Citation.step3_info(citation_object)
+                item.title = obj["title"],
+                item.type_of_record = obj["type"],
+                item.provider_rec = obj["provider_rec"],
+                item.note = None,
+                item.DOI = obj["doi"],
+                # Finally update the step2 record status 
+                item.last_status = 'active'
+                item.last_step = 3 
+                item.save()
+                print("last status of article is updated. Going to next iteration")
+            except Exception as e:
+                print(e)
+                print("error occured while updating the article. Going to next iteration")
 
-            # Finally update the step2 record status 
-            item.last_status = 'active'
-            item.last_step = 3 
-            item.save()
-            print("last status of article is updated. Going to next iteration")
+
 
             counter +=1
  
         context = {
             'heading' : 'Message',
-            'message' : f'''All valid articles "(total " {counter} from step 2 have been successfully migrated to Step 3'''
+            'message' : f'''{counter} valid articles from step 2 successfully migrated to Step 3'''
         }
 
     return render(request, 'common/dashboard.html', context=context)
