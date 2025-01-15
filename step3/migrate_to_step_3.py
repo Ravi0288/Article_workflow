@@ -24,8 +24,8 @@ def migrate_to_step3(request):
         last_status__in=('active', 'failed'),
         provider__in_production=True, 
         last_step=2,
-        provider__in = (2,3) 
         )
+        # provider__in = (2,3) 
     print(articles.count(), " Article found to be migrated to step 3")
 
     counter=0
@@ -53,11 +53,11 @@ def migrate_to_step3(request):
             # if mapper function returns successful result than update the article
             try:
                 obj = Citation.step3_info(citation_object)
-                item.title = obj["title"],
-                item.type_of_record = obj["type"],
-                item.provider_rec = obj["provider_rec"],
-                item.note = None,
-                item.DOI = obj["doi"],
+                item.title = obj["title"]
+                item.type_of_record = obj["type"]
+                item.provider_rec = obj["provider_rec"]
+                item.note = None
+                item.DOI = obj["doi"]
                 # Finally update the step2 record status 
                 item.last_status = 'active'
                 item.last_step = 3 
@@ -66,6 +66,7 @@ def migrate_to_step3(request):
                 counter +=1
                 
             except Exception as e:
+                print(item.article_file.path)
                 print(e)
                 print("error occured while updating the article. Going to next iteration")
  
