@@ -25,7 +25,7 @@ def migrate_to_step3(request):
         provider__in_production=True, 
         last_step=2,
         )
-        # provider__in = (2,3) 
+ 
     print(articles.count(), " Article found to be migrated to step 3")
 
     counter=0
@@ -56,7 +56,7 @@ def migrate_to_step3(request):
                 item.title = obj["title"]
                 item.type_of_record = obj["type"]
                 item.provider_rec = obj["provider_rec"]
-                item.note = None
+                item.note = 'N/A'
                 item.DOI = obj["doi"]
                 # Finally update the step2 record status 
                 item.last_status = 'active'
