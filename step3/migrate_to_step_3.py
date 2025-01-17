@@ -1,9 +1,10 @@
-import mapper
+from mapper import mapper
 from rest_framework.decorators import api_view
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from metadata_routines.citation import Citation
+# from metadata_routines.citation import Citation
+from citation import *
 
 
 # Function to read xml / json file in utf-8 mode. This function will return file content
@@ -41,7 +42,7 @@ def migrate_to_step3(request):
             # read and return file content in utf-8 format
             file_content = read_and_return_file_content(item.article_file.path)
             # read and return citation_object
-            citation_object, msg_string = mapper.mapper(file_content, item.provider.source_schema) 
+            citation_object, msg_string = mapper(file_content, item.provider.source_schema) 
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
