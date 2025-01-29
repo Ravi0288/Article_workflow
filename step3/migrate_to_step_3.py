@@ -25,7 +25,7 @@ def migrate_to_step3(request):
         last_status__in=('active', 'failed'),
         provider__in_production=True, 
         last_step=2,
-        # provider__in = (9,10)
+        provider__in = (9,10)
         )
     # provider__in = (9,10) Remove this line when working with all the providers.
  
