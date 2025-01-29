@@ -83,7 +83,7 @@ class Article(models.Model):
     # is_content_changed = models.BooleanField(
     #                 default=False, 
     #                 help_text="Flag to maintain if the existing content is changed and file_content is updated")
-    record = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
+    citation_pickle = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
 
     # def save(self, *args, **kwargs):
     #     if self.file_name_on_local_storage in ('', None):

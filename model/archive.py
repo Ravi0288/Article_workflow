@@ -74,7 +74,7 @@ class Archive(models.Model):
                                     help_text="File size will be assigned automatically"
                                     )
     file_type = models.CharField(max_length=20, 
-                                 help_text="File type will be assigned automatically"
+                                 help_text="This field will store the extension of the file. For example .json, .xml, .zip etc"
                                  )
 
     unique_key = models.CharField(max_length=500, 
