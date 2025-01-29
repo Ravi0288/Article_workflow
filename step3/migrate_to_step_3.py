@@ -25,7 +25,7 @@ def migrate_to_step3(request):
         last_status__in=('active', 'failed'),
         provider__in_production=True, 
         last_step=2,
-        provider__in = (9,10)
+        # provider__in = (9,10)
         )
     # provider__in = (9,10) Remove this line when working with all the providers.
  
@@ -48,7 +48,7 @@ def migrate_to_step3(request):
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
-                print("Mapper function returned = '",msg_string,"'. Skiping this iteration")
+                print("article id: ", item.id ," Mapper function returned: '",msg_string,"'. Skiping this iteration")
                 item.last_status = 'failed'
                 item.save()
                 continue
