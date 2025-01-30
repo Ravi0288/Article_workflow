@@ -11,9 +11,10 @@ import shutil
 import os
 import zipfile
 from django.views.decorators.csrf import csrf_exempt
-# from metadata_routines.splitter import splitter
 from splitter import splitter
 from django.core.files import File
+from django.core.files.storage import default_storage
+
 
 # Unreadable xml file serializer
 class Unreadable_files_serializers(ModelSerializer):
@@ -121,13 +122,9 @@ def create_new_object(source, row, note, content):
     qs.last_step = 2
     qs.last_status = 'active'
     qs.note = note
-    # qs.PID = "A locally assigned identifier"
-    # qs.MMSID = "The article's Alma identifier"
-    # qs.provider_rec = "identifier"
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
-    # x = source.replace('\\','/').replace('ARCHIVE/','').replace('/ai/metadata/TEMP_DOWNLOAD/','').replace('ai/metadata/','').replace('E:/','')
     x = (source.replace('\\','/')).split('/')[-1]
 
     try:
@@ -157,14 +154,18 @@ def create_new_object(source, row, note, content):
 
 # Update Archive
 def update_article(article, note='', content=''):
-    # article.is_content_changed = True
     article.last_status = 'active'
     article.last_step = 2
     if note:
         article.note = note
     if content:
         file_name = article.article_file.name
-        os.remove(article.article_file.path)
+        # delete the old file first
+        # os.remove(article.article_file.path)
+        old_file_path = article.article_file.path
+        if os.path.exists(old_file_path):
+            default_storage.delete(old_file_path)
+
         article.article_file.save(file_name, ContentFile(content))
     else:
         article.save()

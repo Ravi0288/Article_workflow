@@ -3,8 +3,12 @@ from rest_framework.decorators import api_view
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-# from metadata_routines.citation import Citation
 from citation import *
+import pickle
+from io import BytesIO
+from django.core.files import File
+from django.core.files.storage import default_storage
+import os
 
 
 # Function to read xml / json file in utf-8 mode. This function will return file content
@@ -25,7 +29,7 @@ def migrate_to_step3(request):
         last_status__in=('active', 'failed'),
         provider__in_production=True, 
         last_step=2,
-        provider__in = (9,10)
+        provider__in = (2,3)
         )
     # provider__in = (9,10) Remove this line when working with all the providers.
  
@@ -53,7 +57,7 @@ def migrate_to_step3(request):
                 item.save()
                 continue
 
-            # if mapper function returns successful result than update the article
+            # if mapper function returns successful result than update the article, and save the pickel file
             try:
                 obj = Citation.step3_info(citation_object)
                 item.title = obj["title"]
@@ -64,6 +68,26 @@ def migrate_to_step3(request):
                 # Finally update the step2 record status 
                 item.last_status = 'active'
                 item.last_step = 3 
+            
+                # Create a BytesIO object to act as a file
+                pkl_file = BytesIO()
+                # Serialize the dictionary into the BytesIO object
+                pickle.dump(citation_object, pkl_file)
+                pkl_file.seek(0)
+
+                # If a file exists, delete the old file first
+                if item.citation_pickle:
+                    old_file_path = item.citation_pickle.path
+                    if os.path.exists(old_file_path):
+                        default_storage.delete(old_file_path)
+
+                # save citaion_pickel file
+                item.citation_pickle.save(
+                    str(item.id)+'.pkl', 
+                    File(pkl_file), 
+                    save=True
+                    )
+
                 item.save()
                 print("last status of article is updated. Going to next iteration")
                 counter +=1

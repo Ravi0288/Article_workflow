@@ -34,10 +34,13 @@ class OverWriteStorage(FileSystemStorage):
 
 # Function to return the storage file path.
 def get_invalid_file_path(instance, filename):
-    return '{0}/{1}'.format('INVALID_FILES',filename)
+    return '{0}/{1}'.format('INVALID_FILES', filename)
 
 def get_article_file_path(instance, filename):
-    return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_') ,filename)
+    return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_'), filename)
+
+def get_pickel_file_path(instance, filename):
+    return '{0}/{1}/{2}'.format('ARTICLE_CITATION', (instance.provider.working_name).replace(' ', '_'), filename)
 
 
 # model class to archive the error message that occures during processing / reading the xml/json file
@@ -80,10 +83,12 @@ class Article(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    # is_content_changed = models.BooleanField(
-    #                 default=False, 
-    #                 help_text="Flag to maintain if the existing content is changed and file_content is updated")
-    citation_pickle = models.TextField(blank=True, default='N/A', help_text="Path to pickle metadata record object")
+    citation_pickle = models.FileField(
+        upload_to=get_pickel_file_path, 
+        storage=OverWriteStorage(), 
+        help_text="This field will store citation article in pickel format as .pkl or .pickel file extension"
+        )
+
 
     # def save(self, *args, **kwargs):
     #     if self.file_name_on_local_storage in ('', None):
