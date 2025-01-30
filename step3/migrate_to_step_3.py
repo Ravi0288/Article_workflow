@@ -85,7 +85,7 @@ def migrate_to_step3(request):
                 item.citation_pickle.save(
                     str(item.id)+'.pkl', 
                     File(pkl_file), 
-                    save=True
+                    save=False
                     )
 
                 item.save()
