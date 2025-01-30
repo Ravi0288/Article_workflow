@@ -52,7 +52,7 @@ def migrate_to_step3(request):
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
-                print("article id: ", item.id ," Mapper function returned: '",msg_string,"'. Skiping this iteration")
+                print("article id: ", item.id ," Mapper function returned: ", msg_string)
                 item.last_status = 'failed'
                 item.save()
                 continue
@@ -89,13 +89,10 @@ def migrate_to_step3(request):
                     )
 
                 item.save()
-                print("last status of article is updated. Going to next iteration")
                 counter +=1
                 
             except Exception as e:
-                print(item.article_file.path)
-                print(e)
-                print("error occured while updating the article. Going to next iteration")
+                print("article id: ", item.id ," Error Messsage :", e)
  
         context = {
             'heading' : 'Message',
