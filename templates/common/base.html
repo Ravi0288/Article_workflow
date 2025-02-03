@@ -36,8 +36,8 @@
             <span>
                 {% block header %} {% endblock header %}
             </span>
-            <span style="float: inline-end; padding-right:25px;">
-                <a href="{% url 'logout' %}" style="color: white;">Logout</a>
+            <span class="logout-btn">
+                <a href="{% url 'logout' %}" style="color: white;"> <u>Logout</u></a>
             </span>
         </div>
         <div class="wrapper">
@@ -51,6 +51,7 @@
                 <a href="{% url 'download-from-chorus-api' %}" style="color: white;">Chorus API</a>
                 <a href="{% url 'migrate-to-step-2' %}" style="color: white;">Migrate to Step 2</a>
                 <a href="{% url 'migrate-to-step-3' %}" style="color: white;">Migrate to Step 3</a>
+                <a href="{% url 'migrate-to-step-4' %}" style="color: white;">Migrate to Step 4</a>
                 <a href="{% url 'user-create' %}">Create User</a>
                 <a href="{% url 'group-create' %}">Create Group</a>
                 <a href="{% url 'user-list' %}">List Users</a>

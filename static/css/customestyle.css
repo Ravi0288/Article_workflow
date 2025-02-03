@@ -13,6 +13,8 @@ body {
     background-color: #a6c2fe;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: smaller;
 }
 
 .sidebar h3 {
@@ -34,6 +36,7 @@ body {
 .sidebar a:hover {
     background-color: #3871eb; 
     color: #fff; 
+    border-bottom: solid rgb(226, 167, 167);
 }
 .content {
     flex: 1;
@@ -70,26 +73,20 @@ body {
     padding: 4px;
     text-align: center;
     font-size: smaller;
+    font-weight: bolder;
     display: inline;
 }
 
-.logout {
-    margin-left: 10px;
+
+.logout-btn {
+    float: inline-end; 
+    padding-right:25px;
 }
 
-.logout button {
-    background-color: #f44336; 
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.logout-btn :hover {
+    color: rgb(18, 10, 10);
 }
 
-.logout button:hover {
-    background-color: #d32f2f;
-}
 
 .table-header {
     background-color: rgb(237, 22, 158);
