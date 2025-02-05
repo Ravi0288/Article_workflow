@@ -1,118 +1,139 @@
+/* General Layout */
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #f7f7f7;
+    background-color: #f4f7fc; /* Soft light background for a modern feel */
+    font-family: 'Arial', sans-serif; /* More modern font */
 }
+
 .wrapper {
     display: flex;
     flex: 1;
 }
 
+/* Sidebar */
 .sidebar {
-    background-color: #a6c2fe;
+    background-color: #4a90e2; /* Lighter blue for the sidebar */
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-weight: bold;
-    font-size: smaller;
+    font-size: 14px;
+    border-right: 3px solid #e1e8f0; /* Light border to separate sidebar */
 }
 
 .sidebar h3 {
     margin-top: 0;
+    font-size: 18px;
+    color: #fff;
 }
 
 .sidebar a {
     display: block;
     text-decoration: none;
     text-align: center;
-    color: white;
-    background-color: #0951f7; 
-    margin: 2px;
-    padding: 2px;
-    border-radius: 6px; 
-    transition: background-color 0.3s ease;
+    color: #fff;
+    background-color: #357ae8; /* A more balanced blue */
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .sidebar a:hover {
-    background-color: #3871eb; 
-    color: #fff; 
-    border-bottom: solid rgb(226, 167, 167);
+    background-color: #1d65d7; /* A slightly darker blue on hover */
+    color: #fff;
+    border-radius: 6px;
+    transform: scale(1.05); /* Slight scale-up effect on hover */
 }
+
+/* Main Content */
 .content {
     flex: 1;
     padding: 20px;
-    background-color: #e6f0ff;
+    background-color: #f9f9f9; /* Lighter background for content area */
+    color: #333; /* Darker text for readability */
+    border-left: 3px solid #e1e8f0; /* Light border to separate content from sidebar */
 }
 
+/* Footer */
 .footer {
-    background-color: #3871eb;
-    color: rgb(18, 16, 16);
+    background-color: #357ae8;
+    color: #fff;
     text-align: center;
-    padding: 2px;
+    padding: 10px;
+    font-size: 14px;
 }
 
+/* Form Container */
 .form-container {
     max-width: 900px;
     margin: 50px auto;
-    background-color: white;
+    background-color: #ffffff;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .form-container-title {
     text-align: center;
-    background-color: #a6c2fe;
-    border: #3871eb;
-    margin: 5px;
-    padding: 5px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    margin: 0;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 6px;
 }
 
+/* Header Bar */
 .header-bar {
-    background-color: #3871eb;
+    background-color: #357ae8;
     color: white;
-    padding: 4px;
+    padding: 10px;
     text-align: center;
-    font-size: smaller;
+    font-size: 18px;
     font-weight: bolder;
-    display: inline;
+    border-bottom: 4px solid #1d65d7; /* Subtle border for separation */
 }
 
-
+/* Logout Button */
 .logout-btn {
-    float: inline-end; 
-    padding-right:25px;
+    float: right;
+    padding-right: 25px;
+    font-size: 14px;
 }
 
-.logout-btn :hover {
-    color: rgb(18, 10, 10);
+.logout-btn:hover {
+    color: #d1d1d1; /* Lighter color on hover */
 }
 
-
+/* Table Styling */
 .table-header {
-    background-color: rgb(237, 22, 158);
-    margin: 0px;
-    text-decoration: solid black;
+    background-color: #e91e63; /* Deep pink header to add contrast */
+    color: #fff;
+    text-align: left;
+    padding: 12px;
+    font-size: 16px;
 }
+
 .even-row {
-    background-color: rgb(240, 248, 255);
-    margin: 2px;
-    padding: 1px;
+    background-color: #f1f8ff; /* Soft light blue for even rows */
 }
+
 .odd-row {
-    background-color: rgb(184, 214, 241);
-    margin: 2px;
-    padding: 1px;
+    background-color: #e2f1f8; /* Light blue for odd rows */
 }
+
 .messages {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .ac {
     margin-bottom: 30px;
     text-align: center;
 }
-
 
 /* Spinner CSS */
 .spinner {
@@ -144,7 +165,7 @@ body {
     width: 3em;
     height: 3em;
     margin: 6em;
-    background-color: #449d23;
+    background-color: #27ae60; /* Green spinner */
     border-radius: 50%;
     animation: spinner 1.6s infinite ease-in-out both;
 }
@@ -157,7 +178,6 @@ body {
         transform: scale(1);
     }
 }
-
 
 @keyframes fadeIn {
     from {

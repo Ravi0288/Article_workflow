@@ -34,37 +34,37 @@ def migrate_to_step4(request):
         with open(item.citation_pickle.path, 'rb') as file:
             pickle_content = pickle.load(file)
 
-        citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
+        # # citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
 
-        # if journal is not availale for article, create new journal
-        if not item.journal:
-            obj = Journal()
-            obj['journal_title'] = citaton_journal_dictionary['journal_title']
-            obj['publisher'] = citaton_journal_dictionary['publisher']
-            obj['issn'] = citaton_journal_dictionary['issn']
-            obj['collection_status'] = citaton_journal_dictionary['collection_status']
-            obj['harvest_source'] = citaton_journal_dictionary['harvest_source']
-            obj['local_id'] = citaton_journal_dictionary['local_id']
-            obj['mmsid'] = citaton_journal_dictionary['mmsid']
-            obj['note'] = citaton_journal_dictionary['note']
-            obj.save()
+        # # if journal is not availale for article, create new journal
+        # if not item.journal:
+        #     obj = Journal()
+        #     obj['journal_title'] = citaton_journal_dictionary['journal_title']
+        #     obj['publisher'] = citaton_journal_dictionary['publisher']
+        #     obj['issn'] = citaton_journal_dictionary['issn']
+        #     obj['collection_status'] = citaton_journal_dictionary['collection_status']
+        #     obj['harvest_source'] = citaton_journal_dictionary['harvest_source']
+        #     obj['local_id'] = citaton_journal_dictionary['local_id']
+        #     obj['mmsid'] = citaton_journal_dictionary['mmsid']
+        #     obj['note'] = citaton_journal_dictionary['note']
+        #     obj.save()
 
-            item.journal = obj
-            created += 1
+        #     item.journal = obj
+        #     created += 1
         
-        # if journal is available, update the journal
-        else:
-            obj['journal_title'] = citaton_journal_dictionary['journal_title']
-            obj['publisher'] = citaton_journal_dictionary['publisher']
-            obj['issn'] = citaton_journal_dictionary['issn']
-            obj['collection_status'] = citaton_journal_dictionary['collection_status']
-            obj['harvest_source'] = citaton_journal_dictionary['harvest_source']
-            obj['local_id'] = citaton_journal_dictionary['local_id']
-            obj['mmsid'] = citaton_journal_dictionary['mmsid']
-            obj['note'] = citaton_journal_dictionary['note']
-            obj.save()
+        # # if journal is available, update the journal
+        # else:
+        #     obj['journal_title'] = citaton_journal_dictionary['journal_title']
+        #     obj['publisher'] = citaton_journal_dictionary['publisher']
+        #     obj['issn'] = citaton_journal_dictionary['issn']
+        #     obj['collection_status'] = citaton_journal_dictionary['collection_status']
+        #     obj['harvest_source'] = citaton_journal_dictionary['harvest_source']
+        #     obj['local_id'] = citaton_journal_dictionary['local_id']
+        #     obj['mmsid'] = citaton_journal_dictionary['mmsid']
+        #     obj['note'] = citaton_journal_dictionary['note']
+        #     obj.save()
 
-            updated += 1
+        #     updated += 1
         
     context = {
             'heading' : 'Message',
