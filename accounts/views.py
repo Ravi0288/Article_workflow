@@ -97,7 +97,9 @@ def login_view(request):
                 # if logged in successfully, fetch authorized menu and store it to sesssion
                 try:
                     user_groups = user.groups.all()
-                    menu_list = Authorization.objects.filter(groups__in=user_groups).values_list('menu', flat=True)
+                    menu_list = Authorization.objects.filter(
+                        groups__in=user_groups
+                        ).values_list('menu', flat=True)
                     request.session['menu_list'] = list(menu_list)
                 except Authorization.DoesNotExist:
                     request.session['menu_list'] = []
