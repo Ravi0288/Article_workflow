@@ -72,7 +72,7 @@ def migrate_to_step4(request):
                 {0} valid articles from step 3 to be migrated to Step-4. 
                 {1} new journal created and {2} journals updated 
                 '''.format(articles.count(), created, updated)
-        }
+        } 
 
     return render(request, 'common/dashboard.html', context=context)
 

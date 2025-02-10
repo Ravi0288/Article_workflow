@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from step4.views import migrate_to_step4
+from step4.migrate_to_step_4 import migrate_to_step4
 
 router = DefaultRouter()
 # router.register('articles', Article_viewset, basename='articles')
