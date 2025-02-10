@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('title', models.TextField(blank=True, help_text='Article title', null=True)),
                 ('type_of_record', models.CharField(choices=[('article', 'article'), ('retraction', 'retraction'), ('letter to the editor', 'letter to the editor')], help_text='Select from drop down', max_length=24)),
                 ('last_step', models.IntegerField(default=3, help_text='Last stage article passed through 1-11')),
-                ('last_status', models.CharField(choices=[('active', 'active'), ('failed', 'failed'), ('completed', 'completed')], default='active', help_text='Select from drop down', max_length=10)),
+                ('last_status', models.CharField(choices=[('active', 'active'), ('dropped', 'dropped'), ('completed', 'completed')], default='active', help_text='Select from drop down', max_length=10)),
                 ('note', models.TextField(default='ok', help_text='Note, warning or error note')),
                 ('DOI', models.TextField(blank=True, help_text='A unique and persistent identifier', null=True)),
                 ('PID', models.TextField(blank=True, help_text='A locally assign identifier', null=True)),

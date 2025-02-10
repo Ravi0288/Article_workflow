@@ -38,7 +38,7 @@ def get_url_names() -> tuple:
             pass
 
     # # Remove duplicates by converting to a set and back to a list
-    list_of_url_names = tuple(set(list_of_url_names))
+    list_of_url_names = tuple(sorted(set(list_of_url_names)))
 
 
     return list_of_url_names

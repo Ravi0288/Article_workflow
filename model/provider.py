@@ -40,7 +40,7 @@ def update_password(old_password, new_password):
 CHOICES= (
     ('waiting', 'waiting'),
     ('processed','processed'),
-    ('failed', 'failed')
+    ('dropped', 'dropped')
 )
 
 # delivery method choices

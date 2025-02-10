@@ -26,10 +26,10 @@ def migrate_to_step3(request):
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
-        last_status__in=('active', 'failed'),
+        last_status__in=('active', 'dropped'),
         provider__in_production=True, 
-        last_step=2,
-        provider__in = (9,10)
+        last_step=2
+        # provider__in = (9,10)
         )
     # provider__in = (9,10) Remove this line when working with all the providers.
  
@@ -53,7 +53,7 @@ def migrate_to_step3(request):
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
                 print("article id: ", item.id ," Mapper function returned: ", msg_string)
-                item.last_status = 'failed'
+                item.last_status = 'dropped'
                 item.save()
                 continue
 

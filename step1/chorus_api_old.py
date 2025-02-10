@@ -172,7 +172,7 @@ def download_from_chorus_api_old(request):
         else:
             print("error occured", response.status_code)
             provider = api.provider
-            provider.status = 'failed'
+            provider.status = 'dropped'
             provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
             provider.save()
             err.append(api.provider.working_name)

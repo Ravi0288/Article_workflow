@@ -12,7 +12,7 @@ CHOICES= (
     ('completed', 'completed'),
     ('waiting', 'waiting'),
     ('processed','processed'),
-    ('failed', 'failed')
+    ('dropped', 'dropped')
 )
 
 RECORD_CHOICES = (

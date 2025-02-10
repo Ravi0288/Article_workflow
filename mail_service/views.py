@@ -55,7 +55,7 @@ def send_notification(instance):
         Email_history.objects.create(
             timestamp=datetime.utcnow(), 
             email_ref=instance, 
-            status='failed',
+            status='dropped',
             email_subject = subject,
             email_body = email_body            
             )

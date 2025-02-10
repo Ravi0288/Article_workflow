@@ -223,7 +223,7 @@ def download_from_sftp(request):
         except (pysftp.ConnectionException, pysftp.CredentialException, pysftp.SSHException) as e:
             print("Error occurred:", e)
             provider = item.provider
-            provider.status = 'failed'
+            provider.status = 'dropped'
             provider.last_error_message = str(e)
             provider.save()
             err.append(item.provider.working_name)
@@ -232,7 +232,7 @@ def download_from_sftp(request):
         except Exception as e:
             print("Error occurred:", e)
             provider = item.provider
-            provider.status = 'failed'
+            provider.status = 'dropped'
             provider.last_error_message = str(e)
             provider.save()
             err.append(item.provider.working_name)

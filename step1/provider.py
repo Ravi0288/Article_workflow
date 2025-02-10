@@ -128,7 +128,7 @@ def update_history_for_API(sender, instance, created, **kwargs):
         )
 
         # if api is failed send the email.
-        if instance.provider.status == 'failed':
+        if instance.provider.status == 'dropped':
             # send_notification(instance)
             pass
 

@@ -43,7 +43,7 @@ def get_article_dois_by_funder_id(funder_id, api, num_rows=1000):
 
     else:
         provider = api.provider
-        provider.status = 'failed'
+        provider.status = 'dropped'
         provider.last_error_message = 'error code =' + str(response.status_code) + ' and error message = ' + html2text(response.text)
         provider.save()
 

@@ -280,7 +280,7 @@ def download_from_ftp(request):
 
         if err_occurred:
             provider = item.provider
-            provider.status = 'failed'
+            provider.status = 'dropped'
             provider.last_error_message = err_msg
             provider.save()
             err.append(item.provider.working_name)

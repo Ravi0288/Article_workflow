@@ -19,7 +19,7 @@ def migrate_to_step4(request):
     updated = 0
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
-        last_status__in=('active', 'failed'),
+        last_status__in=('active', 'dropped'),
         provider__in_production=True, 
         last_step=3,
         # article_switch = True
@@ -34,44 +34,49 @@ def migrate_to_step4(request):
         with open(item.citation_pickle.path, 'rb') as file:
             pickle_content = pickle.load(file)
 
-        # # citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
-
-        # # if journal is not availale for article, create new journal
-        # if not item.journal:
-        #     obj = Journal()
-        #     obj['journal_title'] = citaton_journal_dictionary['journal_title']
-        #     obj['publisher'] = citaton_journal_dictionary['publisher']
-        #     obj['issn'] = citaton_journal_dictionary['issn']
-        #     obj['collection_status'] = citaton_journal_dictionary['collection_status']
-        #     obj['harvest_source'] = citaton_journal_dictionary['harvest_source']
-        #     obj['local_id'] = citaton_journal_dictionary['local_id']
-        #     obj['mmsid'] = citaton_journal_dictionary['mmsid']
-        #     obj['note'] = citaton_journal_dictionary['note']
-        #     obj.save()
-
-        #     item.journal = obj
-        #     created += 1
+        citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
         
-        # # if journal is available, update the journal
-        # else:
-        #     obj['journal_title'] = citaton_journal_dictionary['journal_title']
-        #     obj['publisher'] = citaton_journal_dictionary['publisher']
-        #     obj['issn'] = citaton_journal_dictionary['issn']
-        #     obj['collection_status'] = citaton_journal_dictionary['collection_status']
-        #     obj['harvest_source'] = citaton_journal_dictionary['harvest_source']
-        #     obj['local_id'] = citaton_journal_dictionary['local_id']
-        #     obj['mmsid'] = citaton_journal_dictionary['mmsid']
-        #     obj['note'] = citaton_journal_dictionary['note']
-        #     obj.save()
+        obj = Journal()
 
-        #     updated += 1
+        # if journal is not availale for article, create new journal
+        if not item.journal:
+            obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
+            obj.publisher = citaton_journal_dictionary.get('publisher', None)
+            obj.issn = citaton_journal_dictionary.get('issn', None)
+            obj.collection_status = citaton_journal_dictionary.get('collection_status', None)
+            obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
+            obj.local_id = citaton_journal_dictionary.get('local_id', None)
+            obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
+            obj.note = citaton_journal_dictionary.get('note', None)
+            obj.save()
+
+            item.journal = obj
+            item.last_step = 4
+            item.save()
+            created += 1
+        
+        # if journal is available, update the journal
+        else:
+            obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
+            obj.publisher = citaton_journal_dictionary.get('publisher', None)
+            obj.issn = citaton_journal_dictionary.get('issn', None)
+            obj.collection_status = citaton_journal_dictionary.get('collection_status', None)
+            obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
+            obj.local_id = citaton_journal_dictionary.get('local_id', None)
+            obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
+            obj.note = citaton_journal_dictionary.get('note', None)
+            obj.save()
+
+            item.last_step = 4
+            item.save()
+
+            updated += 1
         
     context = {
             'heading' : 'Message',
             'message' : f'''
-                {0} valid articles from step 3 to be migrated to Step-4. 
-                {1} new journal created and {2} journals updated 
-                '''.format(articles.count(), created, updated)
+                {0} new journal created and {1} journals updated 
+                '''.format(created, updated)
         } 
 
     return render(request, 'common/dashboard.html', context=context)

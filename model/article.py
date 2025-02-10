@@ -16,7 +16,7 @@ RECORD_CHOICES = (
 # status options for article table
 STATUS = (
     ('active','active'),
-    ('failed','failed'),
+    ('dropped','dropped'),
     ('completed', 'completed')
 )
 
@@ -66,6 +66,7 @@ class Article(models.Model):
                                     )
     
     journal = models.ForeignKey(Journal,
+                                default = None,
                                 null=True,
                                 on_delete=models.DO_NOTHING,
                                 related_name= 'article_journal',

@@ -170,7 +170,7 @@ def download_from_chorus_api(request):
 
         except Exception as e:
             provider = api.provider
-            provider.status = 'failed'
+            provider.status = 'dropped'
             provider.last_error_message = e
             provider.save()
             err.append(api.provider.working_name)

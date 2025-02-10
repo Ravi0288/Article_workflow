@@ -114,7 +114,7 @@ def file_transfer_from_deposites(request):
             # if process execution failed update the error message to provider record
             else:
                 provider = provs.provider
-                provider.status = 'failed'
+                provider.status = 'dropped'
                 provider.last_error_message = context['message']
                 provider.save()
 
