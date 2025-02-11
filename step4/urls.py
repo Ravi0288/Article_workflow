@@ -8,5 +8,5 @@ router.register('journal', Journal_viewset, basename='journal')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('migrate-to-step-3/', migrate_to_step4, name="migrate-to-step-3"),
+    path('migrate-to-step-4/', migrate_to_step4, name="migrate-to-step-3"),
 ]
