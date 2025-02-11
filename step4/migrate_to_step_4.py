@@ -56,7 +56,12 @@ def migrate_to_step4(request):
             obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
             obj.publisher = citaton_journal_dictionary.get('publisher', None)
             obj.issn = x
-            obj.collection_status = citaton_journal_dictionary.get('collection_status', None)
+            is_usda_funded = citaton_journal_dictionary['usda']
+            if is_usda_funded:
+                obj.collection_status = 'From Submission'
+            else:
+                obj.collection_status = 'pending'
+                
             obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
             obj.local_id = citaton_journal_dictionary.get('local_id', None)
             obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
@@ -73,7 +78,12 @@ def migrate_to_step4(request):
             obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
             obj.publisher = citaton_journal_dictionary.get('publisher', None)
             obj.issn = x
-            obj.collection_status = citaton_journal_dictionary.get('collection_status', None)
+            
+            if is_usda_funded:
+                obj.collection_status = 'From Submission'
+            else:
+                obj.collection_status = 'pending'
+
             obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
             obj.local_id = citaton_journal_dictionary.get('local_id', None)
             obj.mmsid = citaton_journal_dictionary.get('mmsid', None)

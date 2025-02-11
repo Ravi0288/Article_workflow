@@ -9,7 +9,7 @@ class Journal_serializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class Journal_viewset(ModelViewSet):
-    queryset = Journal.objects.all()
+    queryset = Journal.objects.all()[:20]
     serializer_class = Journal_serializer
 
     def get_queryset(self):
