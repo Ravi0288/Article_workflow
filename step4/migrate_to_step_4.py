@@ -21,9 +21,9 @@ def migrate_to_step4(request):
     articles = Article.objects.filter(
         last_status__in=('active', 'dropped'),
         provider__in_production=True, 
-        last_step=3,
+        last_step=3
         # article_switch = True
-        )
+        ).exclude(citation_pickle='N/A')
 
     print("Total article to ready to be processed in step 4 :", articles.count())
 
@@ -31,18 +31,31 @@ def migrate_to_step4(request):
         return render(request, 'common/dashboard.html', context=context)
 
     for item in articles:
-        with open(item.citation_pickle.path, 'rb') as file:
-            pickle_content = pickle.load(file)
+        try:
+            with open(item.citation_pickle.path, 'rb') as file:
+                pickle_content = pickle.load(file)
+        except Exception as e:
+            print("Error loading pickle file", e)
+            continue
+
 
         citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
+        print(citaton_journal_dictionary)
+        with open('citaton_journal_dictionary', 'a') as file:
+            file.write(str(citaton_journal_dictionary)+ '\n')
         
         obj = Journal()
+
+        # Extract ISSN in correct format
+        x = citaton_journal_dictionary.get('issn', None)
+        if isinstance(x, tuple) or isinstance(x, list):
+            x = x[0]
 
         # if journal is not availale for article, create new journal
         if not item.journal:
             obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
             obj.publisher = citaton_journal_dictionary.get('publisher', None)
-            obj.issn = citaton_journal_dictionary.get('issn', None)
+            obj.issn = x
             obj.collection_status = citaton_journal_dictionary.get('collection_status', None)
             obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
             obj.local_id = citaton_journal_dictionary.get('local_id', None)
@@ -59,7 +72,7 @@ def migrate_to_step4(request):
         else:
             obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
             obj.publisher = citaton_journal_dictionary.get('publisher', None)
-            obj.issn = citaton_journal_dictionary.get('issn', None)
+            obj.issn = x
             obj.collection_status = citaton_journal_dictionary.get('collection_status', None)
             obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
             obj.local_id = citaton_journal_dictionary.get('local_id', None)

@@ -206,13 +206,19 @@ STATICFILES_DIRS = [
 
 CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
-# path to store media
+CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
+
 MEDIA_URL = '/ai/metadata/'
+
+# data downloaded in step one will be stored here
 MEDIA_ROOT = '/ai/metadata'
 ARCHIVE_ROOT = '/ai/metadata/ARCHIVE'
 SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
 CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
-CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS' 
+CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS'
+TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
+
+# data once processed from step two will be stored here
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
 ARTICLE_CITATION = '/ai/metadata/ARTICLE_CITATION'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
