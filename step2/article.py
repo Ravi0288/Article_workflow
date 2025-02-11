@@ -257,7 +257,7 @@ def migrate_to_step2(request):
         # 3: Create / update records in article for each json/xml files
         if archive_row.file_type in ('.zip', '.ZIP'):
             # Create the output folder if it doesn't exist. Output folder is source path prefixed by 'TEMP_DOWNLOAD' and .zip removed
-            destination = '/ai/metadata/TEMP_DOWNLOAD' + source[:-4].replace('E:','').replace('\\', '/')
+            destination = '/ai/metadata/TEMP_DOWNLOAD' + source[:-4].replace('E:','').replace('\\', '/').replace('C:','').replace('D:','')
             if not os.path.exists(destination):
                 os.makedirs(destination)
             
