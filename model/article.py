@@ -65,12 +65,9 @@ class Article(models.Model):
                                     help_text="Browse the file"
                                     )
     
-    journal = models.ForeignKey(Journal,
-                                default = None,
-                                null=True,
-                                on_delete=models.DO_NOTHING,
-                                related_name= 'article_journal',
-                                help_text="This field value will assigned automatically with the value assigned in article_file"
+    journal = models.CharField(default=None,
+                               max_length=15,
+                                help_text="This field value will assigned automatically with journal id as received from jounral info in step 4"
                                )
 
     title = models.TextField(blank=True, null=True, help_text="Article title")

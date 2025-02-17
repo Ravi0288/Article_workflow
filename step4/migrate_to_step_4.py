@@ -25,8 +25,6 @@ def migrate_to_step4(request):
         # article_switch = True
         ).exclude(citation_pickle='N/A')
 
-    print("Total article to ready to be processed in step 4 :", articles.count())
-
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
 
@@ -40,66 +38,71 @@ def migrate_to_step4(request):
 
 
         citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
-        print(citaton_journal_dictionary)
-        with open('citaton_journal_dictionary', 'a') as file:
-            file.write(str(citaton_journal_dictionary)+ '\n')
         
-        obj = Journal()
+        issn_list = citaton_journal_dictionary.get('issn', None)
 
-        # Extract ISSN in correct format
-        x = citaton_journal_dictionary.get('issn', None)
-        if isinstance(x, tuple) or isinstance(x, list):
-            x = x[0]
+        # iterate over the recieved list of issn 
+        for issn_value in issn_list:
+            qs = Journal.objects.filter(issn=issn_value)
+            # if no match found against the issn number, create new journal
+            if not(qs.exists()):
+                obj = Journal()
+                obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
+                obj.publisher = citaton_journal_dictionary.get('publisher', None)
+                obj.issn = issn_value
+                is_usda_funded = citaton_journal_dictionary['usda']
+                if is_usda_funded == 'yes':
+                    obj.collection_status = 'From Submission'
+                else:
+                    obj.collection_status = 'pending'
+                    
+                obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
+                obj.doi = citaton_journal_dictionary.get('doi', None)
+                obj.nal_journal_id = citaton_journal_dictionary.get('local_id', None)
+                obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
+                obj.note = citaton_journal_dictionary.get('note', None)
+                obj.requirement_override = citaton_journal_dictionary.get('requirement_override', None)
+                obj.subject_cluster = citaton_journal_dictionary.get('subject_cluster', None)
+                obj.save()
+                created += 1
 
-        # if journal is not availale for article, create new journal
-        if not item.journal:
-            obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
-            obj.publisher = citaton_journal_dictionary.get('publisher', None)
-            obj.issn = x
-            is_usda_funded = citaton_journal_dictionary['usda']
-            if is_usda_funded:
-                obj.collection_status = 'From Submission'
+            # if match is found, update the existing journal
             else:
-                obj.collection_status = 'pending'
-                
-            obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
-            obj.local_id = citaton_journal_dictionary.get('local_id', None)
-            obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
-            obj.note = citaton_journal_dictionary.get('note', None)
-            obj.save()
+                is_usda_funded = citaton_journal_dictionary['usda']
+                if is_usda_funded == 'yes':
+                    qs[0].collection_status = 'From Submission'
+                else:
+                    qs[0].collection_status = 'pending'
+                    
+                qs[0].nal_journal_id = citaton_journal_dictionary.get('local_id', None)
+                qs[0].mmsid = citaton_journal_dictionary.get('mmsid', None)
+                qs[0].doi = citaton_journal_dictionary.get('doi', None)
+                qs[0].save()
 
-            item.journal = obj
-            item.last_step = 4
-            item.save()
-            created += 1
+        # update the jounal id in article
+        item.journal = citaton_journal_dictionary.get('nal_journal_id', None)
+        item.last_step = 4
+        item.save()
+ 
+
+        # update the citation object
+        pickle_content['journal_mmsid'] = citaton_journal_dictionary.get('mmsid', None)
+        pickle_content['journal_local_id'] = citaton_journal_dictionary.get('journal_local_id', None)
+
+        # if is_usda_funded == 'no':
+        #     pickle_content.local.cataloger_note.append('Journal is pending')
+
+        # Save the updated pickle content back to the file
+        with open(item.citation_pickle.path, 'wb') as file:
+            pickle.dump(pickle_content, file)
         
-        # if journal is available, update the journal
-        else:
-            obj.journal_title = citaton_journal_dictionary.get('journal_title', None)
-            obj.publisher = citaton_journal_dictionary.get('publisher', None)
-            obj.issn = x
-            
-            if is_usda_funded:
-                obj.collection_status = 'From Submission'
-            else:
-                obj.collection_status = 'pending'
 
-            obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
-            obj.local_id = citaton_journal_dictionary.get('local_id', None)
-            obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
-            obj.note = citaton_journal_dictionary.get('note', None)
-            obj.save()
-
-            item.last_step = 4
-            item.save()
-
-            updated += 1
-        
+    # retrn the response 
     context = {
             'heading' : 'Message',
             'message' : f'''
-                {0} new journal created and {1} journals updated 
-                '''.format(created, updated)
+                {0} new journal created 
+                '''.format(created)
         } 
 
     return render(request, 'common/dashboard.html', context=context)

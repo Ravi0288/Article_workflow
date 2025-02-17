@@ -28,8 +28,8 @@ def migrate_to_step3(request):
     articles = Article.objects.filter(
         last_status__in=('active', 'dropped'),
         provider__in_production=True, 
-        last_step=2
-        # provider__in = (9,10)
+        last_step=2,
+        provider__in = (2,3)
         )
     # provider__in = (9,10) Remove this line when working with all the providers.
  
