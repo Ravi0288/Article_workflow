@@ -89,8 +89,8 @@ def migrate_to_step4(request):
  
 
         # update the citation object
-        pickle_content['journal_mmsid'] = Citation.local.identifiers('journal_mmsid', None)
-        pickle_content['journal_local_id'] = Citation.local.identifiers('journal_local_id', None)
+        pickle_content['journal_mmsid'] = Citation.local.identifiers('journal_mmsid')
+        pickle_content['journal_local_id'] = Citation.local.identifiers('journal_local_id')
 
         # if is_usda_funded == 'no':
         #     Citation.local.cataloger_note.append('Journal is pending')
