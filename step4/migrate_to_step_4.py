@@ -55,16 +55,20 @@ def migrate_to_step4(request):
                     obj.collection_status = 'From Submission'
                 else:
                     obj.collection_status = 'pending' 
-                    # obj.note = 'Journal is pending'
                     
                 obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
                 obj.doi = citaton_journal_dictionary.get('doi', None)
-                obj.nal_journal_id = citaton_journal_dictionary.get('local_id', None)
+                obj.nal_journal_id = citaton_journal_dictionary.get('nal_journal_id', None)
                 obj.mmsid = citaton_journal_dictionary.get('mmsid', None)
                 obj.note = citaton_journal_dictionary.get('note', None)
                 obj.requirement_override = citaton_journal_dictionary.get('requirement_override', None)
                 obj.subject_cluster = citaton_journal_dictionary.get('subject_cluster', None)
                 obj.save()
+
+                # update the citation object
+                pickle_content['journal_mmsid'] = obj.mmsid
+                pickle_content['nal_journal_id'] = obj.nal_journal_id
+
                 created += 1
 
             # if match is found, update the existing journal
@@ -72,30 +76,30 @@ def migrate_to_step4(request):
                 is_usda_funded = citaton_journal_dictionary['usda']
                 if is_usda_funded == 'yes':
                     qs[0].collection_status = 'From Submission'
-                    # qs[0].note = ''
                 else:
                     qs[0].collection_status = 'pending'
-                    # qs[0].note = 'Journal is pending'
                     
-                qs[0].nal_journal_id = citaton_journal_dictionary.get('local_id', None)
+                qs[0].nal_journal_id = citaton_journal_dictionary.get('nal_journal_id', None)
                 qs[0].mmsid = citaton_journal_dictionary.get('mmsid', None)
                 qs[0].doi = citaton_journal_dictionary.get('doi', None)
                 qs[0].save()
+
+                # update the citation object
+                pickle_content['journal_mmsid'] = qs[0].mmsid
+                pickle_content['nal_journal_id'] = qs[0].nal_journal_id
+
+                updated += 1
 
         # update the jounal id in article
         item.journal = citaton_journal_dictionary.get('nal_journal_id', None)
         item.last_step = 4
         item.save() 
  
+        if is_usda_funded == 'no':
+            pickle_content['local']['cataloger_note']['note'] = 'Journal is pending'
+        else:
+            pickle_content['local']['cataloger_note']['note'] = ''
 
-        # update the citation object
-        pickle_content['journal_mmsid'] = Citation.local.identifiers('journal_mmsid')
-        pickle_content['journal_local_id'] = Citation.local.identifiers('journal_local_id')
-
-        # if is_usda_funded == 'no':
-        #     Citation.local.cataloger_note.append('Journal is pending')
-        # or
-            # pickle_content['note'] = 'Journal is pending'
 
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
