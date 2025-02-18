@@ -86,11 +86,11 @@ def migrate_to_step4(request):
  
 
         # update the citation object
-        pickle_content['journal_mmsid'] = citaton_journal_dictionary.get('mmsid', None)
-        pickle_content['journal_local_id'] = citaton_journal_dictionary.get('journal_local_id', None)
+        pickle_content['journal_mmsid'] = Citation.local.identifiers('journal_mmsid', None)
+        pickle_content['journal_local_id'] = Citation.local.identifiers('journal_local_id', None)
 
         # if is_usda_funded == 'no':
-        #     pickle_content.local.cataloger_note.append('Journal is pending')
+        #     Citation.local.cataloger_note.append('Journal is pending')
 
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
