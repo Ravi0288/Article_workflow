@@ -66,6 +66,7 @@ class Article(models.Model):
                                     )
     
     journal = models.CharField(default=None,
+                               null=True, 
                                max_length=15,
                                 help_text="This field value will assigned automatically with journal id as received from jounral info in step 4"
                                )
