@@ -32,6 +32,7 @@ def migrate_to_step4(request):
         try:
             with open(item.citation_pickle.path, 'rb') as file:
                 pickle_content = pickle.load(file)
+                print(type(pickle_content), "line number 35 dfadsfdfasdfdsfadasf")
         except Exception as e:
             print("Error loading pickle file", e)
             continue
@@ -66,6 +67,9 @@ def migrate_to_step4(request):
                 obj.save()
 
                 # update the citation object
+                print(type(pickle_content), "###########################################3")
+                pickle_content = pickle_content.__dict__
+                print(type(pickle_content))
                 pickle_content['journal_mmsid'] = obj.mmsid
                 pickle_content['nal_journal_id'] = obj.nal_journal_id
 
@@ -85,6 +89,9 @@ def migrate_to_step4(request):
                 qs[0].save()
 
                 # update the citation object
+                print(type(pickle_content), "###########################################3")
+                pickle_content = pickle_content.__dict__
+                print(type(pickle_content))
                 pickle_content['journal_mmsid'] = qs[0].mmsid
                 pickle_content['nal_journal_id'] = qs[0].nal_journal_id
 
