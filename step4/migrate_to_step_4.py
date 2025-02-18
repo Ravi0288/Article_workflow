@@ -54,7 +54,8 @@ def migrate_to_step4(request):
                 if is_usda_funded == 'yes':
                     obj.collection_status = 'From Submission'
                 else:
-                    obj.collection_status = 'pending'
+                    obj.collection_status = 'pending' 
+                    # obj.note = 'Journal is pending'
                     
                 obj.harvest_source = citaton_journal_dictionary.get('harvest_source', None)
                 obj.doi = citaton_journal_dictionary.get('doi', None)
@@ -71,8 +72,10 @@ def migrate_to_step4(request):
                 is_usda_funded = citaton_journal_dictionary['usda']
                 if is_usda_funded == 'yes':
                     qs[0].collection_status = 'From Submission'
+                    # qs[0].note = ''
                 else:
                     qs[0].collection_status = 'pending'
+                    # qs[0].note = 'Journal is pending'
                     
                 qs[0].nal_journal_id = citaton_journal_dictionary.get('local_id', None)
                 qs[0].mmsid = citaton_journal_dictionary.get('mmsid', None)
@@ -91,6 +94,8 @@ def migrate_to_step4(request):
 
         # if is_usda_funded == 'no':
         #     Citation.local.cataloger_note.append('Journal is pending')
+        # or
+            # pickle_content['note'] = 'Journal is pending'
 
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
