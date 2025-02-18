@@ -82,7 +82,7 @@ def migrate_to_step4(request):
         # update the jounal id in article
         item.journal = citaton_journal_dictionary.get('nal_journal_id', None)
         item.last_step = 4
-        item.save()
+        item.save() 
  
 
         # update the citation object
