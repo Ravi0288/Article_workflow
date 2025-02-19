@@ -15,8 +15,6 @@ def migrate_to_step4(request):
         'message' : 'No pending article found to migrate to Step 4'
     }
 
-    created = 0
-    updated = 0
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status__in=('active', 'dropped'),
@@ -31,14 +29,15 @@ def migrate_to_step4(request):
     for item in articles:
         try:
             with open(item.citation_pickle.path, 'rb') as file:
-                pickle_content = pickle.load(file)
-                print(type(pickle_content), "line number 35 dfadsfdfasdfdsfadasf")
+                unpickle_content = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
             continue
 
 
-        citaton_journal_dictionary = Citation.get_journal_info(pickle_content)
+        citaton_journal_dictionary = Citation.get_journal_info(unpickle_content)
+
+        unpickle_content = unpickle_content.__dict__
         
         issn_list = citaton_journal_dictionary.get('issn', None)
 
@@ -52,6 +51,7 @@ def migrate_to_step4(request):
                 obj.publisher = citaton_journal_dictionary.get('publisher', None)
                 obj.issn = issn_value
                 is_usda_funded = citaton_journal_dictionary['usda']
+
                 if is_usda_funded == 'yes':
                     obj.collection_status = 'From Submission'
                 else:
@@ -67,13 +67,8 @@ def migrate_to_step4(request):
                 obj.save()
 
                 # update the citation object
-                print(type(pickle_content), "###########################################3")
-                pickle_content = pickle_content.__dict__
-                print(type(pickle_content))
-                pickle_content['journal_mmsid'] = obj.mmsid
-                pickle_content['nal_journal_id'] = obj.nal_journal_id
-
-                created += 1
+                unpickle_content['journal_mmsid'] = obj.mmsid
+                unpickle_content['nal_journal_id'] = obj.nal_journal_id
 
             # if match is found, update the existing journal
             else:
@@ -88,37 +83,40 @@ def migrate_to_step4(request):
                 qs[0].doi = citaton_journal_dictionary.get('doi', None)
                 qs[0].save()
 
-                # update the citation object
-                print(type(pickle_content), "###########################################3")
-                pickle_content = pickle_content.__dict__
-                print(type(pickle_content))
-                pickle_content['journal_mmsid'] = qs[0].mmsid
-                pickle_content['nal_journal_id'] = qs[0].nal_journal_id
+                unpickle_content['journal_mmsid'] = qs[0].mmsid
+                unpickle_content['nal_journal_id'] = qs[0].nal_journal_id
 
-                updated += 1
 
         # update the jounal id in article
         item.journal = citaton_journal_dictionary.get('nal_journal_id', None)
         item.last_step = 4
         item.save() 
- 
-        if is_usda_funded == 'no':
-            pickle_content['local']['cataloger_note']['note'] = 'Journal is pending'
-        else:
-            pickle_content['local']['cataloger_note']['note'] = ''
 
+        # update the cataloger note in pickle file
+        note = ''
+        if is_usda_funded == 'no':
+            note = 'Journal is pending'
+        
+        try:
+            # try to add the value and assume it is already
+            unpickle_content['local']['cataloger_note']['note'] = note
+        except TypeError:
+            # if local key not present in the unpickle_content, add the key
+            unpickle_content['local'] = {}
+            unpickle_content['local']['cataloger_note'] = {}
+            unpickle_content['local']['cataloger_note']['note'] = note
 
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
-            pickle.dump(pickle_content, file)
+            pickle.dump(unpickle_content, file)
         
 
     # retrn the response 
     context = {
             'heading' : 'Message',
             'message' : f'''
-                {0} new journal created 
-                '''.format(created)
+                All Pending articles successfully migrated to Step 4.
+                '''
         } 
 
     return render(request, 'common/dashboard.html', context=context)

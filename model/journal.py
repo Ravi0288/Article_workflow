@@ -17,9 +17,9 @@ class Journal(models.Model):
     harvest_source = models.CharField(max_length=128, null=True, blank=True, help_text="Harvest Source")
     nal_journal_id = models.CharField(max_length=64, null=True, blank=True, help_text="Local ID")
     mmsid = models.CharField(max_length=64, null=True, blank=True, help_text="Local ID")
-    requirement_override = models.CharField(max_length=128, default="")
-    subject_cluster = models.CharField(max_length=128, default="")
+    requirement_override = models.CharField(max_length=128, null=True, blank=True)
+    subject_cluster = models.CharField(max_length=128, null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
-    doi = models.CharField(max_length=64, default="")
+    doi = models.CharField(max_length=64, null=True, blank=True)
     note = models.CharField(max_length=256, null=True, blank=True, help_text="Any error msg or important msg to be assigned")
  
