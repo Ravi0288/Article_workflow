@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # run django on https in development environment
     'sslserver',
     'reports',
+    'step7',
 
     # MFA ENTRA
     # 'oauth2_provider'

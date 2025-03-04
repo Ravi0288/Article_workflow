@@ -26,12 +26,14 @@ def migrate_to_step4(request):
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
 
-    for item in articles:
+    for article in articles:
         try:
-            with open(item.citation_pickle.path, 'rb') as file:
+            with open(article.citation_pickle.path, 'rb') as file:
                 unpickle_content = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
+            article.note = e.message
+            article.save()
             continue
 
 
@@ -88,9 +90,9 @@ def migrate_to_step4(request):
 
 
         # update the jounal id in article
-        item.journal = citaton_journal_dictionary.get('nal_journal_id', None)
-        item.last_step = 4
-        item.save() 
+        article.journal = citaton_journal_dictionary.get('nal_journal_id', None)
+        article.last_step = 4
+        article.save() 
 
         # update the cataloger note in pickle file
         note = ''
@@ -107,7 +109,7 @@ def migrate_to_step4(request):
             unpickle_content['local']['cataloger_note']['note'] = note
 
         # Save the updated pickle content back to the file
-        with open(item.citation_pickle.path, 'wb') as file:
+        with open(article.citation_pickle.path, 'wb') as file:
             pickle.dump(unpickle_content, file)
         
 
