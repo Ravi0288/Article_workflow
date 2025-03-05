@@ -64,11 +64,11 @@ class Article(models.Model):
                                     storage=OverWriteStorage(), 
                                     help_text="Browse the file"
                                     )
-    
+
     journal = models.CharField(default=None,
-                               null=True, 
-                               max_length=15,
-                                help_text="This field value will assigned automatically with journal id as received from jounral info in step 4"
+                               null=True,
+                               max_length=150,
+                               help_text="This field value will assigned automatically with journal id as received from journal info in step 4"
                                )
 
     title = models.TextField(blank=True, null=True, help_text="Article title")
