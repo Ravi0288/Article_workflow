@@ -65,11 +65,11 @@ class Article(models.Model):
                                     help_text="Browse the file"
                                     )
     
-    journal = models.CharField(default=None,
-                               null=True, 
-                               max_length=15,
-                                help_text="This field value will assigned automatically with journal id as received from jounral info in step 4"
-                               )
+    journal = models.ForeignKey(Journal, 
+                                related_name="article_journal", 
+                                on_delete=models.SET_NULL, 
+                                blank=True, null=True
+                                )
 
     title = models.TextField(blank=True, null=True, help_text="Article title")
     type_of_record = models.CharField(max_length=24, choices=RECORD_CHOICES, help_text="Select from drop down")
