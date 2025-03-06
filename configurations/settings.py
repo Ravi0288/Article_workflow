@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'step2',
     'step3',
     'step4',
+    'step7',
     'model',
     'mail_service',
     'accounts',
