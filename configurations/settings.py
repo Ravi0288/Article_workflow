@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'step1',
     'step2',
+    'step3',
+    'step4',
     'model',
     'mail_service',
     'accounts',
@@ -43,7 +45,6 @@ INSTALLED_APPS = [
     # run django on https in development environment
     'sslserver',
     'reports',
-    'step7',
 
     # MFA ENTRA
     # 'oauth2_provider'
@@ -282,6 +283,12 @@ LOGGING = {
     'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+            'style': '{',
+        },
+        'semi-verbose': {
+            'format': '{asctime} {levelname} {message}',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
             'style': '{',
         },
         'simple': {
@@ -297,6 +304,14 @@ LOGGING = {
             'maxBytes': 100000,
             'backupCount': 2,
             'formatter': 'verbose',
+        },
+        'journal_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': "/ai/metadata/LOGDIR/journal_record_warnings.log",
+            'maxBytes': 100000,
+            'backupCount': 3,
+            'formatter': 'semi-verbose',
         },
     },
     'loggers': {
@@ -314,6 +329,11 @@ LOGGING = {
         'apps': {
             'handlers': ['logfile'],
             'level': 'ERROR',
+            'propagate': True,
+        },
+        'journal_logger': {
+            'handlers': ['journal_handler'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     },

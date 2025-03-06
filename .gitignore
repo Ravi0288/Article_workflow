@@ -18,6 +18,5 @@ ARTICLES/*
 INVALID_FILES/*
 certificates
 data/*
-reports/migrations/*
 accounts/migrations/*
 model/migrations/*

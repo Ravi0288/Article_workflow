@@ -1,8 +1,20 @@
 from django.contrib import admin
 from .archive import Archive
 from model.provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
+from model.journal import Journal
 from mail_service.models import Email_history, Email_notification
 from .article import Unreadable_files, Article
+
+class JournalAdmin(admin.ModelAdmin):
+    empty_value_display = "-empty-"
+    list_display = [
+                    "journal_title", "publisher", "issn", "collection_status",
+                    "harvest_source", "nal_journal_id", "mmsid", "last_updated", "note",
+                    "subject_cluster", "requirement_override", "doi"
+                    ]
+    list_filter = ('publisher', 'collection_status', 'harvest_source')
+    list_per_page = 20
+    search_fields = ('issn', 'journal_title', 'nal_journal_id', 'mmsid', 'harvest_source')
 
 class ArchivedArticleAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
@@ -95,6 +107,7 @@ class UnreadableFilesAdmin(admin.ModelAdmin):
                     ]
 
 
+admin.site.register(Journal, JournalAdmin)
 admin.site.register(Archive, ArchivedArticleAdmin)
 
 admin.site.register(Provider_meta_data_API, ProviderMetaDataAPIAdmin)
