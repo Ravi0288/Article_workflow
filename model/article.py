@@ -37,8 +37,18 @@ class OverWriteStorage(FileSystemStorage):
 def get_invalid_file_path(instance, filename):
     return '{0}/{1}'.format('INVALID_FILES', filename)
 
+# def get_article_file_path(instance, filename):
+#     return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_'), filename)
+
 def get_article_file_path(instance, filename):
-    return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_'), filename)
+    extension = filename.split('.')[-1]
+    filename = str(instance.id) + '.' + extension
+    return '{0}/{1}/{2}'.format(
+        'ARTICLE',
+        (instance.provider.working_name).replace(' ','_'),
+        filename
+        )
+
 
 def get_pickel_file_path(instance, filename):
     return '{0}/{1}/{2}'.format('ARTICLE_CITATION', (instance.provider.working_name).replace(' ', '_'), filename)
