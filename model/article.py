@@ -5,6 +5,8 @@ from .archive import Archive
 import os
 from django.conf import settings
 from model.journal import Journal
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # record type options for article table
 RECORD_CHOICES = (
@@ -40,7 +42,10 @@ def get_invalid_file_path(instance, filename):
 # def get_article_file_path(instance, filename):
 #     return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_'), filename)
 
+
 def get_article_file_path(instance, filename):
+    if not instance.id:
+        instance.save()
     extension = filename.split('.')[-1]
     filename = str(instance.id) + '.' + extension
     return '{0}/{1}/{2}'.format(
@@ -70,7 +75,9 @@ class Unreadable_files(models.Model):
 # article attribute model Article_attributes
 class Article(models.Model):
 
+
     article_file = models.FileField(upload_to=get_article_file_path, 
+                                    blank=True, null=True,
                                     storage=OverWriteStorage(), 
                                     help_text="Browse the file"
                                     )

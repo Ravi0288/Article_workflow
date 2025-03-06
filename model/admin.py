@@ -82,13 +82,13 @@ class EmailNotification(admin.ModelAdmin):
 class ArticleAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
     list_display = [
-                    'article_file', 'journal', 'title', 
+                    'article_file', 'title', 
                     'type_of_record', 
                     'last_step', 'last_status',
                     ]
-    list_filter = ('article_file', 'journal', 'title','type_of_record','last_step', 'last_status')
+    list_filter = ('article_file', 'title','type_of_record','last_step', 'last_status')
     list_per_page = 20
-    search_fields = ('article_file', 'journal', 'title','type_of_record')
+    search_fields = ('article_file', 'title','type_of_record')
 
 
 # class ArticleAdmin(admin.ModelAdmin):

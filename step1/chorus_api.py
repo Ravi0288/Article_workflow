@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # function to compate to given date
 def compare_date(updated_date, fetched_date):
-    updated_date = datetime.datetime.strptime(updated_date, "%m/%d/%Y")
+    updated_date = datetime.datetime.strptime(updated_date, "%d/%m/%Y")
     # Parse date_received_date (format: yyyy-mm-dd HH:MM:SS.ssssss+zz:zz)
     fetched_date = datetime.datetime.strptime(str(fetched_date), "%Y-%m-%d %H:%M:%S.%f%z")
     fetched_date = fetched_date.replace(tzinfo=None)
@@ -178,7 +178,7 @@ def download_from_chorus_api(request):
     if err:
         context = {
             'heading' : 'Message',
-            'message' : f'''Chorus API exited with error. Error message: {err}'''
+            'message' : f'''Chorus API exited with error. Error message: {provider.last_error_message}'''
         }
 
     elif succ:

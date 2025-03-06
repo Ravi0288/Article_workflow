@@ -37,8 +37,8 @@ class OverWriteStorage(FileSystemStorage):
 # This function will return file path as article_library/Current_year/Current_month/day/file_name_with_extension
 
 def get_file_path(instance, filename):
-    extenstion = filename.split('.')[-1]
-    filename = str(instance.id) + '.' + extenstion
+    extension = filename.split('.')[-1]
+    filename = str(instance.id) + '.' + extension
     return '{0}/{1}/{2}'.format(
         'ARCHIVE',
         (instance.provider.working_name).replace(' ','_'),
