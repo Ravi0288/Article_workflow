@@ -83,7 +83,7 @@ class Providers(models.Model):
     source_schema_acronym = models.CharField(max_length=50, blank=True, null=True)
     delivery_method = models.CharField(max_length=50, blank=True, null=True, choices=DELIVERY_METHOD)
     article_switch = models.BooleanField(default=False)
-    requirement_override = models.BooleanField(default=False)
+    requirement_override = models.CharField(max_length=128, null=True, blank=True)
     usda_source = models.BooleanField(default=False)
     archive_switch = models.BooleanField(default=False)
     minimum_delivery_fq = models.IntegerField(
