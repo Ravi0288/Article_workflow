@@ -1,0 +1,28 @@
+create database pid_db
+create table pid with two fields and insert first value to start sequence from 1
+
+CREATE TABLE pid (
+    ID INT PRIMARY KEY,
+    pid_no INT
+);
+
+INSERT INTO pid (ID, pid_no) 
+VALUES (1, 1);
+
+
+
+create a procedure to return next pid
+
+DELIMITER $$
+
+CREATE PROCEDURE get_next_pid()
+BEGIN
+    DECLARE current_pid INT;
+    SELECT pid_no INTO current_pid FROM pid WHERE ID = 1;
+    SELECT current_pid;
+    UPDATE pid SET pid_no = current_pid + 1 WHERE ID = 1;
+END $$
+DELIMITER ;
+
+
+run the python code step 7. Mint handle is already available in step 7
