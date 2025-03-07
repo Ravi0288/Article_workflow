@@ -18,10 +18,9 @@ def migrate_to_step7(request):
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
-        last_status__in=('active', 'dropped'),
-        provider__in_production=True, 
+        last_status__in=('active', 'dropped'), 
         last_step=6
-        ).exclude(citation_pickle='N/A')
+        )
 
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
@@ -32,7 +31,7 @@ def migrate_to_step7(request):
                 unpickle_content = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
-            article.note = e.message
+            article.note = e
             article.save()
             continue
 

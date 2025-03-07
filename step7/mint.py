@@ -48,9 +48,13 @@ def pid_minter(citation_object) -> list:
         pid_db = pid_db_connection.cursor()
 
         # generate the new PID
-        pid_db.execute("SELECT next_pid FROM pid_sequence")
-        next_pid = pid_db.fetchone()
-        next_pid = next_pid[0] 
+        # Call the stored procedure to get the next PID
+        pid_db.callproc('get_next_pid')
+        
+        # Fetch the result (next_pid)
+        next_pid = None
+        for result in pid_db.stored_results():
+            next_pid = result.fetchone()[0]
 
         if citation_object['type'] != 'journal-article':
             result = [citation_object , "Non Article", None]
@@ -68,5 +72,5 @@ def pid_minter(citation_object) -> list:
     if pid_db_connection:
         pid_db_connection.close()
     
-    return result
+    return next_pid
 

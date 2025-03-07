@@ -144,7 +144,7 @@ PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
 PID_DB_NAME = os.environ['PID_DB_NAME']
 PID_DB_USER = os.environ['PID_DB_USER']
 PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
-PID_DB_HOST = os.environ['HANDLE_DB_HOST']
+PID_DB_HOST = os.environ['PID_DB_HOST']
 PID_DB_PORT = os.environ['PID_DB_PORT']
 
 
