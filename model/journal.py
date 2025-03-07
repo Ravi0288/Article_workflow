@@ -8,7 +8,6 @@ COLLECTION_STATUSES= (
 )
 
 class Journal(models.Model):
-    Journal_id = models.AutoField(primary_key=True)
     journal_title = models.CharField(max_length=512, null=True, blank=True, help_text="Journal Title")
     publisher = models.CharField(max_length=256, null=True, blank=True, help_text="Publisher Code" )
     issn = models.CharField(max_length=100, null=True, blank=True, unique=True, help_text="ISSN Number")
