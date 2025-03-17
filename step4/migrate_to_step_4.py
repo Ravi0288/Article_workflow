@@ -38,7 +38,7 @@ def migrate_to_step4(request):
             continue
 
 
-        citation_journal_dictionary = cit.get_journal_info()
+        citation_journal_dictionary = Citation.get_journal_info(cit)
         print("Article's journal: ", citation_journal_dictionary.get('journal_title', None))
         
         issn_list = citation_journal_dictionary.get('issn', None)
