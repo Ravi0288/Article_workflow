@@ -30,6 +30,7 @@ def migrate_to_step4(request):
     print("Number of articles identified for processing: ", len(articles))
 
     for item in articles:
+        print("Now iterating new article. Execution of article started")
         try:
             with open(item.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
@@ -65,32 +66,34 @@ def migrate_to_step4(request):
                 obj.issn = issn_value
                 obj.doi = citation_journal_dictionary.get("container_DOI", None)
                 obj.last_updated = datetime.datetime.now()
-                is_usda_funded = citation_journal_dictionary['usda']
+                is_usda_funded = citation_journal_dictionary.get('usda', None)
 
                 if is_usda_funded == 'yes':
                     obj.collection_status = 'From Submission'
                 else:
                     obj.collection_status = 'pending'
                 obj.save()
-            item.last_status = "review"
+
+            item.last_status = 'review'
+
         else:
             journal_match = Journal.objects.filter(issn=issn_match).first()
-            if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == "no":
+            if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == 'no':
                 # Reject article as out of scope
-                item.last_status = "dropped"
+                item.last_status = 'dropped'
                 item.last_step = 4
-                item.note = "out of scope"
+                item.note = 'out of scope'
                 item.current_date = datetime.datetime.now()
                 continue
             else:
-                cit.container_DOI = journal_match.doi
-                cit.local.identifiers["journal_mmsid"] = journal_match.mmsid
+                cit['container_DOI'] = journal_match.doi
+                cit['local']['identifiers']['journal_mmsid'] = journal_match.mmsid
                 nal_journal_id = journal_match.nal_journal_id
-                cit.local.identifiers["nal_journal_id"] = nal_journal_id
-                if journal_match.collection_status == "pending":
-                    item.last_status = "review"
-                    if citation_journal_dictionary.get("usda", None) == "no":
-                        cit.local.cataloger_notes.append('Journal is pending')
+                cit['local']['identifiers']['nal_journal_id'] = nal_journal_id
+                if journal_match.collection_status == 'pending':
+                    item.last_status = 'review'
+                    if citation_journal_dictionary.get('usda', None) == 'no':
+                        cit['local']['cataloger_notes'] = 'Journal is pending'
 
         # update the journal id in article
         item.journal = nal_journal_id
@@ -100,6 +103,8 @@ def migrate_to_step4(request):
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file)
+
+        print("Execution of article ended")
         
 
     # return the response
