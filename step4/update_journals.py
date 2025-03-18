@@ -118,7 +118,7 @@ def update_journal_model(last_pull_date):
             journal_match_e_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_e_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_e_issn.mmsid = record['001'].data
-            journal_match_e_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_e_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
             journal_match_e_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_e_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_e_issn.doi=extract_doi(record)
@@ -142,7 +142,7 @@ def update_journal_model(last_pull_date):
             journal_match_p_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_p_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_p_issn.mmsid = record['001'].data
-            journal_match_p_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_p_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
             journal_match_p_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_p_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_p_issn.doi = extract_doi(record)
@@ -170,7 +170,7 @@ def update_journal_model(last_pull_date):
                 mmsid=record['001'].data,
                 subject_cluster = extract_subject_cluster(record),
                 requirement_override = pymarc_field_or_none_str(record, '597', 'a'),
-                last_updated = datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated = datetime.datetime.now().strftime('%Y%m%d'),
                 doi = extract_doi(record)
             )
             new_journal.save()
@@ -196,7 +196,7 @@ def update_journal_model(last_pull_date):
                 mmsid=record['001'].data,
                 subject_cluster=extract_subject_cluster(record),
                 requirement_override=pymarc_field_or_none_str(record, '597', 'a'),
-                last_updated=datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated=datetime.datetime.now().strftime('%Y%m%d'),
                 doi=extract_doi(record)
             )
             new_journal.save()
@@ -272,7 +272,7 @@ def update_journal_model_from_file(filepath: str):
             journal_match_e_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_e_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_e_issn.mmsid = record['001'].data
-            journal_match_e_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_e_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
             journal_match_e_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_e_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_e_issn.doi=extract_doi(record)
@@ -296,7 +296,7 @@ def update_journal_model_from_file(filepath: str):
             journal_match_p_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_p_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_p_issn.mmsid = record['001'].data
-            journal_match_p_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_p_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
             journal_match_p_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_p_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_p_issn.doi = extract_doi(record)
@@ -324,7 +324,7 @@ def update_journal_model_from_file(filepath: str):
                 mmsid=record['001'].data,
                 subject_cluster = extract_subject_cluster(record),
                 requirement_override = pymarc_field_or_none_str(record, '597', 'a'),
-                last_updated = datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated = datetime.datetime.now().strftime('%Y%m%d'),
                 doi = extract_doi(record)
             )
             new_journal.save()
@@ -350,7 +350,7 @@ def update_journal_model_from_file(filepath: str):
                 mmsid=record['001'].data,
                 subject_cluster=extract_subject_cluster(record),
                 requirement_override=pymarc_field_or_none_str(record, '597', 'a'),
-                last_updated=datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated=datetime.datetime.now().strftime('%Y%m%d'),
                 doi=extract_doi(record)
             )
             new_journal.save()

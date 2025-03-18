@@ -30,7 +30,6 @@ def migrate_to_step4(request):
     print("Number of articles identified for processing: ", len(articles))
 
     for item in articles:
-        print("Now iterating new article. Execution of article started")
         try:
             with open(item.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
@@ -38,9 +37,9 @@ def migrate_to_step4(request):
             print("Error loading pickle file", e)
             continue
 
-
-        citation_journal_dictionary = Citation.get_journal_info(cit)
-        print("Article's journal: ", citation_journal_dictionary.get('journal_title', None))
+        print("Type of cit object: ", type(cit))
+        citation_journal_dictionary = cit.get_journal_info()
+        #print("Article's journal: ", citation_journal_dictionary.get('journal_title', None))
         
         issn_list = citation_journal_dictionary.get('issn', None)
 
@@ -54,7 +53,7 @@ def migrate_to_step4(request):
 
         # We will update this value if and when we find a match in our journal lookup model
         # If we don't find a match, it will stay as 'None'
-        nal_journal_id = None
+        journal_match = None
 
         if issn_match is None:
             # If no ISSN match, create new journal
@@ -66,45 +65,42 @@ def migrate_to_step4(request):
                 obj.issn = issn_value
                 obj.doi = citation_journal_dictionary.get("container_DOI", None)
                 obj.last_updated = datetime.datetime.now()
-                is_usda_funded = citation_journal_dictionary.get('usda', None)
+                is_usda_funded = citation_journal_dictionary['usda']
 
                 if is_usda_funded == 'yes':
                     obj.collection_status = 'From Submission'
                 else:
                     obj.collection_status = 'pending'
                 obj.save()
-
-            item.last_status = 'review'
-
+            item.last_status = "review"
         else:
             journal_match = Journal.objects.filter(issn=issn_match).first()
-            if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == 'no':
+            item.journal = journal_match
+            if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == "no":
                 # Reject article as out of scope
-                item.last_status = 'dropped'
+                item.last_status = "dropped"
                 item.last_step = 4
-                item.note = 'out of scope'
+                item.note = "out of scope"
                 item.current_date = datetime.datetime.now()
+                item.journal = journal_match
                 continue
             else:
-                cit['container_DOI'] = journal_match.doi
-                cit['local']['identifiers']['journal_mmsid'] = journal_match.mmsid
+                cit.container_DOI = journal_match.doi
+                cit.local.identifiers["journal_mmsid"] = journal_match.mmsid
                 nal_journal_id = journal_match.nal_journal_id
-                cit['local']['identifiers']['nal_journal_id'] = nal_journal_id
-                if journal_match.collection_status == 'pending':
-                    item.last_status = 'review'
-                    if citation_journal_dictionary.get('usda', None) == 'no':
-                        cit['local']['cataloger_notes'] = 'Journal is pending'
+                cit.local.identifiers["nal_journal_id"] = nal_journal_id
+                if journal_match.collection_status == "pending":
+                    item.last_status = "review"
+                    if citation_journal_dictionary.get("usda", None) == "no":
+                        cit.local.cataloger_notes.append('Journal is pending')
 
         # update the journal id in article
-        item.journal = nal_journal_id
         item.last_step = 4
         item.save()
 
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file)
-
-        print("Execution of article ended")
         
 
     # return the response
