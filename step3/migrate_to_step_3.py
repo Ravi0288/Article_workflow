@@ -72,7 +72,7 @@ def migrate_to_step3(request):
                 # Create a BytesIO object to act as a file
                 pkl_file = BytesIO()
                 # Serialize the dictionary into the BytesIO object
-                pickle.dump(citation_object, pkl_file)
+                pickle.dump(citation_object, pkl_file, protocol=pickle.HIGHEST_PROTOCOL)
                 pkl_file.seek(0)
 
                 # If a file exists, delete the old file first
