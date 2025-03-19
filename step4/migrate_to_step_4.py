@@ -74,9 +74,11 @@ def migrate_to_step4(request):
                 obj.save()
 
             item.last_status = "review"
-            qs = Journal.objects.filter(issn=issn_list[0])
-            if qs.exists():
-                item.journal = qs[0]
+            
+            if issn_list:
+                qs = Journal.objects.filter(issn=issn_list[0])
+                if qs.exists():
+                    item.journal = qs[0]
 
         else:
             journal_match = Journal.objects.filter(issn=issn_match).first()
