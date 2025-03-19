@@ -72,7 +72,10 @@ def migrate_to_step4(request):
                 else:
                     obj.collection_status = 'pending'
                 obj.save()
+
             item.last_status = "review"
+            item.journal = Journal.objects.filter(issn=issn_list[0])[0]
+
         else:
             journal_match = Journal.objects.filter(issn=issn_match).first()
             item.journal = journal_match
