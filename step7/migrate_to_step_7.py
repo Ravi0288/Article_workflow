@@ -39,7 +39,7 @@ def migrate_to_step7(request):
 
         # Save the updated pickle content back to the file
         with open(article.citation_pickle.path, 'wb') as file:
-            pickle.dump(unpickle_content, file)
+            pickle.dump(unpickle_content, file, protocol=pickle.HIGHEST_PROTOCOL)
 
         # Update the article status and note in the database
         if pid:

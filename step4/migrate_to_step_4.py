@@ -107,7 +107,7 @@ def migrate_to_step4(request):
 
         # Save the updated pickle content back to the file
         with open(item.citation_pickle.path, 'wb') as file:
-            pickle.dump(cit, file)
+            pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
         
 
     # return the response
