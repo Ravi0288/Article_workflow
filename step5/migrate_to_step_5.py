@@ -25,9 +25,9 @@ def migrate_to_step5(request):
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     
-    for item in articles:
+    for article in articles:
         # Before unpickling the Citation object, check if the incoming article has a DOI attribute.
-        if item.DOI:
+        if article.DOI:
             # If the Article object has a DOI attribute, search for existing article models that have the same DOI, status of "active", and a last_stage greater than 4.
             # If an article is found, skip (ignore) the article and go to the incoming article. The article will be processed after the matching article has been processed and is no longer active in the workflow.
             # If no article is found, continue with loading the Article's Citation object.
@@ -36,7 +36,7 @@ def migrate_to_step5(request):
         else:
         # If the Article object does not have a DOI attribute, continue with loading the Article's Citation object.
             try:
-                with open(item.citation_pickle.path, 'rb') as file:
+                with open(article.citation_pickle.path, 'rb') as file:
                     cit = pickle.load(file)
             except Exception as e:
                 print("Error loading pickle file", e)
@@ -44,25 +44,25 @@ def migrate_to_step5(request):
             cit, message = metadata_routines.type_and_match_article(cit)
 
             if message == "dropped":
-                item.last_status = "dropped"
+                article.last_status = "dropped"
 
             if cit.local.cataloger_notes:
-                item.note = cit.local.cataloger_notes
+                article.note = cit.local.cataloger_notes
             
-            if not item.type_of_record == "journal-article":
-                item.type_of_record = cit.type_of_record
+            if not article.type_of_record == "journal-article":
+                article.type_of_record = cit.type_of_record
 
             if cit.local.identifiers["mmsid"]:
-                item.MMSID = cit.local.identifiers["mmsid"]
+                article.MMSID = cit.local.identifiers["mmsid"]
 
             if cit.local.identifiers["pid"]:
-                item.PID = cit.local.identifiers["pid"]
+                article.PID = cit.local.identifiers["pid"]
 
-            item.last_step = 5
-            item.save()
+            article.last_step = 5
+            article.save()
 
             # Save the updated pickle content back to the file
-            with open(item.citation_pickle.path, 'wb') as file:
+            with open(article.citation_pickle.path, 'wb') as file:
                 pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
