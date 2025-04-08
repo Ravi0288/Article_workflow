@@ -9,7 +9,7 @@ COLLECTION_STATUSES= (
 
 class Journal(models.Model):
     journal_title = models.CharField(max_length=512, null=True, blank=True, help_text="Journal Title")
-    publisher = models.CharField(max_length=256, null=True, blank=True, help_text="Publisher Code" )
+    publisher = models.CharField(max_length=256, null=True, blank=True, help_text="Publisher Code")
     issn = models.CharField(max_length=100, null=True, blank=True, unique=True, help_text="ISSN Number")
     collection_status = models.CharField(max_length=16, choices=COLLECTION_STATUSES,
                                             null=True, blank=True,
