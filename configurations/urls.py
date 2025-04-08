@@ -10,6 +10,8 @@ urlpatterns = [
     path('step2/', include('step2.urls')),
     path('step3/', include('step3.urls')),
     path('step4/', include('step4.urls')),
+    path('step5/', include('step5.urls')),
+    path('step6/', include('step6.urls')),
     path('step7/', include('step7.urls')),
     path('email/', include('mail_service.urls')),
     path('accounts/', include('accounts.urls')),
