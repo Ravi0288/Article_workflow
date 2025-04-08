@@ -4,7 +4,7 @@ from model.article import Article
 from django.contrib.auth.decorators import login_required
 from citation import *
 import pickle
-import metadata_routines
+import type_and_match
 
 @login_required
 @api_view(['GET'])
@@ -41,7 +41,7 @@ def migrate_to_step5(request):
             except Exception as e:
                 print("Error loading pickle file", e)
                 continue
-            cit, message = metadata_routines.type_and_match_article(cit)
+            cit, message = type_and_match.type_and_match_article(cit)
 
             if message == "dropped":
                 article.last_status = "dropped"
