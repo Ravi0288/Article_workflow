@@ -250,6 +250,11 @@ def migrate_to_step2(request):
 
     # Looping through each object in the query set
     for archive_row in archive_records:
+        if archive_row.file_content == '':
+            archive_row.status='processed'
+            archive_row.save()
+            continue
+
         source = archive_row.file_content.path
         # If record is of type zip than sequence of action will be 
         # 1: Unzip the content
