@@ -20,3 +20,4 @@ certificates
 data/*
 accounts/migrations/*
 model/migrations/*
+article.sqlite3
