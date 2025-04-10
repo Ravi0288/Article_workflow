@@ -4,7 +4,7 @@ from model.article import Article
 from django.contrib.auth.decorators import login_required
 from citation import *
 import pickle
-import type_and_match
+from type_and_match import type_and_match
 
 @login_required
 @api_view(['GET'])
@@ -53,7 +53,7 @@ def migrate_to_step5(request):
 
             # cit = type_and_match.type_and_match.ArticleTyperMatcher(cit)
             
-            cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
+            cit, message= type_and_match.ArticleTyperMatcher.type_and_match(cit)
 
 
             # try:
