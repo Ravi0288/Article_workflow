@@ -48,7 +48,12 @@ def migrate_to_step3(request):
             # read and return file content in utf-8 format
             file_content = read_and_return_file_content(item.article_file.path)
             # read and return citation_object
-            citation_object, msg_string = mapper(file_content, item.provider.source_schema) 
+
+            try:
+                citation_object, msg_string = mapper(file_content, item.provider.source_schema) 
+            except Exception as e:
+                print("Error Occured in mapper function", e)
+                continue
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':

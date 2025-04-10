@@ -22,19 +22,27 @@ def migrate_to_step5(request):
         last_step=4
         # article_switch = True
         )
+    
+    print(articles.count(), "######################################")
 
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     
+    doi_exists = 0
+    doi_na = 0
+    
     for article in articles:
         # Before unpickling the Citation object, check if the incoming article has a DOI attribute.
         if article.DOI:
+            doi_exists=doi_exists + 1
+            print
             # If the Article object has a DOI attribute, search for existing article models that have the same DOI, status of "active", and a last_stage greater than 4.
             # If an article is found, skip (ignore) the article and go to the incoming article. The article will be processed after the matching article has been processed and is no longer active in the workflow.
             # If no article is found, continue with loading the Article's Citation object.
             pass
         
         else:
+            doi_na=doi_na+1
         # If the Article object does not have a DOI attribute, continue with loading the Article's Citation object.
             try:
                 with open(article.citation_pickle.path, 'rb') as file:
@@ -47,7 +55,12 @@ def migrate_to_step5(request):
 
             # cit = type_and_match.type_and_match.ArticleTyperMatcher(cit)
 
-            cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
+            try:
+
+                cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
+            except Exception as e:
+                print(e)
+                continue
 
             if message == "dropped":
                 article.last_status = "dropped"
@@ -72,6 +85,7 @@ def migrate_to_step5(request):
                 pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
+    print(doi_exists, doi_na)
     # return the response
     context = {
             'heading' : 'Message',
