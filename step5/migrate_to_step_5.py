@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+import type_and_match.type_and_match
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 from citation import *
@@ -41,7 +42,12 @@ def migrate_to_step5(request):
             except Exception as e:
                 print("Error loading pickle file", e)
                 continue
-            cit, message = type_and_match.type_and_match_article(cit)
+
+            message = None
+
+            # cit = type_and_match.type_and_match.ArticleTyperMatcher(cit)
+
+            cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
 
             if message == "dropped":
                 article.last_status = "dropped"
