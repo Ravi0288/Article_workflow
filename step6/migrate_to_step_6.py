@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 from citation import *
-import metadata_routines
+import metadata_quality_review
 import pickle
 
 
@@ -43,7 +43,7 @@ def migrate_to_step6(request):
             print("Error loading pickle file", e)
             continue
 
-        cit, message = metadata_routines.metadata_quality_review(cit, override_string)
+        cit, message = metadata_quality_review.metadata_quality_review(cit, override_string)
 
         if message == 'dropped':
             article.last_status = 'dropped'

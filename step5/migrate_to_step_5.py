@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-import type_and_match.type_and_match
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 from citation import *
@@ -54,15 +53,15 @@ def migrate_to_step5(request):
 
             # cit = type_and_match.type_and_match.ArticleTyperMatcher(cit)
             
-            # cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
+            cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
 
 
-            try:
+            # try:
 
-                cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
-            except Exception as e:
-                print(e)
-                continue
+            #     cit, message= type_and_match.type_and_match.ArticleTyperMatcher.type_and_match(cit)
+            # except Exception as e:
+            #     print(e)
+            #     continue
 
             if message == "dropped":
                 article.last_status = "dropped"
