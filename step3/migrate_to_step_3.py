@@ -44,35 +44,35 @@ def migrate_to_step3(request):
         }
 
     else:
-        for item in articles:
+        for article in articles:
             # read and return file content in utf-8 format
-            file_content = read_and_return_file_content(item.article_file.path)
+            file_content = read_and_return_file_content(article.article_file.path)
             # read and return citation_object
 
             try:
-                citation_object, msg_string = mapper(file_content, item.provider.source_schema) 
+                citation_object, msg_string = mapper(file_content, article.provider.source_schema) 
             except Exception as e:
-                print("Error Occured in mapper function", e)
+                print("Error Occured from mapper function for article id :", article.id, "error Message :", e)
                 continue
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
-                print("article id: ", item.id ," Mapper function returned: ", msg_string)
-                item.last_status = 'dropped'
-                item.save()
+                print("article id: ", article.id ," Mapper function returned: ", msg_string)
+                article.last_status = 'dropped'
+                article.save()
                 continue
 
             # if mapper function returns successful result than update the article, and save the pickel file
             try:
                 obj = Citation.step3_info(citation_object)
-                item.title = obj["title"]
-                item.type_of_record = obj["type"]
-                item.provider_rec = obj["provider_rec"]
-                item.note = 'N/A'
-                item.DOI = obj["doi"]
+                article.title = obj["title"]
+                article.type_of_record = obj["type"]
+                article.provider_rec = obj["provider_rec"]
+                article.note = 'N/A'
+                article.DOI = obj["doi"]
                 # Finally update the step2 record status 
-                item.last_status = 'active'
-                item.last_step = 3 
+                article.last_status = 'active'
+                article.last_step = 3 
             
                 # Create a BytesIO object to act as a file
                 pkl_file = BytesIO()
@@ -81,23 +81,23 @@ def migrate_to_step3(request):
                 pkl_file.seek(0)
 
                 # If a file exists, delete the old file first
-                if item.citation_pickle:
-                    old_file_path = item.citation_pickle.path
+                if article.citation_pickle:
+                    old_file_path = article.citation_pickle.path
                     if os.path.exists(old_file_path):
                         default_storage.delete(old_file_path)
 
                 # save citaion_pickel file
-                item.citation_pickle.save(
-                    str(item.id)+'.pkl', 
+                article.citation_pickle.save(
+                    str(article.id)+'.pkl', 
                     File(pkl_file), 
                     save=False
                     )
 
-                item.save()
+                article.save()
                 counter +=1
                 
             except Exception as e:
-                print("article id: ", item.id ," Error Messsage :", e)
+                print("article id: ", article.id ," Error Messsage :", e)
  
         context = {
             'heading' : 'Message',
