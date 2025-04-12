@@ -1,11 +1,11 @@
 
 from django.shortcuts import render
+import pid_minter
 from rest_framework.decorators import api_view
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
-from .mint import pid_minter
 
 @login_required
 @api_view(['GET'])
