@@ -55,7 +55,7 @@ def migrate_to_step6(request):
         if cit.local.cataloger_notes:
             article.note = cit.local.cataloger_notes
 
-        article.last_step = 5
+        article.last_step = 6
         article.save()
 
         # Save the updated pickle content back to the file
