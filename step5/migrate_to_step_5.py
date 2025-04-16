@@ -17,7 +17,7 @@ def migrate_to_step5(request):
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status__in=('active', 'dropped'),
-        provider__in_production=True,
+        # provider__in_production=True,
         last_step=4
         # article_switch = True
         )
@@ -37,6 +37,8 @@ def migrate_to_step5(request):
             # If the Article object has a DOI attribute, search for existing article models that have the same DOI, status of "active", and a last_stage greater than 4.
             # If an article is found, skip (ignore) the article and go to the incoming article. The article will be processed after the matching article has been processed and is no longer active in the workflow.
             # If no article is found, continue with loading the Article's Citation object.
+            article.last_step = 5
+            article.save()
             pass
         
         else:
@@ -62,10 +64,10 @@ def migrate_to_step5(request):
             if not article.type_of_record == "journal-article":
                 article.type_of_record = cit.type_of_record
 
-            if cit.local.identifiers["mmsid"]:
-                article.MMSID = cit.local.identifiers["mmsid"]
+            if cit.local.identifiers.get("mms_id", None):
+                article.MMSID = cit.local.identifiers["mms_id"]
 
-            if cit.local.identifiers["pid"]:
+            if cit.local.identifiers.get("pid", None):
                 article.PID = cit.local.identifiers["pid"]
 
             article.last_step = 5

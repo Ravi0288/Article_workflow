@@ -19,7 +19,7 @@ def migrate_to_step4(request):
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status__in=('active', 'dropped'),
-        provider__in_production=True,
+        # provider__in_production=True,
         last_step=3
         # article_switch = True
         ).exclude(citation_pickle='N/A')

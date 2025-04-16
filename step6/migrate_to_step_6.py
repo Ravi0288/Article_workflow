@@ -8,9 +8,9 @@ import pickle
 
 
 def make_override_string(article):
-    p = article.provider.requirement_override
-    j = article.journal.requirement_override
-    return p + j
+    p = article.provider.requirement_override or ""
+    j = article.journal.requirement_override or ""
+    return f"{p} | {j}" if p and j else p + j
 
 
 
@@ -34,6 +34,7 @@ def migrate_to_step6(request):
         return render(request, 'common/dashboard.html', context=context)
     
     for article in articles:
+        print(article.id)
         override_string = make_override_string(article)
 
         try:
