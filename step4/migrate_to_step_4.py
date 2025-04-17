@@ -43,6 +43,19 @@ def migrate_to_step4(request):
         
         issn_list = citation_journal_dictionary.get('issn', None)
 
+        # Check to ensure issns are valid
+        # issn_regex = r"^[A-Z0-9]{4}-[A-Z0-9]{4}$"
+        # for issn in issn_list:
+        #     if not re.match(issn_regex, issn):
+        #         print(f"Invalid ISSN: {issn} from article with id {article.id}")
+        #         issn_list.remove(issn)
+        #
+        # if len(issn_list) == 0:
+        #     article.last_step = 4
+        #     article.last_status = 'review'
+        #     article.note = "No valid ISSN found"
+        #     continue
+
         issn_match = None
         for issn_value in issn_list:
             qs = Journal.objects.filter(issn=issn_value)
@@ -68,7 +81,7 @@ def migrate_to_step4(request):
                 is_usda_funded = citation_journal_dictionary['usda']
 
                 if is_usda_funded == 'yes':
-                    obj.collection_status = 'From Submission'
+                    obj.collection_status = 'from_submission'
                 else:
                     obj.collection_status = 'pending'
                 obj.save()

@@ -4,6 +4,7 @@ import datetime
 import warnings
 import logging
 import os
+import re
 
 from model.journal import Journal
 
@@ -81,8 +82,18 @@ def update_journal_model(last_pull_date):
     for record in pymarc_journal_records:
         p_issn = pymarc_field_or_none(record, '022', 'a')
         e_issn = pymarc_field_or_none(record, '022', 'l')
+
+        # Check to see if e_issn and p_issn match expected regex
+        issn_regex = r"^[A-Z0-9]{4}-[A-Z0-9]{4}$"
+        if p_issn and not re.match(issn_regex, p_issn):
+            logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
+            p_issn = None
+        if e_issn and not re.match(issn_regex, e_issn):
+            logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
+            e_issn = None
+
         if e_issn is None and p_issn is None:
-            logger.warning(f"No issn for record with mmsid: {record['001'].data}")
+            logger.warning(f"No valid issn for record with mmsid: {record['001'].data}")
             continue
 
         # Extract nal_journal_id field. If DNE, reject record with a warning
@@ -118,7 +129,7 @@ def update_journal_model(last_pull_date):
             journal_match_e_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_e_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_e_issn.mmsid = record['001'].data
-            #journal_match_e_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_e_issn.last_updated = datetime.datetime.now()
             journal_match_e_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_e_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_e_issn.doi=extract_doi(record)
@@ -142,7 +153,7 @@ def update_journal_model(last_pull_date):
             journal_match_p_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_p_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_p_issn.mmsid = record['001'].data
-            #journal_match_p_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_p_issn.last_updated = datetime.datetime.now()
             journal_match_p_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_p_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_p_issn.doi = extract_doi(record)
@@ -170,7 +181,7 @@ def update_journal_model(last_pull_date):
                 mmsid=record['001'].data,
                 subject_cluster = extract_subject_cluster(record),
                 requirement_override = pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated = datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated = datetime.datetime.now(),
                 doi = extract_doi(record)
             )
             new_journal.save()
@@ -196,7 +207,7 @@ def update_journal_model(last_pull_date):
                 mmsid=record['001'].data,
                 subject_cluster=extract_subject_cluster(record),
                 requirement_override=pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated=datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated=datetime.datetime.now(),
                 doi=extract_doi(record)
             )
             new_journal.save()
@@ -235,8 +246,18 @@ def update_journal_model_from_file(filepath: str):
     for record in pymarc_journal_records:
         p_issn = pymarc_field_or_none(record, '022', 'a')
         e_issn = pymarc_field_or_none(record, '022', 'l')
+
+        # Check to see if e_issn and p_issn match expected regex
+        issn_regex = r"^[A-Z0-9]{4}-[A-Z0-9]{4}$"
+        if p_issn and not re.match(issn_regex, p_issn):
+            logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
+            p_issn = None
+        if e_issn and not re.match(issn_regex, e_issn):
+            logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
+            e_issn = None
+
         if e_issn is None and p_issn is None:
-            logger.warning(f"No issn for record with mmsid: {record['001'].data}")
+            logger.warning(f"No valid issn for record with mmsid: {record['001'].data}")
             continue
 
         # Extract nal_journal_id field. If DNE, reject record with a warning
@@ -272,7 +293,7 @@ def update_journal_model_from_file(filepath: str):
             journal_match_e_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_e_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_e_issn.mmsid = record['001'].data
-            #journal_match_e_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_e_issn.last_updated = datetime.datetime.now()
             journal_match_e_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_e_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_e_issn.doi=extract_doi(record)
@@ -296,7 +317,7 @@ def update_journal_model_from_file(filepath: str):
             journal_match_p_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_p_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_p_issn.mmsid = record['001'].data
-            #journal_match_p_issn.last_updated = datetime.datetime.now().strftime('%Y%m%d')
+            #journal_match_p_issn.last_updated = datetime.datetime.now()
             journal_match_p_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_p_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_p_issn.doi = extract_doi(record)
@@ -324,7 +345,7 @@ def update_journal_model_from_file(filepath: str):
                 mmsid=record['001'].data,
                 subject_cluster = extract_subject_cluster(record),
                 requirement_override = pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated = datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated = datetime.datetime.now(),
                 doi = extract_doi(record)
             )
             new_journal.save()
@@ -350,7 +371,7 @@ def update_journal_model_from_file(filepath: str):
                 mmsid=record['001'].data,
                 subject_cluster=extract_subject_cluster(record),
                 requirement_override=pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated=datetime.datetime.now().strftime('%Y%m%d'),
+                #last_updated=datetime.datetime.now(),
                 doi=extract_doi(record)
             )
             new_journal.save()
