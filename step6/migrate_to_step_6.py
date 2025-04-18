@@ -9,8 +9,10 @@ from model.journal import Journal
 
 
 def make_override_string(article):
+    j = ''
     p = article.provider.requirement_override or ""
-    j = Journal.objects.get(id=article.journal.id).requirement_override or ""
+    if article.journal:
+        j = Journal.objects.get(id=article.journal.id).requirement_override or ""
     # j = article.journal.requirement_override or ""
     return f"{p} | {j}" if p and j else p + j
 
