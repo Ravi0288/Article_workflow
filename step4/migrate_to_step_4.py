@@ -6,7 +6,7 @@ from citation import *
 import pickle
 from model.journal import Journal
 import datetime
-import pytz
+import re
 
 
 @login_required
@@ -38,24 +38,25 @@ def migrate_to_step4(request):
             print("Error loading pickle file", e)
             continue
 
-        print("Type of cit object: ", type(cit))
         citation_journal_dictionary = cit.get_journal_info()
-        #print("Article's journal: ", citation_journal_dictionary.get('journal_title', None))
         
         issn_list = citation_journal_dictionary.get('issn', None)
 
         # Check to ensure issns are valid
-        # issn_regex = r"^[A-Z0-9]{4}-[A-Z0-9]{4}$"
-        # for issn in issn_list:
-        #     if not re.match(issn_regex, issn):
-        #         print(f"Invalid ISSN: {issn} from article with id {article.id}")
-        #         issn_list.remove(issn)
-        #
-        # if len(issn_list) == 0:
-        #     article.last_step = 4
-        #     article.last_status = 'review'
-        #     article.note = "No valid ISSN found"
-        #     continue
+        issn_regex = r"^[0-9]{4}-[0-9]{3}[0-9xX]$"
+        for issn in issn_list:
+            if not re.match(issn_regex, issn):
+                print(f"Invalid ISSN: {issn} from article with id {article.id}")
+                issn_list.remove(issn)
+
+        if len(issn_list) == 0:
+            if cit.local.USDA == "yes":
+                article.last_step = 4
+            else:
+                article.last_step = 4
+                article.last_status = 'review'
+                article.note = "No valid ISSN found"
+            continue
 
         issn_match = None
         for issn_value in issn_list:
@@ -70,7 +71,7 @@ def migrate_to_step4(request):
         journal_match = None
 
         if issn_match is None:
-            # If no ISSN match, create new journal
+            # If no ISSN match, create new journal entries for each listed issn
             for issn_value in issn_list:
                 # Create new journal model
                 obj = Journal()
@@ -78,7 +79,7 @@ def migrate_to_step4(request):
                 obj.publisher = citation_journal_dictionary.get('publisher', None)
                 obj.issn = issn_value
                 obj.doi = citation_journal_dictionary.get("container_DOI", None)
-                obj.last_updated = datetime.datetime.now(tz=pytz.utc)
+                obj.last_updated = datetime.datetime.now()
                 is_usda_funded = citation_journal_dictionary['usda']
 
                 if is_usda_funded == 'yes':
@@ -86,6 +87,7 @@ def migrate_to_step4(request):
                 else:
                     obj.collection_status = 'pending'
                 obj.save()
+
 
             article.last_status = "review"
             
@@ -102,7 +104,7 @@ def migrate_to_step4(request):
                 article.last_status = "dropped"
                 article.last_step = 4
                 article.note = "out of scope"
-                article.current_date = datetime.datetime.now(tz=pytz.utc)
+                article.current_date = datetime.datetime.now()
                 article.journal = journal_match
                 continue
             else:

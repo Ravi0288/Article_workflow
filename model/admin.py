@@ -12,7 +12,7 @@ class JournalAdmin(admin.ModelAdmin):
                     "harvest_source", "nal_journal_id", "mmsid", "last_updated", "note",
                     "subject_cluster", "requirement_override", "doi"
                     ]
-    list_filter = ('publisher', 'collection_status', 'harvest_source')
+    list_filter = ('publisher', 'collection_status', 'harvest_source', 'note')
     list_per_page = 20
     search_fields = ('issn', 'journal_title', 'nal_journal_id', 'mmsid', 'harvest_source')
 

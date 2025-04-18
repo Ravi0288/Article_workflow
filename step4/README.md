@@ -32,6 +32,11 @@ To run the journal updater via SRU, follow these steps:
     date = Journal.objects.filter(collection_status__in=('accepted', 'rejected')).latest('last_updated').last_updated
     update_journal_model(date)
     ```
+    Alternatively, if you would like to run the updater in 'debug' mode and display all of the rejected and invalid ISSNs, you can set `debug=True`:
+    ```python
+    date = Journal.objects.filter(collection_status__in=('accepted', 'rejected')).latest('last_updated').last_updated
+    update_journal_model(date, debug=True)
+    ```
 
 This will update the `Journal` model with the latest data based on the `last_updated` field.
 
@@ -55,6 +60,11 @@ To run the updater function from a file, follow these steps:
 
     ```python
     update_journal_model_from_file('path/to/your/file.marcxml')
+    ```
+   
+    Like in the `update_journal_model` function, you can set `debug=True` to display all of the rejected and invalid ISSNs:
+    ```python
+    update_journal_model_from_file('path/to/your/file.marcxml', debug=True)
     ```
 
 ## Notes

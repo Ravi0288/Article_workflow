@@ -1,7 +1,6 @@
 import srupymarc
 import pymarc
 import datetime
-import warnings
 import logging
 import os
 import re
@@ -57,10 +56,16 @@ def extract_subject_cluster(record):
             subject_cluster = "none"
     return subject_cluster
 
+def contains_digit(text):
+    for character in text:
+        if character.isdigit():
+            return True
+    return False
+
 # Function to update the journal model based on the last pull date.
 # This function pulls journal records from Alma based using srupymarc and creates one journal entry for each ISSN identified in the journal record.
 
-def update_journal_model(last_pull_date):
+def update_journal_model(last_pull_date, debug=False):
     logger = logging.getLogger("journal_logger")
     logger.info(
         f"Running update_journal_model on {datetime.datetime.now().strftime('%Y-%m-%d')}, pulling records since {last_pull_date}"
@@ -83,18 +88,41 @@ def update_journal_model(last_pull_date):
         p_issn = pymarc_field_or_none(record, '022', 'a')
         e_issn = pymarc_field_or_none(record, '022', 'l')
 
-        # Check to see if e_issn and p_issn match expected regex
-        issn_regex = r"^[A-Z0-9]{4}-[A-Z0-9]{4}$"
-        if p_issn and not re.match(issn_regex, p_issn):
-            logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
-            p_issn = None
-        if e_issn and not re.match(issn_regex, e_issn):
-            logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
-            e_issn = None
+        # Check to see if e_issn and p_issn are 'close enough' to a valid ISSN to include in the lookup table
+        # Ignore ISSNs if they are longer than 20 characters or if they contain no digits
+        if p_issn:
+            if len(p_issn) > 20 or not contains_digit(p_issn):
+                if debug:
+                    print("Rejecting invalid ISSN: ", p_issn)
+                p_issn = None
+        if e_issn:
+            if len(e_issn) > 20 or not contains_digit(e_issn):
+                if debug:
+                    print("Rejecting invalid ISSN: ", p_issn)
+                e_issn = None
 
-        if e_issn is None and p_issn is None:
+        if not p_issn and not e_issn:
             logger.warning(f"No valid issn for record with mmsid: {record['001'].data}")
             continue
+
+        # Check to see if e_issn and p_issn match expected regex
+        issn_regex = r"^[0-9]{4}-[0-9]{3}[0-9xX]$"
+        if p_issn:
+            p_issn_valid = bool(re.match(issn_regex, p_issn))
+        else:
+            p_issn_valid = False
+        if e_issn:
+            e_issn_valid = bool(re.match(issn_regex, e_issn))
+        else:
+            e_issn_valid = False
+
+        if p_issn and not p_issn_valid:
+            print("Processing invalid issn: ", p_issn)
+            logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
+
+        if e_issn and not e_issn_valid:
+            print("Processing invalid issn: ", e_issn)
+            logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
 
         # Extract nal_journal_id field. If DNE, reject record with a warning
         nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
@@ -120,16 +148,19 @@ def update_journal_model(last_pull_date):
             journal_match_e_issn.journal_title = title
             journal_match_e_issn.publisher = pymarc_field_or_none_str(record, '260', 'b')
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status=collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if e_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status=collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
+                journal_match_e_issn.note = "Invalid ISSN"
 
             journal_match_e_issn.collection_status = collection_status
             journal_match_e_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_e_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_e_issn.mmsid = record['001'].data
-            #journal_match_e_issn.last_updated = datetime.datetime.now()
             journal_match_e_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_e_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_e_issn.doi=extract_doi(record)
@@ -144,16 +175,19 @@ def update_journal_model(last_pull_date):
             journal_match_p_issn.journal_title = title
             journal_match_p_issn.publisher = pymarc_field_or_none_str(record, '260', 'b')
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status=collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if p_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status = collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
+                journal_match_p_issn.note = "Invalid ISSN"
 
             journal_match_p_issn.collection_status = collection_status
             journal_match_p_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_p_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_p_issn.mmsid = record['001'].data
-            #journal_match_p_issn.last_updated = datetime.datetime.now()
             journal_match_p_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_p_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_p_issn.doi = extract_doi(record)
@@ -162,9 +196,12 @@ def update_journal_model(last_pull_date):
         # If the record does not exist, create a new journal model based on the new record pulled
         if e_issn and not journal_match_e_issn:
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status = collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if e_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status = collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
 
             title = pymarc_field_or_none_str(record, '245', 'a')
@@ -181,16 +218,20 @@ def update_journal_model(last_pull_date):
                 mmsid=record['001'].data,
                 subject_cluster = extract_subject_cluster(record),
                 requirement_override = pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated = datetime.datetime.now(),
                 doi = extract_doi(record)
             )
+            if not e_issn_valid:
+                new_journal.note = "Invalid ISSN"
             new_journal.save()
 
         if p_issn and not journal_match_p_issn:
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status = collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if p_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status = collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
 
             title = pymarc_field_or_none_str(record, '245', 'a')
@@ -207,14 +248,15 @@ def update_journal_model(last_pull_date):
                 mmsid=record['001'].data,
                 subject_cluster=extract_subject_cluster(record),
                 requirement_override=pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated=datetime.datetime.now(),
                 doi=extract_doi(record)
             )
+            if not p_issn_valid:
+                new_journal.note = "Invalid ISSN"
             new_journal.save()
 
 
 # Similar function to update the journal model but with input from a file
-def update_journal_model_from_file(filepath: str):
+def update_journal_model_from_file(filepath: str, debug=False):
     logger = logging.getLogger("journal_logger")
     logger.info(
         f"Running update_journal_model on {datetime.datetime.now().strftime('%Y-%m-%d')}, pulling records from file {filepath}"
@@ -247,18 +289,44 @@ def update_journal_model_from_file(filepath: str):
         p_issn = pymarc_field_or_none(record, '022', 'a')
         e_issn = pymarc_field_or_none(record, '022', 'l')
 
-        # Check to see if e_issn and p_issn match expected regex
-        issn_regex = r"^[A-Z0-9]{4}-[A-Z0-9]{4}$"
-        if p_issn and not re.match(issn_regex, p_issn):
-            logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
-            p_issn = None
-        if e_issn and not re.match(issn_regex, e_issn):
-            logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
-            e_issn = None
+        # Check to see if e_issn and p_issn are 'close enough' to a valid ISSN to include in the lookup table
+        # Ignore ISSNs if they are longer than 20 characters or if they contain no digits
+        if p_issn:
+            if len(p_issn) > 20 or not contains_digit(p_issn):
+                if debug:
+                    print("Rejecting invalid ISSN: ", p_issn)
+                p_issn = None
+        if e_issn:
+            if len(e_issn) > 20 or not contains_digit(e_issn):
+                if debug:
+                    print("Rejecting invalid ISSN: ", p_issn)
+                e_issn = None
 
-        if e_issn is None and p_issn is None:
+        if not p_issn and not e_issn:
             logger.warning(f"No valid issn for record with mmsid: {record['001'].data}")
             continue
+
+        # Check to see if e_issn and p_issn match expected regex
+        issn_regex = r"^[0-9]{4}-[0-9]{3}[0-9xX]$"
+        if p_issn:
+            p_issn_valid = bool(re.match(issn_regex, p_issn))
+        else:
+            p_issn_valid = False
+        if e_issn:
+            e_issn_valid = bool(re.match(issn_regex, e_issn))
+        else:
+            e_issn_valid = False
+
+
+        if p_issn and not p_issn_valid:
+            if debug:
+                print("Processing invalid issn: ", p_issn)
+            logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
+
+        if e_issn and not e_issn_valid:
+            if debug:
+                print("Processing invalid issn: ", e_issn)
+            logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
 
         # Extract nal_journal_id field. If DNE, reject record with a warning
         nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
@@ -284,16 +352,19 @@ def update_journal_model_from_file(filepath: str):
             journal_match_e_issn.journal_title = title
             journal_match_e_issn.publisher = pymarc_field_or_none_str(record, '260', 'b')
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status=collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if e_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status=collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
+                journal_match_e_issn.note = "Invalid ISSN"
 
             journal_match_e_issn.collection_status = collection_status
             journal_match_e_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_e_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_e_issn.mmsid = record['001'].data
-            #journal_match_e_issn.last_updated = datetime.datetime.now()
             journal_match_e_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_e_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_e_issn.doi=extract_doi(record)
@@ -308,16 +379,19 @@ def update_journal_model_from_file(filepath: str):
             journal_match_p_issn.journal_title = title
             journal_match_p_issn.publisher = pymarc_field_or_none_str(record, '260', 'b')
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status=collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if p_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status=collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
+                journal_match_p_issn.note = "Invalid ISSN"
 
             journal_match_p_issn.collection_status = collection_status
             journal_match_p_issn.harvest_source = pymarc_field_or_none_str(record, '918', 'a')
             journal_match_p_issn.nal_journal_id = pymarc_field_or_none_str(record, '900', 'a')
             journal_match_p_issn.mmsid = record['001'].data
-            #journal_match_p_issn.last_updated = datetime.datetime.now()
             journal_match_p_issn.subject_cluster = extract_subject_cluster(record)
             journal_match_p_issn.requirement_override = pymarc_field_or_none_str(record, '597', 'a')
             journal_match_p_issn.doi = extract_doi(record)
@@ -325,10 +399,12 @@ def update_journal_model_from_file(filepath: str):
 
         # If the record does not exist, create a new journal model based on the new record pulled
         if e_issn and not journal_match_e_issn:
-
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status = collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if e_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status = collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
 
             title = pymarc_field_or_none_str(record, '245', 'a')
@@ -345,16 +421,20 @@ def update_journal_model_from_file(filepath: str):
                 mmsid=record['001'].data,
                 subject_cluster = extract_subject_cluster(record),
                 requirement_override = pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated = datetime.datetime.now(),
                 doi = extract_doi(record)
             )
+            if not e_issn_valid:
+                new_journal.note = "Invalid ISSN"
             new_journal.save()
 
         if p_issn and not journal_match_p_issn:
 
-            collection_status = pymarc_field_or_none_str(record, '901', 'a')
-            collection_status = collection_status.lower()
-            if collection_status not in valid_collection_statuses:
+            if p_issn_valid:
+                collection_status = pymarc_field_or_none_str(record, '901', 'a')
+                collection_status = collection_status.lower()
+                if collection_status not in valid_collection_statuses:
+                    collection_status = "pending"
+            else:
                 collection_status = "pending"
 
             title = pymarc_field_or_none_str(record, '245', 'a')
@@ -371,7 +451,8 @@ def update_journal_model_from_file(filepath: str):
                 mmsid=record['001'].data,
                 subject_cluster=extract_subject_cluster(record),
                 requirement_override=pymarc_field_or_none_str(record, '597', 'a'),
-                #last_updated=datetime.datetime.now(),
                 doi=extract_doi(record)
             )
+            if not p_issn_valid:
+                new_journal.note = "Invalid ISSN"
             new_journal.save()

@@ -29,9 +29,9 @@ def migrate_to_step3(request):
         last_status__in=('active', 'dropped'),
         provider__in_production=True, 
         last_step=2,
-        provider__working_name__in = ('SUBMISSION', 'CHORUS')
+        provider__in = (9,10)
         )
-    # provider__working_name__in. Remove this line when working with all the providers.
+    # provider__in = (9,10) Remove this line when working with all the providers.
  
     print(articles.count(), " Article found to be migrated to step 3")
 
