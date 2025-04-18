@@ -7,6 +7,7 @@ import pickle
 from model.journal import Journal
 import datetime
 import re
+import pytz
 
 
 @login_required
@@ -79,7 +80,7 @@ def migrate_to_step4(request):
                 obj.publisher = citation_journal_dictionary.get('publisher', None)
                 obj.issn = issn_value
                 obj.doi = citation_journal_dictionary.get("container_DOI", None)
-                obj.last_updated = datetime.datetime.now()
+                obj.last_updated = datetime.datetime.now(tz=pytz.utc)
                 is_usda_funded = citation_journal_dictionary['usda']
 
                 if is_usda_funded == 'yes':
@@ -104,7 +105,7 @@ def migrate_to_step4(request):
                 article.last_status = "dropped"
                 article.last_step = 4
                 article.note = "out of scope"
-                article.current_date = datetime.datetime.now()
+                article.current_date = datetime.datetime.now(tz=pytz.utc)
                 article.journal = journal_match
                 continue
             else:
