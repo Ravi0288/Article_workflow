@@ -5,11 +5,13 @@ from django.contrib.auth.decorators import login_required
 from citation import *
 import metadata_quality_review
 import pickle
+from model.journal import Journal
 
 
 def make_override_string(article):
     p = article.provider.requirement_override or ""
-    j = article.journal.requirement_override or ""
+    j = Journal.objects.get(id=article.journal.id).requirement_override or ""
+    # j = article.journal.requirement_override or ""
     return f"{p} | {j}" if p and j else p + j
 
 
