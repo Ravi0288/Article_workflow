@@ -57,6 +57,7 @@ def migrate_to_step4(request):
                 article.last_step = 4
                 article.last_status = 'review'
                 article.note = "No valid ISSN found"
+            article.save()
             continue
 
         issn_match = None
