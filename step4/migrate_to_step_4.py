@@ -53,6 +53,7 @@ def migrate_to_step4(request):
         if len(issn_list) == 0:
             if cit.local.USDA == "yes":
                 article.last_step = 4
+                article.note = "No valid ISSN found"
             else:
                 article.last_step = 4
                 article.last_status = 'review'

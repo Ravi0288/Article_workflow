@@ -70,9 +70,13 @@ To run the updater function from a file, follow these steps:
 ## Notes
 
 - You can also pass a specific date to the `update_journal_model()` function to update the journal model with records created or updated since that date. This can either be a `datetime.datetime` object, or a string in the format `YYYYMMDD`. For example:
-   ```python
-   update_journal_model('20250101')
-   ```
+```python
+python manage.py shell
+>>> 
+>>> from model.journal import Journal
+>>> from step4.update_journals import update_journal_model  
+>>>   update_journal_model('20250101')
+```
 - On July 11th, 2023, over 14K journal records were updated on Alma. Since the Alma SRU service will only
 accommodate requests of up to 10K records, the `update_journal_model()` function will not be able to handle 
 requests for dates on or after July 11th, 2023. For these requests, use the `update_journal_model_from_file()` 
