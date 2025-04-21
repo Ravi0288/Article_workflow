@@ -30,8 +30,8 @@ def migrate_to_step6(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=5,
-        article_switch = True
+        last_step=5
+        # article_switch = True
         )
 
     if not articles.count() :

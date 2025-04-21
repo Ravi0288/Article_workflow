@@ -22,8 +22,8 @@ def migrate_to_step4(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=3,
-        article_switch = True
+        last_step=3
+        # article_switch = True
         ).exclude(citation_pickle='N/A')
 
     if not articles.count() :
