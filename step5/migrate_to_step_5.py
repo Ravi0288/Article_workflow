@@ -16,14 +16,12 @@ def migrate_to_step5(request):
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
-        last_status__in=('active', 'dropped'),
-        # provider__in_production=True,
-        last_step=4
-        # article_switch = True
+        last_status ='active',
+        provider__in_production=True,
+        last_step=4,
+        article_switch = True
         )
     
-    print(articles.count(), "######################################")
-
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     

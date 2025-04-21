@@ -26,7 +26,7 @@ def migrate_to_step3(request):
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
-        last_status__in=('active', 'dropped'),
+        last_status='active',
         provider__in_production=True, 
         last_step=2,
         provider__working_name__in = ('SUBMISSION', 'CHORUS')
