@@ -48,9 +48,13 @@ def migrate_to_step7(request):
         # Update the article status and note in the database
         if pid:
             article.PID = pid
-            article.last_step = 7
-            article.note = 'N/A'
-            article.save()
+
+        if cit.local.identifiers['mmsid']:
+            article.MMSID = cit.local.identifiers['mmsid'] 
+            
+        article.last_step = 7
+        article.note = 'N/A'
+        article.save()
 
 
     # return the response 
