@@ -69,6 +69,7 @@ def pid_minter(citation_object) -> list:
             result = [citation_object, "Non Article", None]
 
         else:
+            citation_object.local.identifiers.setdefault('pid', None)
             if citation_object.local.identifiers['pid']:
                 result = [citation_object, "PID Already Assinged", None]
             else:
