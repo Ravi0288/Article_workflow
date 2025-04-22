@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-from .mint import pid_minter
+import pid_minter
 from rest_framework.decorators import api_view
 from model.article import Article
 from django.contrib.auth.decorators import login_required
@@ -37,7 +37,7 @@ def migrate_to_step7(request):
             article.save()
             continue
 
-        cit, message, pid = pid_minter(cit)
+        cit, message, pid = pid_minter.pid_minter(cit)
 
         # Save the updated pickle content back to the file
         with open(article.citation_pickle.path, 'wb') as file:
