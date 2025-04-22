@@ -30,18 +30,20 @@ def migrate_to_step7(request):
     for article in articles:
         try:
             with open(article.citation_pickle.path, 'rb') as file:
-                unpickle_content = pickle.load(file)
+                cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
             article.note = e
             article.save()
             continue
 
-        unpickle_content, message, pid = pid_minter(unpickle_content)
+        print("##############", cit, "#########################")
+
+        cit, message, pid = pid_minter(cit)
 
         # Save the updated pickle content back to the file
         with open(article.citation_pickle.path, 'wb') as file:
-            pickle.dump(unpickle_content, file, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
         # Update the article status and note in the database
         if pid:
