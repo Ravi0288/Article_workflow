@@ -37,8 +37,6 @@ def migrate_to_step7(request):
             article.save()
             continue
 
-        print("##############", cit, "#########################")
-
         cit, message, pid = pid_minter(cit)
 
         # Save the updated pickle content back to the file
@@ -51,7 +49,7 @@ def migrate_to_step7(request):
 
         if cit.local.identifiers['mmsid']:
             article.MMSID = cit.local.identifiers['mmsid'] 
-            
+
         article.last_step = 7
         article.note = 'N/A'
         article.save()
