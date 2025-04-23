@@ -7,9 +7,12 @@ from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
 
+
+
 @login_required
 @api_view(['GET'])
 def migrate_to_step7(request):
+
 
     context = {
         'heading' : 'Message',
@@ -36,8 +39,9 @@ def migrate_to_step7(request):
             article.note = e
             article.save()
             continue
-
-        cit, message, pid = pid_minter.pid_minter(cit)
+            
+        is_usda_funded = (article.journal.collection_status == 'from_submission')
+        cit, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
 
         # Save the updated pickle content back to the file
         with open(article.citation_pickle.path, 'wb') as file:
