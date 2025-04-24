@@ -51,8 +51,8 @@ def migrate_to_step7(request):
         if pid:
             article.PID = pid
 
-        if cit.local.identifiers['mmsid']:
-            article.MMSID = cit.local.identifiers['mmsid'] 
+        if cit.local.identifiers.get("mms_id", None):
+            article.MMSID = cit.local.identifiers["mms_id"] 
 
         article.last_step = 7
         article.note = 'N/A'
