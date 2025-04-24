@@ -14,7 +14,7 @@ def make_override_string(article):
     if article.journal:
         j = Journal.objects.get(id=article.journal.id).requirement_override or ""
     # j = article.journal.requirement_override or ""
-    return f"{p} | {j}" if p and j else p + j
+    return f"{p} | {j}" if p and j else p + ' ' + j
 
 
 
@@ -32,7 +32,7 @@ def migrate_to_step6(request):
         provider__in_production=True,
         last_step=5
         # article_switch = True
-        )
+        ).exclude(journal=None)
 
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)

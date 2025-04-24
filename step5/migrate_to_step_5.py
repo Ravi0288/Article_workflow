@@ -20,7 +20,7 @@ def migrate_to_step5(request):
         provider__in_production=True,
         last_step=4
         # article_switch = True
-        )
+        ).exclude(journal=None)
     
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
