@@ -1,18 +1,16 @@
-
 from django.shortcuts import render
-import pid_minter
 from rest_framework.decorators import api_view
 from model.article import Article
 from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
-
+from .create_alma_dir import create_alma_folder
+from django.conf import settings
 
 
 @login_required
 @api_view(['GET'])
-def migrate_to_step7(request):
-
+def migrate_to_step10(request):
 
     context = {
         'heading' : 'Message',
@@ -23,9 +21,9 @@ def migrate_to_step7(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=6
+        last_step=9
         # article_switch = True
-        ).exclude(journal=None)
+        )
 
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
@@ -38,27 +36,30 @@ def migrate_to_step7(request):
             print("Error loading pickle file", e)
             article.note = e
             article.save()
-            continue
-            
-        # is_usda_funded = (article.journal.collection_status == 'from_submission')
-        is_usda_funded = cit.local.USDA
-        cit, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
+        
+        base = settings.MEDIA_ROOT
 
-        # Save the updated pickle content back to the file
+        citation_pickle = article.citation_pickle.path
+        article_file = article.article_file.path
+        marc_file = article.citation_pickle.path
+        manuscript_file = article.article_file.path
+
+        path_directory = {
+            'citation_pickle' : citation_pickle,
+            'article_file' : article_file,
+            'marc_file' : marc_file,
+            'manuscript_file' : manuscript_file,
+        }
+
+        message, cit = create_alma_folder(cit, base, path_directory)
+
+        # Save article status and updated citation object
         with open(article.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
-
-        # Update the article status and note in the database
-        if pid:
-            article.PID = pid
-
-        if cit.local.identifiers.get("mms_id", None):
-            article.MMSID = cit.local.identifiers["mms_id"] 
 
         article.last_step = 7
         article.note = 'N/A'
         article.save()
-
 
     # return the response 
     context = {
