@@ -10,7 +10,6 @@ def create_directory(base: str, path: str) -> None:
     os.makedirs(dir_path, exist_ok=True)
 
 
-
 # Determine top level directory
 def determine_top_level_directory(citation_object, base: dict) -> str:
     # Determine the correct top-level folder based on citation source and status
@@ -63,24 +62,6 @@ def stage_metadata_files(citation_object, path_directory: dict, target_folder: s
     copy_file(marc_src, marc_dst)
 
 
-# def retrieve_manuscripts(path_name: str, primary: dict, secondary: list) -> str:
-#     # Retrieve and copy manuscript (primary) and support (secondary) files
-#     try:
-#         # Copy primary manuscript
-#         if primary and primary.get('file_path') and os.path.exists(primary['file_path']):
-#             shutil.copy2(primary['file_path'], os.path.join(path_name, 'MANUSCRIPT.pdf'))
-
-#         # Copy secondary support files
-#         for idx, support in enumerate(secondary, start=1):
-#             support_path = support.get('file_path')
-#             if support_path and os.path.exists(support_path):
-#                 filename = os.path.basename(support_path)
-#                 shutil.copy2(support_path, os.path.join(path_name, filename))
-
-#         return "successful"
-#     except Exception as e:
-#         return f"Error copying manuscript/support files: {str(e)}"
-
 
 # Main function to create the Alma folder structure, and copy all article, citation, marc and manuscript file
 def create_alma_folder(citation_object, base: str, path_directory: dict) -> list:
@@ -88,9 +69,7 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
     # Step 1: Determine top-level folder
     top_level_folder = determine_top_level_directory(citation_object, base)
 
-    # Step 2: Build citation folder path
-    pid = citation_object.local.identifiers.setdefault('55')
-    pid = citation_object.local.identifiers['pid'] = '55'
+    # Step 2: Build citation folder path with pid
     pid = citation_object.local.identifiers.get('pid')
     if not pid:
         return "Missing PID in citation object", citation_object
