@@ -14,6 +14,7 @@ urlpatterns = [
     path('step6/', include('step6.urls')),
     path('step7/', include('step7.urls')),
     path('step7/', include('step7.urls')),
+    path('step9/', include('step9.urls')),
     path('step10/', include('step10.urls')),
     path('accounts/', include('accounts.urls')),
     path('', include('accounts.urls')),

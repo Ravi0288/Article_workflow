@@ -4,24 +4,23 @@ from model.article import Article
 from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
-from .create_alma_dir import create_alma_folder
 from django.conf import settings
-
+from citation_to_marc import citation_to_marc
 
 @login_required
 @api_view(['GET'])
-def migrate_to_step10(request):
-
+def migrate_to_step9(request):
+    
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 7'
+        'message' : 'No pending article found to migrate to Step 9'
     }
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=9
+        last_step=8
         # article_switch = True
         )
 
@@ -37,36 +36,36 @@ def migrate_to_step10(request):
             article.note = e
             article.save()
             continue
-        
-        base = settings.MEDIA_ROOT
 
-        citation_pickle = article.citation_pickle.path
-        article_file = article.article_file.path
-        marc_file = article.citation_pickle.path
-        manuscript_file = article.article_file.path
+        # action for stepp 9
+        format = 'xml'
+        file_path = (article.article_file.path).replace('ARTICLES', 'ARTICLE_MARCXML')
+        extension = file_path.split('.')[-1]
+        file_path = file_path.replace(extension, 'xml')
+        message = citation_to_marc(cit, format, file_path)
 
-        path_directory = {
-            'citation_pickle' : citation_pickle,
-            'article_file' : article_file,
-            'marc_file' : marc_file,
-            'manuscript_file' : manuscript_file,
-        }
+        # # Save article status and updated citation object
+        # with open(article.citation_pickle.path, 'wb') as file:
+        #     pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
-        message, cit = create_alma_folder(cit, base, path_directory)
+        # if message returns successfull save the article in and update step.
+        if message == 'Successful':
+            article.last_step = 9
+            article.note = 'N/A'
 
-        # Save article status and updated citation object
-        with open(article.citation_pickle.path, 'wb') as file:
-            pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
+        # if message is not successful update the error message
+        else:
+            article.note = message
 
-        article.last_step = 7
-        article.note = 'N/A'
+        # finally save the article
         article.save()
+
 
     # return the response 
     context = {
             'heading' : 'Message',
             'message' : f'''
-                All Pending articles successfully migrated to Step 7.
+                All Pending articles successfully migrated to Step 9.
                 '''
         } 
 
