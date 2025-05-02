@@ -13,7 +13,7 @@ urlpatterns = [
     path('step5/', include('step5.urls')),
     path('step6/', include('step6.urls')),
     path('step7/', include('step7.urls')),
-    path('step7/', include('step7.urls')),
+    path('step8/', include('step8.urls')),
     path('step9/', include('step9.urls')),
     path('step10/', include('step10.urls')),
     path('accounts/', include('accounts.urls')),
