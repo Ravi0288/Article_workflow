@@ -21,11 +21,10 @@ def migrate_to_step8(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=2
+        last_step=7
         # article_switch = True
         ).exclude(journal=None)
 
-    x = articles.count()
     for article in articles:
         article.last_step=8
 

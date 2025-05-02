@@ -18,9 +18,9 @@ def determine_top_level_directory(citation_object, base: dict) -> str:
 
     # Actions based on if article is usda_funded or not
     if is_usda:
-        return os.path.join(base, 'article_staging/merge_usda') if has_mmsid else os.path.join(base, 'article_staging/new_usda')
+        return os.path.join(base, 'ARTICLE_STAGING/MERGE_USDA') if has_mmsid else os.path.join(base, 'ARTICLE_STAGING/NEW_USDA')
     else:
-        return os.path.join(base, 'article_staging/merge_publisher') if has_mmsid else os.path.join(base, 'article_staging/new_publisher')
+        return os.path.join(base, 'ARTICLE_STAGING/MERGE_PUBLISHER') if has_mmsid else os.path.join(base, 'ARTICLE_STAGING/NEW_PUBLISHER')
 
 
 
@@ -74,7 +74,7 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
     if not pid:
         return "Missing PID in citation object", citation_object
 
-    citation_folder = os.path.join(top_level_folder, pid)
+    citation_folder = os.path.join(top_level_folder, str(pid))
 
     # Step 3: Create directory if not exists
     create_directory(base, citation_folder)
