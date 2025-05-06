@@ -91,9 +91,11 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
         message = retrieve_manuscripts(citation_folder, manuscript_file, support_files)
         # message = retrieve_manuscripts(citation_folder, manuscript_file, support_files)
 
-        if message != "successful":
+        if message != "success":
+            if citation_object.local.cataloger_notes is None:
+                citation_object.local.cataloger_notes = []
+
             # Add message to cataloger notes
-            citation_object.citation_object.local.cataloger_notes.setdefault(['N/A'])
             cataloger_notes = getattr(citation_object.local, 'cataloger_notes', '')
             citation_object.local.cataloger_notes = cataloger_notes.append(message.strip())
             citation_object.status = "review"
