@@ -7,6 +7,7 @@ from citation import *
 from django.conf import settings
 from citation_to_marc import citation_to_marc
 import os
+from model.provider import Providers
 
 
 @login_required
@@ -16,6 +17,13 @@ def migrate_to_step9(request):
     # Create MARC_XML_ARTICLE directory if not created already
     if not os.path.exists(settings.MARC_XML_ROOT):
         os.makedirs(settings.MARC_XML_ROOT)
+
+    providers = Providers.objects.filter(in_production=True)
+    for provider in providers:
+        base = '/ai/metadata/ARTICLE_MARC_XML/' + provider.working_name
+        if not os.path.exists(base):
+            os.makedirs(base)
+
 
     # Set Response message
     context = {
