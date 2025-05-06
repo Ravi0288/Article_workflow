@@ -64,6 +64,7 @@ def migrate_to_step9(request):
         #     pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
         # if message returns successfull save the article in and update step.
+        print(message, article.id)
         if message == 'Successful':
             article.last_step = 9
             article.note = 'N/A'
