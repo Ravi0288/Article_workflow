@@ -14,7 +14,7 @@ def migrate_to_step10(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 7'
+        'message' : 'No pending article found to migrate to Step 10'
     }
 
     # Fetch all files that need to be processed from Article table
@@ -58,7 +58,7 @@ def migrate_to_step10(request):
         with open(article.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
-        article.last_step = 7
+        article.last_step = 10
         article.note = 'N/A'
         article.save()
 
@@ -66,7 +66,7 @@ def migrate_to_step10(request):
     context = {
             'heading' : 'Message',
             'message' : f'''
-                All Pending articles successfully migrated to Step 7.
+                All Pending articles successfully migrated to Step 10.
                 '''
         } 
 
