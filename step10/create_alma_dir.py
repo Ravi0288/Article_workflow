@@ -93,7 +93,7 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
 
         if message != "successful":
             # Add message to cataloger notes
-            citation_object.citation_object.local.cataloger_notes.setdefault('N/A')
+            citation_object.citation_object.local.cataloger_notes.setdefault(['N/A'])
             cataloger_notes = getattr(citation_object.local, 'cataloger_notes', '')
             citation_object.local.cataloger_notes = cataloger_notes.append(message.strip())
             citation_object.status = "review"
