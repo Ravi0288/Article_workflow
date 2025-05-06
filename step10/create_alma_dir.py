@@ -74,7 +74,8 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
     if not pid:
         return "Missing PID in citation object", citation_object
 
-    citation_folder = os.path.join(top_level_folder, str(pid))
+    f_name = 'agid-' + str(pid)
+    citation_folder = os.path.join(top_level_folder, f_name)
 
     # Step 3: Create directory if not exists
     create_directory(citation_folder)
