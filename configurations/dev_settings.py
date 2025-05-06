@@ -230,6 +230,7 @@ TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
 ARTICLE_CITATION = '/ai/metadata/ARTICLE_CITATION'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
+MARC_XML_ROOT = '/ai/metadata/ARTICLE_MARC_XML'
 
 
 # Default primary key field type

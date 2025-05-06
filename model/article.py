@@ -49,7 +49,7 @@ def get_article_file_path(instance, filename):
     extension = filename.split('.')[-1]
     filename = str(instance.id) + '.' + extension
     return '{0}/{1}/{2}'.format(
-        'ARTICLE',
+        'ARTICLES',
         (instance.provider.working_name).replace(' ','_'),
         filename
         )

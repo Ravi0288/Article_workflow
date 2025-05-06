@@ -4,10 +4,10 @@ from typing import Tuple
 from .retrieve_article_manuscript import retrieve_manuscripts
 
 # Function to created directory
-def create_directory(base: str, path: str) -> None:
+def create_directory(path: str) -> None:
     # Create a directory if it doesn't already exist
-    dir_path = base + path
-    os.makedirs(dir_path, exist_ok=True)
+    # dir_path = base + path
+    os.makedirs(path, exist_ok=True)
 
 
 # Determine top level directory
@@ -77,7 +77,7 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
     citation_folder = os.path.join(top_level_folder, str(pid))
 
     # Step 3: Create directory if not exists
-    create_directory(base, citation_folder)
+    create_directory(citation_folder)
 
     # Step 4: Stage the metadata files
     stage_metadata_files(citation_object, path_directory, citation_folder, base)

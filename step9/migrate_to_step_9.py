@@ -6,11 +6,18 @@ import pickle
 from citation import *
 from django.conf import settings
 from citation_to_marc import citation_to_marc
+import os
+
 
 @login_required
 @api_view(['GET'])
 def migrate_to_step9(request):
-    
+
+    # Create MARC_XML_ARTICLE directory if not created already
+    if not os.path.exists(settings.MARC_XML_ROOT):
+        os.makedirs(settings.MARC_XML_ROOT)
+
+    # Set Response message
     context = {
         'heading' : 'Message',
         'message' : 'No pending article found to migrate to Step 9'
