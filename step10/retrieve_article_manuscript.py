@@ -102,4 +102,4 @@ def retrieve_manuscripts(path_name: str, manuscript_file: dict, support_files: l
     if missing_supports:
         message += f"missing {missing_supports} supporting file(s); "
 
-    return "success" if not message else message.strip()
+    return "Successful" if not message else message.strip()

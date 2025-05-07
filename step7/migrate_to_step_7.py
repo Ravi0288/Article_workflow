@@ -55,8 +55,15 @@ def migrate_to_step7(request):
         if cit.local.identifiers.get("mms_id", None):
             article.MMSID = cit.local.identifiers["mms_id"] 
 
+        # if message == 'PID Assigned':
+        #     article.last_status = 'active'
+        #     article.note = 'Successful'
+        # else:
+        #     article.last_status = 'review'
+        #     article.note = message
+
         article.last_step = 7
-        article.note = 'N/A'
+        article.note = message
         article.save()
 
 

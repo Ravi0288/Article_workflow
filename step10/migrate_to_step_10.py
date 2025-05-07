@@ -58,8 +58,13 @@ def migrate_to_step10(request):
         with open(article.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
+        # if message != 'Successful':
+        #     article.last_status = 'review'
+        # else:
+        #     article.last_status = 'active'
+
         article.last_step = 10
-        article.note = 'N/A'
+        article.note = message
         article.save()
 
     # return the response 

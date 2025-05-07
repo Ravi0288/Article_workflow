@@ -91,7 +91,7 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
         message = retrieve_manuscripts(citation_folder, manuscript_file, support_files)
         # message = retrieve_manuscripts(citation_folder, manuscript_file, support_files)
 
-        if message != "success":
+        if message != "Successful":
             if citation_object.local.cataloger_notes is None:
                 citation_object.local.cataloger_notes = []
 
@@ -102,4 +102,4 @@ def create_alma_folder(citation_object, base: str, path_directory: dict) -> list
 
             return message, citation_object
 
-    return "successful", citation_object
+    return "Successful", citation_object
