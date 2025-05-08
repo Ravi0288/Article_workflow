@@ -14,7 +14,8 @@ def create_directory(path: str) -> None:
 def determine_top_level_directory(citation_object, base: dict) -> str:
     # Determine the correct top-level folder based on citation source and status
     is_usda = citation_object.local.USDA
-    has_mmsid = bool(citation_object.local.identifiers.get('mmsid'))
+    has_mmsid = bool(citation_object.local.identifiers.get('mms_id'))
+
 
     # Actions based on if article is usda_funded or not
     if is_usda:
