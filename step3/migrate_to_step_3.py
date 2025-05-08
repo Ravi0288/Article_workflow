@@ -60,6 +60,7 @@ def migrate_to_step3(request):
                 print("article id: ", article.id ," Mapper function returned: ", msg_string)
                 article.last_status = 'dropped'
                 article.last_step = 3 
+                article.note = msg_string
                 article.save()
                 continue
 
