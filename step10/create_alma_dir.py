@@ -19,9 +19,15 @@ def determine_top_level_directory(citation_object, base: dict) -> str:
 
     # Actions based on if article is usda_funded or not
     if is_usda:
-        return os.path.join(base, 'ARTICLE_STAGING/MERGE_USDA') if has_mmsid else os.path.join(base, 'ARTICLE_STAGING/NEW_USDA')
+        if has_mmsid:
+            return os.path.join(base, 'ARTICLE_STAGING/MERGE_USDA')  
+        else:
+            return os.path.join(base, 'ARTICLE_STAGING/NEW_USDA')
     else:
-        return os.path.join(base, 'ARTICLE_STAGING/MERGE_PUBLISHER') if has_mmsid else os.path.join(base, 'ARTICLE_STAGING/NEW_PUBLISHER')
+        if has_mmsid:
+            return os.path.join(base, 'ARTICLE_STAGING/MERGE_PUBLISHER')  
+        else:
+            return os.path.join(base, 'ARTICLE_STAGING/NEW_PUBLISHER')
 
 
 
