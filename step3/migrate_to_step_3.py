@@ -58,7 +58,7 @@ def migrate_to_step3(request):
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
                 print("article id: ", article.id ," Mapper function returned: ", msg_string)
-                article.last_status = 'dropped'
+                article.last_status = 'review'
                 article.save()
                 continue
 
