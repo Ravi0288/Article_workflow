@@ -38,7 +38,9 @@ def migrate_to_step6(request):
         return render(request, 'common/dashboard.html', context=context)
     
     for article in articles:
-        print(article.id)
+        article.last_step = 6
+        article.note = 'N/A'
+
         override_string = make_override_string(article)
 
         try:
@@ -46,6 +48,9 @@ def migrate_to_step6(request):
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
+            article.note = e
+            article.last_status = 'failed'
+            article.save()
             continue
 
         cit, message = metadata_quality_review.metadata_quality_review(cit, override_string)
@@ -59,7 +64,6 @@ def migrate_to_step6(request):
         if cit.local.cataloger_notes:
             article.note = cit.local.cataloger_notes
 
-        article.last_step = 6
         article.save()
 
         # Save the updated pickle content back to the file

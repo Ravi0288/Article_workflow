@@ -27,8 +27,9 @@ def migrate_to_step8(request):
 
     for article in articles:
         article.last_step=8
+        article.note = 'N/A'
 
-    Article.objects.bulk_update(articles, ['last_step'])
+    Article.objects.bulk_update(articles, ['last_step', 'note'])
     # return the response 
     context = {
             'heading' : 'Message',

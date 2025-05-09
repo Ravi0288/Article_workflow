@@ -31,9 +31,6 @@ def migrate_to_step3(request):
         last_step=2,
         provider__working_name__in = ('submissions', 'crossref')
         )
-    # provider__in = (9,10) Remove this line when working with all the providers.
- 
-    print(articles.count(), " Article found to be migrated to step 3")
 
     counter=0
 
@@ -45,6 +42,9 @@ def migrate_to_step3(request):
 
     else:
         for article in articles:
+            article.last_step = 3
+            article.note = 'N/A'
+            
             # read and return file content in utf-8 format
             file_content = read_and_return_file_content(article.article_file.path)
             # read and return citation_object
@@ -53,13 +53,12 @@ def migrate_to_step3(request):
                 citation_object, msg_string = mapper(file_content, article.provider.source_schema) 
             except Exception as e:
                 print("Error Occured from mapper function for article id :", article.id, "error Message :", e)
-                continue
+                article.note = e
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
                 print("article id: ", article.id ," Mapper function returned: ", msg_string)
                 article.last_status = 'dropped'
-                article.last_step = 3 
                 article.save()
                 continue
 
@@ -71,9 +70,7 @@ def migrate_to_step3(request):
                 article.provider_rec = obj["provider_rec"]
                 article.note = 'N/A'
                 article.DOI = obj["doi"]
-                # Finally update the step2 record status 
                 article.last_status = 'active'
-                article.last_step = 3 
             
                 # Create a BytesIO object to act as a file
                 pkl_file = BytesIO()
@@ -87,18 +84,20 @@ def migrate_to_step3(request):
                     if os.path.exists(old_file_path):
                         default_storage.delete(old_file_path)
 
-                # save citaion_pickel file
+                # save citation_pickel file
                 article.citation_pickle.save(
                     str(article.id)+'.pkl', 
                     File(pkl_file), 
                     save=False
                     )
-
-                article.save()
                 counter +=1
                 
             except Exception as e:
                 print("article id: ", article.id ," Error Messsage :", e)
+                article.note = e
+                article.last_status = 'failed'
+            
+            article.save()
  
         context = {
             'heading' : 'Message',

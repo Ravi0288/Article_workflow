@@ -26,17 +26,23 @@ def migrate_to_step4(request):
         # article_switch = True
         ).exclude(citation_pickle='N/A')
 
+    # if no article found, return response
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
 
-    print("Number of articles identified for processing: ", len(articles))
-
+    # iterate articles
     for article in articles:
+        article.last_step = 4
+        article.note = 'N/A'
+
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
+            article.last_status = 'failed'
+            article.note = e
+            article.save()
             continue
 
         citation_journal_dictionary = cit.get_journal_info()
@@ -52,10 +58,8 @@ def migrate_to_step4(request):
 
         if len(issn_list) == 0:
             if cit.local.USDA == "yes":
-                article.last_step = 4
                 article.note = "No valid ISSN found"
             else:
-                article.last_step = 4
                 article.last_status = 'review'
                 article.note = "No valid ISSN found"
             article.save()
@@ -105,7 +109,6 @@ def migrate_to_step4(request):
             if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == "no":
                 # Reject article as out of scope
                 article.last_status = "dropped"
-                article.last_step = 4
                 article.note = "out of scope"
                 article.current_date = datetime.datetime.now(tz=pytz.utc)
                 article.journal = journal_match
@@ -121,7 +124,6 @@ def migrate_to_step4(request):
                         cit.local.cataloger_notes.append('Journal is pending')
 
         # update the journal id in article
-        article.last_step = 4
         article.save()
 
         # Save the updated pickle content back to the file

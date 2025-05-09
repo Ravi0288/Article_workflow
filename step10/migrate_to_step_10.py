@@ -29,12 +29,16 @@ def migrate_to_step10(request):
         return render(request, 'common/dashboard.html', context=context)
     
     for article in articles:
+        article.last_step = 10
+        article.note = 'N/A'
+        
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
             article.note = e
+            article.last_status = 'review'
             article.save()
             continue
         
@@ -63,7 +67,6 @@ def migrate_to_step10(request):
         # else:
         #     article.last_status = 'active'
 
-        article.last_step = 10
         article.note = message
         article.save()
 

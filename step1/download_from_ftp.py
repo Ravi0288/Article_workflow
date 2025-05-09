@@ -221,7 +221,7 @@ def download_from_ftp(request):
                 except Archive.DoesNotExist:
                     article_library.append(file_name)
 
-            # Showing list of successfull providers for view purpose
+            # Showing list of successful providers for view purpose
             succ.append(item.provider.working_name)
 
             # if files found than start download

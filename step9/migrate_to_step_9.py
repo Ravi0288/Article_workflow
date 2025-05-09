@@ -43,12 +43,15 @@ def migrate_to_step9(request):
         return render(request, 'common/dashboard.html', context=context)
     
     for article in articles:
+        article.last_step = 9
+        article.note = 'N/A'
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
             article.note = e
+            article.last_status = 'failed'
             article.save()
             continue
 
@@ -63,14 +66,13 @@ def migrate_to_step9(request):
         # with open(article.citation_pickle.path, 'wb') as file:
         #     pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
-        # if message returns successfull save the article in and update step.
+        # if message returns successful save the article in and update step.
         if message != 'Successful':
             article.last_status = 'review'
         else:
             article.last_status = 'active'
 
         # finally save the article
-        article.last_step = 9
         article.note = message
         article.save()
 
