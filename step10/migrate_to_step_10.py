@@ -30,7 +30,7 @@ def migrate_to_step10(request):
     
     for article in articles:
         article.last_step = 10
-        article.note = 'N/A'
+        article.note = 'success'
         
         try:
             with open(article.citation_pickle.path, 'rb') as file:

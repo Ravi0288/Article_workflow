@@ -32,7 +32,7 @@ def migrate_to_step7(request):
     
     for article in articles:
         article.last_step = 7
-        article.note = 'N/A'
+        article.note = 'success'
 
         try:
             with open(article.citation_pickle.path, 'rb') as file:
@@ -40,7 +40,7 @@ def migrate_to_step7(request):
         except Exception as e:
             print("Error loading pickle file", e)
             article.note = e
-            article.last_status = 'failed'
+            article.last_status = 'review'
             article.save()
             continue
             

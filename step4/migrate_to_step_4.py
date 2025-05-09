@@ -33,14 +33,14 @@ def migrate_to_step4(request):
     # iterate articles
     for article in articles:
         article.last_step = 4
-        article.note = 'N/A'
+        article.note = 'success'
 
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
-            article.last_status = 'failed'
+            article.last_status = 'review'
             article.note = e
             article.save()
             continue

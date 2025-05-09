@@ -43,7 +43,7 @@ def migrate_to_step3(request):
     else:
         for article in articles:
             article.last_step = 3
-            article.note = 'N/A'
+            article.note = 'success'
             
             # read and return file content in utf-8 format
             file_content = read_and_return_file_content(article.article_file.path)
@@ -68,7 +68,7 @@ def migrate_to_step3(request):
                 article.title = obj["title"]
                 article.type_of_record = obj["type"]
                 article.provider_rec = obj["provider_rec"]
-                article.note = 'N/A'
+                article.note = 'success'
                 article.DOI = obj["doi"]
                 article.last_status = 'active'
             
@@ -95,7 +95,7 @@ def migrate_to_step3(request):
             except Exception as e:
                 print("article id: ", article.id ," Error Messsage :", e)
                 article.note = e
-                article.last_status = 'failed'
+                article.last_status = 'review'
             
             article.save()
  
