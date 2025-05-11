@@ -9,7 +9,7 @@ from io import BytesIO
 from django.core.files import File
 from django.core.files.storage import default_storage
 import os
-
+from unidecode import unidecode
 
 # Function to read xml / json file in utf-8 mode. This function will return file content
 def read_and_return_file_content(file_path):
@@ -29,7 +29,7 @@ def migrate_to_step3(request):
         last_status='active',
         provider__in_production=True, 
         last_step=2,
-        provider__working_name__in = ('submissions', 'crossref')
+        provider__working_name__in = ('SUBMISSION', 'CROSSREF')
         )
 
     counter=0
@@ -65,7 +65,7 @@ def migrate_to_step3(request):
             # if mapper function returns successful result than update the article, and save the pickel file
             try:
                 obj = Citation.step3_info(citation_object)
-                article.title = obj["title"]
+                article.title = unidecode(obj["title"])
                 article.type_of_record = obj["type"]
                 article.provider_rec = obj["provider_rec"]
                 article.note = 'success'
@@ -91,17 +91,20 @@ def migrate_to_step3(request):
                     save=False
                     )
                 counter +=1
+                article.save()
                 
             except Exception as e:
                 print("article id: ", article.id ," Error Messsage :", e)
                 article.note = e
                 article.last_status = 'review'
+                article.save()
             
-            article.save()
  
         context = {
             'heading' : 'Message',
-            'message' : f'''{counter} valid articles from step 2 successfully migrated to Step 3'''
+            'message' : f'''{counter} valid articles from step 2 successfully migrated to Step 3. 
+            Many articles are spiltted and the total number in DB may be different from this number.
+            '''
         }
 
     return render(request, 'common/dashboard.html', context=context)

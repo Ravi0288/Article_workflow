@@ -57,11 +57,13 @@ def migrate_to_step4(request):
                 issn_list.remove(issn)
 
         if len(issn_list) == 0:
-            if cit.local.USDA == "yes":
-                article.note = "No valid ISSN found"
-            else:
-                article.last_status = 'review'
-                article.note = "No valid ISSN found"
+            # if cit.local.USDA == "yes":
+            #     article.note = "No valid ISSN found"
+            # else:
+            #     article.last_status = 'review'
+            #     article.note = "No valid ISSN found"
+            article.last_status = 'review'
+            article.note = "No valid ISSN found"
             article.save()
             continue
 
