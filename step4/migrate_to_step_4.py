@@ -47,7 +47,7 @@ def migrate_to_step4(request):
 
         citation_journal_dictionary = cit.get_journal_info()
         
-        issn_list = citation_journal_dictionary.get('issn', None)
+        issn_list = list(set(citation_journal_dictionary.get('issn', None)))
 
         # Check to ensure issns are valid
         issn_regex = r"^[0-9]{4}-[0-9]{3}[0-9xX]$"
@@ -57,13 +57,11 @@ def migrate_to_step4(request):
                 issn_list.remove(issn)
 
         if len(issn_list) == 0:
-            # if cit.local.USDA == "yes":
-            #     article.note = "No valid ISSN found"
-            # else:
-            #     article.last_status = 'review'
-            #     article.note = "No valid ISSN found"
-            article.last_status = 'review'
-            article.note = "No valid ISSN found"
+            if cit.local.USDA == "yes":
+                article.note = "No valid ISSN found"
+            else:
+                article.last_status = 'review'
+                article.note = "No valid ISSN found"
             article.save()
             continue
 
@@ -73,7 +71,6 @@ def migrate_to_step4(request):
             if qs.exists():
                 issn_match = issn_value
                 break
-
 
         # We will update this value if and when we find a match in our journal lookup model
         # If we don't find a match, it will stay as 'None'
@@ -88,7 +85,6 @@ def migrate_to_step4(request):
                 obj.publisher = citation_journal_dictionary.get('publisher', None)
                 obj.issn = issn_value
                 obj.doi = citation_journal_dictionary.get("container_DOI", None)
-                obj.last_updated = datetime.datetime.now(tz=pytz.utc)
                 is_usda_funded = citation_journal_dictionary['usda']
 
                 if is_usda_funded == 'yes':
@@ -99,6 +95,7 @@ def migrate_to_step4(request):
 
 
             article.last_status = "review"
+            article.note = "Journal is pending"
             
             if issn_list:
                 qs = Journal.objects.filter(issn=issn_list[0])
@@ -114,6 +111,7 @@ def migrate_to_step4(request):
                 article.note = "out of scope"
                 article.current_date = datetime.datetime.now(tz=pytz.utc)
                 article.journal = journal_match
+                article.save()
                 continue
             else:
                 cit.container_DOI = journal_match.doi
@@ -122,6 +120,7 @@ def migrate_to_step4(request):
                 cit.local.identifiers["nal_journal_id"] = nal_journal_id
                 if journal_match.collection_status == "pending":
                     article.last_status = "review"
+                    article.note = "Journal is pending"
                     if citation_journal_dictionary.get("usda", None) == "no":
                         cit.local.cataloger_notes.append('Journal is pending')
 
