@@ -29,7 +29,7 @@ def migrate_to_step3(request):
         last_status='active',
         provider__in_production=True, 
         last_step=2,
-        provider__working_name__in = ('SUBMISSION', 'CROSSREF')
+        provider__working_name__in = ('submission', 'crossref')
         )
 
     counter=0
@@ -43,7 +43,6 @@ def migrate_to_step3(request):
     else:
         for article in articles:
             article.last_step = 3
-            article.note = 'success'
             
             # read and return file content in utf-8 format
             file_content = read_and_return_file_content(article.article_file.path)
@@ -53,7 +52,7 @@ def migrate_to_step3(request):
                 citation_object, msg_string = mapper(file_content, article.provider.source_schema) 
             except Exception as e:
                 print("Error Occured from mapper function for article id :", article.id, "error Message :", e)
-                article.note = e
+                article.note += f"; 3- {e}"
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
@@ -68,7 +67,6 @@ def migrate_to_step3(request):
                 article.title = unidecode(obj["title"])
                 article.type_of_record = obj["type"]
                 article.provider_rec = obj["provider_rec"]
-                article.note = 'success'
                 article.DOI = obj["doi"]
                 article.last_status = 'active'
             
@@ -95,7 +93,7 @@ def migrate_to_step3(request):
                 
             except Exception as e:
                 print("article id: ", article.id ," Error Messsage :", e)
-                article.note = e
+                article.note += f"; 3- {e}"
                 article.last_status = 'review'
                 article.save()
             

@@ -33,7 +33,6 @@ def migrate_to_step4(request):
     # iterate articles
     for article in articles:
         article.last_step = 4
-        article.note = 'success'
 
         try:
             with open(article.citation_pickle.path, 'rb') as file:
@@ -41,7 +40,8 @@ def migrate_to_step4(request):
         except Exception as e:
             print("Error loading pickle file", e)
             article.last_status = 'review'
-            article.note = e
+            article.note += f"; 4- {e}"
+
             article.save()
             continue
 
@@ -58,10 +58,13 @@ def migrate_to_step4(request):
 
         if len(issn_list) == 0:
             if cit.local.USDA == "yes":
-                article.note = "No valid ISSN found"
+                article.note += f"; 4- No valid ISSN found"
             else:
                 article.last_status = 'review'
-                article.note = "No valid ISSN found"
+                article.note += f"; 4- No valid ISSN found"
+            
+            # article.last_status = 'review'
+            # article.note += f"; 4- No valid ISSN found"
             article.save()
             continue
 
@@ -95,7 +98,8 @@ def migrate_to_step4(request):
 
 
             article.last_status = "review"
-            article.note = "Journal is pending"
+            article.note += f"; 4- Journal is pending"
+            
             
             if issn_list:
                 qs = Journal.objects.filter(issn=issn_list[0])
@@ -108,7 +112,7 @@ def migrate_to_step4(request):
             if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == "no":
                 # Reject article as out of scope
                 article.last_status = "dropped"
-                article.note = "out of scope"
+                article.note += f"; 4- out of scope"
                 article.current_date = datetime.datetime.now(tz=pytz.utc)
                 article.journal = journal_match
                 article.save()
@@ -120,7 +124,7 @@ def migrate_to_step4(request):
                 cit.local.identifiers["nal_journal_id"] = nal_journal_id
                 if journal_match.collection_status == "pending":
                     article.last_status = "review"
-                    article.note = "Journal is pending"
+                    article.note += f"; 4- Journal is pending"
                     if citation_journal_dictionary.get("usda", None) == "no":
                         cit.local.cataloger_notes.append('Journal is pending')
 

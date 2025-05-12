@@ -121,7 +121,8 @@ def create_new_object(source, row, note, content):
     qs.archive = row
     qs.last_step = 2
     qs.last_status = 'active'
-    qs.note = note
+    if note:
+        qs.note = note
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
@@ -153,10 +154,11 @@ def create_new_object(source, row, note, content):
     return True
 
 # Update Archive
-def update_article(article, note='success', content=''):
+def update_article(article, note=None, content=''):
     article.last_status = 'active'
     article.last_step = 2
-    article.note = note
+    if note:
+        article.note = note
     
     if content:
         file_name = article.article_file.name
@@ -208,7 +210,7 @@ def process_success_result_from_splitter_function(data, source, destination, arc
                     shutil.copy(source, destination.replace('TEMP_DOWNLOAD', ''))
                     update_article(article=article)
         except Article.DoesNotExist:
-            create_new_object(source, archive_row, note='success', content=data[0])
+            create_new_object(source, archive_row, note=None, content=data[0])
 
 
     # if multiple record found
@@ -227,7 +229,7 @@ def process_success_result_from_splitter_function(data, source, destination, arc
                     if compare_files_line_by_line(f1,line):
                         update_article(article=article, content=line)
             except Article.DoesNotExist:
-                create_new_object(indexed_file_name, archive_row, note='success', content=line)
+                create_new_object(indexed_file_name, archive_row, note=None, content=line)
 
 
 # Main function to create article objects from archive articles

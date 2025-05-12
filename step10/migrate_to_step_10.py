@@ -30,14 +30,13 @@ def migrate_to_step10(request):
     
     for article in articles:
         article.last_step = 10
-        article.note = 'success'
         
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
-            article.note = e
+            article.note += f"; 10- {e}"
             article.last_status = 'review'
             article.save()
             continue
@@ -67,8 +66,8 @@ def migrate_to_step10(request):
             article.last_status = 'active'
         else:
             article.last_status = 'review'
+            article.note += f"; 10- {message}"
 
-        article.note = message
         article.save()
 
     # return the response 

@@ -94,7 +94,7 @@ class Article(models.Model):
     archive = models.ForeignKey(Archive, related_name="archives", on_delete=models.DO_NOTHING)
     last_step = models.IntegerField(default=2, help_text="Last stage article passed through 1-11")
     last_status = models.CharField(default="active", max_length=10, choices=STATUS, help_text="Select from drop down")
-    note = models.TextField(default="ok", help_text="Note, warning or error note")
+    note = models.TextField(null=True, blank=True, help_text="Note, Warning or Error msg")
     DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
     PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
     MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")

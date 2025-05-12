@@ -28,7 +28,6 @@ def migrate_to_step5(request):
     
     for article in articles:
         article.last_step = 5
-        article.note = 'success'
 
         # Before unpickling the Citation object, check if the incoming article has a DOI attribute.
         if article.DOI:
@@ -47,7 +46,9 @@ def migrate_to_step5(request):
                     cit = pickle.load(file)
             except Exception as e:
                 print("Error loading pickle file", e)
-                article.note = e
+                article.note += f"; 5- {e}"
+                
+                
                 article.last_status = 'review'
                 article.save()
                 continue
@@ -60,7 +61,7 @@ def migrate_to_step5(request):
                 article.last_status = "dropped"
 
             if cit.local.cataloger_notes:
-                article.note = cit.local.cataloger_notes
+                article.note += f"; 5- {cit.local.cataloger_notes}"
             
             if not article.type_of_record == "journal-article":
                 article.type_of_record = cit.type_of_record
