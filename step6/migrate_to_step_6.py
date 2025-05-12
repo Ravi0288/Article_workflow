@@ -47,7 +47,7 @@ def migrate_to_step6(request):
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
-            article.note += f"; 6- {e}"
+            article.note += f"6- {e}; "
             article.last_status = 'review'
             article.save()
             continue
@@ -61,7 +61,7 @@ def migrate_to_step6(request):
             article.type_of_record = cit.type_of_record
 
         if cit.local.cataloger_notes:
-            article.note += f"; 6- {cit.local.cataloger_notes}"
+            article.note += f"6- {cit.local.cataloger_notes}; "
 
         article.save()
 

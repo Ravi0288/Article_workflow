@@ -38,7 +38,7 @@ def migrate_to_step7(request):
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
-            article.note += f"; 7- {e}"
+            article.note += f"7- {e}; "
             article.last_status = 'review'
             article.save()
             continue
@@ -66,7 +66,7 @@ def migrate_to_step7(request):
         #     article.note = message
 
         if message != 'PID Assigned':
-            article.note += f"; 7- {message}"
+            article.note += f"7- {message}; "
             
         article.save()
 

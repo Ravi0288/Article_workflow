@@ -52,7 +52,7 @@ def migrate_to_step3(request):
                 citation_object, msg_string = mapper(file_content, article.provider.source_schema) 
             except Exception as e:
                 print("Error Occured from mapper function for article id :", article.id, "error Message :", e)
-                article.note += f"; 3- {e}"
+                article.note += f"3- {e}; "
 
             # if mapper function returns unsuccessful result, update the status and iterate next article
             if msg_string != 'success':
@@ -93,7 +93,7 @@ def migrate_to_step3(request):
                 
             except Exception as e:
                 print("article id: ", article.id ," Error Messsage :", e)
-                article.note += f"; 3- {e}"
+                article.note += f"3- {e}; "
                 article.last_status = 'review'
                 article.save()
             

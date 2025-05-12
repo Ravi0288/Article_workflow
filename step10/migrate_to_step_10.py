@@ -36,7 +36,7 @@ def migrate_to_step10(request):
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
-            article.note += f"; 10- {e}"
+            article.note += f"10- {e}; "
             article.last_status = 'review'
             article.save()
             continue
@@ -66,7 +66,7 @@ def migrate_to_step10(request):
             article.last_status = 'active'
         else:
             article.last_status = 'review'
-            article.note += f"; 10- {message}"
+            article.note += f"10- {message}; "
 
         article.save()
 
