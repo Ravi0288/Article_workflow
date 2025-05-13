@@ -2,6 +2,7 @@ import os
 import shutil
 from typing import Tuple
 from .retrieve_article_manuscript import retrieve_manuscripts
+import pprint
 
 # Function to created directory
 def create_directory(path: str) -> None:
@@ -68,7 +69,14 @@ def stage_metadata_files(citation_object, path_directory: dict, target_folder: s
     marc_dst = os.path.join(target_folder, 'marc.xml')
     copy_file(marc_src, marc_dst)
 
-
+    # Save pretified citation object to another file
+    pretify_dst = os.path.join(
+            target_folder,
+            'submission-metadata.txt' if is_usda else 'publisher-metadata.txt'
+        )
+    with open(pretify_dst, "w") as file:
+        pp = pprint.PrettyPrinter(width=120, stream=file)
+        pp.pprint(citation_object)
 
 # Main function to create the Alma folder structure, and copy all article, citation, marc and manuscript file
 def create_alma_folder(citation_object, base: str, path_directory: dict) -> list:

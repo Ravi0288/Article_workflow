@@ -6,7 +6,7 @@ import pickle
 from citation import *
 from .create_alma_dir import create_alma_folder
 from django.conf import settings
-
+import pprint
 
 @login_required
 @api_view(['GET'])
@@ -57,7 +57,7 @@ def migrate_to_step10(request):
 
         message, cit = create_alma_folder(cit, base, path_directory)
 
-        # Save article status and updated citation object
+        # Save updated citation object file
         with open(article.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
