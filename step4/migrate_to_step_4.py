@@ -94,12 +94,9 @@ def migrate_to_step4(request):
                     obj.collection_status = 'from_submission'
                 else:
                     obj.collection_status = 'pending'
+                    article.last_status = "review"
                 obj.save()
-
-
-            article.last_status = "review"
             article.note += f"4- Journal is pending; "
-            
             
             if issn_list:
                 qs = Journal.objects.filter(issn=issn_list[0])
