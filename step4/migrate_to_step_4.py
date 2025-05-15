@@ -94,12 +94,9 @@ def migrate_to_step4(request):
                     obj.collection_status = 'from_submission'
                 else:
                     obj.collection_status = 'pending'
+                    article.last_status = "review"
                 obj.save()
-
-
-            article.last_status = "review"
             article.note += f"4- Journal is pending; "
-            
             
             if issn_list:
                 qs = Journal.objects.filter(issn=issn_list[0])
@@ -123,10 +120,10 @@ def migrate_to_step4(request):
                 nal_journal_id = journal_match.nal_journal_id
                 cit.local.identifiers["nal_journal_id"] = nal_journal_id
                 if journal_match.collection_status == "pending":
-                    article.last_status = "review"
                     article.note += f"4- Journal is pending; "
+                    cit.local.cataloger_notes.append('Journal is pending')
                     if citation_journal_dictionary.get("usda", None) == "no":
-                        cit.local.cataloger_notes.append('Journal is pending')
+                        article.last_status = "review"
 
         # update the journal id in article
         article.save()
