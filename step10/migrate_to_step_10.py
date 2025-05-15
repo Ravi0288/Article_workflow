@@ -6,7 +6,8 @@ import pickle
 from citation import *
 from .create_alma_dir import create_alma_folder
 from django.conf import settings
-import pprint
+import os
+import shutil
 
 @login_required
 @api_view(['GET'])
@@ -55,7 +56,7 @@ def migrate_to_step10(request):
             'manuscript_file' : manuscript_file,
         }
 
-        message, cit = create_alma_folder(cit, base, path_directory)
+        message, cit, article_stage_dir = create_alma_folder(cit, base, path_directory)
 
         # Save updated citation object file
         with open(article.citation_pickle.path, 'wb') as file:
@@ -66,7 +67,9 @@ def migrate_to_step10(request):
             article.last_status = 'active'
         else:
             article.last_status = 'review'
-            article.note += f"10- {message}; "
+            article.note += f"10- {message};"
+            if article_stage_dir and os.path.exists(article_stage_dir):
+                shutil.rmtree(article_stage_dir)
 
         article.save()
 

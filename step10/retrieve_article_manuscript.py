@@ -23,19 +23,19 @@ def retrieve_manuscripts(path_name: str, manuscript_file: dict, support_files: l
                     with open(dest_path, 'wb') as f:
                         f.write(response.content)
                 else:
-                    message += "missing manuscript file; "
+                    message += "Error occured while fetching resource from {manuscript_url}. Received HTTP response {response.status_code}; "
             elif parsed_url.scheme == 'file':
                 local_path = parsed_url.path
                 if os.path.exists(local_path):
                     shutil.copy2(local_path, dest_path)
                 else:
-                    message += "missing manuscript file; "
+                    message += "Error occured while copyinh file from {manuscript_url}; "
             else:
-                message += "unsupported manuscript URL scheme; "
+                message += "Unsupported manuscript URL scheme found. {parsed_url.path}; "
         except Exception as e:
-            message += f"error retrieving manuscript: {e}; "
+            message += f"Error occured retrieving primary manuscript: {e}. URL {manuscript_url}; "
     else:
-        message += "missing manuscript file; "
+        message += "Manuscript primary file/resource URL not available; "
 
     # Handle Support Manuscript files
     file_kinds = {
@@ -100,6 +100,6 @@ def retrieve_manuscripts(path_name: str, manuscript_file: dict, support_files: l
             missing_supports += 1
 
     if missing_supports:
-        message += f"missing {missing_supports} supporting file(s); "
+        message += f"{missing_supports} records has missing supporting file(s)/URL(s); "
 
     return "Successful" if not message else message.strip()
