@@ -45,8 +45,11 @@ def migrate_to_step5(request):
                 with open(article.citation_pickle.path, 'rb') as file:
                     cit = pickle.load(file)
             except Exception as e:
-                print("Error loading pickle file", e)
-                article.note += f"5- {e}; "
+
+                if article.note == 'none':
+                    article.note = f"5- {e};"
+                else:
+                    article.note += f"5- {e}; "
                 
                 
                 article.last_status = 'review'
@@ -61,7 +64,11 @@ def migrate_to_step5(request):
                 article.last_status = "dropped"
 
             if cit.local.cataloger_notes:
-                article.note += f"5- {cit.local.cataloger_notes}; "
+                if article.note == 'none':
+                    article.note = f"5- {cit.local.cataloger_notes}; "
+                else:
+                    article.note += f"5- {cit.local.cataloger_notes}; "
+
             
             if not article.type_of_record == "journal-article":
                 article.type_of_record = cit.type_of_record

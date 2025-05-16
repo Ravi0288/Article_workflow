@@ -40,7 +40,11 @@ def migrate_to_step4(request):
         except Exception as e:
             print("Error loading pickle file", e)
             article.last_status = 'review'
-            article.note += f"4- {e}; "
+
+            if article.note == 'none':
+                article.note = f"4- {e}; "
+            else:
+                article.note += f"4- {e}; "
 
             article.save()
             continue
@@ -57,14 +61,13 @@ def migrate_to_step4(request):
                 issn_list.remove(issn)
 
         if len(issn_list) == 0:
-            if cit.local.USDA == "yes":
-                article.note += f"4- No valid ISSN found; "
-            else:
+            if cit.local.USDA != "yes":
                 article.last_status = 'review'
-                article.note += f"4- No valid ISSN found; "
+                if article.note == 'none':
+                    article.note = f"4- No valid ISSN found; "
+                else:
+                    article.note += f"4- No valid ISSN found; "
             
-            # article.last_status = 'review'
-            # article.note += f"; 4- No valid ISSN found"
             article.save()
             continue
 
@@ -96,7 +99,11 @@ def migrate_to_step4(request):
                     obj.collection_status = 'pending'
                     article.last_status = "review"
                 obj.save()
-            article.note += f"4- Journal is pending; "
+
+            if article.note == 'none':
+                article.note = f"4- Journal is pending; "
+            else:
+                article.note += f"4- Journal is pending; "
             
             if issn_list:
                 qs = Journal.objects.filter(issn=issn_list[0])
@@ -109,7 +116,12 @@ def migrate_to_step4(request):
             if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == "no":
                 # Reject article as out of scope
                 article.last_status = "dropped"
-                article.note += f"4- out of scope; "
+
+                if article.note == 'none':
+                    article.note = f"4- out of scope; "
+                else:
+                    article.note += f"4- out of scope; "
+
                 article.current_date = datetime.datetime.now(tz=pytz.utc)
                 article.journal = journal_match
                 article.save()
@@ -120,7 +132,10 @@ def migrate_to_step4(request):
                 nal_journal_id = journal_match.nal_journal_id
                 cit.local.identifiers["nal_journal_id"] = nal_journal_id
                 if journal_match.collection_status == "pending":
-                    article.note += f"4- Journal is pending; "
+                    if article.note == 'none':
+                        article.note = f"4- Journal is pending; "
+                    else:
+                        article.note += f"4- Journal is pending; "
                     cit.local.cataloger_notes.append('Journal is pending')
                     if citation_journal_dictionary.get("usda", None) == "no":
                         article.last_status = "review"

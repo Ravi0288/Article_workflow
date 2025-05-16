@@ -36,8 +36,10 @@ def migrate_to_step10(request):
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
-            print("Error loading pickle file", e)
-            article.note += f"10- {e}; "
+            if article.note == 'none':
+                article.note = f"10- {e}; "
+            else:
+                article.note += f"10- {e}; "
             article.last_status = 'review'
             article.save()
             continue
@@ -67,7 +69,12 @@ def migrate_to_step10(request):
             article.last_status = 'active'
         else:
             article.last_status = 'review'
-            article.note += f"10- {message};"
+
+            if article.note == 'none':
+                article.note = f"10- {message};"
+            else:
+                article.note += f"10- {message};"
+
             if article_stage_dir and os.path.exists(article_stage_dir):
                 shutil.rmtree(article_stage_dir)
 

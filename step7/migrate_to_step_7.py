@@ -37,8 +37,11 @@ def migrate_to_step7(request):
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
-            print("Error loading pickle file", e)
-            article.note += f"7- {e}; "
+            if article.note == 'none':
+                article.note = f"7- {e}; "
+            else:
+                article.note += f"7- {e}; "
+
             article.last_status = 'review'
             article.save()
             continue
@@ -66,7 +69,10 @@ def migrate_to_step7(request):
         #     article.note = message
 
         if message != 'PID Assigned':
-            article.note += f"7- {message}; "
+            if article.note == 'none':
+                article.note = f"7- {message}; "
+            else:
+                article.note += f"7- {message}; "
             
         article.save()
 
