@@ -148,7 +148,7 @@ class Provider_meta_data_FTP(models.Model):
                               help_text="Password to login to FTP. if is_password_required is selected this field is required"
                               )
 
-    pull_switch = models.CharField(max_length=50, null=True, blank=True)
+    pull_switch = models.BooleanField(default=True)
 
     # email_notification = models.ForeignKey(Email_notification, 
     #                                        on_delete=models.DO_NOTHING, 

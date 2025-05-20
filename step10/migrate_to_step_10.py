@@ -9,6 +9,11 @@ from django.conf import settings
 import os
 import shutil
 
+# Function to accept article file path as input, and just will replace the extension with xml to make it as marc xml file
+def get_marc_file_path(article_file_path):
+    extension = article_file_path.split('.')[-1]
+    return article_file_path.replace(extension, 'xml').replace('ARTICLES','ARTICLE_MARC_XML')
+
 @login_required
 @api_view(['GET'])
 def migrate_to_step10(request):
@@ -48,7 +53,7 @@ def migrate_to_step10(request):
 
         citation_pickle = article.citation_pickle.path
         article_file = article.article_file.path
-        marc_file = article.citation_pickle.path
+        marc_file = get_marc_file_path(article.article_file.path)
         # manuscript_file = article.article_file.path
 
         path_directory = {

@@ -150,7 +150,7 @@ def download_from_sftp(request):
     # Get all providers that are due to be accessed
     due_for_download = Provider_meta_data_FTP.objects.filter(
         provider__next_due_date__lte=datetime.datetime.now(tz=pytz.utc)
-    ).exclude(Q(protocol='FTP') | Q(provider__in_production=False))
+    ).exclude(Q(protocol='FTP') | Q(provider__in_production=False) | Q(pull_switch=False))
 
     # If none are due to be accessed, abort the process
     if not due_for_download.count():
