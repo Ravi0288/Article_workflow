@@ -4,7 +4,7 @@ from model.article import Article
 from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
-from .create_alma_dir import create_alma_folder
+from .create_alma_dir import create_alma_directory
 from django.conf import settings
 import os
 import shutil
@@ -49,16 +49,16 @@ def migrate_to_step10(request):
         citation_pickle = article.citation_pickle.path
         article_file = article.article_file.path
         marc_file = article.citation_pickle.path
-        manuscript_file = article.article_file.path
+        # manuscript_file = article.article_file.path
 
         path_directory = {
             'citation_pickle' : citation_pickle,
             'article_file' : article_file,
             'marc_file' : marc_file,
-            'manuscript_file' : manuscript_file,
+            # 'manuscript_file' : manuscript_file,
         }
 
-        message, cit, article_stage_dir = create_alma_folder(cit, base, path_directory)
+        message, cit, article_stage_dir = create_alma_directory(cit, base, path_directory)
 
         # Save updated citation object file
         with open(article.citation_pickle.path, 'wb') as file:

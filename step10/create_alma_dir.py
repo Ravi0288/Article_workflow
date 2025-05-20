@@ -93,7 +93,7 @@ def stage_metadata_files(citation_object, path_directory: dict, target_folder: s
     return message
 
 # Main function to create the Alma folder structure, and copy all article, citation, marc and manuscript file
-def create_alma_folder(citation_object, base: str, path_directory: dict) -> list:
+def create_alma_directory(citation_object, base: str, path_directory: dict) -> list:
 
     # Step 1: Determine top-level folder
     top_level_folder = determine_top_level_directory(citation_object, base)
