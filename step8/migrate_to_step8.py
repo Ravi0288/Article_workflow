@@ -21,9 +21,9 @@ def migrate_to_step8(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=7
-        # article_switch = True
-        ).exclude(journal=None)
+        last_step=7,
+        provider__article_switch=True
+        )
 
     for article in articles:
         article.last_step=8

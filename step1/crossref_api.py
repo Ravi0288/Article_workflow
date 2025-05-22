@@ -105,9 +105,7 @@ def save_files(dois, api):
         url = f'''https://api.crossref.org/works/{doi}'''
 
         try:
-            # response = requests.get(url, params=params, headers=headers, verify=certifi.where())
             response = requests.get(url, headers=headers, verify=certifi.where(), timeout=10)
-            # response = requests.get(url)
             response.raise_for_status()
         except requests.exceptions.SSLError as ssl_err:
             if "EOF occurred in violation of protocol" in str(ssl_err):

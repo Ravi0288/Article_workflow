@@ -23,9 +23,9 @@ def migrate_to_step7(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=6
-        # article_switch = True
-        ).exclude(journal=None)
+        last_step=6,
+        provider__article_switch=True
+        )
 
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
@@ -59,14 +59,7 @@ def migrate_to_step7(request):
             article.PID = pid
 
         if cit.local.identifiers.get("mms_id", None):
-            article.MMSID = cit.local.identifiers["mms_id"] 
-
-        # if message == 'PID Assigned':
-        #     article.last_status = 'active'
-        #     article.note = 'Successful'
-        # else:
-        #     article.last_status = 'review'
-        #     article.note = message
+            article.MMSID = cit.local.identifiers["mms_id"]
 
         if message != 'PID Assigned':
             if article.note == 'none':

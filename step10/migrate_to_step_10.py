@@ -14,6 +14,7 @@ def get_marc_file_path(article_file_path):
     extension = article_file_path.split('.')[-1]
     return article_file_path.replace(extension, 'xml').replace('ARTICLES','ARTICLE_MARC_XML')
 
+
 @login_required
 @api_view(['GET'])
 def migrate_to_step10(request):
@@ -27,8 +28,8 @@ def migrate_to_step10(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=9
-        # article_switch = True
+        last_step=9,
+        provider__article_switch=True
         )
 
     if not articles.count() :

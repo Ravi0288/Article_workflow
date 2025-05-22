@@ -22,10 +22,10 @@ def migrate_to_step4(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=3
-        # article_switch = True
-        ).exclude(citation_pickle='N/A')
-
+        last_step=3,
+        provider__article_switch=True
+        )
+    
     # if no article found, return response
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)

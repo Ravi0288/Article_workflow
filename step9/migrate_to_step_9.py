@@ -35,8 +35,8 @@ def migrate_to_step9(request):
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=8
-        # article_switch = True
+        last_step=8,
+        provider__article_switch=True
         )
 
     if not articles.count() :
@@ -63,10 +63,6 @@ def migrate_to_step9(request):
         extension = file_path.split('.')[-1]
         file_path = file_path.replace(extension, 'xml')
         message = citation_to_marc(cit, format, file_path)
-
-        # # Save article status and updated citation object
-        # with open(article.citation_pickle.path, 'wb') as file:
-        #     pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
         # Based on returned message, update the last_status
         if message == 'Successful':

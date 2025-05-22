@@ -102,7 +102,7 @@ class Article(models.Model):
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
-    citation_pickle = models.FileField( upload_to=get_pickel_file_path,
+    citation_pickle = models.FileField(upload_to=get_pickel_file_path,
                                        storage=OverWriteStorage(), 
                                        help_text="This field will store citation article in pickel format as .pkl or .pickel file extension"
                                        )

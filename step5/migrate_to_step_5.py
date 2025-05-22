@@ -5,10 +5,12 @@ from django.contrib.auth.decorators import login_required
 from citation import *
 import pickle
 from type_and_match.type_and_match import ArticleTyperMatcher
+from .doi_check import perform_doi_connection_check
 
 @login_required
 @api_view(['GET'])
 def migrate_to_step5(request):
+
     context = {
         'heading' : 'Message',
         'message' : 'No pending article found to migrate to Step 5'
@@ -16,22 +18,33 @@ def migrate_to_step5(request):
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
-        last_status ='active',
+        last_status='active',
         provider__in_production=True,
-        last_step=4
-        # article_switch = True
-        ).exclude(journal=None)
+        last_step=4,
+        provider__article_switch=True
+    ) 
     
+    # if no pending article found, exit the function with msessage
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     
+
+    # If DOI providers URL returns error, Dont proceed further, exit the function with message
+    url_list = perform_doi_connection_check()
+    if url_list:
+        context = {
+            'heading' : 'Message',
+            'message' : f'''Error occured in URLs: {url_list}'''
+        }
+        # return render(request, 'common/dashboard.html', context=context)
     
+
+    # iterate through the articles
     for article in articles:
         article.last_step = 5
 
         # Before unpickling the Citation object, check if the incoming article has a DOI attribute.
         if article.DOI:
-
             # If the Article object has a DOI attribute, search for existing article models that have the same DOI, status of "active", and a last_stage greater than 4.
             # If an article is found, skip (ignore) the article and go to the incoming article. The article will be processed after the matching article has been processed and is no longer active in the workflow.
             # If no article is found, continue with loading the Article's Citation object.
