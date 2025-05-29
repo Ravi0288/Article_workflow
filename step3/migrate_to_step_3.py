@@ -29,7 +29,7 @@ def migrate_to_step3(request):
         last_status='active',
         provider__in_production=True, 
         last_step=2,
-        provider__working_name__in = ('submission', 'crossref')
+        provider__working_name__in = ('submissions', 'crossref')
         )
 
     counter=0

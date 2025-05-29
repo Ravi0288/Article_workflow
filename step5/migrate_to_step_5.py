@@ -36,68 +36,94 @@ def migrate_to_step5(request):
             'heading' : 'Message',
             'message' : f'''Error occured in URLs: {url_list}'''
         }
-        # return render(request, 'common/dashboard.html', context=context)
-    
+        return render(request, 'common/dashboard.html', context=context)
 
     # iterate through the articles
-    for article in articles:
-        article.last_step = 5
-
-        # Before unpickling the Citation object, check if the incoming article has a DOI attribute.
+    for i, article in enumerate(articles):
         if article.DOI:
-            # If the Article object has a DOI attribute, search for existing article models that have the same DOI, status of "active", and a last_stage greater than 4.
-            # If an article is found, skip (ignore) the article and go to the incoming article. The article will be processed after the matching article has been processed and is no longer active in the workflow.
-            # If no article is found, continue with loading the Article's Citation object.
-            article.save()
-            pass
-        
-        else:
-
-            # If the Article object does not have a DOI attribute, continue with loading the Article's Citation object.
-            try:
-                with open(article.citation_pickle.path, 'rb') as file:
-                    cit = pickle.load(file)
-            except Exception as e:
-
-                if article.note == 'none':
-                    article.note = f"5- {e};"
-                else:
-                    article.note += f"5- {e}; "
-                
-                
-                article.last_status = 'review'
-                article.save()
+            this_doi = article.DOI
+            doi_matching_articles = Article.objects.filter(DOI=this_doi, last_step__gt=4)
+            if len(doi_matching_articles) > 0:
+                # Leave this record at step 4 with status 'active'. Continue processing when record with matching DOI
+                # has completed processing
+                #print(f"Record with matching DOI found for article with doi {this_doi}")
                 continue
 
-            message = None
-            ATM = ArticleTyperMatcher()
-            cit, message = ATM.type_and_match(cit)
+        # Read in the citation object
+        try:
+            with open(article.citation_pickle.path, 'rb') as file:
+                cit = pickle.load(file)
+        except Exception as e:
 
-            if message == "dropped":
-                article.last_status = "dropped"
+            if article.note == 'none':
+                article.note = f"5- {e};"
+            else:
+                article.note += f"5- {e}; "
 
-            if cit.local.cataloger_notes:
-                if article.note == 'none':
-                    article.note = f"5- {cit.local.cataloger_notes}; "
-                else:
-                    article.note += f"5- {cit.local.cataloger_notes}; "
 
-            
-            if not article.type_of_record == "journal-article":
-                article.type_of_record = cit.type_of_record
-
-            if cit.local.identifiers.get("mms_id", None):
-                article.MMSID = cit.local.identifiers["mms_id"]
-
-            if cit.local.identifiers.get("pid", None):
-                article.PID = cit.local.identifiers["pid"]
-
+            article.last_status = 'review'
             article.save()
+            continue
 
-            # Save the updated pickle content back to the file
-            with open(article.citation_pickle.path, 'wb') as file:
-                pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
+        message = None
+        ATM = ArticleTyperMatcher()
+        cit, message = ATM.type_and_match(cit)
 
+        if message == "Network error, re-run":
+            context = {
+                'heading': 'Message',
+                'message': f'''
+                            Network error encountered. Try again later.
+                            '''
+            }
+
+            return render(request, 'common/dashboard.html', context=context)
+
+        if cit.local.cataloger_notes:
+            if article.note == 'none':
+                article.note = f"5- {cit.local.cataloger_notes}; "
+            else:
+                article.note += f"5- {cit.local.cataloger_notes}; "
+
+        if message == "dropped":
+            article.last_status = "dropped"
+            article.last_step = 5
+            article.save()
+            continue
+
+        if message == "review":
+            article.last_status = "review"
+            article.last_step = 5
+            article.save()
+            continue
+
+        is_USDA = cit.local.USDA
+        if is_USDA == "yes":
+            if message == "new":
+                article.import_type = "new_usda"
+            elif message == "merge":
+                article.import_type = "merge_usda"
+        elif is_USDA == "no":
+            if message == "new":
+                article.import_type = "new_publisher"
+            elif message == "merge":
+                article.import_type = "merge_publisher"
+
+        if not article.type_of_record == "journal-article":
+            article.type_of_record = cit.type_of_record
+
+        if cit.local.identifiers.get("mms_id", None):
+            article.MMSID = cit.local.identifiers["mms_id"]
+
+        if cit.local.identifiers.get("pid", None):
+            article.PID = cit.local.identifiers["pid"]
+
+        article.last_step = 5
+        article.save()
+
+        # Save the updated pickle content back to the file
+        with open(article.citation_pickle.path, 'wb') as file:
+            pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
     # return the response

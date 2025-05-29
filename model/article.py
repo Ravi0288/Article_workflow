@@ -97,13 +97,14 @@ class Article(models.Model):
     note = models.TextField(default='none', help_text="Note, Warning or Error msg")
     DOI = models.TextField(null=True, blank=True, help_text="A unique and persistent identifier")
     PID = models.TextField(null=True, blank=True, help_text="A locally assign identifier")
-    MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifer")
+    MMSID = models.TextField(null=True, blank=True, help_text="The article's Alma identifier")
     provider_rec = models.TextField(null=True, blank=True, help_text="Provider article identifier")
     start_date = models.DateTimeField(auto_now=True, help_text="The date the article object was created")
     current_date = models.DateTimeField(auto_now_add=True, help_text="The date finished the last stage")
     end_date = models.DateTimeField(null=True, help_text="The data the article is staged for Alma")
     citation_pickle = models.FileField(upload_to=get_pickel_file_path,
                                        storage=OverWriteStorage(), 
-                                       help_text="This field will store citation article in pickel format as .pkl or .pickel file extension"
+                                       help_text="This field will store citation article in pickle format as .pkl or .pickle file extension"
                                        )
+    import_type = models.CharField(blank=True, null=True, default=None, max_length=16)
     # article_switch = models.BooleanField(default=False)
