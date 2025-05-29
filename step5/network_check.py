@@ -1,7 +1,7 @@
 import requests
 import os
 
-def perform_doi_connection_check():
+def perform_network_connection_check():
     url_list = []
     
     endpoints = {
