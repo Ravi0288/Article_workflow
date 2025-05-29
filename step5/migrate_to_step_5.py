@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from citation import *
 import pickle
 from type_and_match.type_and_match import ArticleTyperMatcher
-from .doi_check import perform_doi_connection_check
+from .network_check import perform_network_connection_check
 
 @login_required
 @api_view(['GET'])
@@ -30,7 +30,7 @@ def migrate_to_step5(request):
     
 
     # If DOI providers URL returns error, Dont proceed further, exit the function with message
-    url_list = perform_doi_connection_check()
+    url_list = perform_network_connection_check()
     if url_list:
         context = {
             'heading' : 'Message',
