@@ -35,9 +35,42 @@ def migrate_to_step10(request):
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     
+    # Initialize counters
+    counters = {
+        "new_usda": 0,
+        "merge_usda": 0,
+        "new_publisher": 0,
+        "merge_publisher": 0,
+    }
+
+    VALID_IMPORT_TYPES = {'new_usda', 'merge_usda', 'new_publisher', 'merge_publisher'}
+
+    # Mapping of import types to their corresponding limit settings
+    MAX_LIMIT = {
+        "new_usda": settings.NEW_USDA_MAX_LIMIT,
+        "merge_usda": settings.MERGE_USDA_MAX_LIMIT,
+        "new_publisher": settings.NEW_PUBLISHER_MAX_LIMIT,
+        "merge_publisher": settings.MERGE_PUBLISHER_MAX_LIMIT,
+    }
+
     for article in articles:
         article.last_step = 10
-        
+
+        # Skip processing this article if its import_type has already reached the maximum allowed limit.
+        import_type = article.import_type
+        if import_type in counters:
+            counters[import_type] += 1
+            if counters[import_type] > MAX_LIMIT[import_type]:
+                continue
+
+        # Ensure each article has a valid import_type classification.
+        if not article.import_type or article.import_type not in VALID_IMPORT_TYPES:
+            article.note += f"Bad Import type found: {article.import_type}\n"
+            article.last_status = 'review'
+            article.save()
+            continue
+
+        # Start processing all valid articles
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
@@ -64,7 +97,7 @@ def migrate_to_step10(request):
             # 'manuscript_file' : manuscript_file,
         }
 
-        message, cit, article_stage_dir = create_alma_dir.create_alma_directory(cit, base, path_directory)
+        message, cit, article_stage_dir = create_alma_dir.create_alma_directory(cit, base, path_directory, article)
 
         # Save updated citation object file
         with open(article.citation_pickle.path, 'wb') as file:

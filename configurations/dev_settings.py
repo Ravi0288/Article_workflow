@@ -233,6 +233,11 @@ ARTICLE_CITATION = '/ai/metadata/ARTICLE_CITATION'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 MARC_XML_ROOT = '/ai/metadata/ARTICLE_MARC_XML'
 
+# s3 upload maximum allowed number for each class of content
+MERGE_USDA_MAX_LIMIT = 10000
+NEW_USDA_MAX_LIMIT = 10000
+MERGE_PUBLISHER_MAX_LIMIT = 10000
+NEW_PUBLISHER_MAX_LIMIT = 10000
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
