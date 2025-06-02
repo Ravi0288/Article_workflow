@@ -13,7 +13,7 @@ def migrate_to_step5(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 5'
+        'message' : 'No active article found to migrate to Step 5'
     }
 
     # Fetch all files that need to be processed from Article table
@@ -24,7 +24,7 @@ def migrate_to_step5(request):
         provider__article_switch=True
     ) 
     
-    # if no pending article found, exit the function with msessage
+    # if No active article found, exit the function with msessage
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     
@@ -130,7 +130,7 @@ def migrate_to_step5(request):
     context = {
             'heading' : 'Message',
             'message' : f'''
-                All Pending articles successfully migrated to Step 5.
+                All active articles successfully migrated to Step 5.
                 '''
         } 
 

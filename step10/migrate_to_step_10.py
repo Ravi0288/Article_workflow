@@ -21,7 +21,7 @@ def migrate_to_step10(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 10'
+        'message' : 'No active article found to migrate to Step 10'
     }
 
     # Fetch all files that need to be processed from Article table
@@ -123,7 +123,7 @@ def migrate_to_step10(request):
     context = {
             'heading' : 'Message',
             'message' : f'''
-                All Pending articles successfully migrated to Step 10.
+                All active articles successfully migrated to Step 10.
                 '''
         } 
 

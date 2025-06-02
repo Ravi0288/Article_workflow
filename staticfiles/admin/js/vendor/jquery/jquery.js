@@ -3525,7 +3525,7 @@ jQuery.Callbacks = function( options ) {
 			// Enforce single-firing
 			locked = locked || options.once;
 
-			// Execute callbacks for all pending executions,
+			// Execute callbacks for All active executions,
 			// respecting firingIndex overrides and runtime changes
 			fired = firing = true;
 			for ( ; queue.length; firingIndex = -1 ) {

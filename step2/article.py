@@ -242,7 +242,7 @@ def migrate_to_step2(request):
     if archive_records.count() == 0:
         context = {
             'heading' : 'Message',
-            'message' : 'No pending file available to be migrated to step 2'
+            'message' : 'No active file available to be migrated to step 2'
         }
         return render(request, 'common/dashboard.html', context=context)
 

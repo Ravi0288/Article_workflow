@@ -17,7 +17,7 @@ def migrate_to_step11(request):
 
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 11'
+        'message' : 'No active article found to migrate to Step 11'
     }
 
     # Fetch all files that need to be processed from Article table
@@ -34,13 +34,15 @@ def migrate_to_step11(request):
     for article in articles:
         article.last_step = 11
 
-        staging_folder = 
-        folder_type = 
-        min_required_files = 
-        s3_uris = 
-        archive_path = 
-        active = 
-        bucket_empty_check = 
-        aws_access_key = 
-        aws_secret_key = 
-        base_s3_uri = 
+        staging_folder = None
+        folder_type =None
+        min_required_files = None
+        s3_uris = None
+        archive_path = None
+        active = None
+        bucket_empty_check = None
+        aws_access_key = None
+        aws_secret_key = None
+        base_s3_uri = None
+        
+        pass

@@ -37,7 +37,7 @@ def migrate_to_step3(request):
     if not articles.exists():
         context = {
             'heading' : 'Message',
-            'message' : 'No pending article found to migrate to Step 3'
+            'message' : 'No active article found to migrate to Step 3'
         }
 
     else:
@@ -105,8 +105,7 @@ def migrate_to_step3(request):
  
         context = {
             'heading' : 'Message',
-            'message' : f'''{counter} valid articles from step 2 successfully migrated to Step 3. 
-            Many articles are spiltted and the total number in DB may be different from this number.
+            'message' : f'''All active articles from step 2 successfully migrated to Step 3.
             '''
         }
 
