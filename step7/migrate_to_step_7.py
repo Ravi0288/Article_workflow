@@ -67,7 +67,7 @@ def migrate_to_step7(request):
         if cit.local.identifiers.get("mms_id", None):
             article.MMSID = cit.local.identifiers["mms_id"]
 
-        if res == 'unsucessful':
+        if res == 'unsuccessful':
             if article.note == 'none':
                 article.note = f"7- {message}; "
             else:
