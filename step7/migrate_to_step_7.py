@@ -31,7 +31,6 @@ def migrate_to_step7(request):
         return render(request, 'common/dashboard.html', context=context)
     
     for article in articles:
-        article.last_step = 7
 
         try:
             with open(article.citation_pickle.path, 'rb') as file:
@@ -50,6 +49,13 @@ def migrate_to_step7(request):
         is_usda_funded = cit.local.USDA
         cit, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
 
+        if message == "Database connection error occured":
+            context = {
+                'heading' : 'Message',
+                'message' : "Could not connect to PID database"
+            }
+            return render(request, 'common/dashboard.html', context)
+
         # Save the updated pickle content back to the file
         with open(article.citation_pickle.path, 'wb') as file:
             pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
@@ -66,7 +72,7 @@ def migrate_to_step7(request):
                 article.note = f"7- {message}; "
             else:
                 article.note += f"7- {message}; "
-            
+        article.last_step = 7
         article.save()
 
 

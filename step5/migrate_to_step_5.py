@@ -40,7 +40,7 @@ def migrate_to_step5(request):
 
     # iterate through the articles
     for i, article in enumerate(articles):
-        if article.DOI:
+        if article.DOI and article.DOI != "":
             this_doi = article.DOI
             doi_matching_articles = Article.objects.filter(DOI=this_doi, last_step__gt=4)
             if len(doi_matching_articles) > 0:
@@ -48,6 +48,19 @@ def migrate_to_step5(request):
                 # has completed processing
                 #print(f"Record with matching DOI found for article with doi {this_doi}")
                 continue
+        else:
+            # For now, if there is no DOI (ie from a submit site record), send the article to review
+            # In a future enhancement we will override this to check for matches by submission node id
+            article.last_status = "review"
+            article.last_step = 5
+            if article.note == 'none':
+                article.note = f"5- No DOI;"
+            else:
+                article.note += f"5- No DOI; "
+            article.save()
+            continue
+
+
 
         # Read in the citation object
         try:
@@ -65,7 +78,6 @@ def migrate_to_step5(request):
             article.save()
             continue
 
-        message = None
         ATM = ArticleTyperMatcher()
         cit, message = ATM.type_and_match(cit)
 
@@ -86,15 +98,31 @@ def migrate_to_step5(request):
                 article.note += f"5- {cit.local.cataloger_notes}; "
 
         if message == "dropped":
+            if article.note == 'none':
+                article.note = f"5- {cit.local.cataloger_notes}; "
+            else:
+                article.note += f"5- {cit.local.cataloger_notes}; "
             article.last_status = "dropped"
             article.last_step = 5
             article.save()
+            # Save the updated pickle content back to the file
+            with open(article.citation_pickle.path, 'wb') as file:
+                pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
             continue
 
         if message == "review":
+            print("ATM returned a message of 'review'")
+            print("Cataloger notes: ", cit.local.cataloger_notes)
+            if article.note == 'none':
+                article.note = f"5- {cit.local.cataloger_notes}; "
+            else:
+                article.note += f"5- {cit.local.cataloger_notes}; "
             article.last_status = "review"
             article.last_step = 5
             article.save()
+            # Save the updated pickle content back to the file
+            with open(article.citation_pickle.path, 'wb') as file:
+                pickle.dump(cit, file, protocol=pickle.HIGHEST_PROTOCOL)
             continue
 
         is_USDA = cit.local.USDA
