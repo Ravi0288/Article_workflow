@@ -48,7 +48,7 @@ def migrate_to_step7(request):
             
         # is_usda_funded = (article.journal.collection_status == 'from_submission')
         is_usda_funded = cit.local.USDA
-        cit, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
+        cit, res, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
 
         # Save the updated pickle content back to the file
         with open(article.citation_pickle.path, 'wb') as file:
@@ -61,7 +61,7 @@ def migrate_to_step7(request):
         if cit.local.identifiers.get("mms_id", None):
             article.MMSID = cit.local.identifiers["mms_id"]
 
-        if message != 'PID Assigned':
+        if res == 'unsucessful':
             if article.note == 'none':
                 article.note = f"7- {message}; "
             else:
