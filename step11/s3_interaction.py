@@ -41,7 +41,7 @@ class AlmaS3Uploader:
                 self.s3.put_object(Bucket=self.bucket, Key=key, Body=b'')
             except (BotoCoreError, ClientError) as e:
                 return False, e
-        return True, 'successful'
+        return True, 'Successful'
 
     # Check if there is any content in bucket except .keep file
     def check_s3_buckets_empty(self):
@@ -68,7 +68,7 @@ class AlmaS3Uploader:
             objects = [{'Key': obj['Key']} for obj in response.get('Contents', [])]
             if objects:
                 self.s3.delete_objects(Bucket=bucket, Delete={'Objects': objects})
-        return True, 'successful'
+        return True, 'Successful'
     
     # Upload the files from each directory to S3
     def upload_directory_to_s3(self):
@@ -126,4 +126,4 @@ class AlmaS3Uploader:
                 s3_key = s3_paths['new_submission_with_digital_files'] + relative_path
                 upload_file(local_path, s3_key)
 
-        return True, 'successful'
+        return True, 'Successful'

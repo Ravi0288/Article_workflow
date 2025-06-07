@@ -12,6 +12,15 @@ import zipfile
 import datetime
 
 
+def del_contents(path):
+    for entry in os.listdir(path):
+        entry_path = os.path.join(path, entry)
+        if os.path.isfile(entry_path) or os.path.islink(entry_path):
+            os.unlink(entry_path)
+        elif os.path.isdir(entry_path):
+            shutil.rmtree(entry_path)
+    return True
+
 # function to zip and delete the provided directory contents
 def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     # create backup directory if not created
@@ -19,7 +28,6 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     output_zip_path = os.path.join(output_zip_path, str(datetime.date.today()).replace('-','_') + '.zip')
     try:
         # Create zip file and add all files/folders recursively
-        print(f"Trying to write zip to: {output_zip_path}")
         with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, dirs, files in os.walk(source_dir):
                 for file in files:
@@ -29,7 +37,10 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
                     zipf.write(abs_file_path, arcname=rel_path)
 
         # Remove the source directory and all contents
-        shutil.rmtree(source_dir)
+        dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
+        for item in dir_list:
+            del_contents(os.path.join(source_dir, item))
+            
         return True, 'successsful'
     except Exception as e:
         return False, e
@@ -47,16 +58,16 @@ def update_step():
     return True
 
 
-def empty_s3(s3_action, context):
+def empty_s3(s3_action, context, message):
     empty, reason = s3_action.empty_s3_bucket()
     if empty:
-        context['message'] = '''Error occured while uploading files. Error {message}. \n
-            S3 bucket is empty now. All upload files on S3 is removed and the bucket is empty now. \n
+        context['message'] = f'''Error occured while uploading files. Message: {message}. 
+            S3 bucket is empty now. All upload files on S3 is removed and the bucket is empty now. 
             Please note the error message for debug purpose.'''
     else:
-        context['message'] = '''Error occured while uploading files. Error {message}. \n 
-        Also, While trying to empty the uloaded files to S3, another error occurred. Error: {reason}. \n
-        Please ensure to empty the bucket before running step 11 again. \n
+        context['message'] = f'''Error occured while uploading files. Message: {message}.            
+        Also, While trying to empty the uploaded files to S3, another error occurred. Message: {reason}.          
+        Please ensure to empty the bucket before running step 11 again.
         Please note the error message for debug purpose.
         '''
 
@@ -91,10 +102,8 @@ def migrate_to_step11(request):
     stagin_info = {
         'base_s3_uri' : settings.BASE_S3_URI,
         's3_uris' : settings.S3_URIS,
-        # 'aws_access_key' : settings.AWS_S3_ACCESS_KEY,
-        'aws_access_key' : 'AKIAR6ECKJU7W77MKUW2',
-        # 'aws_secret_key' : settings.AWS_S3_SECRET_KEY,
-        'aws_secret_key' : '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',
+        'aws_access_key' : settings.AWS_S3_ACCESS_KEY,
+        'aws_secret_key' : settings.AWS_S3_SECRET_KEY,
         'bucket' : settings.S3_BUCKET,
         'prefix' : settings.S3_PREFIX,
         'base_path' : os.path.join(settings.BASE_DIR, settings.ARTICLE_STAGING)
@@ -120,20 +129,21 @@ def migrate_to_step11(request):
                     )
                 
                 if res:
-                    context['message'] = '''
-                    Successfully uploaded all the files, 
-                    Article_staging directory zipped and moved to Article_staging_backup folder as zip file. \n
-                    Error : {message}
+                    context['message'] = f'''
+                        Successfully uploaded all the files, 
+                        Article_staging directory zipped and moved to Article_staging_backup folder as zip file. 
+                        Message : {message}
                     '''
                     update_step()
 
                 else:
-                    empty_s3(s3_action, context)
+                    empty_s3(s3_action, context, message)
                 
             else:
-                empty_s3(s3_action, context)
+                empty_s3(s3_action, context, message)
         else:
-            context['message'] = 'Error occurred while creating directories on S3. Please try after sometime. Error: {message}' 
+            context['message'] = f'''Error occurred while creating directories on S3. Please try after sometime.
+              Message: {message}''' 
     else:
         context['message'] = 'S3 Bucket is not empty. To continue, please empty the S3 Bucket or contact concern team.'
 

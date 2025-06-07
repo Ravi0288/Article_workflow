@@ -20,6 +20,6 @@
     {%csrf_token %}
     <h2 class="ac">{{ heading }}</h2>
     <p class="ac">
-        {{ message }}
+        {{ message|linebreaksbr }}
     </p>
 {% endblock %}
