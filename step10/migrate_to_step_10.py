@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from model.article import Article
+from model.article import Article, ProcessedArticleHistory
+from model.processsing_state import ProcessingState
 from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
@@ -24,6 +25,33 @@ def migrate_to_step10(request):
         'message' : 'No active article found to migrate to Step 10'
     }
 
+    # if step10 is running, don't allow it to run for second time
+    step10_state, created = ProcessingState.objects.get_or_create(process_name='step10')
+    
+    if created:
+        if step10_state.in_progress:
+            context['message'] = 'Step 10 is already running. Please try after sometime'
+        else:
+            step10_state.in_progress = True
+            step10_state.save()
+
+            # Initialize counters with existing counter
+            counters = {
+                "new_usda": step10_state.new_usda_record_processed,
+                "merge_usda": step10_state.merge_usda_record_processed,
+                "new_publisher": step10_state.new_publisher_record_processed,
+                "merge_publisher": step10_state.merge_publisher_record_processed,
+            }
+
+    else:
+        # Initialize counters
+        counters = {
+            "new_usda": 0,
+            "merge_usda": 0,
+            "new_publisher": 0,
+            "merge_publisher": 0,
+        }
+
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status='active',
@@ -33,15 +61,10 @@ def migrate_to_step10(request):
         )
 
     if not articles.count() :
+        step10_state.in_progress = False
+        step10_state.save()
         return render(request, 'common/dashboard.html', context=context)
     
-    # Initialize counters
-    counters = {
-        "new_usda": 0,
-        "merge_usda": 0,
-        "new_publisher": 0,
-        "merge_publisher": 0,
-    }
 
     VALID_IMPORT_TYPES = {'new_usda', 'merge_usda', 'new_publisher', 'merge_publisher'}
 
@@ -126,5 +149,15 @@ def migrate_to_step10(request):
                 All active articles successfully migrated to Step 10.
                 '''
         } 
+    
+    ProcessedArticleHistory.objects.create(
+        new_usda_record_processed = counters['new_usda'],
+        merge_usda_record_processed = counters['merge_usda'],
+        new_publisher_record_processed = counters['new_publisher'],
+        merge_publisher_record_processed = counters['merge_publisher'],
+    )
+
+    step10_state.in_progress = False
+    step10_state.save()
 
     return render(request, 'common/dashboard.html', context=context)

@@ -1,130 +1,129 @@
 import os
 import boto3
-import shutil
-import zipfile
 import logging
-from datetime import datetime
+from botocore.exceptions import BotoCoreError, ClientError
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
 class AlmaS3Uploader:
+
+    # Initialize the values
     def __init__(self, staging_info):
-        self.staging_folder = staging_info["folder_path"]
-        self.folder_type = staging_info["type"]  # "new" or "merge"
-        self.min_required_files = staging_info["min_files"]
-        self.s3_uris = staging_info["s3_uris"]  # list of S3 URIs
-        self.archive_path = staging_info["archive_path"]
-        self.active = staging_info["active"]
-        self.bucket_empty_check = staging_info["bucket_empty_check"]
+        self.s3_uris = staging_info["s3_uris"]
         self.aws_access_key = staging_info["aws_access_key"]
         self.aws_secret_key = staging_info["aws_secret_key"]
         self.base_s3_uri = staging_info["base_s3_uri"]
+        self.bucket = staging_info["bucket"]
+        self.prefix = staging_info["prefix"]
+        self.base_path = staging_info["base_path"]
 
+        # Connect to S3
         self.s3 = boto3.client(
             's3',
             aws_access_key_id=self.aws_access_key,
             aws_secret_access_key=self.aws_secret_key
         )
 
-    def run(self):
-        report = {
-            "staging_folder": self.staging_folder,
-            "upload_time": str(datetime.now()),
-            "uploaded_count": 0,
-            "archive_location": "",
-            "errors": [],
-            "warnings": []
-        }
 
-        try:
-            if not self.active:
-                report["warnings"].append("Folder is inactive.")
-                return report
+    # Create requied directories
+    def create_s3_directories(self):
+        """
+        Creates empty '.keep' files in each directory under the base prefix.
+        This is required because the direcotry will not exists without having at least a single file in it
+        """
+        for name, relative_path in self.s3_uris.items():
+            # Full prefix under base path
+            prefix = f"{self.prefix.rstrip('/')}/{relative_path.strip('/')}/"
+            key = f"{prefix}.keep"
+            try:
+                # create directory and place .keep file inside it
+                self.s3.put_object(Bucket=self.bucket, Key=key, Body=b'')
+            except (BotoCoreError, ClientError) as e:
+                return False, e
+        return True, 'successful'
 
-            if not self._check_min_files():
-                report["warnings"].append("Not enough files to upload.")
-                return report
+    # Check if there is any content in bucket except .keep file
+    def check_s3_buckets_empty(self):
+        for name, relative_path in self.s3_uris.items():
+            prefix = f"{self.prefix.rstrip('/')}/{relative_path.strip('/')}/"
+            response = self.s3.list_objects_v2(Bucket=self.bucket, Prefix=prefix)
+            contents = response.get("Contents", [])
 
-            if not self._check_s3_buckets_empty():
-                report["warnings"].append("S3 buckets are not empty.")
-                return report
+            # Ignore if the only file is the .keep placeholder
+            actual_files = [obj for obj in contents if not obj['Key'].endswith('.keep')]
 
-            uploaded_count = self._upload_to_s3()
-
-            if uploaded_count == 0:
-                report["errors"].append("No files uploaded.")
-                return report
-
-            archive_file = self._archive_staging_folder()
-            self._cleanup_local_folder()
-
-            report["uploaded_count"] = uploaded_count
-            report["archive_location"] = archive_file
-
-        except Exception as e:
-            logger.error(f"Upload failed: {e}")
-            report["errors"].append(str(e))
-            self._remove_from_s3()
-        return report
-
-    def _check_min_files(self):
-        return len(os.listdir(self.staging_folder)) >= self.min_required_files
-
-    def _check_s3_buckets_empty(self):
-        for uri in self.s3_uris:
-            bucket, prefix = self._split_s3_uri(uri)
-            response = self.s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
-            if "Contents" in response:
+            if actual_files:
+                # Non-placeholder file found
                 return False
+            
+        # All directories are empty except for .keep
         return True
 
-    def _upload_to_s3(self):
-        count = 0
-        for agid_folder in os.listdir(self.staging_folder):
-            local_path = os.path.join(self.staging_folder, agid_folder)
-            if not os.path.isdir(local_path):
-                continue
-
-            for s3_uri in self.s3_uris:
-                bucket, prefix = self._split_s3_uri(s3_uri)
-                s3_prefix = f"{prefix}/{agid_folder}"
-
-                for file_name in os.listdir(local_path):
-                    file_path = os.path.join(local_path, file_name)
-                    s3_key = f"{s3_prefix}/{file_name}"
-                    self.s3.upload_file(file_path, bucket, s3_key)
-                    count += 1
-        return count
-
-    def _archive_staging_folder(self):
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        zip_name = f"{os.path.basename(self.staging_folder)}_{timestamp}.zip"
-        zip_path = os.path.join(self.archive_path, zip_name)
-
-        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for root, _, files in os.walk(self.staging_folder):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    arcname = os.path.relpath(file_path, self.staging_folder)
-                    zipf.write(file_path, arcname)
-        return zip_path
-
-    def _cleanup_local_folder(self):
-        for agid_folder in os.listdir(self.staging_folder):
-            shutil.rmtree(os.path.join(self.staging_folder, agid_folder), ignore_errors=True)
-
-    def _remove_from_s3(self):
-        for s3_uri in self.s3_uris:
-            bucket, prefix = self._split_s3_uri(s3_uri)
+    # Empty the S3 bucket
+    def empty_s3_bucket(self):
+        for uri in self.s3_uris:
+            bucket, prefix = self.bucket, self.prefix
             response = self.s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
-            if "Contents" in response:
-                for obj in response["Contents"]:
-                    self.s3.delete_object(Bucket=bucket, Key=obj["Key"])
+            objects = [{'Key': obj['Key']} for obj in response.get('Contents', [])]
+            if objects:
+                self.s3.delete_objects(Bucket=bucket, Delete={'Objects': objects})
+        return True, 'successful'
+    
+    # Upload the files from each directory to S3
+    def upload_directory_to_s3(self):
+        s3_paths = self.s3_uris
+        bucket = self.bucket
+        base_path = self.base_path
 
-    def _split_s3_uri(self, uri):
-        if uri.startswith("s3://"):
-            uri = uri[5:]
-        parts = uri.split("/", 1)
-        bucket = parts[0]
-        prefix = parts[1] if len(parts) > 1 else ""
-        return bucket, prefix
+        def upload_file(local_path, s3_key):
+            full_s3_key = f"{self.prefix.rstrip('/')}/{s3_key.lstrip('/')}"
+            try:
+                self.s3.upload_file(local_path, bucket, full_s3_key)
+            except Exception as e:
+                print(f"Failed to upload {local_path} → s3://{bucket}/{full_s3_key}: {e}")
+                return False, e
+
+        # 1. Upload NEW_USDA
+        new_usda_dir = os.path.join(base_path, 'NEW_USDA')
+        for root, _, files in os.walk(new_usda_dir):
+            for file in files:
+                local_path = os.path.join(root, file)
+                relative_path = os.path.relpath(local_path, new_usda_dir).replace("\\", "/")
+                s3_key = s3_paths['new_usda_record'] + relative_path
+                upload_file(local_path, s3_key)
+
+        # 2. Upload NEW_PUBLISHER
+        new_sub_dir = os.path.join(base_path, 'NEW_PUBLISHER')
+        for root, _, files in os.walk(new_sub_dir):
+            for file in files:
+                local_path = os.path.join(root, file)
+                relative_path = os.path.relpath(local_path, new_sub_dir).replace("\\", "/")
+                s3_key = s3_paths['new_submission_records'] + relative_path
+                upload_file(local_path, s3_key)
+
+        # 3. Upload MERGE_USDA (with and without digital content)
+        merge_usda_dir = os.path.join(base_path, 'MERGE_USDA')
+        for root, _, files in os.walk(merge_usda_dir):
+            for file in files:
+                local_path = os.path.join(root, file)
+                relative_path = os.path.relpath(local_path, merge_usda_dir).replace("\\", "/")
+                if file.lower() == 'alma.xml':
+                    s3_key = s3_paths['merge_usda_without_digital_files'] + relative_path
+                    upload_file(local_path, s3_key)
+                s3_key = s3_paths['merge_usda_with_digital_files'] + relative_path
+                upload_file(local_path, s3_key)
+
+        # 4. Upload MERGE_PUBLISHER (with and without digital content)
+        merge_sub_dir = os.path.join(base_path, 'MERGE_PUBLISHER')
+        for root, _, files in os.walk(merge_sub_dir):
+            for file in files:
+                local_path = os.path.join(root, file)
+                relative_path = os.path.relpath(local_path, merge_sub_dir).replace("\\", "/")
+                if file.lower() == 'alma.xml':
+                    s3_key = s3_paths['new_submission_without_digital_files'] + relative_path
+                    upload_file(local_path, s3_key)
+                s3_key = s3_paths['new_submission_with_digital_files'] + relative_path
+                upload_file(local_path, s3_key)
+
+        return True, 'successful'

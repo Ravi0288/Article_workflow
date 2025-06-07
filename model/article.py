@@ -108,3 +108,12 @@ class Article(models.Model):
                                        )
     import_type = models.CharField(blank=True, null=True, default=None, max_length=16)
     # article_switch = models.BooleanField(default=False)
+
+
+
+class ProcessedArticleHistory(models.Model):
+    new_usda_record_processed = models.BigIntegerField(null=True)
+    merge_usda_record_processed = models.BigIntegerField(null=True)
+    new_publisher_record_processed = models.BigIntegerField(null=True)
+    merge_publisher_record_processed = models.BigIntegerField(null=True)
+    updated_at = models.DateTimeField(auto_now=True)
