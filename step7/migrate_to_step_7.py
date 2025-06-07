@@ -45,7 +45,6 @@ def migrate_to_step7(request):
             article.save()
             continue
             
-        # is_usda_funded = (article.journal.collection_status == 'from_submission')
         is_usda_funded = cit.local.USDA
         cit, res, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
 

@@ -112,8 +112,8 @@ class Article(models.Model):
 
 
 class ProcessedArticleHistory(models.Model):
-    new_usda_record_processed = models.BigIntegerField(null=True)
-    merge_usda_record_processed = models.BigIntegerField(null=True)
-    new_publisher_record_processed = models.BigIntegerField(null=True)
-    merge_publisher_record_processed = models.BigIntegerField(null=True)
+    new_usda_record_processed = models.BigIntegerField(default=0)
+    merge_usda_record_processed = models.BigIntegerField(default=0)
+    new_publisher_record_processed = models.BigIntegerField(default=0)
+    merge_publisher_record_processed = models.BigIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)

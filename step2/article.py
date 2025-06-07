@@ -66,11 +66,17 @@ def compare_files_line_by_line(f1, f2):
 # read file
 def read_file(file_path):
     if isinstance(file_path, str):
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read()
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except Exception as e:
+            return False
     else:
-        with open(file_path.name, 'r', encoding='utf-8') as f:
-            return f.read()        
+        try:
+            with open(file_path.name, 'r', encoding='utf-8') as f:
+                return f.read()  
+        except Exception as e:
+            False      
 
 
 # Make entry of invalid xml
@@ -272,7 +278,10 @@ def migrate_to_step2(request):
                     for root, dir, filenames in os.walk(destination):
                         for file_name in filenames:
                             new_source = os.path.join(root, file_name)
-                            data = splitter(read_file(new_source))
+                            content = read_file(new_source)
+                            if not content:
+                                continue
+                            data = splitter(content)
 
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
@@ -284,7 +293,10 @@ def migrate_to_step2(request):
                     for root, dir, filenames in os.walk(destination):
                         for file_name in filenames:
                             new_source = os.path.join(root, file_name)
-                            data = splitter(read_file(new_source))
+                            content = read_file(new_source)
+                            if not content:
+                                continue
+                            data = splitter(content)
 
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
@@ -305,8 +317,10 @@ def migrate_to_step2(request):
             source = archive_row.file_content.path
             file_name = archive_row.file_content.name
 
-            # with open(source, 'r', encoding='utf-8') as f:
-            data = splitter(read_file(source))
+            content = read_file(source)
+            if not content:
+                continue
+            data = splitter(content)
 
             if data[1] == 'successful':
                 destination = source.replace('ARCHIVE','ARTICLES')
