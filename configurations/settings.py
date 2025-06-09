@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'step8',
     'step9',
     'step10',
-    'step11',
     'model',
     'mail_service',
     'accounts',
@@ -287,9 +286,8 @@ MERGE_USDA_MAX_LIMIT = 10000
 NEW_USDA_MAX_LIMIT = 10000
 MERGE_PUBLISHER_MAX_LIMIT = 10000
 NEW_PUBLISHER_MAX_LIMIT = 10000
-# BASE_S3_URI = 'na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
-BASE_S3_URI = 'https://testbucketusda.s3.eu-north-1.amazonaws.com/uploads/'
-S3_BUCKET = 'testbucketusda'
+BASE_S3_URI = 's3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
+S3_BUCKET = '01NAL_INST'
 S3_PREFIX = 'uploads/'
 S3_URIS = {
     'new_usda_record':'18851814470007426/',
@@ -299,6 +297,7 @@ S3_URIS = {
     'new_submission_with_digital_files':'21176440550007426/',
     'new_submission_without_digital_files':'21451763880007426/',
 }
+
 AWS_S3_SECRET_KEY = os.environ['AWS_S3_SECRET_KEY']
 AWS_S3_ACCESS_KEY = os.environ['AWS_S3_ACCESS_KEY']
 
