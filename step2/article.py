@@ -66,11 +66,17 @@ def compare_files_line_by_line(f1, f2):
 # read file
 def read_file(file_path):
     if isinstance(file_path, str):
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read()
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except Exception as e:
+            return False
     else:
-        with open(file_path.name, 'r', encoding='utf-8') as f:
-            return f.read()        
+        try:
+            with open(file_path.name, 'r', encoding='utf-8') as f:
+                return f.read()  
+        except Exception as e:
+            False      
 
 
 # Make entry of invalid xml
@@ -113,7 +119,7 @@ def update_archive(row):
 
 
 # Create new Article
-def create_new_object(source, row, note, content):
+def create_new_object(source, row, content):
     # Create new record
     qs = Article()
     qs.type_of_record = 'article'
@@ -121,7 +127,6 @@ def create_new_object(source, row, note, content):
     qs.archive = row
     qs.last_step = 2
     qs.last_status = 'active'
-    qs.note = note
 
     # since the file is stored in temp file that contains TEMP_DOWNLOAD and ARCHIVE in its path. 
     # Just remove these strings and it becomes the correct media path where the file will stored
@@ -153,11 +158,10 @@ def create_new_object(source, row, note, content):
     return True
 
 # Update Archive
-def update_article(article, note='', content=''):
+def update_article(article, content=''):
     article.last_status = 'active'
     article.last_step = 2
-    if note:
-        article.note = note
+    
     if content:
         file_name = article.article_file.name
         # delete the old file first
@@ -208,7 +212,7 @@ def process_success_result_from_splitter_function(data, source, destination, arc
                     shutil.copy(source, destination.replace('TEMP_DOWNLOAD', ''))
                     update_article(article=article)
         except Article.DoesNotExist:
-            create_new_object(source, archive_row, note="", content=data[0])
+            create_new_object(source, archive_row, content=data[0])
 
 
     # if multiple record found
@@ -227,7 +231,7 @@ def process_success_result_from_splitter_function(data, source, destination, arc
                     if compare_files_line_by_line(f1,line):
                         update_article(article=article, content=line)
             except Article.DoesNotExist:
-                create_new_object(indexed_file_name, archive_row, note="", content=line)
+                create_new_object(indexed_file_name, archive_row, content=line)
 
 
 # Main function to create article objects from archive articles
@@ -244,7 +248,7 @@ def migrate_to_step2(request):
     if archive_records.count() == 0:
         context = {
             'heading' : 'Message',
-            'message' : 'No pending file available to be migrated to step 2'
+            'message' : 'No active file available to be migrated to step 2'
         }
         return render(request, 'common/dashboard.html', context=context)
 
@@ -274,7 +278,10 @@ def migrate_to_step2(request):
                     for root, dir, filenames in os.walk(destination):
                         for file_name in filenames:
                             new_source = os.path.join(root, file_name)
-                            data = splitter(read_file(new_source))
+                            content = read_file(new_source)
+                            if not content:
+                                continue
+                            data = splitter(content)
 
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
@@ -286,7 +293,10 @@ def migrate_to_step2(request):
                     for root, dir, filenames in os.walk(destination):
                         for file_name in filenames:
                             new_source = os.path.join(root, file_name)
-                            data = splitter(read_file(new_source))
+                            content = read_file(new_source)
+                            if not content:
+                                continue
+                            data = splitter(content)
 
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
@@ -307,8 +317,10 @@ def migrate_to_step2(request):
             source = archive_row.file_content.path
             file_name = archive_row.file_content.name
 
-            # with open(source, 'r', encoding='utf-8') as f:
-            data = splitter(read_file(source))
+            content = read_file(source)
+            if not content:
+                continue
+            data = splitter(content)
 
             if data[1] == 'successful':
                 destination = source.replace('ARCHIVE','ARTICLES')

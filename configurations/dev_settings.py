@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'step5',
     'step6',
     'step7',
+    'step8',
+    'step9',
+    'step10',
+    'step11',
     'model',
     'mail_service',
     'accounts',
@@ -227,7 +231,25 @@ TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
 ARTICLE_ROOT = '/ai/metadata/ARTICLES'
 ARTICLE_CITATION = '/ai/metadata/ARTICLE_CITATION'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
+MARC_XML_ROOT = '/ai/metadata/ARTICLE_MARC_XML'
+ALMA_STAGING = '/ai/metadata/ALMA_STAGING'
+ALMA_STAGING_BACKUP = '/ai/metadata/ALMA_STAGING_BACKUP'
 
+# s3 upload maximum allowed number for each class of content
+MERGE_USDA_MAX_LIMIT = 10000
+NEW_USDA_MAX_LIMIT = 10000
+MERGE_PUBLISHER_MAX_LIMIT = 10000
+NEW_PUBLISHER_MAX_LIMIT = 10000
+BASE_S3_URI = 'na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
+S3_URIS = {
+    'new_usda_record':'18851814470007426/',
+    'merge_usda_with_digital_files':'18851815290007426/',
+    'merge_usda_without_digital_files':'21675299990007426/',
+    'new_submission_records':'21176431170007426/',
+    'new_submission_with_digital_files':'21176440550007426/',
+    'new_submission_without_digital_files':'21451763880007426/',
+}
+AWS_S3_KEY = os.environ['AWS_S3_KEY']
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

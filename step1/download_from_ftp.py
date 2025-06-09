@@ -81,15 +81,15 @@ def download_file(ftp_connection, article, item):
         return
     
     # if file exists than check the file size. If file size is different update the existing record
-    if (x.exists() and not (x[0].file_size == file_size)):
-        content = BytesIO()
-        ftp_connection.retrbinary(f'RETR {article}', content.write)
-        content.seek(0)
-        x[0].status = 'waiting'
-        x[0].is_content_changed = True
-        article = str(x[0].id) + '.' + article.split('.')[-1]
-        x[0].file_content.save(article, content)
-        return
+    # if (x.exists() and not (x[0].file_size == file_size)):
+    #     content = BytesIO()
+    #     ftp_connection.retrbinary(f'RETR {article}', content.write)
+    #     content.seek(0)
+    #     x[0].status = 'waiting'
+    #     x[0].is_content_changed = True
+    #     article = str(x[0].id) + '.' + article.split('.')[-1]
+    #     x[0].file_content.save(article, content)
+    #     return
     
 
 # function to download folder with its content and convert to zip, finally save to table
@@ -136,13 +136,12 @@ def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
             return
 
         # if file exists than check the file size. If file size is different update the existing record
-        if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
-            x[0].status = 'active'
-            with open(zipped_file, 'rb') as zip_file:
-                zip_file.seek(0)
-                x[0].file_content.save(article, zip_file)
+        # if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
+        #     x[0].status = 'active'
+        #     with open(zipped_file, 'rb') as zip_file:
+        #         zip_file.seek(0)
+        #         x[0].file_content.save(article, zip_file)
 
-    print("zipped and exiting content")
             
     # Cleanup temporary directory
     shutil.rmtree(temp_dir)
@@ -160,7 +159,7 @@ def download_from_ftp(request):
     # get all providers that are due to be accessed
     due_for_download = Provider_meta_data_FTP.objects.filter(
         provider__next_due_date__lte = datetime.datetime.now(tz=pytz.utc)
-        ).exclude(Q(protocol='SFTP') | Q(provider__in_production=False))
+        ).exclude(Q(protocol='SFTP') | Q(provider__in_production=False) | Q(pull_switch=False))
         
     # if none is due to be accessed abort the process
     if not due_for_download.count():
@@ -221,7 +220,7 @@ def download_from_ftp(request):
                 except Archive.DoesNotExist:
                     article_library.append(file_name)
 
-            # Showing list of successfull providers for view purpose
+            # Showing list of successful providers for view purpose
             succ.append(item.provider.working_name)
 
             # if files found than start download

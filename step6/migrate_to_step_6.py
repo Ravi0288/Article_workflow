@@ -14,7 +14,7 @@ def make_override_string(article):
     if article.journal:
         j = Journal.objects.get(id=article.journal.id).requirement_override or ""
     # j = article.journal.requirement_override or ""
-    return f"{p} | {j}" if p and j else p + j
+    return f"{p} | {j}" if p and j else p + ' ' + j
 
 
 
@@ -23,29 +23,37 @@ def make_override_string(article):
 def migrate_to_step6(request):
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 6'
+        'message' : 'No active article found to migrate to Step 6'
     }
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=5
-        # article_switch = True
+        last_step=5,
+        provider__article_switch=True
         )
 
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
     
     for article in articles:
-        print(article.id)
+        article.last_step = 6
+
         override_string = make_override_string(article)
 
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
-            print("Error loading pickle file", e)
+            if article.note == 'none':
+                article.note = f"6- {e}; "
+            else:
+                article.note += f"6- {e}; "
+
+        
+            article.last_status = 'review'
+            article.save()
             continue
 
         cit, message = metadata_quality_review.metadata_quality_review(cit, override_string)
@@ -57,9 +65,12 @@ def migrate_to_step6(request):
             article.type_of_record = cit.type_of_record
 
         if cit.local.cataloger_notes:
-            article.note = cit.local.cataloger_notes
+            if article.note == 'none':
+                article.note = f"6- {cit.local.cataloger_notes}; "
+            else:
+                article.note += f"6- {cit.local.cataloger_notes}; "
+            
 
-        article.last_step = 6
         article.save()
 
         # Save the updated pickle content back to the file
@@ -71,7 +82,7 @@ def migrate_to_step6(request):
     context = {
             'heading' : 'Message',
             'message' : f'''
-                All Pending articles successfully migrated to Step 6.
+                All active articles successfully migrated to Step 6.
                 '''
         } 
 

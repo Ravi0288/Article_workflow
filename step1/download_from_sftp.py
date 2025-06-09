@@ -46,14 +46,12 @@ def download_file(sftp_connection, article, item):
     # Check if record downloaded in our record and the file size is not zero
     x = Archive.objects.filter(file_name_on_source=article)
 
-    print("saving the file")
     # If file does not exist in the database, create a new record
     if not x.exists():
         content = BytesIO()
         sftp_connection.getfo(article, content)  # Using getfo to download file to BytesIO
         content.seek(0)
         file_type = os.path.splitext(article)[1]
-        print("getting the file")
         x = Archive.objects.create(
             file_name_on_source=article,
             provider=item.provider,
@@ -64,21 +62,20 @@ def download_file(sftp_connection, article, item):
         )
         article = str(x.id) + '.' + article.split('.')[-1]
         x.file_content.save(article, content)
-        print("file created successfully")
         return
 
-    # If file exists, check the file size. If file size is different, update the existing record
-    if x.exists() and not (x[0].file_size == file_size):
-        print("file found")
-        content = BytesIO()
-        sftp_connection.getfo(article, content)  # Using getfo to download file to BytesIO
-        content.seek(0)
-        x[0].status = 'waiting'
-        x[0].is_content_changed = True
-        article = str(x[0].id) + '.' + article.split('.')[-1]
-        x[0].file_content.save(article, content)
-        print("file updated")
-        return
+    # # If file exists, check the file size. If file size is different, update the existing record
+    # if x.exists() and not (x[0].file_size == file_size):
+    #     print("file found")
+    #     content = BytesIO()
+    #     sftp_connection.getfo(article, content)  # Using getfo to download file to BytesIO
+    #     content.seek(0)
+    #     x[0].status = 'waiting'
+    #     x[0].is_content_changed = True
+    #     article = str(x[0].id) + '.' + article.split('.')[-1]
+    #     x[0].file_content.save(article, content)
+    #     print("file updated")
+    #     return
 
 
 # Function to download folder with its content, convert to zip, and save to table
@@ -94,9 +91,6 @@ def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
         # Create a temporary directory to store downloaded files
         if not os.path.exists(temp_dir):
             os.makedirs(temp_dir)
-
-        # Assuming you have logic here to download folder contents to temp_dir
-        # (You'll need to implement this based on your specific SFTP folder structure)
 
         # Create a zip file from the downloaded content
         zip_filename = os.path.join(temp_dir, zip_name)
@@ -129,12 +123,12 @@ def download_folder_from_sftp_and_save_zip(sftp_connection, article, item):
             return
 
         # If file exists, check the file size. If file size is different, update the existing record
-        if x.exists() and not (x[0].file_size == os.path.getsize(zipped_file)):
-            print("file found and updating the record")
-            x[0].status = 'active'
-            with open(zipped_file, 'rb') as zip_file:
-                zip_file.seek(0)
-                x[0].file_content.save(article, zip_file)
+        # if x.exists() and not (x[0].file_size == os.path.getsize(zipped_file)):
+        #     print("file found and updating the record")
+        #     x[0].status = 'active'
+        #     with open(zipped_file, 'rb') as zip_file:
+        #         zip_file.seek(0)
+        #         x[0].file_content.save(article, zip_file)
 
     # Cleanup temporary directory
     shutil.rmtree(temp_dir)
@@ -150,7 +144,7 @@ def download_from_sftp(request):
     # Get all providers that are due to be accessed
     due_for_download = Provider_meta_data_FTP.objects.filter(
         provider__next_due_date__lte=datetime.datetime.now(tz=pytz.utc)
-    ).exclude(Q(protocol='FTP') | Q(provider__in_production=False))
+    ).exclude(Q(protocol='FTP') | Q(provider__in_production=False) | Q(pull_switch=False))
 
     # If none are due to be accessed, abort the process
     if not due_for_download.count():
@@ -162,6 +156,7 @@ def download_from_sftp(request):
 
     # If providers are due to be accessed
     for item in due_for_download:
+        print(item.id, item.provider.id, item.provider.working_name)
         err_count = 0
         succ_count = 0
         # Try to connect to SFTP, if error occurs, update the status to Provider_meta_data_FTP
@@ -185,6 +180,7 @@ def download_from_sftp(request):
                     except:
                         last_modified = 0
                         
+                    # Identify and make a list of files to be downloaded with the help of last_modified date.
                     try:
                         if last_modified:
                             Archive.objects.get(file_name_on_source = file_name, received_on__lt = last_modified)

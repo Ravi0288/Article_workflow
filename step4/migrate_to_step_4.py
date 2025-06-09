@@ -15,33 +15,43 @@ import pytz
 def migrate_to_step4(request):
     context = {
         'heading' : 'Message',
-        'message' : 'No pending article found to migrate to Step 4'
+        'message' : 'No active article found to migrate to Step 4'
     }
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
-        last_step=3
-        # article_switch = True
-        ).exclude(citation_pickle='N/A')
-
+        last_step=3,
+        provider__article_switch=True
+        )
+    
+    # if no article found, return response
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
 
-    print("Number of articles identified for processing: ", len(articles))
-
+    # iterate articles
     for article in articles:
+        article.last_step = 4
+
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
         except Exception as e:
             print("Error loading pickle file", e)
+            article.last_status = 'review'
+
+            if article.note == 'none':
+                article.note = f"4- {e}; "
+            else:
+                article.note += f"4- {e}; "
+
+            article.save()
             continue
 
         citation_journal_dictionary = cit.get_journal_info()
         
-        issn_list = citation_journal_dictionary.get('issn', None)
+        issn_list = list(set(citation_journal_dictionary.get('issn', None)))
 
         # Check to ensure issns are valid
         issn_regex = r"^[0-9]{4}-[0-9]{3}[0-9xX]$"
@@ -51,13 +61,13 @@ def migrate_to_step4(request):
                 issn_list.remove(issn)
 
         if len(issn_list) == 0:
-            if cit.local.USDA == "yes":
-                article.last_step = 4
-                article.note = "No valid ISSN found"
-            else:
-                article.last_step = 4
+            if cit.local.USDA != "yes":
                 article.last_status = 'review'
-                article.note = "No valid ISSN found"
+                if article.note == 'none':
+                    article.note = f"4- No valid ISSN found; "
+                else:
+                    article.note += f"4- No valid ISSN found; "
+            
             article.save()
             continue
 
@@ -67,7 +77,6 @@ def migrate_to_step4(request):
             if qs.exists():
                 issn_match = issn_value
                 break
-
 
         # We will update this value if and when we find a match in our journal lookup model
         # If we don't find a match, it will stay as 'None'
@@ -82,17 +91,19 @@ def migrate_to_step4(request):
                 obj.publisher = citation_journal_dictionary.get('publisher', None)
                 obj.issn = issn_value
                 obj.doi = citation_journal_dictionary.get("container_DOI", None)
-                obj.last_updated = datetime.datetime.now(tz=pytz.utc)
                 is_usda_funded = citation_journal_dictionary['usda']
 
                 if is_usda_funded == 'yes':
                     obj.collection_status = 'from_submission'
                 else:
                     obj.collection_status = 'pending'
+                    article.last_status = "review"
                 obj.save()
 
-
-            article.last_status = "review"
+            if article.note == 'none':
+                article.note = f"4- Journal is pending; "
+            else:
+                article.note += f"4- Journal is pending; "
             
             if issn_list:
                 qs = Journal.objects.filter(issn=issn_list[0])
@@ -105,10 +116,15 @@ def migrate_to_step4(request):
             if journal_match.collection_status == 'rejected' and citation_journal_dictionary.get('usda', None) == "no":
                 # Reject article as out of scope
                 article.last_status = "dropped"
-                article.last_step = 4
-                article.note = "out of scope"
+
+                if article.note == 'none':
+                    article.note = f"4- out of scope; "
+                else:
+                    article.note += f"4- out of scope; "
+
                 article.current_date = datetime.datetime.now(tz=pytz.utc)
                 article.journal = journal_match
+                article.save()
                 continue
             else:
                 cit.container_DOI = journal_match.doi
@@ -116,12 +132,15 @@ def migrate_to_step4(request):
                 nal_journal_id = journal_match.nal_journal_id
                 cit.local.identifiers["nal_journal_id"] = nal_journal_id
                 if journal_match.collection_status == "pending":
-                    article.last_status = "review"
+                    if article.note == 'none':
+                        article.note = f"4- Journal is pending; "
+                    else:
+                        article.note += f"4- Journal is pending; "
+                    cit.local.cataloger_notes.append('Journal is pending')
                     if citation_journal_dictionary.get("usda", None) == "no":
-                        cit.local.cataloger_notes.append('Journal is pending')
+                        article.last_status = "review"
 
         # update the journal id in article
-        article.last_step = 4
         article.save()
 
         # Save the updated pickle content back to the file
@@ -133,7 +152,7 @@ def migrate_to_step4(request):
     context = {
             'heading' : 'Message',
             'message' : f'''
-                All Pending articles successfully migrated to Step 4.
+                All active articles successfully migrated to Step 4.
                 '''
         } 
 
