@@ -157,7 +157,13 @@ def migrate_to_step10(request):
         merge_publisher_record_processed = counters['merge_publisher'],
     )
 
+
+    # update step 10 record with number of processed articles based on classification
     step10_state.in_progress = False
+    step10_state.new_usda_record_processed = counters["new_usda"]
+    step10_state.merge_usda_record_processed = counters["merge_usda"]
+    step10_state.new_publisher_record_processed = counters["new_publisher"]
+    step10_state.merge_publisher_record_processed = counters["merge_publisher"]
     step10_state.save()
 
     return render(request, 'common/dashboard.html', context=context)

@@ -23,7 +23,6 @@ STATUS = (
 )
 
 ARTICLE_PATH = settings.ARTICLE_ROOT
-# PROCESSED_ARTICLES = settings.PROCESSED_ARTICLES
 
 # Class to remove the existing file.
 # This will be used when we need to replace the existing file that is stored with the same name.
@@ -38,9 +37,6 @@ class OverWriteStorage(FileSystemStorage):
 # Function to return the storage file path.
 def get_invalid_file_path(instance, filename):
     return '{0}/{1}'.format('INVALID_FILES', filename)
-
-# def get_article_file_path(instance, filename):
-#     return '{0}/{1}/{2}'.format('ARTICLE', (instance.provider.working_name).replace(' ', '_'), filename)
 
 
 def get_article_file_path(instance, filename):
@@ -107,10 +103,10 @@ class Article(models.Model):
                                        help_text="This field will store citation article in pickle format as .pkl or .pickle file extension"
                                        )
     import_type = models.CharField(blank=True, null=True, default=None, max_length=16)
-    # article_switch = models.BooleanField(default=False)
 
 
 
+# This table will be used to archive number of processed records
 class ProcessedArticleHistory(models.Model):
     new_usda_record_processed = models.BigIntegerField(default=0)
     merge_usda_record_processed = models.BigIntegerField(default=0)

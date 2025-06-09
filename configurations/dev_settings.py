@@ -232,8 +232,8 @@ ARTICLE_ROOT = '/ai/metadata/ARTICLES'
 ARTICLE_CITATION = '/ai/metadata/ARTICLE_CITATION'
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 MARC_XML_ROOT = '/ai/metadata/ARTICLE_MARC_XML'
-ARTICLE_STAGING = '/ai/metadata/ARTICLE_STAGING'
-ARTICLE_STAGING_BACKUP = '/ai/metadata/ARTICLE_STAGING_BACKUP'
+ALMA_STAGING = '/ai/metadata/ALMA_STAGING'
+ALMA_STAGING_BACKUP = '/ai/metadata/ALMA_STAGING_BACKUP'
 
 # s3 upload maximum allowed number for each class of content
 MERGE_USDA_MAX_LIMIT = 10000

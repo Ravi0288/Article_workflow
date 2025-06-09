@@ -17,7 +17,7 @@ def empty_s3_bucket(request):
         'aws_secret_key' : settings.AWS_S3_SECRET_KEY,
         'bucket' : settings.S3_BUCKET,
         'prefix' : settings.S3_PREFIX,
-        'base_path' : os.path.join(settings.BASE_DIR, settings.ARTICLE_STAGING)
+        'base_path' : os.path.join(settings.BASE_DIR, settings.ALMA_STAGING)
     }
         
     context = {

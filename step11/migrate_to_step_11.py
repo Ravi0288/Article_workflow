@@ -10,6 +10,7 @@ from model.processsing_state import ProcessingState
 from django.conf import settings
 import zipfile
 import datetime
+from django.utils import timezone
 
 
 def del_contents(path):
@@ -55,7 +56,16 @@ def update_step():
         provider__article_switch=True
         )
     articles.update(last_step=11)
+
+    # USDA article only should go to next step
+    articles.exclude(journal__collection_status = 'from_submission')
+    articles.last_status = 'completed'
+    # articles.end_date = datetime.datetime.now()
+    articles.end_date = timezone.now()
+    articles.save()
     return True
+
+
 
 
 def empty_s3(s3_action, context, message):
@@ -106,7 +116,7 @@ def migrate_to_step11(request):
         'aws_secret_key' : settings.AWS_S3_SECRET_KEY,
         'bucket' : settings.S3_BUCKET,
         'prefix' : settings.S3_PREFIX,
-        'base_path' : os.path.join(settings.BASE_DIR, settings.ARTICLE_STAGING)
+        'base_path' : os.path.join(settings.BASE_DIR, settings.ALMA_STAGING)
     }
 
 
@@ -119,22 +129,25 @@ def migrate_to_step11(request):
         if created:
             uploaded, message = s3_action.upload_directory_to_s3()
             if uploaded:
-                # zip the article_staging directory and save in article_staging_backup directory as today_date.zip and delete the unzipped files
+                # zip the alma_staging directory and save in alma_staging_backup directory as today_date.zip and delete the unzipped files
                 res, message = zip_and_remove_directory(
-                    os.path.join(settings.BASE_DIR, settings.ARTICLE_STAGING),
+                    os.path.join(settings.BASE_DIR, settings.ALMA_STAGING),
                     os.path.join(
                         settings.BASE_DIR,
-                        settings.ARTICLE_STAGING_BACKUP
+                        settings.ALMA_STAGING_BACKUP
                         )
                     )
                 
                 if res:
                     context['message'] = f'''
                         Successfully uploaded all the files, 
-                        Article_staging directory zipped and moved to Article_staging_backup folder as zip file. 
+                        ALMA_STAGING directory zipped and moved to ALMA_STAGING_backup folder as zip file. 
                         Message : {message}
                     '''
+                    # update article last_step
                     update_step()
+                    # delete entry of step 10
+                    step10_state.delete()
 
                 else:
                     empty_s3(s3_action, context, message)
