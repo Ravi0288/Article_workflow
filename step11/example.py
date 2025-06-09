@@ -10,8 +10,6 @@ staging_info = {
     "archive_path": "/data/metadata/archives",
     "active": True,
     "bucket_empty_check": True,
-    "aws_access_key": "AKIAXXXXXX",
-    "aws_secret_key": "XXXXXXXXXXX",
     "base_s3_uri": "s3://alma-bucket-name"
 }
 
