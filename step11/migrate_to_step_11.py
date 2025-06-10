@@ -11,6 +11,7 @@ from django.conf import settings
 import zipfile
 import datetime
 from django.utils import timezone
+from .fetch_s3_secrets import get_aws_credentials
 
 
 def del_contents(path):
