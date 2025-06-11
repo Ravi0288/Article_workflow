@@ -56,14 +56,12 @@ def update_step():
         last_step=10,
         provider__article_switch=True
         )
-    articles.update(last_step=11)
+    articles.update(last_step=11, end_date = timezone.now())
+
 
     # USDA article only should go to next step
     articles.exclude(journal__collection_status = 'from_submission')
-    articles.last_status = 'completed'
-    # articles.end_date = datetime.datetime.now()
-    articles.end_date = timezone.now()
-    articles.save()
+    articles.update(last_status = 'completed', end_date = timezone.now())
     return True
 
 
@@ -87,17 +85,19 @@ def empty_s3(s3_action, context, message):
 @api_view(['GET'])
 def migrate_to_step11(request):
 
-    step10_state = ProcessingState.objects.filter(process_name='step10')[0]
-
+    step10_state = ProcessingState.objects.filter(process_name='step10')    
     context = {
         'heading' : 'Message',
         'message' : 'No active article found to migrate to Step 11'
     }
-
     # if step 10 is running, return response and ask client to wait till step 10 is running
-    if step10_state.in_progress:
-        context['message'] = 'Step 10 is running. Please try after sometime. Step 11 can\'t be run till step 10 is running'
-        return render(request, 'common/dashboard.html', context=context)
+    if step10_state.exists():
+        if step10_state[0].in_progress:
+            context['message'] = 'Step 10 is running. Please try after sometime. Step 11 can\'t be run till step 10 is running'
+            return render(request, 'common/dashboard.html', context=context)
+
+
+
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(

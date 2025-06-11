@@ -288,8 +288,8 @@ NEW_USDA_MAX_LIMIT = 10000
 MERGE_PUBLISHER_MAX_LIMIT = 10000
 NEW_PUBLISHER_MAX_LIMIT = 10000
 BASE_S3_URI = 's3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
-S3_BUCKET = '01NAL_INST'
-S3_PREFIX = 'uploads/'
+S3_BUCKET = 'na-test-st01.ext.exlibrisgroup.com'
+S3_PREFIX = '01NAL_INST/upload/'
 S3_URIS = {
     'new_usda_record':'18851814470007426/',
     'merge_usda_with_digital_files':'18851815290007426/',

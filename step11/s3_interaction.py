@@ -85,8 +85,8 @@ class AlmaS3Uploader:
                 return False, e
 
         # 1. Upload NEW_USDA
-        new_usda_dir = os.path.join(base_path, 'NEW_USDA')
-        for root, _, files in os.walk(new_usda_dir):
+        new_usda_dir = os.path.join(base_path, 'NEW_USDA').replace('\\', '/')
+        for root, dir, files in os.walk(new_usda_dir):
             for file in files:
                 local_path = os.path.join(root, file)
                 relative_path = os.path.relpath(local_path, new_usda_dir).replace("\\", "/")
@@ -95,7 +95,7 @@ class AlmaS3Uploader:
 
         # 2. Upload NEW_PUBLISHER
         new_sub_dir = os.path.join(base_path, 'NEW_PUBLISHER')
-        for root, _, files in os.walk(new_sub_dir):
+        for root, dir, files in os.walk(new_sub_dir):
             for file in files:
                 local_path = os.path.join(root, file)
                 relative_path = os.path.relpath(local_path, new_sub_dir).replace("\\", "/")
@@ -104,7 +104,7 @@ class AlmaS3Uploader:
 
         # 3. Upload MERGE_USDA (with and without digital content)
         merge_usda_dir = os.path.join(base_path, 'MERGE_USDA')
-        for root, _, files in os.walk(merge_usda_dir):
+        for root, dir, files in os.walk(merge_usda_dir):
             for file in files:
                 local_path = os.path.join(root, file)
                 relative_path = os.path.relpath(local_path, merge_usda_dir).replace("\\", "/")
@@ -116,7 +116,7 @@ class AlmaS3Uploader:
 
         # 4. Upload MERGE_PUBLISHER (with and without digital content)
         merge_sub_dir = os.path.join(base_path, 'MERGE_PUBLISHER')
-        for root, _, files in os.walk(merge_sub_dir):
+        for root, dir, files in os.walk(merge_sub_dir):
             for file in files:
                 local_path = os.path.join(root, file)
                 relative_path = os.path.relpath(local_path, merge_sub_dir).replace("\\", "/")
