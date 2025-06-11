@@ -84,19 +84,18 @@ def empty_s3(s3_action, context, message):
 @login_required
 @api_view(['GET'])
 def migrate_to_step11(request):
-
-    step10_state = ProcessingState.objects.filter(process_name='step10')    
+   
     context = {
         'heading' : 'Message',
         'message' : 'No active article found to migrate to Step 11'
     }
+
     # if step 10 is running, return response and ask client to wait till step 10 is running
+    step10_state = ProcessingState.objects.filter(process_name='step10') 
     if step10_state.exists():
         if step10_state[0].in_progress:
             context['message'] = 'Step 10 is running. Please try after sometime. Step 11 can\'t be run till step 10 is running'
             return render(request, 'common/dashboard.html', context=context)
-
-
 
 
     # Fetch all files that need to be processed from Article table

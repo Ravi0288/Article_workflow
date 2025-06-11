@@ -299,8 +299,8 @@ S3_URIS = {
     'new_submission_without_digital_files':'21451763880007426/',
 }
 
-AWS_S3_SECRET_KEY = os.environ['AWS_S3_SECRET_KEY']
-AWS_S3_ACCESS_KEY = os.environ['AWS_S3_ACCESS_KEY']
+# AWS_S3_SECRET_KEY = os.environ['AWS_S3_SECRET_KEY']
+# AWS_S3_ACCESS_KEY = os.environ['AWS_S3_ACCESS_KEY']
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
