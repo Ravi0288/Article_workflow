@@ -94,13 +94,32 @@ def migrate_to_step11(request):
         'message' : 'No active article found to migrate to Step 11'
     }
 
-    # if step 10 is running, return response and ask client to wait till step 10 is running
+    # If step 10 is running, return response and ask client to wait till step 10 is running
     step10_state = ProcessingState.objects.filter(process_name='step10') 
     if step10_state.exists():
-        if step10_state[0].in_progress:
-            context['message'] = 'Step 10 is running. Please try after sometime. Step 11 can\'t be run till step 10 is running'
+        state = step10_state[0]
+        if state.in_progress:
+            context['message'] = (
+                "Step 10 is currently running. Please try again later. "
+                "Step 11 cannot be executed until Step 10 is complete."
+            )
             return render(request, 'common/dashboard.html', context=context)
 
+        # Validation rules
+        validation_rules = [
+            (state.new_usda_record_processed, settings.NEW_USDA_MIN_LIMIT, "new_usda"),
+            (state.merge_usda_record_processed, settings.MERGE_USDA_MIN_LIMIT, "merge_usda"),
+            (state.new_publisher_record_processed, settings.NEW_PUBLISHER_MIN_LIMIT, "new_publisher"),
+            (state.merge_publisher_record_processed, settings.MERGE_PUBLISHER_MIN_LIMIT, "merge_publisher"),
+        ]
+
+        for processed, min_limit, directory in validation_rules:
+            if processed < min_limit:
+                context['message'] = (
+                    f"Step 11 cannot be executed because the number of records in the "
+                    f"'{directory}' directory ({processed}) is below the minimum required threshold ({min_limit})."
+                )
+                return render(request, 'common/dashboard.html', context=context)
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
