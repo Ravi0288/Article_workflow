@@ -12,7 +12,7 @@ import zipfile
 import datetime
 from django.utils import timezone
 from .fetch_s3_secrets import get_aws_credentials
-
+from reports.email import send_email_notification
 
 # Function to delete content of the provided path 
 def del_contents(path):
@@ -155,10 +155,12 @@ def migrate_to_step11(request):
                         ALMA_STAGING directory zipped and moved to ALMA_STAGING_backup folder as zip file. 
                         Message : {message}
                     '''
-                    # update article last_step
+                    # Update article last_step
                     update_step()
-                    # delete entry of step 10
+                    # Delete entry of step 10
                     step10_state.delete()
+                    # Once process run successfully, send email to concern
+                    send_email_notification()
 
                 else:
                     empty_s3(s3_action, context, message)

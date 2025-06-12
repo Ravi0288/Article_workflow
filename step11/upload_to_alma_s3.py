@@ -99,7 +99,7 @@ class AlmaS3Uploader:
             for file in files:
                 local_path = os.path.join(root, file)
                 relative_path = os.path.relpath(local_path, new_sub_dir).replace("\\", "/")
-                s3_key = s3_paths['new_submission_records'] + relative_path
+                s3_key = s3_paths['new_publisher_records'] + relative_path
                 upload_file(local_path, s3_key)
 
         # 3. Upload MERGE_USDA (with and without digital content)
@@ -121,9 +121,9 @@ class AlmaS3Uploader:
                 local_path = os.path.join(root, file)
                 relative_path = os.path.relpath(local_path, merge_sub_dir).replace("\\", "/")
                 if file.lower() == 'marc.xml':
-                    s3_key = s3_paths['new_submission_without_digital_files'] + relative_path
+                    s3_key = s3_paths['new_publisher_without_digital_files'] + relative_path
                     upload_file(local_path, s3_key)
-                s3_key = s3_paths['new_submission_with_digital_files'] + relative_path
+                s3_key = s3_paths['new_publisher_with_digital_files'] + relative_path
                 upload_file(local_path, s3_key)
 
         return True, 'Successful'
