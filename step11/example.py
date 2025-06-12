@@ -1,4 +1,4 @@
-from .s3_interaction import AlmaS3Uploader
+from .upload_to_alma_s3 import AlmaS3Uploader
 
 staging_info = {
     "folder_path": "/data/metadata/marc_staging/new_publisher",

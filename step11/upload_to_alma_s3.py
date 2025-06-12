@@ -71,7 +71,7 @@ class AlmaS3Uploader:
         return True, 'Successful'
     
     # Upload the files from each directory to S3
-    def upload_directory_to_s3(self):
+    def upload_directory_to_alma_s3(self): 
         s3_paths = self.s3_uris
         bucket = self.bucket
         base_path = self.base_path

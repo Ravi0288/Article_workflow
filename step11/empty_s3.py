@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import os
-from .s3_interaction import AlmaS3Uploader
+from .upload_to_alma_s3 import AlmaS3Uploader
 from .fetch_s3_secrets import get_aws_credentials
 
 

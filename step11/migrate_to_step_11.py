@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from citation import *
 import os
 import shutil
-from .s3_interaction import AlmaS3Uploader
+from .upload_to_alma_s3 import AlmaS3Uploader
 from model.processsing_state import ProcessingState
 from django.conf import settings
 import zipfile
@@ -14,6 +14,7 @@ from django.utils import timezone
 from .fetch_s3_secrets import get_aws_credentials
 
 
+# Function to delete content of the provided path 
 def del_contents(path):
     for entry in os.listdir(path):
         entry_path = os.path.join(path, entry)
@@ -23,32 +24,35 @@ def del_contents(path):
             shutil.rmtree(entry_path)
     return True
 
-# function to zip and delete the provided directory contents
+# Function to zip and delete the provided directory contents
 def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     # create backup directory if not created
     os.makedirs(output_zip_path, exist_ok=True)
-    output_zip_path = os.path.join(output_zip_path, str(datetime.date.today()).replace('-','_') + '.zip')
-    try:
-        # Create zip file and add all files/folders recursively
-        with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for root, dirs, files in os.walk(source_dir):
-                for file in files:
-                    abs_file_path = os.path.join(root, file)
-                    # Add file to zip with relative path
-                    rel_path = os.path.relpath(abs_file_path, start=source_dir)
-                    zipf.write(abs_file_path, arcname=rel_path)
 
-        # Remove the source directory and all contents
-        dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
-        for item in dir_list:
-            del_contents(os.path.join(source_dir, item))
-            
-        return True, 'successsful'
-    except Exception as e:
-        return False, e
+    dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
+    for item in dir_list:
+        output_zip_path = os.path.join(
+            output_zip_path, item + '_' + str(datetime.date.today()).replace('-','_') + '.zip'
+            )
+        try:
+            # Create zip file and add all files/folders recursively
+            with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                for root, dirs, files in os.walk(source_dir):
+                    for file in files:
+                        abs_file_path = os.path.join(root, file)
+                        # Add file to zip with relative path
+                        rel_path = os.path.relpath(abs_file_path, start=source_dir)
+                        zipf.write(abs_file_path, arcname=rel_path)
+
+                        # Remove the source directory and all contents
+                        del_contents(os.path.join(source_dir, item))
+                
+            return True, 'successsful'
+        except Exception as e:
+            return False, e
 
 
-# update last step of the articles in step 10
+# Update last step of the articles in step 10
 def update_step():
     articles = Article.objects.filter(
         last_status='active',
@@ -66,7 +70,7 @@ def update_step():
 
 
 
-
+# Function to clear contents of the S3 Bucket
 def empty_s3(s3_action, context, message):
     empty, reason = s3_action.empty_s3_bucket()
     if empty:
@@ -134,7 +138,7 @@ def migrate_to_step11(request):
         # create directories
         created, message = s3_action.create_s3_directories()
         if created:
-            uploaded, message = s3_action.upload_directory_to_s3()
+            uploaded, message = s3_action.upload_directory_to_alma_s3()
             if uploaded:
                 # zip the alma_staging directory and save in alma_staging_backup directory as today_date.zip and delete the unzipped files
                 res, message = zip_and_remove_directory(
