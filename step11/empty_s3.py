@@ -4,11 +4,23 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import os
 from .s3_interaction import AlmaS3Uploader
+from .fetch_s3_secrets import get_aws_credentials
 
 
 @login_required
 @api_view(['GET'])
 def empty_s3_bucket(request):
+
+    context = {
+        'heading' : 'Message',
+        'message' : f'''S3 Bucket emptied successfully. '''
+    }
+    
+    # get_aws_credentials function will return key1 and key2 if sucess, else False and error message.
+    key1, key2 = get_aws_credentials()
+    if not key1:
+        context['message'] = key2
+        return render(request, 'common/dashboard.html', context=context)   
 
     stagin_info = {
         'base_s3_uri' : settings.BASE_S3_URI,
@@ -18,11 +30,6 @@ def empty_s3_bucket(request):
         'bucket' : settings.S3_BUCKET,
         'prefix' : settings.S3_PREFIX,
         'base_path' : os.path.join(settings.BASE_DIR, settings.ALMA_STAGING)
-    }
-        
-    context = {
-        'heading' : 'Message',
-        'message' : f'''S3 Bucket emptied successfully. '''
     }
 
 
