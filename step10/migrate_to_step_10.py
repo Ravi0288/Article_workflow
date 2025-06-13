@@ -137,6 +137,7 @@ def migrate_to_step10(request):
             else:
                 article.note += f"10- {message};"
 
+            # if error occured, delete the entire directory
             if article_stage_dir and os.path.exists(article_stage_dir):
                 shutil.rmtree(article_stage_dir)
 
