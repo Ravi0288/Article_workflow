@@ -13,6 +13,19 @@ import datetime
 from django.utils import timezone
 from .fetch_s3_secrets import get_aws_credentials
 from reports.email import send_email_notification
+from reports.models import Uploaded_article_counter
+
+dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
+
+# Function to count and return number of records in each directory
+def count_direcotries(path):
+    subdirs = [
+        name for name in os.listdir(path)
+        if os.path.isdir(os.path.join(path, name))
+    ]
+    return len(subdirs)
+
+
 
 # Function to delete content of the provided path 
 def del_contents(path):
@@ -29,11 +42,17 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     # create backup directory if not created
     os.makedirs(output_zip_path, exist_ok=True)
 
-    dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
+    res = []
     for item in dir_list:
+        # prepare data for Uploaded_article_counter
+        data_counter = Uploaded_article_counter()
+        data_counter.article_count = count_direcotries(os.path.join(output_zip_path, item))
+        data_counter.stage = item
+
         output_zip_path = os.path.join(
             output_zip_path, item + '_' + str(datetime.date.today()).replace('-','_') + '.zip'
             )
+        data_counter.stage_archive = output_zip_path
         try:
             # Create zip file and add all files/folders recursively
             with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -46,10 +65,13 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
 
                         # Remove the source directory and all contents
                         del_contents(os.path.join(source_dir, item))
-                
-            return True, 'successsful'
+            data_counter.notes = 'Successful'
+            res.append(data_counter)
         except Exception as e:
             return False, e
+    
+    Uploaded_article_counter.objects.bulk_create(res)
+    return True, 'successsful'
 
 
 # Update last step of the articles in step 10
