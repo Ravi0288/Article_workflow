@@ -23,8 +23,8 @@ DEBUG = True
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
 
-# #########################################################################
 # Application definition
+# ..................######
 INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.admin',
@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'step8',
     'step9',
     'step10',
-    'step11',
     'model',
     'mail_service',
     'accounts',
@@ -56,10 +55,10 @@ INSTALLED_APPS = [
     # MFA ENTRA
     # 'oauth2_provider'
 ]
-# #########################################################################
+# ..................#######
 
-# #########################################################################
 # Middlewares to be used in this project
+# ..................#############
 MIDDLEWARE = [
     # required middlewares for corseheader 
     'corsheaders.middleware.CorsMiddleware',
@@ -74,9 +73,9 @@ MIDDLEWARE = [
     # Middleware to protect unauthorized access of any URL that is not authorized to logged in user
     # 'accounts.middleware.MenuAuthorizationMiddleware',
 ]
-# #########################################################################
+# ..................#############
 
-# #########################################################################
+
 # CSRF Related settings
 CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
 CORS_ORIGIN_ALLOW_ALL = True
@@ -107,16 +106,13 @@ CORS_ALLOW_METHODS = (
     "POST",
     "PUT",
 )
-# #########################################################################
-
 
 # Root URL file path
 ROOT_URLCONF = 'configurations.urls'
 
 
-
-###########################################################################
 # Template for serving the result
+# ..................###############
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -132,14 +128,14 @@ TEMPLATES = [
         },
     },
 ]
-# #########################################################################
+# ..................#####################
 
 
 
 # Project interface
 WSGI_APPLICATION = 'configurations.wsgi.application'
 
-##########################################################################
+
 # Default DB details
 DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
 DB_NAME = os.environ['ARTICLE_DB_NAME']
@@ -155,11 +151,11 @@ PID_DB_USER = os.environ['PID_DB_USER']
 PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
 PID_DB_HOST = os.environ['PID_DB_HOST']
 PID_DB_PORT = os.environ['PID_DB_PORT']
-##########################################################################
 
 
-# ##########################################################################
 # Database settings
+# ..................##################### #####################
+
 DATABASES = {
     'default': {
         'ENGINE': DB_ENGINE,
@@ -190,14 +186,13 @@ DATABASE_APPS_MAPPING = {'wf_data': 'default',
                         'handle_data':'handle_db',
                         'pid_data' : 'pid_db'}
 
-# ##########################################################################
+# ..................##################### #####################
 
 
 
 
-
-# ##########################################################################
 # Default Django password validations
+# ..................#######################
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -212,18 +207,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-# ##########################################################################
+# ..................##################
 
 
-# ##########################################################################
-# Authentication
-# This settings is for preventing the endpoints from unauthorised access.
-
+# configure outh settings
 OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,
     'AUTHORIZATION_CODE_EXPIRE_SECONDS': 300,
 }
 
+
+
+# Rest framework authentication
+# This settings is for preventing the endpoints from unauthorised access.
+# ..................################
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
@@ -233,12 +230,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
-# ##########################################################################
+
+# ..................##################
 
 
 
-# #####################################
+
 # Internationalization
+# .........#####################
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -247,15 +246,15 @@ USE_I18N = True
 
 USE_TZ = True
 
-# ####################################
+# .........#####################
 
 # # settings for proxy error
 # if DEBUG==False:
 #     SCRIPT_NAME = '/api'
 #     FORCE_SCRIPT_NAME = SCRIPT_NAME
 
-##################### Static file / Media file paths ####################
-# s (CSS, JavaScript, Images)
+
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS = [
@@ -281,39 +280,32 @@ INVALID_XML_DIR = '/data/metada/INVALID_FILES'
 MARC_XML_ROOT = '/ai/metadata/ARTICLE_MARC_XML'
 ALMA_STAGING = '/ai/metadata/ALMA_STAGING'
 ALMA_STAGING_BACKUP = '/ai/metadata/ALMA_STAGING_BACKUP'
-##################### ############################ ####################
 
-
-##################### ############################ ####################
 # s3 upload maximum allowed number for each class of content
 MERGE_USDA_MAX_LIMIT = 10000
 NEW_USDA_MAX_LIMIT = 10000
 MERGE_PUBLISHER_MAX_LIMIT = 10000
 NEW_PUBLISHER_MAX_LIMIT = 10000
-
-MERGE_USDA_MIN_LIMIT = 100
-NEW_USDA_MIN_LIMIT = 100
-MERGE_PUBLISHER_MIN_LIMIT = 100
-NEW_PUBLISHER_MIN_LIMIT = 100
-
 BASE_S3_URI = 's3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
-S3_BUCKET = 'na-test-st01.ext.exlibrisgroup.com'
-S3_PREFIX = '01NAL_INST/upload/'
+S3_BUCKET = '01NAL_INST'
+S3_PREFIX = 'uploads/'
 S3_URIS = {
     'new_usda_record':'18851814470007426/',
     'merge_usda_with_digital_files':'18851815290007426/',
     'merge_usda_without_digital_files':'21675299990007426/',
-    'new_publisher_records':'21176431170007426/',
-    'new_publisher_with_digital_files':'21176440550007426/',
-    'new_publisher_without_digital_files':'21451763880007426/',
+    'new_submission_records':'21176431170007426/',
+    'new_submission_with_digital_files':'21176440550007426/',
+    'new_submission_without_digital_files':'21451763880007426/',
 }
-#######################################################################
+
+AWS_S3_SECRET_KEY = os.environ['AWS_S3_SECRET_KEY']
+AWS_S3_ACCESS_KEY = os.environ['AWS_S3_ACCESS_KEY']
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-##################### Logger to log errors in file ####################
+# logger to log errors in file
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -375,16 +367,13 @@ LOGGING = {
         },
     },
 }
-#########################################################################
 
 
-
-##################### Email service related variables ####################
+############### email service #####################
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mailproxy1.usda.gov'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_PASSWORD = get_env_variable('EPWD')
-EMAIL_TO = ['ravi.parekh@usda.gov','chuck.schoppet@usda.gov']
-##################### ############################### ####################
+
 

@@ -6,6 +6,7 @@ from model.article import Article
 from django.contrib.auth.decorators import login_required
 import pickle
 from citation import *
+from annotate_subject_terms import annotate_citation
 
 
 @login_required
@@ -26,10 +27,61 @@ def migrate_to_step8(request):
         )
 
     for article in articles:
-        article.last_step=8
 
-    Article.objects.bulk_update(articles, ['last_step', 'note'])
-    # return the response 
+        # Unpickle citation object
+        try:
+            with open(article.citation_pickle.path, 'rb') as file:
+                cit = pickle.load(file)
+        except Exception as e:
+
+            if article.note == 'none':
+                article.note = f"8- {e};"
+            else:
+                article.note += f"8- {e}; "
+
+
+            article.last_status = 'review'
+            article.save()
+            continue
+        
+        subject_cluster = None
+        if article.journal:
+            subject_cluster = article.journal.subject_cluster
+
+        # apply annotate_with_cogito(citation_object, subject_cluster)
+        citation_object, message = annotate_citation(cit, subject_cluster)
+        if message == "network error":
+            # halt processing
+            print("Network error encountered, halting processing.")
+            context = {
+                'heading': 'Message',
+                'message': f'''
+                                        Network error encountered. Try again later.
+                                        '''
+            }
+
+            return render(request, 'common/dashboard.html', context=context)
+        if message == "review":
+            article.last_step = 8
+            article.last_status = 'review'
+            if article.note == "none":
+                article.note = "8- insufficient annotations; "
+            else:
+                article.note += "8- insufficient annotations; "
+            article.save()
+        elif message == "successful":
+            article.last_step = 8
+            article.save()
+        elif message == "successful, no annotations":
+            article.last_step = 8
+            if article.note == "none":
+                article.note = "8- insufficient annotations; "
+            else:
+                article.note += "8- insufficient annotations; "
+            article.save()
+        # Save citation object
+        with open(article.citation_pickle.path, 'wb') as file:
+            pickle.dump(citation_object, file, protocol=pickle.HIGHEST_PROTOCOL)
     context = {
             'heading' : 'Message',
             'message' : f'''

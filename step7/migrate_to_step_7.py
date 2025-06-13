@@ -46,7 +46,7 @@ def migrate_to_step7(request):
             continue
             
         is_usda_funded = cit.local.USDA
-        cit, res, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
+        cit, result, message, pid = pid_minter.pid_minter(cit, is_usda_funded)
 
         if message == "Database connection error occured":
             context = {
@@ -66,7 +66,7 @@ def migrate_to_step7(request):
         if cit.local.identifiers.get("mms_id", None):
             article.MMSID = cit.local.identifiers["mms_id"]
 
-        if res == 'unsuccessful':
+        if result == 'unsuccessful':
             if article.note == 'none':
                 article.note = f"7- {message}; "
             else:

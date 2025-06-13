@@ -91,12 +91,6 @@ def migrate_to_step5(request):
 
             return render(request, 'common/dashboard.html', context=context)
 
-        if cit.local.cataloger_notes:
-            if article.note == 'none':
-                article.note = f"5- {cit.local.cataloger_notes}; "
-            else:
-                article.note += f"5- {cit.local.cataloger_notes}; "
-
         if message == "dropped":
             if article.note == 'none':
                 article.note = f"5- {cit.local.cataloger_notes}; "
@@ -111,8 +105,6 @@ def migrate_to_step5(request):
             continue
 
         if message == "review":
-            print("ATM returned a message of 'review'")
-            print("Cataloger notes: ", cit.local.cataloger_notes)
             if article.note == 'none':
                 article.note = f"5- {cit.local.cataloger_notes}; "
             else:
