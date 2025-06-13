@@ -19,5 +19,6 @@ INVALID_FILES/*
 certificates
 data/*
 accounts/migrations/*
+reports/migrations/*
 model/migrations/*
 article.sqlite3
