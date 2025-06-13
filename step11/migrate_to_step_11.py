@@ -26,15 +26,16 @@ def count_direcotries(path):
     return len(subdirs)
 
 
-
 # Function to delete content of the provided path 
-def del_contents(path):
-    for entry in os.listdir(path):
-        entry_path = os.path.join(path, entry)
-        if os.path.isfile(entry_path) or os.path.islink(entry_path):
-            os.unlink(entry_path)
-        elif os.path.isdir(entry_path):
-            shutil.rmtree(entry_path)
+def del_contents():
+    for item in dir_list:
+        path =  os.path.join(settings.ALMA_STAGING, item)
+        for entry in os.listdir(path):
+            entry_path = os.path.join(path, entry)
+            if os.path.isfile(entry_path) or os.path.islink(entry_path):
+                os.unlink(entry_path)
+            elif os.path.isdir(entry_path):
+                shutil.rmtree(entry_path)
     return True
 
 # Function to zip and delete the provided directory contents
@@ -62,9 +63,6 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
                         # Add file to zip with relative path
                         rel_path = os.path.relpath(abs_file_path, start=source_dir)
                         zipf.write(abs_file_path, arcname=rel_path)
-
-                        # Remove the source directory and all contents
-                        del_contents(os.path.join(source_dir, item))
             data_counter.notes = 'Successful'
             res.append(data_counter)
         except Exception as e:
@@ -96,14 +94,16 @@ def update_step():
 def empty_s3(s3_action, context, message):
     empty, reason = s3_action.empty_s3_bucket()
     if empty:
-        context['message'] = f'''Error occured while uploading files. Message: {message}. 
-            S3 bucket is empty now. All upload files on S3 is removed and the bucket is empty now. 
-            Please note the error message for debug purpose.'''
+        context['message'] = f'''Error occured while uploading files. 
+            All upload files on S3 is removed and the bucket is empty now. 
+            Please note the error message for debug purpose.
+            Message: {message}'''
     else:
-        context['message'] = f'''Error occured while uploading files. Message: {message}.            
+        context['message'] = f'''Error occured while uploading files.            
         Also, While trying to empty the uploaded files to S3, another error occurred. Message: {reason}.          
         Please ensure to empty the bucket before running step 11 again.
         Please note the error message for debug purpose.
+        Message: {message}
         '''
 
 
@@ -200,6 +200,10 @@ def migrate_to_step11(request):
                     update_step()
                     # Delete entry of step 10
                     step10_state.delete()
+
+                    # Delete Alma_staging direcotry
+                    del_contents()
+
                     # Once process run successfully, send email to concern
                     send_email_notification()
 
