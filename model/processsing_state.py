@@ -7,3 +7,4 @@ class ProcessingState(models.Model):
     new_publisher_record_processed = models.BigIntegerField(default=0)
     merge_publisher_record_processed = models.BigIntegerField(default=0)
 
+

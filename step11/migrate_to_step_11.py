@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from model.article import Article
+from model.article import Article, Uploaded_article_counter
 from django.contrib.auth.decorators import login_required
 from citation import *
 import os
@@ -13,7 +13,7 @@ import datetime
 from django.utils import timezone
 from .fetch_s3_secrets import get_aws_credentials
 from reports.email import send_email_notification
-from reports.models import Uploaded_article_counter
+
 
 dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 

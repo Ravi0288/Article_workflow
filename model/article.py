@@ -113,3 +113,13 @@ class ProcessedArticleHistory(models.Model):
     new_publisher_record_processed = models.BigIntegerField(default=0)
     merge_publisher_record_processed = models.BigIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+
+# Model to keep counting of uploaded articles to S3 in step 11
+class Uploaded_article_counter(models.Model):
+    stage = models.CharField(max_length=20)
+    uploaded_at = models.DateTimeField(auto_now=True)
+    article_count = models.IntegerField(default=0)
+    stage_archive = models.CharField(max_length=200)
+    notes = models.TextField(default="Successful")
