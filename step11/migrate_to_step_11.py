@@ -46,17 +46,17 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     for item in dir_list:
         # prepare data for Uploaded_article_counter
         data_counter = Uploaded_article_counter()
-        data_counter.article_count = count_direcotries(os.path.join(output_zip_path, item))
+        data_counter.article_count = count_direcotries(os.path.join(source_dir, item))
         data_counter.stage = item
 
-        output_zip_path = os.path.join(
+        new_path = os.path.join(
             output_zip_path, item + '_' + str(datetime.date.today()).replace('-','_') + '.zip'
             )
-        data_counter.stage_archive = output_zip_path
+        data_counter.stage_archive = new_path
         try:
             # Create zip file and add all files/folders recursively
-            with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-                for root, dirs, files in os.walk(source_dir):
+            with zipfile.ZipFile(new_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                for root, dirs, files in os.walk(os.path.join(source_dir, item)):
                     for file in files:
                         abs_file_path = os.path.join(root, file)
                         # Add file to zip with relative path
