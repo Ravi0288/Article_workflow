@@ -138,8 +138,8 @@ def migrate_to_step11(request):
         for processed, min_limit, directory in validation_rules:
             if processed < min_limit:
                 context['message'] = (
-                    f"Step 11 cannot be executed because the number of records in the "
-                    f"'{directory}' directory ({processed}) is below the minimum required threshold ({min_limit})."
+                    f"The number of articles ready for upload, '{processed}', for '{directory}'"
+                    f"'is below the minimum required threshold of '{min_limit}' articles."
                 )
                 return render(request, 'common/dashboard.html', context=context)
 
@@ -212,7 +212,7 @@ def migrate_to_step11(request):
             context['message'] = f'''Error occurred while creating directories on S3. Please try after sometime.
               Message: {message}''' 
     else:
-        context['message'] = 'S3 Bucket is not empty. To continue, please empty the S3 Bucket or contact concern team.'
+        context['message'] = 'No AWS buckets are free to receive article stages for import into Alma'
 
     
     return render(request, 'common/dashboard.html', context=context)
