@@ -74,19 +74,23 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
 
 # Update last step of the articles in step 10
 def update_step():
+    # Get articles to promote from step 10 to 11
     articles = Article.objects.filter(
         last_status='active',
         provider__in_production=True,
         last_step=10,
         provider__article_switch=True
-        )
-    articles.update(last_step=11, end_date = timezone.now())
+    )
+    
+    # Update step and end_date
+    articles.update(last_step=11, end_date=timezone.now())
 
+    # Only USDA articles (not from submission) should be marked completed
+    usda_articles = articles.exclude(journal__collection_status='from_submission')
+    usda_articles.update(last_status='completed', end_date=timezone.now())
 
-    # USDA article only should go to next step
-    articles.exclude(journal__collection_status = 'from_submission')
-    articles.update(last_status = 'completed', end_date = timezone.now())
     return True
+
 
 
 
