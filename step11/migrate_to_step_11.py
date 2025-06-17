@@ -38,6 +38,20 @@ def del_contents():
                 shutil.rmtree(entry_path)
     return True
 
+
+# Function to generate a unique filename by appending _1, _2, and so on.
+def get_unique_filename(base_path):
+    if not os.path.exists(base_path):
+        return base_path
+    base, ext = os.path.splitext(base_path)
+    counter = 1
+    new_path = f"{base}_{counter}{ext}"
+    while os.path.exists(new_path):
+        counter += 1
+        new_path = f"{base}_{counter}{ext}"
+    return new_path
+
+
 # Function to zip and delete the provided directory contents
 def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     # create backup directory if not created
@@ -50,10 +64,17 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
         data_counter.article_count = count_direcotries(os.path.join(source_dir, item))
         data_counter.stage = item
 
-        zipped_file = os.path.join(
-            output_zip_path, item + '_' + str(datetime.date.today()).replace('-','_') + '.zip'
-            )
+        dir_to_zip = os.path.join(source_dir, item)
+        if not os.path.exists(dir_to_zip):
+            continue
+
+        # initial zip filename
+        base_zip_name = os.path.join(
+            output_zip_path, f"{item}_{datetime.date.today().strftime('%Y_%m_%d')}.zip"
+        )
+        zipped_file = get_unique_filename(base_zip_name)
         data_counter.stage_archive = zipped_file
+
         try:
             is_empty = True
             # Create zip file and add all files/folders recursively
@@ -73,8 +94,9 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
             data_counter.notes = 'Successful'
             res.append(data_counter)
         except Exception as e:
+            print("####### Error occured ################### ", e)
             return False, e
-    
+     
     Uploaded_article_counter.objects.bulk_create(res)
     return True, 'successsful'
 
