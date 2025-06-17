@@ -50,19 +50,26 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
         data_counter.article_count = count_direcotries(os.path.join(source_dir, item))
         data_counter.stage = item
 
-        new_path = os.path.join(
+        zipped_file = os.path.join(
             output_zip_path, item + '_' + str(datetime.date.today()).replace('-','_') + '.zip'
             )
-        data_counter.stage_archive = new_path
+        data_counter.stage_archive = zipped_file
         try:
+            is_empty = True
             # Create zip file and add all files/folders recursively
-            with zipfile.ZipFile(new_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            with zipfile.ZipFile(zipped_file, 'w', zipfile.ZIP_DEFLATED) as zipf:
                 for root, dirs, files in os.walk(os.path.join(source_dir, item)):
                     for file in files:
                         abs_file_path = os.path.join(root, file)
                         # Add file to zip with relative path
                         rel_path = os.path.relpath(abs_file_path, start=source_dir)
                         zipf.write(abs_file_path, arcname=rel_path)
+                        is_empty = False
+
+            # if no content available in zipped file, remove it
+            if is_empty:
+                os.remove(zipped_file)
+            
             data_counter.notes = 'Successful'
             res.append(data_counter)
         except Exception as e:
@@ -86,8 +93,8 @@ def update_step():
     articles.update(last_step=11, end_date=timezone.now())
 
     # Only USDA articles (not from submission) should be marked completed
-    usda_articles = articles.exclude(journal__collection_status='from_submission')
-    usda_articles.update(last_status='completed', end_date=timezone.now())
+    articles = articles.exclude(journal__collection_status='from_submission')
+    articles.update(last_status='completed', end_date=timezone.now())
 
     return True
 
