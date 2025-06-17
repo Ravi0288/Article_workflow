@@ -31,6 +31,7 @@ def migrate_to_step10(request):
     if created:
         if step10_state.in_progress:
             context['message'] = 'Step 10 is already running. Please try after sometime'
+            return render(request, 'common/dashboard.html', context=context)
         else:
             step10_state.in_progress = True
             step10_state.save()
