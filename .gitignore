@@ -18,6 +18,5 @@ ARTICLES/*
 INVALID_FILES/*
 certificates
 data/*
-accounts/migrations/*
-model/migrations/*
+**/migrations/*
 article.sqlite3
