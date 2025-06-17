@@ -140,12 +140,13 @@ def migrate_to_step11(request):
         ]
 
         for processed, min_limit, directory in validation_rules:
-            if processed < min_limit:
-                context['message'] = (
-                    f"The number of articles ready for upload, '{processed}', for '{directory}'"
-                    f"'is below the minimum required threshold of '{min_limit}' articles."
-                )
-                return render(request, 'common/dashboard.html', context=context)
+            if min_limit:
+                if processed < min_limit:
+                    context['message'] = (
+                        f"The number of articles ready for upload, '{processed}', for '{directory}'"
+                        f"'is below the minimum required threshold of '{min_limit}' articles."
+                    )
+                    return render(request, 'common/dashboard.html', context=context)
 
     # Fetch all files that need to be processed from Article table
     articles = Article.objects.filter(
