@@ -28,4 +28,4 @@ def send_email_notification():
     email_to = settings.EMAIL_TO if isinstance(settings.EMAIL_TO, list) else [settings.EMAIL_TO]
     
     msg = EmailMessage(subject, message, email_from, email_to)
-    msg.send()
+    msg.send(fail_silently=True)

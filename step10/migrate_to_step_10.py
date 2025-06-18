@@ -28,7 +28,7 @@ def migrate_to_step10(request):
     # if step10 is running, don't allow it to run for second time
     step10_state, created = ProcessingState.objects.get_or_create(process_name='step10')
     
-    if created:
+    if not created:
         if step10_state.in_progress:
             context['message'] = 'Step 10 is already running. Please try after sometime'
             return render(request, 'common/dashboard.html', context=context)

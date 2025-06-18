@@ -213,39 +213,48 @@ def migrate_to_step11(request):
         # create directories
         created, message = s3_action.create_s3_directories()
         if created:
-            uploaded, message = s3_action.upload_directory_to_alma_s3()
-            if uploaded:
-                # zip the alma_staging directory and save in alma_staging_backup directory as today_date.zip and delete the unzipped files
-                res, message = zip_and_remove_directory(
-                    os.path.join(settings.BASE_DIR, settings.ALMA_STAGING),
-                    os.path.join(
-                        settings.BASE_DIR,
-                        settings.ALMA_STAGING_BACKUP
+            try:
+                uploaded, message = s3_action.upload_directory_to_alma_s3()
+                if uploaded:
+                    # zip the alma_staging directory and save in alma_staging_backup directory as today_date.zip and delete the unzipped files
+                    res, message = zip_and_remove_directory(
+                        os.path.join(settings.BASE_DIR, settings.ALMA_STAGING),
+                        os.path.join(
+                            settings.BASE_DIR,
+                            settings.ALMA_STAGING_BACKUP
+                            )
                         )
-                    )
-                
-                if res:
-                    context['message'] = f'''
-                        Successfully uploaded all the files, 
-                        ALMA_STAGING directory zipped and moved to ALMA_STAGING_backup folder as zip file. 
-                        Message : {message}
-                    '''
-                    # Update article last_step
-                    update_step()
-                    # Delete entry of step 10
-                    step10_state.delete()
+                    
+                    if res:
+                        # Update article last_step
+                        update_step()
 
-                    # Delete Alma_staging direcotry
-                    del_contents()
+                        # Delete entry of step 10
+                        step10_state.delete()
 
-                    # Once process run successfully, send email to concern
-                    send_email_notification()
+                        # Delete Alma_staging direcotry
+                        del_contents()
 
+                        # Once process run successfully, send email to concern
+                        send_email_notification()
+
+                        # Set the success message
+                        context['message'] = f'''
+                            Successfully uploaded all the files, 
+                            ALMA_STAGING directory zipped and moved to ALMA_STAGING_backup folder as zip file. 
+                            Message : {message}
+                        '''
+
+                    else:
+                        empty_s3(s3_action, context, message)
+                    
                 else:
                     empty_s3(s3_action, context, message)
-                
-            else:
+
+            except Exception as e:
+                context['message'] = f'''Error occurred. Message: {e}'''
                 empty_s3(s3_action, context, message)
+
         else:
             context['message'] = f'''Error occurred while creating directories on S3. Please try after sometime.
               Message: {message}''' 
