@@ -173,7 +173,7 @@ def migrate_to_step11(request):
                 if processed < min_limit:
                     context['message'] = (
                         f"The number of articles ready for upload, '{processed}', for '{directory}'"
-                        f"'is below the minimum required threshold of '{min_limit}' articles."
+                        f" is below the minimum required threshold of '{min_limit}' articles."
                     )
                     return render(request, 'common/dashboard.html', context=context)
 
