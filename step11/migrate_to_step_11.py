@@ -114,9 +114,12 @@ def update_step():
     # Update step and end_date
     articles.update(last_step=11, end_date=timezone.now())
 
-    # Only USDA articles (not from submission) should be marked completed
-    articles = articles.exclude(journal__collection_status='from_submission')
+    # Update 'completed' status of articles other than usda
+    articles = Article.objects.filter(
+        last_step=11
+    ).exclude(import_type__endswith='usda')
     articles.update(last_status='completed', end_date=timezone.now())
+    
 
     return True
 
