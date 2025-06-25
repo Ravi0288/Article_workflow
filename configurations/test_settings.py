@@ -134,48 +134,18 @@ TEMPLATES = [
 # Project interface
 WSGI_APPLICATION = 'configurations.wsgi.application'
 
-##########################################################################
-# Default DB details
-DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
-DB_NAME = os.environ['ARTICLE_DB_NAME']
-DB_USER = os.environ['ARTICLE_DB_USER']
-DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
-DB_HOST = os.environ['ARTICLE_DB_HOST']
-DB_PORT = os.environ['ARTICLE_DB_PORT']
-
-# # PID DB details
-PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
-PID_DB_NAME = os.environ['PID_DB_NAME']
-PID_DB_USER = os.environ['PID_DB_USER']
-PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
-PID_DB_HOST = os.environ['PID_DB_HOST']
-PID_DB_PORT = os.environ['PID_DB_PORT']
-##########################################################################
-
-
-# ##########################################################################
 # Database settings
 DATABASES = {
     'default': {
-        'ENGINE': DB_ENGINE,
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-    },
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME':  BASE_DIR / 'article.sqlite3',
+        },
 
-    # # Handle DB is accesed directly. And the code is written in handles.py file in core python
-    # 'pid_db': {
-    #     'ENGINE': PID_DB_ENGINE,
-    #     'NAME': PID_DB_NAME,
-    #     'USER': PID_DB_USER,
-    #     'PASSWORD': PID_DB_PASSWORD,
-    #     'HOST': PID_DB_HOST,
-    #     'PORT': PID_DB_PORT,
-    # }
+        # 'pid_db': {
+        #     'ENGINE': 'django.db.backends.sqlite3',
+        #     'NAME':  BASE_DIR / 'pid.sqlite3',
+        # }
 }
-
 
 # add router file for database settings
 # DATABASE_ROUTERS = ['configurations.db_router.DB_route']
@@ -286,6 +256,7 @@ NEW_USDA_MAX_LIMIT = 10000
 MERGE_PUBLISHER_MAX_LIMIT = 10000
 NEW_PUBLISHER_MAX_LIMIT = 10000
 
+
 MERGE_USDA_MIN_LIMIT = 100
 NEW_USDA_MIN_LIMIT = 100
 MERGE_PUBLISHER_MIN_LIMIT = 100
@@ -298,9 +269,9 @@ S3_URIS = {
     'new_usda_record':'18851814470007426/',
     'merge_usda_with_digital_files':'18851815290007426/',
     'merge_usda_without_digital_files':'21675299990007426/',
-    'new_publisher_records':'21176431170007426/',
-    'new_publisher_with_digital_files':'21176440550007426/',
-    'new_publisher_without_digital_files':'21451763880007426/',
+    'new_submission_records':'21176431170007426/',
+    'new_submission_with_digital_files':'21176440550007426/',
+    'new_submission_without_digital_files':'21451763880007426/',
 }
 #######################################################################
 

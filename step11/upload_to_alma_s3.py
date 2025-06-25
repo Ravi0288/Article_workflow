@@ -30,7 +30,7 @@ class AlmaS3Uploader:
     def create_s3_directories(self):
         """
         Creates empty '.keep' files in each directory under the base prefix.
-        This is required because the direcotry will not exists without having at least a single file in it
+        This is required because the directory does not exist without having at least a single file in it.
         """
         for name, relative_path in self.s3_uris.items():
             # Full prefix under base path
@@ -62,14 +62,14 @@ class AlmaS3Uploader:
 
     # Empty the S3 bucket
     def empty_s3_bucket(self):
-        for uri in self.s3_uris:
-            bucket, prefix = self.bucket, self.prefix
-            response = self.s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
-            objects = [{'Key': obj['Key']} for obj in response.get('Contents', [])]
-            if objects:
-                self.s3.delete_objects(Bucket=bucket, Delete={'Objects': objects})
+        bucket, prefix = self.bucket, self.prefix
+        response = self.s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
+        objects = [{'Key': obj['Key']} for obj in response.get('Contents', [])]
+        if objects:
+            self.s3.delete_objects(Bucket=bucket, Delete={'Objects': objects})
         return True, 'Successful'
-    
+
+
     # Upload the files from each directory to S3
     def upload_directory_to_alma_s3(self): 
         s3_paths = self.s3_uris

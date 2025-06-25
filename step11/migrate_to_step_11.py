@@ -18,7 +18,7 @@ from reports.email import send_email_notification
 dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 
 # Function to count and return number of records in each directory
-def count_direcotries(path):
+def count_directories(path):
     subdirs = [
         name for name in os.listdir(path)
         if os.path.isdir(os.path.join(path, name))
@@ -61,7 +61,7 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
     for item in dir_list:
         # prepare data for Uploaded_article_counter
         data_counter = Uploaded_article_counter()
-        data_counter.article_count = count_direcotries(os.path.join(source_dir, item))
+        data_counter.article_count = count_directories(os.path.join(source_dir, item))
         data_counter.stage = item
 
         dir_to_zip = os.path.join(source_dir, item)
@@ -94,11 +94,11 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
             data_counter.notes = 'Successful'
             res.append(data_counter)
         except Exception as e:
-            print("####### Error occured ################### ", e)
+            print("####### Error occurred ################### ", e)
             return False, e
      
     Uploaded_article_counter.objects.bulk_create(res)
-    return True, 'successsful'
+    return True, 'successful'
 
 
 # Update last step of the articles in step 10
@@ -191,7 +191,7 @@ def migrate_to_step11(request):
     if not articles.count() :
         return render(request, 'common/dashboard.html', context=context)
 
-    # get_aws_credentials function will return key1 and key2 if sucess, else False and error message.
+    # get_aws_credentials function will return key1 and key2 if success, else False and error message.
     key1, key2 = get_aws_credentials()
     if not key1:
         context['message'] = key2
@@ -235,7 +235,7 @@ def migrate_to_step11(request):
                         # Delete entry of step 10
                         step10_state.delete()
 
-                        # Delete Alma_staging direcotry
+                        # Delete Alma_staging directory
                         del_contents()
 
                         # Once process run successfully, send email to concern

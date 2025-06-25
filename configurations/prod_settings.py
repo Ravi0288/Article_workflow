@@ -8,13 +8,8 @@ from .conf import get_env_variable
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a(f9x&9kn8iwn&thlk_3j_48eu5rn0x*4h@xi+@6^%p-)=7-7k'
-# SECRET_KEY = get_env_variable('SECRET_KEY')
-
-FERNET_KEY = b'KD2D79IHyj-01T9vC75gNxwDvhTvO370uqjPbzWIaAs='
-# FERNET_KEY = get_env_variable('FERNET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
+FERNET_KEY = (os.environ['FERNET_KEY']).encode()
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -78,16 +73,16 @@ MIDDLEWARE = [
 
 # #########################################################################
 # CSRF Related settings
-CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
+CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin.nal.usda.gov']
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'https://article-workflow-admin-dev.nal.usda.gov',
-    'http://article-workflow-admin-dev.nal.usda.gov'
+    'https://article-workflow-admin.nal.usda.gov',
+    'http://article-workflow-admin.nal.usda.gov'
 ]
 CORS_ORIGIN_WHITELIST = [
-    'https://article-workflow-admin-dev.nal.usda.gov',
-    'http://article-workflow-admin-dev.nal.usda.gov'
+    'https://article-workflow-admin.nal.usda.gov',
+    'http://article-workflow-admin.nal.usda.gov'
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -296,8 +291,8 @@ NEW_USDA_MIN_LIMIT = 100
 MERGE_PUBLISHER_MIN_LIMIT = 100
 NEW_PUBLISHER_MIN_LIMIT = 100
 
-BASE_S3_URI = 's3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
-S3_BUCKET = 'na-test-st01.ext.exlibrisgroup.com'
+BASE_S3_URI = 's3://na-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
+S3_BUCKET = 'na-st01.ext.exlibrisgroup.com'
 S3_PREFIX = '01NAL_INST/upload/'
 S3_URIS = {
     'new_usda_record':'18851814470007426/',
