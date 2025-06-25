@@ -5,15 +5,15 @@ from django.contrib.auth.decorators import login_required
 from citation import *
 import os
 import shutil
-from .upload_to_alma_s3 import AlmaS3Uploader
 from model.processsing_state import ProcessingState
 from django.conf import settings
 import zipfile
 import datetime
 from django.utils import timezone
-from .fetch_s3_secrets import get_aws_credentials
 from reports.email import send_email_notification
-
+# from .fetch_s3_secrets import get_aws_credentials
+# from .upload_to_alma_s3 import AlmaS3Uploader
+from alma_s3 import get_aws_credentials, AlmaS3Uploader
 
 dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 

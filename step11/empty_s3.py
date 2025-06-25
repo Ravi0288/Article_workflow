@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import os
-from .upload_to_alma_s3 import AlmaS3Uploader
-from .fetch_s3_secrets import get_aws_credentials
-
+# from .upload_to_alma_s3 import AlmaS3Uploader
+# from .fetch_s3_secrets import get_aws_credentials
+from alma_s3 import get_aws_credentials, AlmaS3Uploader
 
 @login_required
 @api_view(['GET'])
