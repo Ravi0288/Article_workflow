@@ -20,7 +20,8 @@ def migrate_to_step9(request):
 
     providers = Providers.objects.filter(in_production=True)
     for provider in providers:
-        base = '/ai/metadata/ARTICLE_MARC_XML/' + provider.working_name
+        os.makedirs(settings.MARC_XML_ROOT)
+        base = os.path.join(settings.MARC_XML_ROOT, provider.working_name)
         if not os.path.exists(base):
             os.makedirs(base)
 

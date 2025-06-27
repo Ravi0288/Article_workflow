@@ -47,7 +47,6 @@ class SubmissionMetadataHarvester:
 
             # if status code is not success exit
             if response.status_code != 200:
-                print("response code", response.status_code)
                 break
 
             # if nil data received exit the loop
@@ -79,8 +78,7 @@ def download_from_submission_api(request):
         if submissions:
             file_type = '.json'
             source_file_name = str(datetime.datetime.now().strftime("%Y-%m-%d")) + '.json'
-            file_name = '/ai/metadata/' + source_file_name
-
+            file_name = os.path.join(settings.MEDIA_ROOT, source_file_name)
 
             # save the file to temporary location
             with open(file_name, 'w') as f:

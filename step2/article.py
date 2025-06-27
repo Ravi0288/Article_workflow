@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from splitter import splitter
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.conf import settings
 
 
 # Unreadable xml file serializer
@@ -81,7 +82,7 @@ def read_file(file_path):
 
 # Make entry of invalid xml
 def create_invalid_xml_json(invalid_file_path, error_msg, file_name, file_type):
-    destination = '/ai/metadata/INVALID_FILES/'
+    destination = settings.INVALID_XML_DIR
 
     # check if the same file entry is already exists.
     if Unreadable_files.objects.filter(file_content=file_name).exists():
@@ -92,8 +93,8 @@ def create_invalid_xml_json(invalid_file_path, error_msg, file_name, file_type):
         os.makedirs(destination)
 
     # Read the file and make entry in invalid_files table
-    file_name = '/ai/metadata/INVALID_FILES/' + file_name
-    source = invalid_file_path.replace('\\', '/').replace('/ai/metadata/TEMP_DOWNLOAD','')
+    file_name = os.path.join(destination, file_name)
+    source = invalid_file_path.replace('\\', '/').replace(settings.TEMP_ROOT,'')
     with open(invalid_file_path, 'rb') as f:
         file_content = File(f)
  
@@ -266,7 +267,7 @@ def migrate_to_step2(request):
         # 3: Create / update records in article for each json/xml files
         if archive_row.file_type in ('.zip', '.ZIP'):
             # Create the output folder if it doesn't exist. Output folder is source path prefixed by 'TEMP_DOWNLOAD' and .zip removed
-            destination = '/ai/metadata/TEMP_DOWNLOAD' + source[:-4].replace('E:','').replace('\\', '/').replace('C:','').replace('D:','')
+            destination = settings.TEMP_ROOT + source[:-4].replace('E:','').replace('\\', '/').replace('C:','').replace('D:','')
             if not os.path.exists(destination):
                 os.makedirs(destination)
             
@@ -301,7 +302,6 @@ def migrate_to_step2(request):
                             if data[1] == 'successful':
                                 process_success_result_from_splitter_function(data, new_source, destination, archive_row)
                             else:
-                                print("Splitter function returned error : ", data[1])
                                 create_invalid_xml_json(new_source, "Invalid", file_name, file_name.split('.')[-1])
 
 

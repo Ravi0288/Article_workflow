@@ -44,11 +44,8 @@ INSTALLED_APPS = [
     'mail_service',
     'accounts',
     'rest_framework.authtoken',
-    # run django on https in development environment
     'sslserver',
     'reports',
-
-    # MFA ENTRA
     # 'oauth2_provider'
 ]
 # #########################################################################
@@ -233,19 +230,19 @@ MEDIA_URL = '/ai/metadata/'
 
 # data downloaded in step one will be stored here
 MEDIA_ROOT = '/ai/metadata'
-ARCHIVE_ROOT = '/ai/metadata/ARCHIVE'
-SUBMISSION_ROOT = '/ai/metadata/ARCHIVE/SUBMISSION' 
-CROSSREF_ROOT = '/ai/metadata/ARCHIVE/CROSSREF' 
-CHORUS_ROOT = '/ai/metadata/ARCHIVE/CHORUS'
-TEMP_ROOT = '/ai/metadata/TEMP_DOWNLOAD'
+TEMP_ROOT = os.path.join(MEDIA_ROOT,'TEMP_DOWNLOAD')
+ARCHIVE_ROOT = os.path.join(MEDIA_ROOT,'ARCHIVE')
+SUBMISSION_ROOT = os.path.join(ARCHIVE_ROOT,'SUBMISSION')
+CROSSREF_ROOT = os.path.join(ARCHIVE_ROOT,'CROSSREF') 
+CHORUS_ROOT = os.path.join(ARCHIVE_ROOT,'CHORUS')
 
 # data once processed from step two will be stored here
-ARTICLE_ROOT = '/ai/metadata/ARTICLES'
-ARTICLE_CITATION = '/ai/metadata/ARTICLE_CITATION'
+ARTICLE_ROOT = os.path.join(MEDIA_ROOT,'ARTICLES')
+ARTICLE_CITATION = os.path.join(MEDIA_ROOT,'ARTICLE_CITATION')
 INVALID_XML_DIR = '/data/metada/INVALID_FILES'
-MARC_XML_ROOT = '/ai/metadata/ARTICLE_MARC_XML'
-ALMA_STAGING = '/ai/metadata/ALMA_STAGING'
-ALMA_STAGING_BACKUP = '/ai/metadata/ALMA_STAGING_BACKUP'
+MARC_XML_ROOT = os.path.join(MEDIA_ROOT,'ARTICLE_MARC_XML')
+ALMA_STAGING = os.path.join(MEDIA_ROOT,'ALMA_STAGING')
+ALMA_STAGING_BACKUP = os.path.join(MEDIA_ROOT,'ALMA_STAGING_BACKUP')
 ##################### ############################ ####################
 
 

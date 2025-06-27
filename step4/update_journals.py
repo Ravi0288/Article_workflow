@@ -117,11 +117,9 @@ def update_journal_model(last_pull_date, debug=False):
             e_issn_valid = False
 
         if p_issn and not p_issn_valid:
-            print("Processing invalid issn: ", p_issn)
             logger.warning(f"Invalid p_issn {p_issn} for record with mmsid: {record['001'].data}")
 
         if e_issn and not e_issn_valid:
-            print("Processing invalid issn: ", e_issn)
             logger.warning(f"Invalid e_issn {e_issn} for record with mmsid: {record['001'].data}")
 
         # Extract nal_journal_id field. If DNE, reject record with a warning

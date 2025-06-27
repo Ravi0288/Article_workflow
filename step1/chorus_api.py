@@ -10,7 +10,6 @@ from io import BytesIO
 from django.core.files import File
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from html2text import html2text
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -50,14 +49,6 @@ def save_files(data, api, processed, created, updated, error_in_publishers):
         if qs.exists():
             # if record exists, compare existing content with received content.
             fname = qs[0].file_content.path
-            # read the existing file
-            # Exception is added to ensure in case previous file is corrupt or deleted the freash file will be updated
-            # try:
-            #     f = open(fname, 'r')
-            #     jsonified_content = json.load(f)
-            #     f.close()
-            # except Exception as e:
-            #     jsonified_content = {}
 
             date_received = qs[0].received_on
             updated_dt = content.get('updated', None)

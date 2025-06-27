@@ -10,9 +10,7 @@ from django.conf import settings
 import zipfile
 import datetime
 from django.utils import timezone
-from reports.email import send_email_notification
-# from .fetch_s3_secrets import get_aws_credentials
-# from .upload_to_alma_s3 import AlmaS3Uploader
+from mail_service.email import send_email_notification
 from alma_s3 import get_aws_credentials, AlmaS3Uploader
 
 dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
@@ -94,7 +92,7 @@ def zip_and_remove_directory(source_dir: str, output_zip_path: str) -> bool:
             data_counter.notes = 'Successful'
             res.append(data_counter)
         except Exception as e:
-            print("####### Error occurred ################### ", e)
+            print("Error occurred", e)
             return False, e
      
     Uploaded_article_counter.objects.bulk_create(res)

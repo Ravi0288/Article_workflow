@@ -1,9 +1,8 @@
-from django.conf import settings
+
 from django.shortcuts import render
 from html2text import html2text
 import requests
 from step1.archive import Archive
-
 from step1.provider import Provider_meta_data_API
 import pytz
 import datetime

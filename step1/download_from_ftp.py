@@ -1,12 +1,10 @@
 import ftplib
-
 import os
 from django.shortcuts import render
 from .archive import Archive
 from .provider import Provider_meta_data_FTP
 import datetime
 from io import BytesIO
-
 import shutil
 import os
 from configurations.common import is_ftp_content_folder
@@ -15,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 import socket
+from django.conf import settings
 
 
 # Funciton to parse the information collected from FTP for each files
@@ -80,22 +79,10 @@ def download_file(ftp_connection, article, item):
         x.file_content.save(article, content)
         return
     
-    # if file exists than check the file size. If file size is different update the existing record
-    # if (x.exists() and not (x[0].file_size == file_size)):
-    #     content = BytesIO()
-    #     ftp_connection.retrbinary(f'RETR {article}', content.write)
-    #     content.seek(0)
-    #     x[0].status = 'waiting'
-    #     x[0].is_content_changed = True
-    #     article = str(x[0].id) + '.' + article.split('.')[-1]
-    #     x[0].file_content.save(article, content)
-    #     return
-    
 
 # function to download folder with its content and convert to zip, finally save to table
 def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
-    print("zipping content")
-    temp_dir = '/ai/metadata/' + (item.provider.working_name).replace(' ', '_')
+    temp_dir = os.path.join(settings.MEDIA_ROOT, (item.provider.working_name).replace(' ', '_'))
     state = download_directory_from_ftp(ftp_connection, article, temp_dir)
 
     if state:
@@ -135,14 +122,7 @@ def download_folder_from_ftp_and_save_zip(ftp_connection, article, item):
             shutil.rmtree(temp_dir)
             return
 
-        # if file exists than check the file size. If file size is different update the existing record
-        # if (x.exists() and not (x[0].file_size == os.path.getsize(zipped_file))):
-        #     x[0].status = 'active'
-        #     with open(zipped_file, 'rb') as zip_file:
-        #         zip_file.seek(0)
-        #         x[0].file_content.save(article, zip_file)
 
-            
     # Cleanup temporary directory
     shutil.rmtree(temp_dir)
     return
@@ -197,10 +177,9 @@ def download_from_ftp(request):
             attrs = []
             article_library = []
             ftp_connection.retrlines('MLSD', attrs.append)
-            print("MLSD executed")
+
             # iterate each lines and filter required files
             for attr in attrs:
-                print(attr)
                 facts = parse_file_info_of_files_on_ftp(attr)
                 file_name = facts['name']
                 file_size = int(facts.get('size', 0))
@@ -216,7 +195,7 @@ def download_from_ftp(request):
                         Archive.objects.get(file_name_on_source = file_name, received_on__lt = last_modified)
                     else:
                         Archive.objects.get(file_name_on_source = file_name, file_size=file_size)
-                    print("found")
+
                 except Archive.DoesNotExist:
                     article_library.append(file_name)
 
@@ -224,7 +203,6 @@ def download_from_ftp(request):
             succ.append(item.provider.working_name)
 
             # if files found than start download
-            print(f''' Total {len(article_library)} to be downloaded''')
             if article_library:
                 # iterate through each file
                 for article in article_library:
