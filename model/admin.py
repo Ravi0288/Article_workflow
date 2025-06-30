@@ -1,8 +1,7 @@
 from django.contrib import admin
 from .archive import Archive
-from model.provider import Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history
+from model.provider import Providers, Provider_meta_data_API, Provider_meta_data_FTP, Fetch_history, Provider_meta_data_deposit
 from model.journal import Journal
-from mail_service.models import Email_history, Email_notification
 from .article import Unreadable_files, Article
 
 class JournalAdmin(admin.ModelAdmin):
@@ -15,6 +14,7 @@ class JournalAdmin(admin.ModelAdmin):
     list_filter = ('publisher', 'collection_status', 'harvest_source', 'note')
     list_per_page = 20
     search_fields = ('issn', 'journal_title', 'nal_journal_id', 'mmsid', 'harvest_source')
+   
 
 class ArchivedArticleAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
@@ -31,6 +31,18 @@ class ArchivedArticleAdmin(admin.ModelAdmin):
     search_fields = ('provider__working_name','status','file_name_on_source')
 
 
+class ProviderAdmin(admin.ModelAdmin):
+    empty_value_display = 'N/A'
+    list_display = [
+                    'official_name', 'working_name', 'in_production',
+                    'provider_type', 'source_schema','usda_source'
+                    ]
+    list_filter = ('official_name', 'in_production', 'provider_type','source_schema', 'usda_source')
+    list_per_page = 20
+    search_fields = ('official_name',)
+
+
+
 class ProviderMetaDataAPIAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
     list_display = [
@@ -44,6 +56,17 @@ class ProviderMetaDataAPIAdmin(admin.ModelAdmin):
     search_fields = ('api_meta_type','identifier_code')
 
 
+class ProviderMetaDataDepositAdmin(admin.ModelAdmin):
+    empty_value_display = 'N/A'
+    list_display = [
+                    'source', 'provider'
+                    ]
+    # Fields to filter by in the admin interface
+    list_filter = ('source', 'provider')
+    list_per_page = 20
+    search_fields = ('source',)
+
+
 class ProviderMetaDataFTPAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
     list_display = [
@@ -53,6 +76,7 @@ class ProviderMetaDataFTPAdmin(admin.ModelAdmin):
     list_filter = ('provider', 'server', 'protocol','site_path', 'account')
     list_per_page = 20
     search_fields = ('provider__working_name',)
+
 
 
 class FetchHistoryAdmin(admin.ModelAdmin):
@@ -70,6 +94,7 @@ class EmailHistoryAdmin(admin.ModelAdmin):
                     'email_ref', 'email_subject', 'email_body', 'status'
                     ]
     list_filter = ('email_ref', 'email_subject', 'email_body', 'status')
+
 
 class EmailNotification(admin.ModelAdmin):
     empty_value_display = 'N/A'
@@ -91,14 +116,6 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ('article_file', 'title','type_of_record')
 
 
-# class ArticleAdmin(admin.ModelAdmin):
-#     empty_value_display = 'N/A'
-#     list_display = [
-#                     'article_file', 'journal', 'title', 
-#                     'type_of_record', 'article_attributes', 
-#                     'last_step', 'last_status',
-#                     ]
-
 class UnreadableFilesAdmin(admin.ModelAdmin):
     empty_value_display = 'N/A'
     list_display = [
@@ -112,11 +129,9 @@ admin.site.register(Archive, ArchivedArticleAdmin)
 
 admin.site.register(Provider_meta_data_API, ProviderMetaDataAPIAdmin)
 admin.site.register(Provider_meta_data_FTP, ProviderMetaDataFTPAdmin)
-admin.site.register(Fetch_history,  FetchHistoryAdmin)
-
-# admin.site.register(Email_history, EmailHistoryAdmin)
-# admin.site.register(Email_notification, EmailNotification)
+admin.site.register(Provider_meta_data_deposit, ProviderMetaDataDepositAdmin)
+admin.site.register(Providers, ProviderAdmin)
+admin.site.register(Fetch_history, FetchHistoryAdmin)
 
 admin.site.register(Article, ArticleAdmin)
-# admin.site.register(Article, ArticleAdmin)
 admin.site.register(Unreadable_files, UnreadableFilesAdmin)

@@ -15,6 +15,9 @@ FERNET_KEY = (os.environ['FERNET_KEY']).encode()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# This variable should be used only when using sqlite3
+USING_SQLIT3 = False
+
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
 
@@ -70,16 +73,16 @@ MIDDLEWARE = [
 
 # #########################################################################
 # CSRF Related settings
-CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin-dev.nal.usda.gov']
+CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin.nal.usda.gov']
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'https://article-workflow-admin-dev.nal.usda.gov',
-    'http://article-workflow-admin-dev.nal.usda.gov'
+    'https://article-workflow-admin.nal.usda.gov',
+    'http://article-workflow-admin.nal.usda.gov'
 ]
 CORS_ORIGIN_WHITELIST = [
-    'https://article-workflow-admin-dev.nal.usda.gov',
-    'http://article-workflow-admin-dev.nal.usda.gov'
+    'https://article-workflow-admin.nal.usda.gov',
+    'http://article-workflow-admin.nal.usda.gov'
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -124,6 +127,7 @@ TEMPLATES = [
         },
     },
 ]
+
 # #########################################################################
 
 
@@ -131,18 +135,61 @@ TEMPLATES = [
 # Project interface
 WSGI_APPLICATION = 'configurations.wsgi.application'
 
+##########################################################################
+# Default DB details
+DB_ENGINE = os.environ['ARTICLE_DB_ENGINE']
+DB_NAME = os.environ['ARTICLE_DB_NAME']
+DB_USER = os.environ['ARTICLE_DB_USER']
+DB_PASSWORD = os.environ['ARTICLE_DB_PASSWORD']
+DB_HOST = os.environ['ARTICLE_DB_HOST']
+DB_PORT = os.environ['ARTICLE_DB_PORT']
+
+# # PID DB details
+PID_DB_ENGINE = os.environ['PID_DB_ENGINE']
+PID_DB_NAME = os.environ['PID_DB_NAME']
+PID_DB_USER = os.environ['PID_DB_USER']
+PID_DB_PASSWORD = os.environ['PID_DB_PASSWORD']
+PID_DB_HOST = os.environ['PID_DB_HOST']
+PID_DB_PORT = os.environ['PID_DB_PORT']
+##########################################################################
+
+
+# ##########################################################################
 # Database settings
-DATABASES = {
-    'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME':  BASE_DIR / 'article.sqlite3',
+if USING_SQLIT3:
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME':  BASE_DIR / 'article.sqlite3',
+            },
+
+            # 'pid_db': {
+            #     'ENGINE': 'django.db.backends.sqlite3',
+            #     'NAME':  BASE_DIR / 'pid.sqlite3',
+            # }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
         },
 
+        # # Handle DB is accesed directly. And the code is written in handles.py file in core python
         # 'pid_db': {
-        #     'ENGINE': 'django.db.backends.sqlite3',
-        #     'NAME':  BASE_DIR / 'pid.sqlite3',
+        #     'ENGINE': PID_DB_ENGINE,
+        #     'NAME': PID_DB_NAME,
+        #     'USER': PID_DB_USER,
+        #     'PASSWORD': PID_DB_PASSWORD,
+        #     'HOST': PID_DB_HOST,
+        #     'PORT': PID_DB_PORT,
         # }
-}
+    }
+
 
 # add router file for database settings
 # DATABASE_ROUTERS = ['configurations.db_router.DB_route']
@@ -253,22 +300,21 @@ NEW_USDA_MAX_LIMIT = 10000
 MERGE_PUBLISHER_MAX_LIMIT = 10000
 NEW_PUBLISHER_MAX_LIMIT = 10000
 
-
 MERGE_USDA_MIN_LIMIT = 100
 NEW_USDA_MIN_LIMIT = 100
 MERGE_PUBLISHER_MIN_LIMIT = 100
 NEW_PUBLISHER_MIN_LIMIT = 100
 
-BASE_S3_URI = 's3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
-S3_BUCKET = 'na-test-st01.ext.exlibrisgroup.com'
+BASE_S3_URI = 's3://na-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
+S3_BUCKET = 'na-st01.ext.exlibrisgroup.com'
 S3_PREFIX = '01NAL_INST/upload/'
 S3_URIS = {
     'new_usda_record':'18851814470007426/',
     'merge_usda_with_digital_files':'18851815290007426/',
     'merge_usda_without_digital_files':'21675299990007426/',
-    'new_submission_records':'21176431170007426/',
-    'new_submission_with_digital_files':'21176440550007426/',
-    'new_submission_without_digital_files':'21451763880007426/',
+    'new_publisher_records':'21176431170007426/',
+    'new_publisher_with_digital_files':'21176440550007426/',
+    'new_publisher_without_digital_files':'21451763880007426/',
 }
 #######################################################################
 
