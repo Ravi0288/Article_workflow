@@ -273,10 +273,12 @@ STATICFILES_DIRS = [
 
 CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
 
-MEDIA_URL = '/ai/metadata/'
+# MEDIA_URL = '/ai/metadata/'
+MEDIA_URL = os.environ['MEDIA_URL']
 
 # data downloaded in step one will be stored here
-MEDIA_ROOT = '/ai/metadata'
+# MEDIA_ROOT = '/ai/metadata'
+MEDIA_ROOT = os.environ['MEDIA_ROOT']
 TEMP_ROOT = os.path.join(MEDIA_ROOT,'TEMP_DOWNLOAD')
 ARCHIVE_ROOT = os.path.join(MEDIA_ROOT,'ARCHIVE')
 SUBMISSION_ROOT = os.path.join(ARCHIVE_ROOT,'SUBMISSION')
