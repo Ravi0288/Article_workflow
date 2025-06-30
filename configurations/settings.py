@@ -286,7 +286,7 @@ CHORUS_ROOT = os.path.join(ARCHIVE_ROOT,'CHORUS')
 # data once processed from step two will be stored here
 ARTICLE_ROOT = os.path.join(MEDIA_ROOT,'ARTICLES')
 ARTICLE_CITATION = os.path.join(MEDIA_ROOT,'ARTICLE_CITATION')
-INVALID_XML_DIR = '/data/metada/INVALID_FILES'
+INVALID_XML_DIR = os.path.join(MEDIA_URL,'INVALID_FILES')
 MARC_XML_ROOT = os.path.join(MEDIA_ROOT,'ARTICLE_MARC_XML')
 ALMA_STAGING = os.path.join(MEDIA_ROOT,'ALMA_STAGING')
 ALMA_STAGING_BACKUP = os.path.join(MEDIA_ROOT,'ALMA_STAGING_BACKUP')
