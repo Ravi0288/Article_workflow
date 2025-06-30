@@ -14,6 +14,6 @@ class ModelConfig(AppConfig):
         providers = Providers.objects.all()
 
         for provider in providers:
-            dir_path = os.path.join(settings.ARTICLE_MARC_XML, provider.working_name)
+            dir_path = os.path.join(settings.MARC_XML_ROOT, provider.working_name)
             if not os.path.exists(dir_path):
                 os.makedirs(dir_path)
