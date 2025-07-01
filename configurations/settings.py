@@ -343,7 +343,7 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': "/ai/metadata/LOGDIR/NAL_LIBRARY_SYSTEM.log",
+            'filename': os.environ['COMMON_LOGFILE_NAME'],
             'maxBytes': 100000,
             'backupCount': 2,
             'formatter': 'verbose',
@@ -351,7 +351,7 @@ LOGGING = {
         'journal_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': "/ai/metadata/LOGDIR/journal_record_warnings.log",
+            'filename': os.environ['JOURNAL_LOGFILE_NAME'],
             'maxBytes': 100000,
             'backupCount': 3,
             'formatter': 'semi-verbose',
