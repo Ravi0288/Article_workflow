@@ -36,7 +36,7 @@ class OverWriteStorage(FileSystemStorage):
 
 # Function to return the storage file path.
 def get_invalid_file_path(instance, filename):
-    return '{0}/{1}'.format('INVALID_FILES', filename)
+    return '{0}/{1}'.format(os.environ['INVALID_FILES_DIR'], filename)
 
 
 def get_article_file_path(instance, filename):
@@ -45,14 +45,14 @@ def get_article_file_path(instance, filename):
     extension = filename.split('.')[-1]
     filename = str(instance.id) + '.' + extension
     return '{0}/{1}/{2}'.format(
-        'ARTICLES',
+        os.environ['ARTICLES_DIR'],
         (instance.provider.working_name).replace(' ','_'),
         filename
         )
 
 
 def get_pickel_file_path(instance, filename):
-    return '{0}/{1}/{2}'.format('ARTICLE_CITATION', (instance.provider.working_name).replace(' ', '_'), filename)
+    return '{0}/{1}/{2}'.format(os.environ['ARTICLE_CITATION_DIR'], (instance.provider.working_name).replace(' ', '_'), filename)
 
 
 # model class to archive the error message that occures during processing / reading the xml/json file

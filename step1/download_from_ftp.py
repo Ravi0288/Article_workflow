@@ -219,7 +219,7 @@ def download_from_ftp(request):
 
                     except Exception as e:
                         err_count += 1
-                        print("error while processsing content", e)
+                        print("error while processing content", e)
                         pass
         
                 # update the succes status to Provider_meta_data_FTP

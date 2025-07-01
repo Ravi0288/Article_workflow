@@ -323,7 +323,7 @@ def migrate_to_step2(request):
             data = splitter(content)
 
             if data[1] == 'successful':
-                destination = source.replace('ARCHIVE','ARTICLES')
+                destination = source.replace(os.environ['ARCHIVE_DIR'], os.environ['ARTICLES_DIR'])
                 process_success_result_from_splitter_function(data, source, destination, archive_row)
             
             else:

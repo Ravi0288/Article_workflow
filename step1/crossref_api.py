@@ -131,9 +131,7 @@ def save_files(dois, api):
                 qs = Archive.objects.filter(unique_key=doi)
                 if qs.exists():
                     # if record exists, compare existing content with received content.
-                    # if existing content == received content do nothing
                     doi = doi.replace('/', '_')
-                    # fname = os.path.join(settings.CROSSREF_ROOT, doi + '.json')
                     fname = qs[0].file_content.path
                     
                   # read the existing files

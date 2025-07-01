@@ -60,7 +60,7 @@ def migrate_to_step9(request):
 
         # action for stepp 9
         format = 'xml'
-        file_path = (article.article_file.path).replace('ARTICLES', 'ARTICLE_MARC_XML')
+        file_path = (article.article_file.path).replace(os.environ['ARTICLES_DIR'], os.environ['ARTICLE_MARC_XML_DIR'])
         extension = file_path.split('.')[-1]
         file_path = file_path.replace(extension, 'xml')
         message = citation_to_marc(cit, format, file_path)

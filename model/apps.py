@@ -17,3 +17,9 @@ class ModelConfig(AppConfig):
             dir_path = os.path.join(settings.MARC_XML_ROOT, provider.working_name)
             if not os.path.exists(dir_path):
                 os.makedirs(dir_path)
+               
+        dir_list = settings.ALMA_DIR_LIST
+        for dir in dir_list:
+            dir_path = os.path.join(settings.ALMA_STAGING, dir)
+            if not os.path.exists(dir_path):
+                os.makedirs(dir_path)

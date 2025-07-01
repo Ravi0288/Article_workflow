@@ -13,7 +13,7 @@ import shutil
 # Function to accept article file path as input, and just will replace the extension with xml to make it as marc xml file
 def get_marc_file_path(article_file_path):
     extension = article_file_path.split('.')[-1]
-    return article_file_path.replace(extension, 'xml').replace('ARTICLES','ARTICLE_MARC_XML')
+    return article_file_path.replace(extension, 'xml').replace(os.environ['ARTICLES_DIR'], os.environ['ARTICLE_MARC_XML_DIR'])
 
 
 @login_required

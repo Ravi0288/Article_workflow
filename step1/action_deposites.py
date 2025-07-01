@@ -6,6 +6,7 @@ import pytz
 import datetime
 from model.archive import Archive
 from django.core.files import File
+from django.conf import settings
 
 
 def file_transfer_from_deposites(request):
@@ -26,7 +27,7 @@ def file_transfer_from_deposites(request):
     else:
         for provs in due_for_transfer:
             source_dir = provs.source
-            dest_dir = '/ai/metadata/'
+            dest_dir = settings.MEDIA_ROOT
 
             # Create destination directory if it doesn't exist
             os.makedirs(dest_dir, exist_ok=True)

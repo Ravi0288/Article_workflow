@@ -40,7 +40,7 @@ def get_file_path(instance, filename):
     extension = filename.split('.')[-1]
     filename = str(instance.id) + '.' + extension
     return '{0}/{1}/{2}'.format(
-        'ARCHIVE',
+        os.environ['ARCHIVE_DIR'],
         (instance.provider.working_name).replace(' ','_'),
         filename
         )

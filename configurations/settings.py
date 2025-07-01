@@ -270,28 +270,23 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
-CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
-
-# MEDIA_URL = '/ai/metadata/'
 MEDIA_URL = os.environ['MEDIA_URL']
 
-# data downloaded in step one will be stored here
-# MEDIA_ROOT = '/ai/metadata'
 MEDIA_ROOT = os.environ['MEDIA_ROOT']
-TEMP_ROOT = os.path.join(MEDIA_ROOT,'TEMP_DOWNLOAD')
-ARCHIVE_ROOT = os.path.join(MEDIA_ROOT,'ARCHIVE')
-SUBMISSION_ROOT = os.path.join(ARCHIVE_ROOT,'SUBMISSION')
-CROSSREF_ROOT = os.path.join(ARCHIVE_ROOT,'CROSSREF') 
-CHORUS_ROOT = os.path.join(ARCHIVE_ROOT,'CHORUS')
 
-# data once processed from step two will be stored here
-ARTICLE_ROOT = os.path.join(MEDIA_ROOT,'ARTICLES')
-ARTICLE_CITATION = os.path.join(MEDIA_ROOT,'ARTICLE_CITATION')
-INVALID_XML_DIR = os.path.join(MEDIA_URL,'INVALID_FILES')
-MARC_XML_ROOT = os.path.join(MEDIA_ROOT,'ARTICLE_MARC_XML')
-ALMA_STAGING = os.path.join(MEDIA_ROOT,'ALMA_STAGING')
-ALMA_STAGING_BACKUP = os.path.join(MEDIA_ROOT,'ALMA_STAGING_BACKUP')
+# Path not to be changed
+TEMP_ROOT = os.path.join(MEDIA_ROOT,'TEMP_DOWNLOAD')
+CERT_ROOT = os.path.join(BASE_DIR, 'certificates')
+
+# Path can be changed
+ARCHIVE_ROOT = os.path.join(MEDIA_ROOT, os.environ['ARCHIVE_DIR'])
+ARTICLE_ROOT = os.path.join(MEDIA_ROOT, os.environ['ARTICLES_DIR'])
+ARTICLE_CITATION = os.path.join(MEDIA_ROOT, os.environ['ARTICLE_CITATION_DIR'])
+INVALID_XML_DIR = os.path.join(MEDIA_URL, os.environ['INVALID_FILES_DIR'])
+MARC_XML_ROOT = os.path.join(MEDIA_ROOT,os.environ['ARTICLE_MARC_XML_DIR'])
+ALMA_STAGING = os.path.join(MEDIA_ROOT, os.environ['ALMA_STAGING_DIR'])
+ALMA_STAGING_BACKUP = os.path.join(MEDIA_ROOT, os.environ['ALMA_STAGING_BACKUP_DIR'])
+ALMA_DIR_LIST = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 ##################### ############################ ####################
 
 

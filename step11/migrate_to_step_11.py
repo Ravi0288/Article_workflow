@@ -13,7 +13,7 @@ from django.utils import timezone
 from mail_service.email import send_email_notification
 from alma_s3 import get_aws_credentials, AlmaS3Uploader
 
-dir_list = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
+dir_list = settings.ALMA_DIR_LIST
 
 # Function to count and return number of records in each directory
 def count_directories(path):
