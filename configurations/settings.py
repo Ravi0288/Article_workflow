@@ -304,7 +304,7 @@ NEW_PUBLISHER_MIN_LIMIT = 100
 
 BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-st01.ext.exlibrisgroup.com'
-S3_PREFIX = os.environ['S3_PREFIX']  #'01NAL_INST/upload/'
+S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
     'new_usda_record':'18851814470007426/',
     'merge_usda_with_digital_files':'18851815290007426/',

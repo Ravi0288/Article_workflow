@@ -202,7 +202,7 @@ def migrate_to_step11(request):
         'aws_access_key' : key1,
         'aws_secret_key' : key2,
         'bucket' : settings.S3_BUCKET,
-        'prefix' : settings.S3_PREFIX,
+        'prefix' : settings.S3_SUFIX,
         'base_path' : os.path.join(settings.BASE_DIR, settings.ALMA_STAGING)
     }
 
