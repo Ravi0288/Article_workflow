@@ -306,12 +306,12 @@ BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-st01.ext.exlibrisgroup.com/01N
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-st01.ext.exlibrisgroup.com'
 S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
-    'new_usda_record':'18851814470007426/',
-    'merge_usda_with_digital_files':'18851815290007426/',
-    'merge_usda_without_digital_files':'21675299990007426/',
-    'new_publisher_records':'21176431170007426/',
-    'new_publisher_with_digital_files':'21176440550007426/',
-    'new_publisher_without_digital_files':'21451763880007426/',
+    'new_usda_record':'21176431170007426/',
+    'merge_usda_with_digital_files':'21176440550007426/',
+    'merge_usda_without_digital_files':'21451763880007426/',
+    'new_publisher_records':'18851814470007426/',
+    'new_publisher_with_digital_files':'18851815290007426/',
+    'new_publisher_without_digital_files':'21675299990007426/',
 }
 #######################################################################
 
