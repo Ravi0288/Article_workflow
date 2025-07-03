@@ -73,16 +73,24 @@ MIDDLEWARE = [
 
 # #########################################################################
 # CSRF Related settings
-CSRF_TRUSTED_ORIGINS = ['https://article-workflow-admin.nal.usda.gov']
+CSRF_TRUSTED_ORIGINS = [
+    'https://article-workflow-admin.nal.usda.gov',
+    'https://article-workflow-admin-dev.nal.usda.gov'
+]
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
     'https://article-workflow-admin.nal.usda.gov',
-    'http://article-workflow-admin.nal.usda.gov'
+    'http://article-workflow-admin.nal.usda.gov',
+    'https://article-workflow-admin-dev.nal.usda.gov',
+    'http://article-workflow-admin-dev.nal.usda.gov'
 ]
 CORS_ORIGIN_WHITELIST = [
     'https://article-workflow-admin.nal.usda.gov',
-    'http://article-workflow-admin.nal.usda.gov'
+    'http://article-workflow-admin.nal.usda.gov',
+    'https://article-workflow-admin-dev.nal.usda.gov',
+    'http://article-workflow-admin-dev.nal.usda.gov'
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -302,8 +310,8 @@ NEW_USDA_MIN_LIMIT = 100
 MERGE_PUBLISHER_MIN_LIMIT = 100
 NEW_PUBLISHER_MIN_LIMIT = 100
 
-BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
-S3_BUCKET = os.environ['S3_BUCKET']  #'na-st01.ext.exlibrisgroup.com'
+BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
+S3_BUCKET = os.environ['S3_BUCKET']  #'na-test-st01.ext.exlibrisgroup.com'
 S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
     'new_usda_record':'21176431170007426/',

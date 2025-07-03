@@ -6,7 +6,7 @@ from django.conf import settings
 class ModelConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'model'
-
+   
     def ready(self):
 
         # Import moved here to avoid early import error
@@ -23,3 +23,4 @@ class ModelConfig(AppConfig):
             dir_path = os.path.join(settings.ALMA_STAGING, dir)
             if not os.path.exists(dir_path):
                 os.makedirs(dir_path)
+   
