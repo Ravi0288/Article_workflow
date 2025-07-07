@@ -15,15 +15,12 @@ from model.provider import Providers
 def migrate_to_step9(request):
 
     # Create MARC_XML_ARTICLE directory if not created already
-    if not os.path.exists(settings.MARC_XML_ROOT):
-        os.makedirs(settings.MARC_XML_ROOT)
+    os.makedirs(settings.MARC_XML_ROOT, exist_ok=True)
 
     providers = Providers.objects.filter(in_production=True)
     for provider in providers:
-        os.makedirs(settings.MARC_XML_ROOT)
         base = os.path.join(settings.MARC_XML_ROOT, provider.working_name)
-        if not os.path.exists(base):
-            os.makedirs(base)
+        os.makedirs(base, exist_ok=True)
 
 
     # Set Response message
