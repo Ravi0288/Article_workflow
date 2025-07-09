@@ -25,6 +25,15 @@ def migrate_to_step10(request):
         'message' : 'No active article found to migrate to Step 10'
     }
 
+    # Mapping of import types to their corresponding limit settings
+    MAX_LIMIT = {
+        "new_usda": settings.NEW_USDA_MAX_LIMIT,
+        "merge_usda": settings.MERGE_USDA_MAX_LIMIT,
+        "new_publisher": settings.NEW_PUBLISHER_MAX_LIMIT,
+        "merge_publisher": settings.MERGE_PUBLISHER_MAX_LIMIT,
+    }
+    VALID_IMPORT_TYPES = {'new_usda', 'merge_usda', 'new_publisher', 'merge_publisher'}
+    
     # if step10 is running, don't allow it to run for second time
     step10_state, created = ProcessingState.objects.get_or_create(process_name='step10')
     
@@ -75,17 +84,6 @@ def migrate_to_step10(request):
         step10_state.in_progress = False
         step10_state.save()
         return render(request, 'common/dashboard.html', context=context)
-    
-
-    VALID_IMPORT_TYPES = {'new_usda', 'merge_usda', 'new_publisher', 'merge_publisher'}
-
-    # Mapping of import types to their corresponding limit settings
-    MAX_LIMIT = {
-        "new_usda": settings.NEW_USDA_MAX_LIMIT,
-        "merge_usda": settings.MERGE_USDA_MAX_LIMIT,
-        "new_publisher": settings.NEW_PUBLISHER_MAX_LIMIT,
-        "merge_publisher": settings.MERGE_PUBLISHER_MAX_LIMIT,
-    }
 
     for article in articles:
         article.last_step = 10
