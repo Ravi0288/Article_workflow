@@ -44,6 +44,16 @@ def migrate_to_step10(request):
                 "merge_publisher": step10_state.merge_publisher_record_processed,
             }
 
+            # return message when all the import types has reached its maximum limit
+            x = 0
+            for import_type in counters:
+                if counters[import_type] > MAX_LIMIT[import_type]:
+                    x+=1
+            # Assuming we have only 4 import type. When number of import_type is changed this number should be changed
+            if x == 4:       
+                context['message'] = 'All import types has reached maximum limit. Please re-run after running step 11'
+                return render(request, 'common/dashboard.html', context=context)
+
     else:
         # Initialize counters
         counters = {
