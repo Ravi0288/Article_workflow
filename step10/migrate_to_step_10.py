@@ -43,33 +43,37 @@ def migrate_to_step10(request):
     step10_state = ProcessingState.objects.filter(process_name='step10')
     
     if step10_state.exists():
-        if step10_state[0].in_progress:
+        step10_state = step10_state[0]
+        if step10_state.in_progress:
             context['message'] = 'Step 10 is already running. Please try after sometime'
             return render(request, 'common/dashboard.html', context=context)
         else:
-            step10_state[0].in_progress = True
-            step10_state[0].save()
+            step10_state.in_progress = True
+            step10_state.save()
 
             # Initialize counters with existing counter
             counters = {
-                "new_usda": step10_state[0].new_usda_record_processed,
-                "merge_usda": step10_state[0].merge_usda_record_processed,
-                "new_publisher": step10_state[0].new_publisher_record_processed,
-                "merge_publisher": step10_state[0].merge_publisher_record_processed,
+                "new_usda": step10_state.new_usda_record_processed,
+                "merge_usda": step10_state.merge_usda_record_processed,
+                "new_publisher": step10_state.new_publisher_record_processed,
+                "merge_publisher": step10_state.merge_publisher_record_processed,
             }
 
-            # return message when all the import types has reached its maximum limit
-            for import_type in counters:
-                if counters[import_type] > MAX_LIMIT[import_type]:
-                    reached_max_limit.append(counters[import_type])
+            # Set a list of import types those have reached its max limit
+            for i in counters:
+                if counters[i] > MAX_LIMIT[i]:
+                    reached_max_limit.append(i)
 
+            # Return message when all the import types has reached its maximum limit
             if len(reached_max_limit) == len(VALID_IMPORT_TYPES):
-                step10_state[0].in_progress = True
-                step10_state[0].save()
+                step10_state.in_progress = True
+                step10_state.save()
                 context['message'] = 'All import types has reached maximum limit. Please re-run after running step 11'
                 return render(request, 'common/dashboard.html', context=context)
 
     else:
+        # Create new record
+        step10_state = ProcessingState.objects.create(process_name='step10')
         # Initialize counters
         counters = {
             "new_usda": 0,
@@ -87,29 +91,29 @@ def migrate_to_step10(request):
         ).exclude(import_type__in=reached_max_limit)
 
     if not articles.count() :
-        step10_state[0].in_progress = False
-        step10_state[0].save()
+        step10_state.in_progress = False
+        step10_state.save()
         return render(request, 'common/dashboard.html', context=context)
 
     for article in articles:
         article.last_step = 10
+        imp_type = article.import_type
 
         # Ensure each article has a valid import_type.
-        if not article.import_type or article.import_type not in VALID_IMPORT_TYPES:
+        if ((not imp_type) or (imp_type not in VALID_IMPORT_TYPES)):
             article.note += f"Bad Import type found: {article.import_type}\n"
             article.last_status = 'review'
             article.save()
             continue
 
         # Skip processing the article if it's import_type has already reached the maximum allowed limit else go ahead
-        import_type = article.import_type
-        if import_type in counters:
-            if counters[import_type] > MAX_LIMIT[import_type]:
+        if imp_type in counters:
+            if counters[imp_type] >= MAX_LIMIT[imp_type]:
                 continue
             else:
-                counters[import_type] += 1
+                counters[imp_type] += 1
 
-        #  Process valid article
+        # Process valid article
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
@@ -174,11 +178,11 @@ def migrate_to_step10(request):
 
 
     # update step 10 record with number of processed articles based on classification
-    step10_state[0].in_progress = False
-    step10_state[0].new_usda_record_processed = counters["new_usda"]
-    step10_state[0].merge_usda_record_processed = counters["merge_usda"]
-    step10_state[0].new_publisher_record_processed = counters["new_publisher"]
-    step10_state[0].merge_publisher_record_processed = counters["merge_publisher"]
-    step10_state[0].save()
+    step10_state.in_progress = False
+    step10_state.new_usda_record_processed = counters["new_usda"]
+    step10_state.merge_usda_record_processed = counters["merge_usda"]
+    step10_state.new_publisher_record_processed = counters["new_publisher"]
+    step10_state.merge_publisher_record_processed = counters["merge_publisher"]
+    step10_state.save()
 
     return render(request, 'common/dashboard.html', context=context)
