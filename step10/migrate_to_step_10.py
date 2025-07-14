@@ -33,6 +33,7 @@ def get_marc_file_path(article_file_path):
 @api_view(['GET'])
 def migrate_to_step10(request):
     counters = {}
+    reached_max_limit = []
     context = {
         'heading' : 'Message',
         'message' : 'No active article found to migrate to Step 10'
@@ -58,12 +59,11 @@ def migrate_to_step10(request):
             }
 
             # return message when all the import types has reached its maximum limit
-            x = 0
             for import_type in counters:
                 if counters[import_type] > MAX_LIMIT[import_type]:
-                    x+=1
+                    reached_max_limit.append(counters[import_type])
 
-            if x == len(VALID_IMPORT_TYPES):
+            if len(reached_max_limit) == len(VALID_IMPORT_TYPES):
                 step10_state[0].in_progress = True
                 step10_state[0].save()
                 context['message'] = 'All import types has reached maximum limit. Please re-run after running step 11'
@@ -84,7 +84,7 @@ def migrate_to_step10(request):
         provider__in_production=True,
         last_step=9,
         provider__article_switch=True
-        )
+        ).exclude(import_type__in=reached_max_limit)
 
     if not articles.count() :
         step10_state[0].in_progress = False
@@ -109,7 +109,7 @@ def migrate_to_step10(request):
             else:
                 counters[import_type] += 1
 
-        #  Priocess valid article
+        #  Process valid article
         try:
             with open(article.citation_pickle.path, 'rb') as file:
                 cit = pickle.load(file)
