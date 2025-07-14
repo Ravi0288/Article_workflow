@@ -110,8 +110,6 @@ def migrate_to_step10(request):
         if imp_type in counters:
             if counters[imp_type] >= MAX_LIMIT[imp_type]:
                 continue
-            else:
-                counters[imp_type] += 1
 
         # Process valid article
         try:
@@ -159,6 +157,7 @@ def migrate_to_step10(request):
             if article_stage_dir and os.path.exists(article_stage_dir):
                 shutil.rmtree(article_stage_dir)
 
+        counters[imp_type] += 1
         article.save()
 
     # return the response 
