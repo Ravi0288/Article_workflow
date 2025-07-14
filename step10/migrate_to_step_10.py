@@ -61,8 +61,7 @@ def migrate_to_step10(request):
 
             # Set a list of import types those have reached its max limit
             for i in counters:
-                print("MAX_LIMIT:", MAX_LIMIT[i] , "Processsed",  counters[i])
-                if counters[i] > MAX_LIMIT[i]:
+                if counters[i] >= MAX_LIMIT[i]:
                     reached_max_limit.append(i)
 
             # Return message when all the import types has reached its maximum limit
