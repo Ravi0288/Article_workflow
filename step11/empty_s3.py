@@ -34,12 +34,13 @@ def empty_s3_bucket(request):
 
 
     s3_action = AlmaS3Uploader(stagin_info)
-    empty, message = s3_action.empty_s3_bucket()
+    # empty, message = s3_action.empty_s3_bucket()
+    message = s3_action.delete_buckets_with_only_keep_or_empty()
 
-    if not empty:
-        context['message'] = f''' 
-            Error occured while emptying S3. 
-            Message: {message}.
-        '''
+    # if not empty:
+    #     context['message'] = f''' 
+    #         Error occured while emptying S3. 
+    #         Message: {message}.
+    #     '''
 
     return render(request, 'common/dashboard.html', context=context)
