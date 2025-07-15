@@ -300,26 +300,26 @@ ALMA_DIR_LIST = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 
 ##################### ############################ ####################
 # s3 upload maximum allowed number for each class of content
-MERGE_USDA_MAX_LIMIT = 10000
-NEW_USDA_MAX_LIMIT = 10000
-MERGE_PUBLISHER_MAX_LIMIT = 10000
-NEW_PUBLISHER_MAX_LIMIT = 10000
+MERGE_USDA_MAX_LIMIT = 110
+NEW_USDA_MAX_LIMIT = 30
+MERGE_PUBLISHER_MAX_LIMIT = 110
+NEW_PUBLISHER_MAX_LIMIT = 110
 
-MERGE_USDA_MIN_LIMIT = 100
-NEW_USDA_MIN_LIMIT = 100
-MERGE_PUBLISHER_MIN_LIMIT = 100
-NEW_PUBLISHER_MIN_LIMIT = 100
+MERGE_USDA_MIN_LIMIT = 10
+NEW_USDA_MIN_LIMIT = 0
+MERGE_PUBLISHER_MIN_LIMIT = 10
+NEW_PUBLISHER_MIN_LIMIT = 10
 
 BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-test-st01.ext.exlibrisgroup.com'
 S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
-    'new_usda_record':'21176431170007426/',
-    'merge_usda_with_digital_files':'21176440550007426/',
-    'merge_usda_without_digital_files':'21451763880007426/',
-    'new_publisher_records':'18851814470007426/',
-    'new_publisher_with_digital_files':'18851815290007426/',
-    'new_publisher_without_digital_files':'21675299990007426/',
+    'new_usda_record':os.environ['new_usda_record'],
+    'merge_usda_with_digital_files':os.environ['merge_usda_with_digital_files'],
+    'merge_usda_without_digital_files':os.environ['merge_usda_without_digital_files'],
+    'new_publisher_records':os.environ['new_publisher_records'],
+    'new_publisher_with_digital_files':os.environ['new_publisher_with_digital_files'],
+    'new_publisher_without_digital_files':os.environ['new_publisher_without_digital_files'],
 }
 #######################################################################
 
