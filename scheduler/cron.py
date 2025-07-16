@@ -28,7 +28,12 @@ def log_job_times(func):
 # Task 1
 @log_job_times
 def run_step_2():
-    print(f"[{datetime.now()}] 🔄 Running scheduled job...")
+    print(f"[{datetime.now()}] Running scheduled job 1...")
+
+# Task 2
+@log_job_times
+def run_step_3():
+    print(f"[{datetime.now()}] Running scheduled job 2...")
 
 
 # Add all required scheduler here.
@@ -41,8 +46,9 @@ def run_step_2():
     # weeks	    Run every N weeks
 
 
-# Funciton to register scheduled task and execute
+# Function to register scheduled task and execute
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(run_step_2, 'interval', seconds=2)  # ✅ No parentheses!
+    scheduler.add_job(run_step_2, 'interval', seconds=2)
+    scheduler.add_job(run_step_3, 'interval', seconds=2)
     scheduler.start()
