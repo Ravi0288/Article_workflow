@@ -19,4 +19,4 @@ data/*
 article.sqlite3
 pid.sqlite3
 handle.sqlite3
-logs.logs
+*.log

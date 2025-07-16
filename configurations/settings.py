@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'sslserver',
     'reports',
-    # 'oauth2_provider'
+    'scheduler',
+    'apscheduler'
+
 ]
 # #########################################################################
 
@@ -314,12 +316,12 @@ BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-test-st01.ext.exlibrisgroup.co
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-test-st01.ext.exlibrisgroup.com'
 S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
-    'new_usda_record':os.environ['new_usda_record'],
-    'merge_usda_with_digital_files':os.environ['merge_usda_with_digital_files'],
-    'merge_usda_without_digital_files':os.environ['merge_usda_without_digital_files'],
-    'new_publisher_records':os.environ['new_publisher_records'],
-    'new_publisher_with_digital_files':os.environ['new_publisher_with_digital_files'],
-    'new_publisher_without_digital_files':os.environ['new_publisher_without_digital_files'],
+    # 'new_usda_record':os.environ['new_usda_record'],
+    # 'merge_usda_with_digital_files':os.environ['merge_usda_with_digital_files'],
+    # 'merge_usda_without_digital_files':os.environ['merge_usda_without_digital_files'],
+    # 'new_publisher_records':os.environ['new_publisher_records'],
+    # 'new_publisher_with_digital_files':os.environ['new_publisher_with_digital_files'],
+    # 'new_publisher_without_digital_files':os.environ['new_publisher_without_digital_files'],
 }
 #######################################################################
 
@@ -345,6 +347,10 @@ LOGGING = {
         'simple': {
             'format': '{levelname} {message}',
             'style': '{',
+        },        
+        'standard': {
+            'format': '[{asctime}] {levelname} {name} - {message}',
+            'style': '{',
         },
     },
     'handlers': {
@@ -363,6 +369,12 @@ LOGGING = {
             'maxBytes': 100000,
             'backupCount': 3,
             'formatter': 'semi-verbose',
+        },
+        'cron_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.environ['CRONE_LOGFILE_NAME'],
+            'formatter': 'standard',
         },
     },
     'loggers': {
@@ -387,11 +399,17 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'scheduler': {
+            'handlers': ['cron_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+
     },
 }
+######################## Scheduler classes #############################
+
 #########################################################################
-
-
 
 ##################### Email service related variables ####################
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
