@@ -164,48 +164,16 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # ##########################################################################
 # Database settings
-if USING_SQLIT3:
-    DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':  BASE_DIR / 'article.sqlite3',
-            },
-
-            # 'pid_db': {
-            #     'ENGINE': 'django.db.backends.sqlite3',
-            #     'NAME':  BASE_DIR / 'pid.sqlite3',
-            # }
+DATABASES = {
+    'default': {
+        'ENGINE': DB_ENGINE,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': DB_ENGINE,
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,
-            'PORT': DB_PORT,
-        },
-
-        # # Handle DB is accesed directly. And the code is written in handles.py file in core python
-        # 'pid_db': {
-        #     'ENGINE': PID_DB_ENGINE,
-        #     'NAME': PID_DB_NAME,
-        #     'USER': PID_DB_USER,
-        #     'PASSWORD': PID_DB_PASSWORD,
-        #     'HOST': PID_DB_HOST,
-        #     'PORT': PID_DB_PORT,
-        # }
-    }
-
-
-# add router file for database settings
-# DATABASE_ROUTERS = ['configurations.db_router.DB_route']
-
-# specify the app_name for django to decide what database to access for what table
-DATABASE_APPS_MAPPING = {'wf_data': 'default',
-                        'handle_data':'handle_db',
-                        'pid_data' : 'pid_db'}
+}
 
 # ##########################################################################
 
@@ -272,7 +240,7 @@ USE_TZ = True
 #     FORCE_SCRIPT_NAME = SCRIPT_NAME
 
 ##################### Static file / Media file paths ####################
-# s (CSS, JavaScript, Images)
+# (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS = [
@@ -299,16 +267,16 @@ ALMA_DIR_LIST = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 
 
 ##################### ############################ ####################
-# s3 upload maximum allowed number for each class of content
-MERGE_USDA_MAX_LIMIT = 110
-NEW_USDA_MAX_LIMIT = 30
-MERGE_PUBLISHER_MAX_LIMIT = 110
-NEW_PUBLISHER_MAX_LIMIT = 110
+# S3 upload maximum allowed number for each class of content
+MERGE_USDA_MAX_LIMIT = os.environ.get('MERGE_USDA_MAX_LIMIT', 0)
+NEW_USDA_MAX_LIMIT = os.environ.get('NEW_USDA_MAX_LIMIT', 0)
+MERGE_PUBLISHER_MAX_LIMIT = os.environ.get('MERGE_PUBLISHER_MAX_LIMIT', 0)
+NEW_PUBLISHER_MAX_LIMIT = os.environ.get('NEW_PUBLISHER_MAX_LIMIT', 0)
 
-MERGE_USDA_MIN_LIMIT = 10
-NEW_USDA_MIN_LIMIT = 0
-MERGE_PUBLISHER_MIN_LIMIT = 10
-NEW_PUBLISHER_MIN_LIMIT = 10
+MERGE_USDA_MIN_LIMIT = os.environ.get('MERGE_USDA_MIN_LIMIT', 0)
+NEW_USDA_MIN_LIMIT = os.environ.get('NEW_USDA_MIN_LIMIT', 0)
+MERGE_PUBLISHER_MIN_LIMIT = os.environ.get('MERGE_PUBLISHER_MIN_LIMIT', 0)
+NEW_PUBLISHER_MIN_LIMIT = os.environ.get('NEW_PUBLISHER_MIN_LIMIT', 0)
 
 BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-test-st01.ext.exlibrisgroup.com'
