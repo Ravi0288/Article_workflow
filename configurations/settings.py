@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'step9',
     'step10',
     'step11',
+    'step12',
     'model',
     'mail_service',
     'accounts',
@@ -164,17 +165,24 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # ##########################################################################
 # Database settings
-DATABASES = {
-    'default': {
-        'ENGINE': DB_ENGINE,
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
+if USING_SQLIT3:
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME':  BASE_DIR / 'article.sqlite3',
+            },
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+        },
+    }
 # ##########################################################################
 
 
