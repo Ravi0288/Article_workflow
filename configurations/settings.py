@@ -15,14 +15,12 @@ FERNET_KEY = (os.environ['FERNET_KEY']).encode()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# This variable should be used only when using sqlite3
-USING_SQLIT3 = False
-
 # List of whitelisted host to be proivded here
 ALLOWED_HOSTS = ['*']
 
 # #########################################################################
 # Application definition
+# ..................######
 INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.admin',
@@ -47,6 +45,7 @@ INSTALLED_APPS = [
     'mail_service',
     'accounts',
     'rest_framework.authtoken',
+    # run django on https in development environment
     'sslserver',
     'reports',
     'scheduler',
@@ -166,39 +165,28 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # ##########################################################################
 # Database settings
-if USING_SQLIT3:
-    DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':  BASE_DIR / 'article.sqlite3',
-            },
+# ..................##################### #####################
 
-            # 'pid_db': {
-            #     'ENGINE': 'django.db.backends.sqlite3',
-            #     'NAME':  BASE_DIR / 'pid.sqlite3',
-            # }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': DB_ENGINE,
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,
-            'PORT': DB_PORT,
-        },
+DATABASES = {
+    'default': {
+        'ENGINE': DB_ENGINE,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+    },
 
-        # # Handle DB is accesed directly. And the code is written in handles.py file in core python
-        # 'pid_db': {
-        #     'ENGINE': PID_DB_ENGINE,
-        #     'NAME': PID_DB_NAME,
-        #     'USER': PID_DB_USER,
-        #     'PASSWORD': PID_DB_PASSWORD,
-        #     'HOST': PID_DB_HOST,
-        #     'PORT': PID_DB_PORT,
-        # }
-    }
+    # # Handle DB is accesed directly. And the code is written in handles.py file in core python
+    # 'pid_db': {
+    #     'ENGINE': PID_DB_ENGINE,
+    #     'NAME': PID_DB_NAME,
+    #     'USER': PID_DB_USER,
+    #     'PASSWORD': PID_DB_PASSWORD,
+    #     'HOST': PID_DB_HOST,
+    #     'PORT': PID_DB_PORT,
+    # }
+}
 
 
 # add router file for database settings
@@ -217,6 +205,7 @@ DATABASE_APPS_MAPPING = {'wf_data': 'default',
 
 # ##########################################################################
 # Default Django password validations
+# ..................#######################
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -258,6 +247,7 @@ REST_FRAMEWORK = {
 
 # #####################################
 # Internationalization
+# .........#####################
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
