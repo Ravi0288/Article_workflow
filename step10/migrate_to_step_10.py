@@ -107,9 +107,8 @@ def migrate_to_step10(request):
             continue
 
         # Skip processing the article if it's import_type has already reached the maximum allowed limit else go ahead
-        if imp_type in counters:
-            if counters[imp_type] >= MAX_LIMIT[imp_type]:
-                continue
+        if counters[imp_type] >= MAX_LIMIT[imp_type]:
+            continue
 
         # Process valid article
         try:
