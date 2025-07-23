@@ -94,7 +94,7 @@ def migrate_to_step10(request):
     if not articles.count() and len(reached_max_limit)<4:
         step10_state.in_progress = False
         step10_state.save()
-        context['message'] = message = f'No active articles found to migrate to Step 10. {", ".join(map(str, reached_max_limit ))} has reached its maximum limit.'
+        context['message'] = message = f'Import type {", ".join(map(str, reached_max_limit ))} have reached its maximum limit. Article of other imports types has processed. Please re-run after running step 11'
         return render(request, 'common/dashboard.html', context=context)
     
     if not articles.count():
