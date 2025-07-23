@@ -53,20 +53,20 @@ def migrate_to_step10(request):
 
             # Initialize counters with existing counter
             counters = {
-                "new_usda": step10_state.new_usda_record_processed,
-                "merge_usda": step10_state.merge_usda_record_processed,
-                "new_publisher": step10_state.new_publisher_record_processed,
-                "merge_publisher": step10_state.merge_publisher_record_processed,
+                "new_usda": int(step10_state.new_usda_record_processed),
+                "merge_usda": int(step10_state.merge_usda_record_processed),
+                "new_publisher": int(step10_state.new_publisher_record_processed),
+                "merge_publisher": int(step10_state.merge_publisher_record_processed),
             }
 
             # Set a list of import types those have reached its max limit
             for i in counters:
-                if counters[i] >= MAX_LIMIT[i]:
+                if counters[i] >= int(MAX_LIMIT[i]):
                     reached_max_limit.append(i)
 
             # Return message when all the import types has reached its maximum limit
             if len(reached_max_limit) == len(VALID_IMPORT_TYPES):
-                step10_state.in_progress = True
+                step10_state.in_progress = False
                 step10_state.save()
                 context['message'] = 'All import types has reached maximum limit. Please re-run after running step 11'
                 return render(request, 'common/dashboard.html', context=context)
@@ -90,9 +90,17 @@ def migrate_to_step10(request):
         provider__article_switch=True
         ).exclude(import_type__in=reached_max_limit)
 
-    if not articles.count() :
+    # Response when no articles are found to proceed and all import types have not reached their max limit
+    if not articles.count() and len(reached_max_limit)<4:
         step10_state.in_progress = False
         step10_state.save()
+        context['message'] = message = f'No active articles found to migrate to Step 10. {", ".join(map(str, reached_max_limit ))} has reached its maximum limit.'
+        return render(request, 'common/dashboard.html', context=context)
+    
+    if not articles.count():
+        step10_state.in_progress = False
+        step10_state.save()
+        context['message'] = 'No active article found to migrate to Step 10.' 
         return render(request, 'common/dashboard.html', context=context)
 
     for article in articles:

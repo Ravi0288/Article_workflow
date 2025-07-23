@@ -290,12 +290,12 @@ BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-test-st01.ext.exlibrisgroup.co
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-test-st01.ext.exlibrisgroup.com'
 S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
-    'new_usda_record':os.environ['new_usda_record'],
-    'merge_usda_with_digital_files':os.environ['merge_usda_with_digital_files'],
-    'merge_usda_without_digital_files':os.environ['merge_usda_without_digital_files'],
-    'new_publisher_records':os.environ['new_publisher_records'],
-    'new_publisher_with_digital_files':os.environ['new_publisher_with_digital_files'],
-    'new_publisher_without_digital_files':os.environ['new_publisher_without_digital_files'],
+    'new_usda_record':os.environ.get('new_usda_record', 0),
+    'merge_usda_with_digital_files':os.environ.get('merge_usda_with_digital_files', 0),
+    'merge_usda_without_digital_files':os.environ.get('merge_usda_without_digital_files', 0),
+    'new_publisher_records':os.environ.get('new_publisher_records', 0),
+    'new_publisher_with_digital_files':os.environ.get('new_publisher_with_digital_files', 0),
+    'new_publisher_without_digital_files':os.environ.get('new_publisher_without_digital_files', 0),
 }
 #######################################################################
 
