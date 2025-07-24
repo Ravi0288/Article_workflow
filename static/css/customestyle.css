@@ -51,7 +51,7 @@ body {
 .content {
     flex: 1;
     padding: 20px;
-    background-color: #ffffff; /* Lighter background for content area */
+    background-color: #f9f9f9; /* Lighter background for content area */
     color: #333; /* Darker text for readability */
     border-left: 3px solid #e1e8f0; /* Light border to separate content from sidebar */
 }

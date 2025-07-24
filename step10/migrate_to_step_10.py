@@ -11,7 +11,6 @@ import os
 import shutil
 
 
-
 # Mapping of import types to their corresponding limit settings
 MAX_LIMIT = {
     "new_usda": settings.NEW_USDA_MAX_LIMIT,
@@ -94,7 +93,7 @@ def migrate_to_step10(request):
     if not articles.count() and len(reached_max_limit) < len(VALID_IMPORT_TYPES):
         step10_state.in_progress = False
         step10_state.save()
-        context['message'] = message = f'Import type {", ".join(map(str, reached_max_limit ))} have reached its maximum limit. Article of other imports types has processed. Please re-run after running step 11'
+        context['message'] = message = f'Import type {", ".join(map(str, reached_max_limit ))} have reached its maximum limit. Articles of other imports types has processed. Please re-run after running step 11'
         return render(request, 'common/dashboard.html', context=context)
     
     if not articles.count():

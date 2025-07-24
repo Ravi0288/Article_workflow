@@ -3,34 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>USDA System - Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            background-color: #f7f7f7;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .login-container {
-            max-width: 400px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
-        .login-container h2 {
-            margin-bottom: 30px;
+        .login-header {
             text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h2 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .login-header p {
+            color: #666;
+            margin: 0;
+        }
+        .mfa-section {
+            margin-bottom: 25px;
+        }
+        .mfa-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-microsoft {
+            background: #0078d4;
+            color: white;
+        }
+        .btn-microsoft:hover {
+            background: #106ebe;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        .divider span {
+            background: white;
+            padding: 0 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        .traditional-form {
+            margin-top: 20px;
+        }
+        .form-group label {
+            font-weight: 500;
+            color: #333;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 15px;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-traditional {
+            background: #28a745;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 500;
+        }
+        .btn-traditional:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        .security-notice {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .security-notice i {
+            color: #1976d2;
+            margin-right: 8px;
+        }
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .microsoft-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
+    <div class="container">
+        <div class="login-container">
+            <div class="login-header">
+                <h2><i class="fas fa-shield-alt"></i> USDA System</h2>
+                <p>Secure Authentication Portal</p>
+            </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- MFA Login Section -->
+            <div class="mfa-section">
+                <h5 class="mb-3"><i class="fas fa-lock"></i> Recommended: Multi-Factor Authentication</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="mfa_login">
+                    <button type="submit" class="mfa-button btn-microsoft">
+                        <svg class="microsoft-icon" viewBox="0 0 23 23">
+                            <path fill="#f35325" d="M1 1h10v10H1z"/>
+                            <path fill="#81bc06" d="M12 1h10v10H12z"/>
+                            <path fill="#05a6f0" d="M1 12h10v10H1z"/>
+                            <path fill="#ffba08" d="M12 12h10v10H12z"/>
+                        </svg>
+                        Sign in with Microsoft (MFA)
+                    </button>
+                </form>
+                <small class="text-muted">
+                    <i class="fas fa-check-circle text-success"></i>
+                    Full system access with enhanced security
+                </small>
+            </div>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <!-- Traditional Login Section -->
+            <div class="traditional-section">
+                <h5 class="mb-3"><i class="fas fa-user"></i> Traditional Login</h5>
+                <form method="post" class="traditional-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="traditional_login">
+                    
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.username.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}">Password</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.password.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-traditional btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Login (Limited Access)
+                    </button>
+                </form>
+                <small class="text-muted">
+                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                    Limited system access only
+                </small>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="security-notice">
+                <i class="fas fa-info-circle"></i>
+                <strong>Security Notice:</strong> For full system access and enhanced security, please use multi-factor authentication. Traditional login provides limited functionality.
+            </div>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

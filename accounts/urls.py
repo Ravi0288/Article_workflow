@@ -1,31 +1,30 @@
-from django.urls import path
 from django.urls import path, include
-from .fallback import  callback  
-from .entra_login import entra_login
-# from rest_framework.routers import DefaultRouter
-# from .authorization import Authorization_viewset, get_url_names
 from .authorization import create_authorization
 from . import views
 
-# router = DefaultRouter()
-# router.register('authorized-menu', Authorization_viewset, basename='authorized-menu')
+# URL namespace for accounts app
+app_name = 'accounts'
 
 urlpatterns = [
-    # path('', include(router.urls)),
+    # User and Group Management
     path('users/', views.user_list, name='user-list'),
     path('users/create/', views.user_create, name='user-create'),
     path('groups/', views.group_list, name='group-list'),
     path('groups/create/', views.group_create, name='group-create'),
+    
+    # Authentication Endpoints
     path('login/', views.login_view, name='login'),
     path('', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
     
+    # MFA Endpoints
+    # path('microsoft/', views.microsoft_login_view, name='microsoft_login'),
+    # path('microsoft/callback/', views.microsoft_callback_view, name='microsoft_callback'),
+    # path('mfa/status/', views.mfa_status_view, name='mfa_status'),
+    # path('mfa/upgrade/', views.upgrade_to_mfa, name='mfa_upgrade'),
+    # path('mfa/required/', views.mfa_required_view, name='mfa_required'),
+    
+    # Authorization
     path('create-authorization/', create_authorization, name='create-authorization'),
-
-    # for entra
-    # path('entra-login/', entra_login, name='entra-login'),
-    # path('callback/', callback, name='callback'),
-    # path('get_url_names/', get_url_names, name='get_url_names'),
-
 ]
