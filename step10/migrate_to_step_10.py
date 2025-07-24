@@ -91,7 +91,7 @@ def migrate_to_step10(request):
         ).exclude(import_type__in=reached_max_limit)
 
     # Response when no articles are found to proceed and all import types have not reached their max limit
-    if not articles.count() and len(reached_max_limit)<4:
+    if not articles.count() and len(reached_max_limit) < len(VALID_IMPORT_TYPES):
         step10_state.in_progress = False
         step10_state.save()
         context['message'] = message = f'Import type {", ".join(map(str, reached_max_limit ))} have reached its maximum limit. Article of other imports types has processed. Please re-run after running step 11'
