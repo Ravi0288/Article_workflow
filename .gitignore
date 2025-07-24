@@ -19,4 +19,5 @@ INVALID_FILES/*
 certificates
 data/*
 **/migrations/*
-article.sqlite3
+*.sqlite3
+*.log
