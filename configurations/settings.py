@@ -47,9 +47,12 @@ INSTALLED_APPS = [
     'model',
     'mail_service',
     'accounts',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
+    # run django on https in development environment
     'sslserver',
     'reports',
+
+    # MFA ENTRA
     # 'oauth2_provider'
 ]
 # #########################################################################
@@ -66,6 +69,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # MFA Enforcement Middleware
+    # 'accounts.mfa_middleware.MFAEnforcementMiddleware',
 
     # Middleware to protect unauthorized access of any URL that is not authorized to logged in user
     # 'accounts.middleware.MenuAuthorizationMiddleware',
@@ -136,7 +142,6 @@ TEMPLATES = [
         },
     },
 ]
-
 # #########################################################################
 
 
@@ -165,24 +170,36 @@ PID_DB_PORT = os.environ['PID_DB_PORT']
 
 # ##########################################################################
 # Database settings
-if USING_SQLIT3:
-    DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME':  BASE_DIR / 'article.sqlite3',
-            },
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': DB_ENGINE,
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,
-            'PORT': DB_PORT,
-        },
-    }
+DATABASES = {
+    'default': {
+        'ENGINE': DB_ENGINE,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+    },
+
+    # # Handle DB is accesed directly. And the code is written in handles.py file in core python
+    # 'pid_db': {
+    #     'ENGINE': PID_DB_ENGINE,
+    #     'NAME': PID_DB_NAME,
+    #     'USER': PID_DB_USER,
+    #     'PASSWORD': PID_DB_PASSWORD,
+    #     'HOST': PID_DB_HOST,
+    #     'PORT': PID_DB_PORT,
+    # }
+}
+
+
+# add router file for database settings
+# DATABASE_ROUTERS = ['configurations.db_router.DB_route']
+
+# specify the app_name for django to decide what database to access for what table
+DATABASE_APPS_MAPPING = {'wf_data': 'default',
+                        'handle_data':'handle_db',
+                        'pid_data' : 'pid_db'}
+
 # ##########################################################################
 
 
@@ -276,26 +293,26 @@ ALMA_DIR_LIST = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
 
 ##################### ############################ ####################
 # S3 upload maximum allowed number for each class of content
-MERGE_USDA_MAX_LIMIT = os.environ.get('MERGE_USDA_MAX_LIMIT', 0)
-NEW_USDA_MAX_LIMIT = os.environ.get('NEW_USDA_MAX_LIMIT', 0)
-MERGE_PUBLISHER_MAX_LIMIT = os.environ.get('MERGE_PUBLISHER_MAX_LIMIT', 0)
-NEW_PUBLISHER_MAX_LIMIT = os.environ.get('NEW_PUBLISHER_MAX_LIMIT', 0)
+MERGE_USDA_MAX_LIMIT = int(os.environ.get('MERGE_USDA_MAX_LIMIT', 200))
+NEW_USDA_MAX_LIMIT = int(os.environ.get('NEW_USDA_MAX_LIMIT', 200))
+MERGE_PUBLISHER_MAX_LIMIT = int(os.environ.get('MERGE_PUBLISHER_MAX_LIMIT', 200))
+NEW_PUBLISHER_MAX_LIMIT = int(os.environ.get('NEW_PUBLISHER_MAX_LIMIT', 200))
 
-MERGE_USDA_MIN_LIMIT = os.environ.get('MERGE_USDA_MIN_LIMIT', 0)
-NEW_USDA_MIN_LIMIT = os.environ.get('NEW_USDA_MIN_LIMIT', 0)
-MERGE_PUBLISHER_MIN_LIMIT = os.environ.get('MERGE_PUBLISHER_MIN_LIMIT', 0)
-NEW_PUBLISHER_MIN_LIMIT = os.environ.get('NEW_PUBLISHER_MIN_LIMIT', 0)
+MERGE_USDA_MIN_LIMIT = int(os.environ.get('MERGE_USDA_MIN_LIMIT', 10000))
+NEW_USDA_MIN_LIMIT = int(os.environ.get('NEW_USDA_MIN_LIMIT', 10000))
+MERGE_PUBLISHER_MIN_LIMIT = int(os.environ.get('MERGE_PUBLISHER_MIN_LIMIT', 10000))
+NEW_PUBLISHER_MIN_LIMIT = int(os.environ.get('NEW_PUBLISHER_MIN_LIMIT', 10000))
 
 BASE_S3_URI = os.environ['BASE_S3_URI'] #'s3://na-test-st01.ext.exlibrisgroup.com/01NAL_INST/upload/'
 S3_BUCKET = os.environ['S3_BUCKET']  #'na-test-st01.ext.exlibrisgroup.com'
 S3_SUFIX = os.environ['S3_SUFIX']  #'01NAL_INST/upload/'
 S3_URIS = {
-    'new_usda_record':os.environ.get('new_usda_record', 0),
-    'merge_usda_with_digital_files':os.environ.get('merge_usda_with_digital_files', 0),
-    'merge_usda_without_digital_files':os.environ.get('merge_usda_without_digital_files', 0),
-    'new_publisher_records':os.environ.get('new_publisher_records', 0),
-    'new_publisher_with_digital_files':os.environ.get('new_publisher_with_digital_files', 0),
-    'new_publisher_without_digital_files':os.environ.get('new_publisher_without_digital_files', 0),
+    'new_usda_record':os.environ['new_usda_record'],
+    'merge_usda_with_digital_files':os.environ['merge_usda_with_digital_files'],
+    'merge_usda_without_digital_files':os.environ['merge_usda_without_digital_files'],
+    'new_publisher_records':os.environ['new_publisher_records'],
+    'new_publisher_with_digital_files':os.environ['new_publisher_with_digital_files'],
+    'new_publisher_without_digital_files':os.environ['new_publisher_without_digital_files'],
 }
 #######################################################################
 
@@ -378,3 +395,43 @@ EMAIL_PASSWORD = get_env_variable('EPWD')
 EMAIL_TO = ['ravi.parekh@usda.gov','chuck.schoppet@usda.gov']
 ##################### ############################### ####################
 
+'''
+##################### Microsoft Entra ID MFA Configuration ####################
+# Microsoft Entra ID OAuth2 Configuration
+# These should be set as environment variables in production
+MICROSOFT_CLIENT_ID = os.environ.get('MICROSOFT_CLIENT_ID', '')
+MICROSOFT_CLIENT_SECRET = os.environ.get('MICROSOFT_CLIENT_SECRET', '')
+MICROSOFT_TENANT_ID = os.environ.get('MICROSOFT_TENANT_ID', 'common')
+MICROSOFT_REDIRECT_URL = os.environ.get('MICROSOFT_REDIRECT_URL', 'http://localhost:8000/accounts/microsoft/callback/')
+
+# MFA Session Configuration
+MFA_SESSION_TIMEOUT = 24 * 60 * 60  # 24 hours in seconds
+MFA_SESSION_REFRESH_THRESHOLD = 60 * 60  # 1 hour in seconds
+
+# MFA Middleware Configuration
+MFA_EXEMPT_URLS = [
+    'accounts/login/',
+    'accounts/microsoft/',
+    'accounts/microsoft/callback/',
+    'accounts/logout/',
+    'admin/',
+    'static/',
+    'media/',
+]
+
+# Security Settings for Production
+if not DEBUG:
+    # Force HTTPS in production
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
+    # Secure cookies
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Additional security headers
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+##################### ##################################### ####################
+'''

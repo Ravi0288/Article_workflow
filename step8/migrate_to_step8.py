@@ -52,6 +52,7 @@ def migrate_to_step8(request):
         citation_object, message = annotate_citation(cit, subject_cluster)
         if message == "network error":
             # halt processing
+            print("Network error encountered, halting processing.")
             context = {
                 'heading': 'Message',
                 'message': f'''

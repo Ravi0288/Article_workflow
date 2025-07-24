@@ -74,6 +74,7 @@ def migrate_to_step3(request):
                 article.type_of_record = obj["type"]
                 article.provider_rec = obj["provider_rec"]
                 article.DOI = obj["doi"]
+                article.MMSID = obj["mmsid"]
                 article.last_status = 'active'
             
                 # Create a BytesIO object to act as a file

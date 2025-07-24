@@ -37,7 +37,7 @@
                 {% block header %} {% endblock header %}
             </span>
             <span class="logout-btn">
-                <a href="{% url 'logout' %}" style="color: white;"> <u>Logout</u></a>
+                <a href="{% url 'accounts:logout' %}" style="color: white;"> <u>Logout</u></a>
             </span>
         </div>
         <div class="wrapper">
@@ -59,11 +59,12 @@
                 <a href="{% url 'migrate-to-step-9' %}" style="color: white;">Migrate to Step 9</a>
                 <a href="{% url 'migrate-to-step-10' %}" style="color: white;">Migrate to Step 10</a>
                 <a href="{% url 'migrate-to-step-11' %}" style="color: white;">Migrate to Step 11</a>
-                <a href="{% url 'user-create' %}">Create User</a>
-                <a href="{% url 'group-create' %}">Create Group</a>
-                <a href="{% url 'user-list' %}">List Users</a>
-                <a href="{% url 'group-list' %}">List Groups</a>
-                <a href="{% url 'create-authorization' %}">Authorization</a>
+                <a href="{% url 'migrate-to-step-12' %}" style="color: white;">Migrate to Step 12</a>
+                <a href="{% url 'accounts:user-create' %}">Create Group</a>
+                <a href="{% url 'accounts:group-create' %}">Create Group</a>
+                <a href="{% url 'accounts:user-list' %}">List Users</a>
+                <a href="{% url 'accounts:group-list' %}">List Groups</a>
+                <a href="{% url 'accounts:create-authorization' %}">Authorization</a>
                 <a href="{% url 'provider-access-report' %}" style="color: white;">Access Report</a>
                 <a href="{% url 'backlog-report' %}" style="color: white;">Backlog Report</a>
 

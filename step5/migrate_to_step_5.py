@@ -48,19 +48,32 @@ def migrate_to_step5(request):
                 # has completed processing
                 #print(f"Record with matching DOI found for article with doi {this_doi}")
                 continue
+        elif article.provider_rec and article.provider_rec != "":
+            this_provider_rec = article.provider_rec
+            provider_matching_articles = Article.objects.filter(provider_rec=this_provider_rec, last_step__gt=4)
+            if len(provider_matching_articles) > 0:
+                # Leave this record at step 4 with status 'active'. Continue processing when record with matching provider_rec
+                # has completed processing
+                #print(f"Record with matching provider_rec found for article with provider_rec {this_provider_rec}")
+                continue
+        elif article.MMSID and article.MMSID != "":
+            this_mmsid = article.MMSID
+            mmsid_matching_articles = Article.objects.filter(MMSID=this_mmsid, last_step__gt=4)
+            if len(mmsid_matching_articles) > 0:
+                # Leave this record at step 4 with status 'active'. Continue processing when record with matching MMSID
+                # has completed processing
+                #print(f"Record with matching MMSID found for article with MMSID {this_mmsid}")
+                continue
         else:
-            # For now, if there is no DOI (ie from a submit site record), send the article to review
-            # In a future enhancement we will override this to check for matches by submission node id
+            # If no DOI or provider_rec, set the article to review and continue
             article.last_status = "review"
             article.last_step = 5
             if article.note == 'none':
-                article.note = f"5- No DOI;"
+                article.note = f"5- No DOI, provider_rec, or MMSID; "
             else:
-                article.note += f"5- No DOI; "
+                article.note += f"5- No DOI, provider_rec, or MMSID; "
             article.save()
             continue
-
-
 
         # Read in the citation object
         try:
@@ -72,8 +85,6 @@ def migrate_to_step5(request):
                 article.note = f"5- {e};"
             else:
                 article.note += f"5- {e}; "
-
-
             article.last_status = 'review'
             article.save()
             continue

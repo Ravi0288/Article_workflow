@@ -1,4 +1,7 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
+
+# Distribution / packaging
 .Python
 .build
 .dist
@@ -17,6 +20,3 @@ certificates
 data/*
 **/migrations/*
 article.sqlite3
-pid.sqlite3
-handle.sqlite3
-logs.logs
