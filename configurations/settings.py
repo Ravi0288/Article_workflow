@@ -7,10 +7,12 @@ from .conf import get_env_variable
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.environ['SECRET_KEY']
 FERNET_KEY = (os.environ['FERNET_KEY']).encode()
 
+# Base URL for the application
+# This should be set to the URL where the application is hosted.
+BASE_URL = os.environ.get('BASE_URL', 'http://localhost:8000')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,6 +53,8 @@ INSTALLED_APPS = [
     # run django on https in development environment
     'sslserver',
     'reports',
+    'scheduler',
+    'apscheduler'
 
     # MFA ENTRA
     # 'oauth2_provider'
@@ -338,6 +342,10 @@ LOGGING = {
         'simple': {
             'format': '{levelname} {message}',
             'style': '{',
+        },        
+        'standard': {
+            'format': '[{asctime}] {levelname} {name} - {message}',
+            'style': '{',
         },
     },
     'handlers': {
@@ -356,6 +364,12 @@ LOGGING = {
             'maxBytes': 100000,
             'backupCount': 3,
             'formatter': 'semi-verbose',
+        },
+        'cron_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.environ['CRONE_LOGFILE_NAME'],
+            'formatter': 'standard',
         },
     },
     'loggers': {
@@ -380,8 +394,15 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'scheduler': {
+            'handlers': ['cron_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+
     },
 }
+
 #########################################################################
 
 

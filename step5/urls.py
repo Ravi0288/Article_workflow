@@ -4,6 +4,5 @@ from .migrate_to_step_5 import migrate_to_step5
 
 
 urlpatterns = [
-    # path('', include(router.urls)),
     path('migrate-to-step-5/', migrate_to_step5, name="migrate-to-step-5")
 ]
