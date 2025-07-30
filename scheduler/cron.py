@@ -1,128 +1,57 @@
-# scheduler/cron.py
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils import timezone
-import logging
-from functools import wraps
-import requests
-from apscheduler.schedulers.background import BackgroundScheduler
-from django.conf import settings
-from django.urls import reverse
-from .models import SchedulerLog
-import time
-import logging
-import traceback
 from django.http import JsonResponse
+from django.conf import settings
+import logging, requests
+import os
+from .models import SchedulerLog
+from functools import wraps
+import traceback
 
+# Import all step functions
+from step1.action_deposites import file_transfer_from_deposites
+from step1.download_from_ftp import download_from_ftp
+from step1.download_from_sftp import download_from_sftp
+from step1.submission_api import download_from_submission_api
+from step1.chorus_api import download_from_chorus_api
+from step1.crossref_api import download_from_crossref_api 
 
+from step2.article import migrate_to_step2
+from step3.migrate_to_step_3 import migrate_to_step3
+from step4.migrate_to_step_4 import migrate_to_step4
+from step5.migrate_to_step_5 import migrate_to_step5
+from step6.migrate_to_step_6 import migrate_to_step6
+from step7.migrate_to_step_7 import migrate_to_step7
+from step8.migrate_to_step8 import migrate_to_step8
+from step9.migrate_to_step_9 import migrate_to_step9
+from step10.migrate_to_step_10 import migrate_to_step10
+from step11.migrate_to_step_11 import migrate_to_step11
+from step12.migrate_to_step12 import migrate_to_step12
 
-# Create logger
 logger = logging.getLogger(__name__)
 
-
-# List all the steps that need to be executed
-# This should match the view names
-STEP_NAMES = [
-    # step1 URLs
-    'download-from-ftp',
-    'download-from-sftp',
-    'download-from-submission-api',
-    'download-from-crossref-api',
-    'download-from-chorus-api',
-    'action-deposites',
-    
-    # step2 URLs
-    'migrate-to-step-2',
-    # step3 URLs
-    'migrate-to-step-3',
-    # step4 URLs
-    'migrate-to-step-4',
-    # step5 URLs
-    'migrate-to-step-5',
-    # step6 URLs
-    'migrate-to-step-6',
-    # step7 URLs
-    'migrate-to-step-7',
-    # step8 URLs
-    'migrate-to-step-8',
-    # step9 URLs
-    'migrate-to-step-9',
-    # step10 URLs
-    'migrate-to-step-10',
-    # step11 URLs
-    'migrate-to-step-11',
-    # step12 URLs
-    'migrate-to-step-12',
+# STEP FUNCTIONS
+STEP_FUNCTIONS = [
+    download_from_ftp,
+    download_from_sftp,
+    download_from_submission_api,
+    download_from_crossref_api,
+    download_from_chorus_api,
+    file_transfer_from_deposites,
+    migrate_to_step2,
+    migrate_to_step3,
+    migrate_to_step4,
+    migrate_to_step5,
+    migrate_to_step6,
+    migrate_to_step7,
+    migrate_to_step8,
+    migrate_to_step9,
+    migrate_to_step10,
+    migrate_to_step11,
+    migrate_to_step12,
 ]
 
-
-# Function to build full URL for a given view name
-# This will use the BASE_BACKEND_URL setting to construct the full URL
-def build_full_url(view_name):
-    try:
-        path = reverse(view_name)
-        return f"{settings.BASE_URL}{path}"
-    except Exception as e:
-        logger.error(f"Could not reverse {view_name}: {e}")
-        return None
-    
-
-# Function to call each step and log the result
-# This will make a GET request to the URL and log success or failure
-def call_step(view_name, url):
-    # Create initial log entry
-    log_entry = SchedulerLog.objects.create(
-        step=view_name,
-        start_time=timezone.now(),
-        status="PENDING"
-    )
-
-    try:
-        response = requests.get(url, timeout=60)
-
-        # Failure if step view returns 4xx or 5xx
-        if response.status_code >= 400:
-            error_details = response.text[:500]
-            logger.error(f"Step {view_name} failed: {error_details}")
-            raise Exception(
-                f"Step '{view_name}' failed with status {response.status_code}. Details: {error_details}"
-            )
-
-        # Success if no exception
-        log_entry.status = "SUCCESS"
-        logger.info(f"Step {view_name} completed successfully with status {response.status_code}")
-    except Exception as e:
-        logger.error(f"Step {view_name} failed: {e}")
-        log_entry.status = "FAILED"
-        # Capture full traceback for debugging
-        log_entry.error_message = f"{str(e)}\n\n{traceback.format_exc()}"
-
-        # Stop scheduler on failure
-        return False
-
-    finally:
-        log_entry.end_time = timezone.now()
-        log_entry.save()
-
-    return True
-
-
-# Function to run all steps in sequence
-# This will iterate through the STEP_NAMES, build the URL, and call each step
-def run_all_steps_in_sequence():
-    for view_name in STEP_NAMES:
-        url = build_full_url(view_name)
-        if not url:
-            continue
-
-        success = call_step(view_name, url)
-
-        if not success:
-            break  # stop further steps if one fails
-        time.sleep(2)
-
-
-
-# Wrapper to log start and end time of the running job
+#  Wrapper to calcaulate time taken by any process
 def log_job_times(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -137,24 +66,94 @@ def log_job_times(func):
     return wrapper
 
 
-# accepted interval by apscheduler are
-    # seconds	Run every N seconds
-    # minutes	Run every N minutes
-    # hours	    Run every N hours
-    # days	    Run every N days
-    # weeks	    Run every N weeks
-
-
-## Function to register scheduled task and execute
+# Function to call steps
 @log_job_times
-def start():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(run_all_steps_in_sequence, 'interval', days=30)
-    scheduler.start()
-    logger.info("Scheduler started")
+def call_step(request):
+    """
+    Call each step function with the provided `request` and log.
+    """
+    for step_func in STEP_FUNCTIONS:
+        step_name = step_func.__name__
+        print(step_name, "Execution started")
+        log_entry = SchedulerLog.objects.create(
+            step=step_name,
+            start_time=timezone.now(),
+            status="PENDING"
+        )
+        try:
+            step_func(request)   # Now we always pass the real request
+            log_entry.status = "SUCCESS"
+            logger.info(f"Step {step_name} completed successfully")
+        except Exception as e:
+            log_entry.status = "FAILED"
+            log_entry.error_message = f"{str(e)}\n\n{traceback.format_exc()}"
+            logger.error(f"step {step_name} failed: {e}")
+            log_entry.end_time = timezone.now()
+            log_entry.save()
+            return False
+
+        print(step_name, "Execution Ended")
+        log_entry.end_time = timezone.now()
+        log_entry.save()
+    return True
 
 
-
+# Funtion to manully trigger call_step function
 def trigger_scheduler(request):
-    run_all_steps_in_sequence()  # manually call the function
-    return JsonResponse({"message": "Scheduler triggered manually!"})
+    """
+    This view manually triggers the scheduler task (also called by APScheduler).
+    """
+    call_step(request)
+    return JsonResponse({"message": "Scheduler triggered successfully!"})
+
+
+# Scheduler
+def start():
+    """
+    Scheduler now calls the trigger_scheduler URL with requests.get()
+    so that a proper Django `request` is used.
+    """
+    def call_trigger_url():
+        url = os.path.join(settings.BASE_URL, "scheduler/trigger-scheduler/")
+        logger.info(f"Scheduler calling {url}")
+        response = requests.get(url, timeout=9000)
+        if response.status_code != 200:
+            logger.error(f"Trigger failed: {response.text}")
+
+    scheduler = BackgroundScheduler()
+
+    # accepted interval by apscheduler are
+        # seconds	Run every N seconds
+        # minutes	Run every N minutes
+        # hours	    Run every N hours
+        # days	    Run every N days
+        # weeks	    Run every N weeks
+
+    # An interval job if you want it to run every 2nd week from days of server start
+    # scheduler.add_job(call_trigger_url, 'interval', week=2)
+
+    # An interval job if you want it to run every 30 days from days of server start
+    scheduler.add_job(call_trigger_url, 'interval', days=30)
+
+
+    #  accepted cron parameters by apscheduler are
+        # year	    Run every year at the specified time
+        # month	    Run every month at the specified time
+        # day	    Run every day at the specified time
+        # week	    Run every week at the specified time
+        # day_of_week	Run on a specific day of the week
+        # hour	    Run at a specific hour
+        # minute	Run at a specific minute
+        # second	Run at a specific second
+        
+    # Schedule the job to run every 30 days at 2:00 AM
+    # scheduler.add_job(call_trigger_url,'cron', day=30,hour=2,minute=0)
+
+    # Schedule the job to run every 30 and 15 days of the month at 2:00 AM
+    # scheduler.add_job(call_trigger_url,'cron', day='15,30', hour=2,minute=0)
+
+    # Schedule the job to run every day at 2:00 AM
+    # scheduler.add_job(call_trigger_url,'cron', hour=2,minute=0)
+
+    scheduler.start()
+    logger.info("Scheduler started and will call trigger_scheduler URL")
