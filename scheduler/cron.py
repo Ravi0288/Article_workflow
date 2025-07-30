@@ -17,7 +17,7 @@ from step1.chorus_api import download_from_chorus_api
 from step1.crossref_api import download_from_crossref_api 
 
 from step2.article import migrate_to_step2
-from step3.migrate_to_step_3 import migrate_to_step3
+from step3.migrate_to_step_3 import migrate_to_step3, update_journal_model
 from step4.migrate_to_step_4 import migrate_to_step4
 from step5.migrate_to_step_5 import migrate_to_step5
 from step6.migrate_to_step_6 import migrate_to_step6
@@ -38,17 +38,29 @@ STEP_FUNCTIONS = [
     download_from_crossref_api,
     download_from_chorus_api,
     file_transfer_from_deposites,
+
     migrate_to_step2,
+
     migrate_to_step3,
+    update_journal_model,
+
     migrate_to_step4,
+
     migrate_to_step5,
+
     migrate_to_step6,
+
     migrate_to_step7,
+
     migrate_to_step8,
+
     migrate_to_step9,
+
     migrate_to_step10,
+
     migrate_to_step11,
-    migrate_to_step12,
+
+    migrate_to_step12
 ]
 
 #  Wrapper to calcaulate time taken by any process

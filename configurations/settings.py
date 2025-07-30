@@ -292,6 +292,7 @@ MARC_XML_ROOT = os.path.join(MEDIA_ROOT,os.environ['ARTICLE_MARC_XML_DIR'])
 ALMA_STAGING = os.path.join(MEDIA_ROOT, os.environ['ALMA_STAGING_DIR'])
 ALMA_STAGING_BACKUP = os.path.join(MEDIA_ROOT, os.environ['ALMA_STAGING_BACKUP_DIR'])
 ALMA_DIR_LIST = ['MERGE_USDA', 'NEW_USDA', 'MERGE_PUBLISHER', 'NEW_PUBLISHER']
+JOURNAL_FILE_PATH = os.environ['JOURNAL_FILE_PATH']
 ##################### ############################ ####################
 
 

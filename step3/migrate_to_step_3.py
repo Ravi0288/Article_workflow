@@ -10,6 +10,8 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 import os
 from unidecode import unidecode
+from step4.update_journals import update_journal_model_from_file
+from django.conf import settings
 
 # Function to read xml / json file in utf-8 mode. This function will return file content
 def read_and_return_file_content(file_path):
@@ -117,3 +119,24 @@ def migrate_to_step3(request):
     return render(request, 'common/dashboard.html', context=context)
 
 
+
+# Funciton to update journal model from file
+@login_required
+def update_journal_model(request):
+    """
+    Function to update Journal model from file.
+    """
+
+    try:
+        update_journal_model_from_file(settings.JOURNAL_FILE_PATH)
+        context = {
+            'heading': 'Message',
+            'message': 'Journal model updated successfully.'
+        }
+    except Exception as e:
+        context = {
+            'heading': 'Error',
+            'message': f'Failed to update Journal model: {str(e)}'
+        }
+
+    return render(request, 'common/dashboard.html', context=context)
